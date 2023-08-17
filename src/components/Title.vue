@@ -1,9 +1,9 @@
 <script setup lang="ts">
-import Title from './components/Title.vue'
+defineProps<{ msg: string }>()
 </script>
 
 <template>
-  <Title msg="Stargazer" />
+  <h1>{{ msg }}</h1>
 </template>
 
 <style scoped>
