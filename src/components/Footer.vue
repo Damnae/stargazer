@@ -1,14 +1,11 @@
 <script setup lang="ts">
-defineProps<{ msg: string }>()
 </script>
 
 <template>
-  <h1>{{ msg }}</h1>
+  <footer>
+    <slot />
+  </footer>  
 </template>
 
 <style scoped>
-h1
-{
-  margin: auto;
-}
 </style>
