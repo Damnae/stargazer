@@ -2,7 +2,7 @@
   import { ref, inject } from 'vue'
   import { RouterLink } from 'vue-router';
   import { 
-    getAvatars, AvatarConfig, Avatar,
+    getAvatars, AvatarConfig, Avatar, GroupedAvatars,
     getMonsterCamps, MonsterCampConfig, MonsterCamp,
     getMonsterTemplates, MonsterTemplateConfig, MonsterTemplate,
     getMonsters, MonsterConfig, Monster,
@@ -21,6 +21,18 @@
   {
     return Object.values(avatars.value)
       .sort((a, b) => a.AvatarName.Text > b.AvatarName.Text ? 1 : -1)
+  }
+
+  function allAvatarsByDamageType() : GroupedAvatars
+  {
+    return allAvatars()
+      .reduce((groups:GroupedAvatars, avatar:Avatar) => 
+      {
+        const group = (groups[avatar.DamageType] || []);
+        group.push(avatar);
+        groups[avatar.DamageType] = group;
+        return groups;
+      }, {})
   }
 
   function allMonsterCamps() : MonsterCamp[]
@@ -49,16 +61,25 @@
 
     <input v-model.trim="search" placeholder="Search" />
 
-    <h2>{{ Object.keys(avatars).length }} Avatars</h2>
+    <h1>{{ Object.keys(avatars).length }} Avatars</h1>
     <ul>
-      <li v-for="avatar in allAvatars()" :key="avatar.AvatarID">
-        <RouterLink :to="{ name:'avatar', params:{ commitId: commitId, avatarId: avatar.AvatarID }}">
-          {{ avatar.AvatarName.Text ?? avatar.AvatarID }}
-        </RouterLink>
-      </li>
+      <template v-for="avatarGroup in allAvatarsByDamageType()">
+        <li>
+          {{ avatarGroup[0].DamageType }}
+          <ul>
+            <template v-for="avatar in avatarGroup" :key="avatar.AvatarID">
+              <li>
+                <RouterLink :to="{ name:'avatar', params:{ commitId: commitId, avatarId: avatar.AvatarID }}">
+                  {{ avatar.AvatarName.Text ?? avatar.AvatarID }}
+                </RouterLink>
+              </li>
+            </template>
+          </ul>
+        </li>
+      </template>
     </ul>
 
-    <h2>{{ Object.keys(monsters).length }} Monsters</h2>
+    <h1>{{ Object.keys(monsters).length }} Monsters</h1>
     <ul>
       <template v-for="monsterCamp in allMonsterCamps()" :key="monsterCamp.ID">
         <li>

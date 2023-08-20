@@ -1,11 +1,6 @@
 import { retrieveJson } from './datasource';
 import translate from './translate';
 
-export interface AvatarConfig
-{
-    [key: string]: Avatar
-}
-
 export interface Avatar
 {
     AvatarID: number
@@ -20,6 +15,16 @@ export interface Avatar
     SkillList: [ id: number ]
     AvatarBaseType: string
     AIPath: string
+}
+
+export interface AvatarConfig
+{
+    [key: string]: Avatar
+}
+
+export interface GroupedAvatars
+{
+    [group: string]: Avatar[]
 }
 
 export async function getAvatars(commitId:string) : Promise<AvatarConfig>
@@ -67,6 +72,11 @@ export interface Monster
 export interface MonsterTemplateConfig
 {
     [key: string]: MonsterTemplate
+}
+
+export interface GroupedMonsters
+{
+    [group: string]: Monster[]
 }
 
 export interface MonsterTemplate
