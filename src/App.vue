@@ -1,15 +1,19 @@
 <script setup lang="ts">
-import Title from './components/Title.vue'
-import Footer from './components/Footer.vue'
+import Footer from './views/Footer.vue'
 </script>
 
 <template>
   <div class="main-layout">
     <div class="main-content-layout">
-      <Title msg="Stargazer" />
+      <Suspense>
+        <router-view />
+        <template #fallback>
+          Loading...
+        </template>
+      </Suspense>
     </div>
     <div class="main-footer-layout">
-      <Footer>🤔</Footer>
+      <Footer>🌠</Footer>
     </div>
   </div>
 </template>
@@ -19,22 +23,20 @@ import Footer from './components/Footer.vue'
 {
   display: flex;
   flex-direction: column;
-  min-height: 100vh;
+  height: 100vh;
 }
 .main-content-layout
 {
   display: flex;
   flex-direction: row;
   flex-grow: 1;
-  min-width: 100vw;
+  min-width: 100%;
+  overflow:auto;
 }
 .main-footer-layout
 {
-  display: flex;
-  flex-direction: row;
-  place-content: center;
   flex-shrink: 0;
-  min-width: 100vw;
+  min-width: 100%;
   background-color: #181818;
 }
 </style>
