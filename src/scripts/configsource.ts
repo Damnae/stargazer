@@ -3,97 +3,123 @@ import translate from './translate';
 
 export interface AvatarConfig
 {
-    [key: string]:
+    [key: string]: Avatar
+}
+
+export interface Avatar
+{
+    AvatarID: number
+    AvatarName:
     {
-        AvatarID: number
-        AvatarName:
-        {
-            Hash: number
-            Text: string
-        }
-        JsonPath: string
-        DamageType: string
-        RankIDList: [ id: number ]
-        SkillList: [ id: number ]
-        AvatarBaseType: string
-        AIPath: string
+        Hash: number
+        Text: string
     }
+    JsonPath: string
+    DamageType: string
+    RankIDList: [ id: number ]
+    SkillList: [ id: number ]
+    AvatarBaseType: string
+    AIPath: string
 }
 
 export async function getAvatars(commitId:string) : Promise<AvatarConfig>
 {
-    let results = await retrieveJson('ExcelOutput/AvatarConfig.json', commitId, false)
+    const results = await retrieveJson('ExcelOutput/AvatarConfig.json', commitId, false)
     for (const key in results)
-    {
-        const result = results[key]
-        result.AvatarName.Text = await translate(commitId, result.AvatarName.Hash)
-    }
+        await postprocessAvatar(results[key], commitId)
     return results;
+}
+
+export async function getAvatar(commitId:string, avatarId:number) : Promise<Avatar>
+{
+    const results = await retrieveJson('ExcelOutput/AvatarConfig.json', commitId, false)
+    return postprocessAvatar(results[avatarId], commitId);
 }
 
 export interface MonsterConfig
 {
-    [key: string]:
+    [key: string]: Monster
+}
+
+async function postprocessAvatar(avatar:Avatar, commitId:string) : Promise<Avatar>
+{
+    if (avatar !== undefined)
+        avatar.AvatarName.Text = await translate(commitId, avatar.AvatarName.Hash)
+    return avatar;
+}
+
+export interface Monster
+{
+    MonsterID: number
+    MonsterTemplateID: number
+    MonsterName:
     {
-        MonsterID: number
-        MonsterTemplateID: number
-        MonsterName:
-        {
-            Hash: number
-            Text: string
-        }
-        HardLevelGroup: number // Always 1?
-        EliteGroup: number
-        SkillList: [ id: number]
-        DynamicValues: [ any ] // Seem always empty
-        CustomValueTags: [ name: string]
-        AbilityNameList: [ name: string]
-        OverrideAIPath: string
+        Hash: number
+        Text: string
     }
+    SkillList: [ id: number]
+    DynamicValues: [ any ] // Seem always empty
+    CustomValueTags: [ name: string]
+    AbilityNameList: [ name: string]
+    OverrideAIPath: string
 }
 
 export interface MonsterTemplateConfig
 {
-    [key: string]:
+    [key: string]: MonsterTemplate
+}
+
+export interface MonsterTemplate
+{
+    MonsterTemplateID: number
+    TemplateGroupID: number
+    AtlasSortID: number
+    MonsterCampID: number
+    MonsterName:
     {
-        MonsterTemplateID: number
-        TemplateGroupID: number
-        AtlasSortID: number
-        MonsterCampID: number
-        MonsterName:
-        {
-            Hash: number
-            Text: string
-        }
-        JsonConfig: string
-        AIPath: string
+        Hash: number
+        Text: string
     }
+    JsonConfig: string
+    AIPath: string
 }
 
 export interface MonsterCampConfig
 {
-    [key: string]:
+    [key: string]: MonsterCamp
+}
+
+export interface MonsterCamp
+{
+    ID: number
+    SortID: number
+    AtlasSortID: number
+    Name:
     {
-        ID: number
-        SortID: number
-        AtlasSortID: number
-        Name:
-        {
-            Hash: number
-            Text: string
-        }
+        Hash: number
+        Text: string
     }
 }
 
 export async function getMonsters(commitId:string) : Promise<MonsterConfig>
 {
-    let results = await retrieveJson('ExcelOutput/MonsterConfig.json', commitId, false)
+    const results = await retrieveJson('ExcelOutput/MonsterConfig.json', commitId, false)
     for (const key in results)
-    {
-        const result = results[key]
-        result.MonsterName.Text = await translate(commitId, result.MonsterName.Hash)
-    }
+        await postprocessMonster(results[key], commitId)
     return results;
+}
+
+export async function getMonster(commitId:string, monsterId:number) : Promise<Monster>
+{
+    const results = await retrieveJson('ExcelOutput/MonsterConfig.json', commitId, false)
+    return postprocessMonster(results[monsterId], commitId);
+}
+
+async function postprocessMonster(monster:Monster, commitId:string) : Promise<Monster>
+{
+    if (monster !== undefined)
+        monster.MonsterName.Text = await translate(commitId, monster.MonsterName.Hash)
+    return monster;
 }
 
 export async function getMonsterTemplates(commitId:string) : Promise<MonsterTemplateConfig>
@@ -109,7 +135,7 @@ export async function getMonsterTemplates(commitId:string) : Promise<MonsterTemp
 
 export async function getMonsterCamps(commitId:string) : Promise<MonsterCampConfig>
 {
-    let results = await retrieveJson('ExcelOutput/MonsterCampConfig.json', commitId, false)
+    let results = await retrieveJson('ExcelOutput/MonsterCamp.json', commitId, false)
     for (const key in results)
     {
         const result = results[key]

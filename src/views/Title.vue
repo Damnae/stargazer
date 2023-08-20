@@ -36,6 +36,8 @@
   h1
   {
     text-align: center;
+    font-size: 3.2em;
+    line-height: 1.1;
   }
   h1 + p
   {

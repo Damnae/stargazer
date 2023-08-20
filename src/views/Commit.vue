@@ -18,7 +18,7 @@
   {
     display: flex;
     flex-direction: row;
-    justify-content: center;
+    justify-content: left;
     width: 100%;
     gap:.5rem;
     padding:0 .5em;
