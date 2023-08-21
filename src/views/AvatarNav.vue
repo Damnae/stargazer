@@ -1,14 +1,12 @@
 <script setup lang="ts">
-  import { ref, watchEffect, inject, provide } from 'vue'
+  import { ref, watchEffect, provide } from 'vue'
   import { getAvatar, Avatar, } from '../scripts/configsource.ts';
 
-  const props = defineProps<{avatarId: number}>()
+  const props = defineProps<{commitId:string, avatarId: number}>()
   provide<number>('avatarId', props.avatarId)
 
-  const commitId = inject<string>('commitId', '')
-
-  const avatar = ref<Avatar>(await getAvatar(commitId, props.avatarId))
-  watchEffect(async () => avatar.value = await getAvatar(commitId, props.avatarId))
+  const avatar = ref<Avatar>(await getAvatar(props.commitId, props.avatarId))
+  watchEffect(async () => avatar.value = await getAvatar(props.commitId, props.avatarId))
 </script>
 
 <template>
@@ -26,4 +24,8 @@
 </template>
 
 <style scoped>
+  h1 
+  {
+    margin:0;
+  }
 </style>

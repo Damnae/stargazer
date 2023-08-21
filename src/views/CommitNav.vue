@@ -167,6 +167,10 @@
     flex-grow: 0;
     flex-shrink: 0;
   }
+  .mainnav > ul
+  {
+    margin-bottom:0;
+  }
   .subnav
   {
     flex-grow: 1;
@@ -177,6 +181,7 @@
   nav > hr
   {
     width:100%;
+    margin: 1rem 0;
     border:1px solid #242424;
     flex-grow: 0;
     flex-shrink: 0;

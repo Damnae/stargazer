@@ -1,14 +1,12 @@
 <script setup lang="ts">
-  import { ref, watchEffect, inject, provide } from 'vue'
+  import { ref, watchEffect, provide } from 'vue'
   import { getMonster, Monster, } from '../scripts/configsource.ts';
   
-  const props = defineProps<{monsterId: number}>()
+  const props = defineProps<{commitId:string, monsterId: number}>()
   provide<number>('monsterId', props.monsterId)
 
-  const commitId = inject<string>('commitId', '')
-
-  const monster = ref<Monster>(await getMonster(commitId, props.monsterId))
-  watchEffect(async () => monster.value = await getMonster(commitId, props.monsterId))
+  const monster = ref<Monster>(await getMonster(props.commitId, props.monsterId))
+  watchEffect(async () => monster.value = await getMonster(props.commitId, props.monsterId))
 </script>
 
 <template>
@@ -26,4 +24,8 @@
 </template>
 
 <style scoped>
+  h1 
+  {
+    margin:0;
+  }
 </style>
