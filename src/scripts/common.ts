@@ -4,7 +4,6 @@ export function delay(ms: number)
 }
 
 interface KeyAny { [name: string]:any }
-
 export function toRouteProps(mapping:KeyAny) 
 {
     return function(route:any) 
