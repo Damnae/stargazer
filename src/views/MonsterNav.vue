@@ -6,7 +6,10 @@
   provide<number>('monsterId', props.monsterId)
 
   const monster = ref<Monster>(await getMonster(props.commitId, props.monsterId))
-  watchEffect(async () => monster.value = await getMonster(props.commitId, props.monsterId))
+  watchEffect(async () => 
+  {
+    monster.value = await getMonster(props.commitId, props.monsterId)
+  })
 </script>
 
 <template>

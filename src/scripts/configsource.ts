@@ -27,35 +27,31 @@ export interface GroupedAvatars
     [group: string]: Avatar[]
 }
 
+const avatarConfigCache:{[commitId: string]: AvatarConfig} = {}
 export async function getAvatars(commitId:string) : Promise<AvatarConfig>
 {
-    const results = await retrieveJson('ExcelOutput/AvatarConfig.json', commitId, false)
-    for (const key in results)
-        await postprocessAvatar(results[key], commitId)
-    return results;
+    let config = avatarConfigCache[commitId]
+    if (config == undefined)
+    {
+        const results = await retrieveJson('ExcelOutput/AvatarConfig.json', commitId, false)
+        for (const key in results)
+        {
+            const avatar = results[key]
+
+            let name = await translate(commitId, avatar.AvatarName.Hash)
+            if (avatar.AvatarID > 8000)
+                name = name.replace('{NICKNAME}', `Trailblazer (${avatar.DamageType})`)
+            avatar.AvatarName.Text = name
+        }
+        config = avatarConfigCache[commitId] = results
+        console.log('cached avatar config for ' + commitId)
+    }
+    return config
 }
 
 export async function getAvatar(commitId:string, avatarId:number) : Promise<Avatar>
 {
-    const results = await retrieveJson('ExcelOutput/AvatarConfig.json', commitId, false)
-    return postprocessAvatar(results[avatarId], commitId);
-}
-
-export interface MonsterConfig
-{
-    [key: string]: Monster
-}
-
-async function postprocessAvatar(avatar:Avatar, commitId:string) : Promise<Avatar>
-{
-    if (avatar !== undefined)
-    {
-        let name = await translate(commitId, avatar.AvatarName.Hash)
-        if (avatar.AvatarID > 8000)
-            name = name.replace('{NICKNAME}', `Trailblazer (${avatar.DamageType})`)
-        avatar.AvatarName.Text = name
-    }
-    return avatar;
+    return (await getAvatars(commitId))[avatarId]
 }
 
 export interface Monster
@@ -74,9 +70,9 @@ export interface Monster
     OverrideAIPath: string
 }
 
-export interface MonsterTemplateConfig
+export interface MonsterConfig
 {
-    [key: string]: MonsterTemplate
+    [key: string]: Monster
 }
 
 export interface GroupedMonsters
@@ -99,9 +95,9 @@ export interface MonsterTemplate
     AIPath: string
 }
 
-export interface MonsterCampConfig
+export interface MonsterTemplateConfig
 {
-    [key: string]: MonsterCamp
+    [key: string]: MonsterTemplate
 }
 
 export interface MonsterCamp
@@ -116,25 +112,32 @@ export interface MonsterCamp
     }
 }
 
+export interface MonsterCampConfig
+{
+    [key: string]: MonsterCamp
+}
+
+const monsterConfigCache:{[commitId: string]: MonsterConfig} = {}
 export async function getMonsters(commitId:string) : Promise<MonsterConfig>
 {
-    const results = await retrieveJson('ExcelOutput/MonsterConfig.json', commitId, false)
-    for (const key in results)
-        await postprocessMonster(results[key], commitId)
-    return results;
+    let config = monsterConfigCache[commitId]
+    if (config == undefined)
+    {
+        const results = await retrieveJson('ExcelOutput/MonsterConfig.json', commitId, false)
+        for (const key in results)
+        {
+            const monster = results[key]
+            monster.MonsterName.Text = await translate(commitId, monster.MonsterName.Hash)
+        }
+        config = monsterConfigCache[commitId] = results
+        console.log('cached monster config for ' + commitId)
+    }
+    return config
 }
 
-export async function getMonster(commitId:string, monsterId:number) : Promise<Monster>
+export async function getMonster(commitId:string, avatarId:number) : Promise<Monster>
 {
-    const results = await retrieveJson('ExcelOutput/MonsterConfig.json', commitId, false)
-    return postprocessMonster(results[monsterId], commitId);
-}
-
-async function postprocessMonster(monster:Monster, commitId:string) : Promise<Monster>
-{
-    if (monster !== undefined)
-        monster.MonsterName.Text = await translate(commitId, monster.MonsterName.Hash)
-    return monster;
+    return (await getMonsters(commitId))[avatarId]
 }
 
 export async function getMonsterTemplates(commitId:string) : Promise<MonsterTemplateConfig>

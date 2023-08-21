@@ -6,7 +6,10 @@
   provide<number>('avatarId', props.avatarId)
 
   const avatar = ref<Avatar>(await getAvatar(props.commitId, props.avatarId))
-  watchEffect(async () => avatar.value = await getAvatar(props.commitId, props.avatarId))
+  watchEffect(async () => 
+  {
+    avatar.value = await getAvatar(props.commitId, props.avatarId)
+  })
 </script>
 
 <template>
