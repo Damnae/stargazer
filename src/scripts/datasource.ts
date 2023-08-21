@@ -58,7 +58,7 @@ export async function retrieveJson(request:string, commit:string, useApi:boolean
         .then(response => response.json())
         .catch(error => console.log(`fileDB error: ${error}`))
     
-    if (!useApi)
+    if (!useApi && result)
     {
         await (await configDB).put('files', { hash:commit, path:request, content:JSON.stringify(result) })
         console.log(`fileDB stored ${request} @${commit}`)
