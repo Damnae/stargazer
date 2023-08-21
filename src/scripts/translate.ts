@@ -8,6 +8,9 @@ export interface Translatable
 
 export default async function translate(commitId:string, translatable:Translatable, process?:(s: string) => string)
 {
+    if (!translatable)
+        return
+
     let text = await translateHash(commitId, translatable.Hash)
     if (process !== undefined)
         text = process(text)

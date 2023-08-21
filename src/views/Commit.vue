@@ -2,7 +2,7 @@
   import { provide } from 'vue'
   import CommitNav from './CommitNav.vue'
 
-  const props = defineProps<{commitId: string}>()
+  const props = defineProps<{commitId:string}>()
   provide<string>('commitId', props.commitId)
 </script>
 
