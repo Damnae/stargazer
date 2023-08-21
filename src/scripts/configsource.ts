@@ -49,7 +49,12 @@ export interface MonsterConfig
 async function postprocessAvatar(avatar:Avatar, commitId:string) : Promise<Avatar>
 {
     if (avatar !== undefined)
-        avatar.AvatarName.Text = await translate(commitId, avatar.AvatarName.Hash)
+    {
+        let name = await translate(commitId, avatar.AvatarName.Hash)
+        if (avatar.AvatarID > 8000)
+            name = name.replace('{NICKNAME}', `Trailblazer (${avatar.DamageType})`)
+        avatar.AvatarName.Text = name
+    }
     return avatar;
 }
 
