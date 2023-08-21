@@ -143,6 +143,7 @@
       </ul>
       <pre v-if="false">{{ monsters }}</pre>
     </section>
+    <hr />
     <section class="subnav">
       <slot />
     </section>
@@ -163,18 +164,21 @@
     height:20rem;
     display:flex;
     flex-direction: column;
-
     flex-grow: 0;
     flex-shrink: 0;
-
-    border-bottom:2px solid #242424;
   }
-
   .subnav
   {
     flex-grow: 1;
     flex-shrink: 1;
     overflow:auto scroll;
     scrollbar-width: thin;
+  }
+  nav > hr
+  {
+    width:100%;
+    border:1px solid #242424;
+    flex-grow: 0;
+    flex-shrink: 0;
   }
 </style>

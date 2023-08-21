@@ -54,11 +54,6 @@ button:focus-visible {
   padding:.5rem;
   margin:.5rem 0;
   border-bottom: 1px solid #000;
-  /*
-  overflow:auto;
-  scrollbar-width: thin;
-  */
-  overflow:hidden;
 }
 
 ul.navtree
