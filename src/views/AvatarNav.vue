@@ -1,6 +1,6 @@
 <script setup lang="ts">
   import { ref, watchEffect, } from 'vue'
-  import { getAvatar, Avatar, } from '../scripts/configsource.ts';
+  import { getAvatar, Avatar, } from '../scripts/sources/avatar.ts';
 
   const props = defineProps<{commitId:string, avatarId: number}>()
 
@@ -31,3 +31,4 @@
     margin:0;
   }
 </style>
+../scripts/avatarsource.ts

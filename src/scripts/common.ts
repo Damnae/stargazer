@@ -1,6 +1,11 @@
-export function delay(ms: number) 
+export interface Grouped<TElement>
 {
-    return new Promise(resolve => setTimeout(resolve, ms));
+    [groupBy: string]: TElement[]
+}
+
+export interface Grouped2<TElement>
+{
+    [groupBy: string]: {[groupBy: string]: TElement[]}
 }
 
 interface KeyAny { [name: string]:any }
@@ -26,4 +31,9 @@ export function toRouteProps(mapping:KeyAny)
         }
         return props;
     }
+}
+
+export function delay(ms: number) 
+{
+    return new Promise(resolve => setTimeout(resolve, ms));
 }

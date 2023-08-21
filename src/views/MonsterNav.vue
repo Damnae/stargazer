@@ -1,7 +1,7 @@
 <script setup lang="ts">
   import { ref, watchEffect, } from 'vue'
-  import { getMonster, Monster, } from '../scripts/configsource.ts';
-  
+  import { getMonster, Monster, } from '../scripts/sources/monster.ts';
+
   const props = defineProps<{commitId:string, monsterId: number}>()
 
   const monster = ref<Monster>(await getMonster(props.commitId, props.monsterId))
@@ -31,3 +31,4 @@
     margin:0;
   }
 </style>
+../scripts/avatarsource.ts

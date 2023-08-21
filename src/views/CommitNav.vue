@@ -1,11 +1,9 @@
 <script setup lang="ts">
   import { ref, computed, inject } from 'vue'
   import { RouterLink } from 'vue-router';
-  import { 
-    getAvatars, Avatar, AvatarConfig, 
-    getMonsters, Monster, MonsterConfig, 
-    Grouped, Grouped2,
-  } from '../scripts/configsource.ts';
+  import { Grouped, Grouped2, } from '../scripts/common.ts';
+  import { getAvatars, Avatar, AvatarConfig, } from '../scripts/sources/avatar.ts';
+  import { getMonsters, Monster, MonsterConfig, } from '../scripts/sources/monster.ts';
 
   const commitId = inject<string>('commitId', '')
 
@@ -168,3 +166,4 @@
     flex-shrink: 0;
   }
 </style>
+../scripts/avatarsource.ts
