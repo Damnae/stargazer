@@ -14,6 +14,12 @@
   -webkit-text-size-adjust: 100%;
 }
 
+body {
+  margin: 0;
+  min-width: 320px;
+  min-height: 100vh;
+}
+
 a {
   font-weight: 500;
   color: rgba(255, 255, 255, 0.87);
@@ -21,12 +27,6 @@ a {
 }
 a:hover {
   color: #ffffff;
-}
-
-body {
-  margin: 0;
-  min-width: 320px;
-  min-height: 100vh;
 }
 
 button {
@@ -61,21 +61,26 @@ ul.navtree
   overflow:auto;
   scrollbar-width: thin;
 }
-
 ul.navtree, ul.navtree ul
 {
   list-style: none;
   padding: 0;
 }
-
 ul.navtree ul
 {
   padding: 0 0 0 1rem;
 }
-
 ul.navtree li > div:after
 { 
   content:' ⇲';
   color:grey;
 }
 
+.major
+{
+  color:goldenrod;
+}
+.minor 
+{
+  color:grey;
+}

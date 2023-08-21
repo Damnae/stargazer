@@ -1,6 +1,15 @@
 import { retrieveJson } from './datasource';
 import translate from './translate';
 
+export interface Grouped<TElement>
+{
+    [groupBy: string]: TElement[]
+}
+export interface Grouped2<TElement>
+{
+    [groupBy: string]: {[groupBy: string]: TElement[]}
+}
+
 export interface Avatar
 {
     AvatarID: number
@@ -58,6 +67,7 @@ export interface Monster
 {
     MonsterID: number
     MonsterTemplateID: number
+    MonsterTemplate:MonsterTemplate
     MonsterName:
     {
         Hash: number
@@ -70,22 +80,13 @@ export interface Monster
     OverrideAIPath: string
 }
 
-export interface MonsterConfig
-{
-    [key: string]: Monster
-}
-
-export interface GroupedMonsters
-{
-    [group: string]: Monster[]
-}
-
 export interface MonsterTemplate
 {
     MonsterTemplateID: number
     TemplateGroupID: number
     AtlasSortID: number
     MonsterCampID: number
+    MonsterCamp: MonsterCamp
     MonsterName:
     {
         Hash: number
@@ -93,11 +94,6 @@ export interface MonsterTemplate
     }
     JsonConfig: string
     AIPath: string
-}
-
-export interface MonsterTemplateConfig
-{
-    [key: string]: MonsterTemplate
 }
 
 export interface MonsterCamp
@@ -112,9 +108,36 @@ export interface MonsterCamp
     }
 }
 
-export interface MonsterCampConfig
+export interface MonsterConfig
 {
-    [key: string]: MonsterCamp
+    [key: string]: Monster
+}
+
+const missingMonsterCamp:MonsterCamp = 
+{     
+    ID: -1,
+    SortID: 9999,
+    AtlasSortID: 9999,
+    Name:
+    {
+        Hash: 750427067,
+        Text: 'Unknown',
+    },
+}
+const missingMonsterTemplate:MonsterTemplate = 
+{     
+    MonsterTemplateID: -1,
+    TemplateGroupID: -1,
+    AtlasSortID: 9999,
+    MonsterCampID: -1,
+    MonsterCamp: missingMonsterCamp,
+    MonsterName:
+    {
+        Hash: 750427067,
+        Text: 'Unknown',
+    },
+    JsonConfig: '',
+    AIPath: '',
 }
 
 const monsterConfigCache:{[commitId: string]: MonsterConfig} = {}
@@ -123,13 +146,30 @@ export async function getMonsters(commitId:string) : Promise<MonsterConfig>
     let config = monsterConfigCache[commitId]
     if (config == undefined)
     {
-        const results = await retrieveJson('ExcelOutput/MonsterConfig.json', commitId, false)
-        for (const key in results)
+        const camps = await retrieveJson('ExcelOutput/MonsterCamp.json', commitId, false)
+        for (const key in camps)
         {
-            const monster = results[key]
-            monster.MonsterName.Text = await translate(commitId, monster.MonsterName.Hash)
+            const camp = camps[key]
+            camp.Name.Text = await translate(commitId, camp.Name.Hash)
         }
-        config = monsterConfigCache[commitId] = results
+
+        const templates = await retrieveJson('ExcelOutput/MonsterTemplateConfig.json', commitId, false)
+        for (const key in templates)
+        {
+            const template = templates[key]
+            template.MonsterName.Text = await translate(commitId, template.MonsterName.Hash)
+            template.MonsterCamp = camps[template.MonsterCampID] ?? missingMonsterCamp
+        }
+
+        const monsters = await retrieveJson('ExcelOutput/MonsterConfig.json', commitId, false)
+        for (const key in monsters)
+        {
+            const monster = monsters[key]
+            monster.MonsterName.Text = await translate(commitId, monster.MonsterName.Hash)
+            monster.MonsterTemplate = templates[monster.MonsterTemplateID] ?? missingMonsterTemplate
+        }
+
+        config = monsterConfigCache[commitId] = monsters
         console.log('cached monster config for ' + commitId)
     }
     return config
@@ -138,26 +178,4 @@ export async function getMonsters(commitId:string) : Promise<MonsterConfig>
 export async function getMonster(commitId:string, avatarId:number) : Promise<Monster>
 {
     return (await getMonsters(commitId))[avatarId]
-}
-
-export async function getMonsterTemplates(commitId:string) : Promise<MonsterTemplateConfig>
-{
-    let results = await retrieveJson('ExcelOutput/MonsterTemplateConfig.json', commitId, false)
-    for (const key in results)
-    {
-        const result = results[key]
-        result.MonsterName.Text = await translate(commitId, result.MonsterName.Hash)
-    }
-    return results;
-}
-
-export async function getMonsterCamps(commitId:string) : Promise<MonsterCampConfig>
-{
-    let results = await retrieveJson('ExcelOutput/MonsterCamp.json', commitId, false)
-    for (const key in results)
-    {
-        const result = results[key]
-        result.Name.Text = await translate(commitId, result.Name.Hash)
-    }
-    return results;
 }

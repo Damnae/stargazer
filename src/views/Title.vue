@@ -68,12 +68,4 @@
     justify-content: space-between;
     gap: 1rem;
   }
-  .major
-  {
-    color:goldenrod;
-  }
-  .minor 
-  {
-    color:grey;
-  }
 </style>

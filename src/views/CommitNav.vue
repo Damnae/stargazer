@@ -1,23 +1,20 @@
 <script setup lang="ts">
   import { ref, computed, inject } from 'vue'
   import { RouterLink } from 'vue-router';
+  //import { sortByKeys } from '../scripts/common.ts';
   import { 
-    getAvatars, Avatar, AvatarConfig, GroupedAvatars,
-    getMonsterCamps, MonsterCamp, MonsterCampConfig, 
-    getMonsterTemplates, MonsterTemplate, MonsterTemplateConfig, 
-    getMonsters, Monster, MonsterConfig, GroupedMonsters,
+    getAvatars, Avatar, AvatarConfig, 
+    getMonsters, Monster, MonsterConfig, 
+    Grouped,
   } from '../scripts/configsource.ts';
 
   const commitId = inject<string>('commitId', '')
 
   const avatars = ref<AvatarConfig>(await getAvatars(commitId))
-  const monsterCamps = ref<MonsterCampConfig>(await getMonsterCamps(commitId))
-  const monsterTemplates = ref<MonsterTemplateConfig>(await getMonsterTemplates(commitId))
   const monsters = ref<MonsterConfig>(await getMonsters(commitId))
 
   const search = ref<string>('')
   const avatarsSearchResults = computed(() => allAvatarsByDamageType())
-  // @ts-ignore
   const monstersSearchResults = computed(() => allMonstersByTemplateByCamp())
 
   function allAvatars() : Avatar[]
@@ -27,14 +24,15 @@
       .sort((a, b) => a.AvatarName.Text > b.AvatarName.Text ? 1 : -1)
   }
 
-  function allAvatarsByDamageType() : GroupedAvatars
+  function allAvatarsByDamageType() : Grouped<Avatar>
   {
     return allAvatars()
-      .reduce((groups:GroupedAvatars, avatar:Avatar) => 
+      .reduce((groups:Grouped<Avatar>, avatar:Avatar) => 
       {
-        const group = (groups[avatar.DamageType] || []);
+        const key = avatar.DamageType;
+        const group = (groups[key] || []);
         group.push(avatar);
-        groups[avatar.DamageType] = group;
+        groups[key] = group;
         return groups;
       }, {})
   }
@@ -46,38 +44,19 @@
       .sort((a, b) => a.MonsterName.Text > b.MonsterName.Text ? 1 : -1)
   }
 
-  function allMonstersByTemplateByCamp() : GroupedMonsters
+  function allMonstersByTemplateByCamp() : Grouped<Monster>
   {
     return allMonsters()
-      .reduce((groups:GroupedMonsters, monster:Monster) => 
+      .reduce((groups:Grouped<Monster>, monster:Monster) => 
       {
-        const templateName = monsterTemplates.value[monster.MonsterTemplateID].MonsterName.Text
-        const group = (groups[templateName] || []);
+        const key = monster.MonsterTemplate.MonsterName.Text;
+        const group = (groups[key] || []);
         group.push(monster);
-        groups[templateName] = group;
+        groups[key] = group;
         return groups;
       }, {})
   }
 
-  function allMonsterCamps() : MonsterCamp[]
-  {
-    return Object.values(monsterCamps.value)
-      .sort((a, b) => a.AtlasSortID > b.AtlasSortID ? 1 : -1)
-  }
-
-  function allMonsterTemplatesInCamp(monsterCampID:number) : MonsterTemplate[]
-  {
-    return Object.values(monsterTemplates.value)
-      .filter(v => v.MonsterCampID == monsterCampID)
-      .sort((a, b) => a.AtlasSortID > b.AtlasSortID ? 1 : -1)
-  }
-
-  function allMonstersInTemplate(monsterTemplateID:number) : Monster[]
-  {
-    return Object.values(monsters.value)
-      .filter(v => v.MonsterTemplateID == monsterTemplateID)
-      .sort((a, b) => a.MonsterName.Text > b.MonsterName.Text ? 1 : -1)
-  }
 </script>
 
 <template>
@@ -90,15 +69,15 @@
         <li>
           <div>Avatars</div>
           <ul>
-            <template v-for="avatarGroup in avatarsSearchResults">
+            <template v-for="(avatarGroup, avatarGroupKey) in avatarsSearchResults">
               <li>
                 
-                <div>{{ avatarGroup[0].DamageType }}</div>
+                <div>{{ avatarGroupKey }}</div>
                 <ul>
                   <template v-for="avatar in avatarGroup" :key="avatar.AvatarID">
                     <li>
                       <RouterLink :to="{ name:'avatar', params:{ commitId: commitId, avatarId: avatar.AvatarID }}">
-                        {{ avatar.AvatarName.Text ?? avatar.AvatarID }}
+                        {{ avatar.AvatarName.Text }}
                       </RouterLink>
                     </li>
                   </template>
@@ -113,20 +92,39 @@
 
           <div>Monsters</div>
           <ul>
+            <template v-for="(monsterGroup, monsterGroupKey) in monstersSearchResults">
+              <li>
+                
+                <div>{{ monsterGroupKey }}</div>
+                <ul>
+                  <template v-for="monster in monsterGroup">
+                    <li>
+                      <RouterLink :to="{ name:'monster', params:{ commitId: commitId, monsterId: monster.MonsterID }}">
+                        {{ monster.MonsterName.Text }}
+                      </RouterLink>
+                    </li>
+                  </template>
+                </ul>
+
+              </li>
+            </template>
+          </ul>
+          <!--
+          <ul>
             <template v-for="monsterCamp in allMonsterCamps()" :key="monsterCamp.ID">
               <li>
                 
-                <div>{{ monsterCamp.Name.Text ?? monsterCamp.ID }}</div>
+                <div>{{ monsterCamp.Name.Text }}</div>
                 <ul>
                   <template v-for="monsterTemplate in allMonsterTemplatesInCamp(monsterCamp.ID)" :key="monsterTemplate.MonsterTemplateID">
                     <li>
                       
-                      <div>{{ monsterTemplate.MonsterName.Text ?? monsterTemplate.MonsterTemplateID }}</div>
+                      <div>{{ monsterTemplate.MonsterName.Text }}</div>
                       <ul>
                         <template v-for="monster in allMonstersInTemplate(monsterTemplate.MonsterTemplateID)" :key="monster.MonsterID">
                           <li>
                             <RouterLink :to="{ name:'monster', params:{ commitId: commitId, monsterId: monster.MonsterID }}">
-                              {{ monster.MonsterName.Text ?? monster.MonsterID }}
+                              {{ monster.MonsterName.Text }}
                             </RouterLink>
                           </li>
                         </template>
@@ -139,12 +137,13 @@
               </li>
             </template>
           </ul>
-
+          -->
         </li>
       </ul>
-      <pre v-if="false">{{ monsters }}</pre>
     </section>
+
     <hr />
+
     <section class="subnav">
       <slot />
     </section>

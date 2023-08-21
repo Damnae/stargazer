@@ -1,9 +1,8 @@
 <script setup lang="ts">
-  import { ref, watchEffect, provide } from 'vue'
+  import { ref, watchEffect, } from 'vue'
   import { getMonster, Monster, } from '../scripts/configsource.ts';
   
   const props = defineProps<{commitId:string, monsterId: number}>()
-  provide<number>('monsterId', props.monsterId)
 
   const monster = ref<Monster>(await getMonster(props.commitId, props.monsterId))
   watchEffect(async () => 
@@ -13,7 +12,7 @@
 </script>
 
 <template>
-  <h1>{{ monster.MonsterName.Text ?? monster.MonsterID }}</h1>
+  <h1>{{ monster.MonsterName.Text }}</h1>
   <ul class="navtree">
     <li>
       <div>Skills</div>
