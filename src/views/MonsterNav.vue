@@ -12,14 +12,18 @@
 </script>
 
 <template>
-  <section class="panel">
-    <h1>{{ monster.MonsterName.Text }}</h1>
-  </section>
+  <h1>{{ monster.MonsterName.Text ?? monster.MonsterID }}</h1>
+  <ul class="navtree">
+    <li>
+      <div>Skills</div>
+      <ul>
+        <template v-for="skillId in monster.SkillList">
+          <li>{{ skillId }}</li>
+        </template>
+      </ul>
+    </li>
+  </ul>
 </template>
 
 <style scoped>
-  section
-  {
-    flex-grow:1;
-  }
 </style>

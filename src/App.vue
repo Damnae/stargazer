@@ -30,13 +30,13 @@ import Footer from './views/Footer.vue'
   display: flex;
   flex-direction: row;
   flex-grow: 1;
-  min-width: 100%;
+  width: 100%;
   overflow:auto;
 }
 .main-footer-layout
 {
   flex-shrink: 0;
-  min-width: 100%;
+  width: 100%;
   background-color: #181818;
 }
 </style>

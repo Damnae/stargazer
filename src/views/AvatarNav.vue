@@ -1,7 +1,7 @@
 <script setup lang="ts">
   import { ref, watchEffect, inject, provide } from 'vue'
   import { getAvatar, Avatar, } from '../scripts/configsource.ts';
-  
+
   const props = defineProps<{avatarId: number}>()
   provide<number>('avatarId', props.avatarId)
 
@@ -12,14 +12,18 @@
 </script>
 
 <template>
-  <section class="panel">
-    <h1>{{ avatar.AvatarName.Text }}</h1>
-  </section>
+  <h1>{{ avatar.AvatarName.Text ?? avatar.AvatarID }}</h1>
+  <ul class="navtree">
+    <li>
+      <div>Skills</div>
+      <ul>
+        <template v-for="skillId in avatar.SkillList">
+          <li>{{ skillId }}</li>
+        </template>
+      </ul>
+    </li>
+  </ul>
 </template>
 
 <style scoped>
-  section
-  {
-    flex-grow:1;
-  }
 </style>

@@ -48,13 +48,40 @@ button:focus-visible {
   outline: 4px auto -webkit-focus-ring-color;
 }
 
-.panel {
+.panel 
+{
   background-color: #181818;
   padding:.5rem;
   margin:.5rem 0;
   border-bottom: 1px solid #000;
+  /*
   overflow:auto;
   scrollbar-width: thin;
+  */
+  overflow:hidden;
+}
+
+ul.navtree
+{
+  overflow:auto;
+  scrollbar-width: thin;
+}
+
+ul.navtree, ul.navtree ul
+{
+  list-style: none;
+  padding: 0;
+}
+
+ul.navtree ul
+{
+  padding: 0 0 0 1rem;
+}
+
+ul.navtree li > div:after
+{ 
+  content:' ⇲';
+  color:grey;
 }
 
 @media (prefers-color-scheme: light) {

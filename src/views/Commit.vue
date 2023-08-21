@@ -8,7 +8,9 @@
 
 <template>
   <div class="commit-layout">
-    <CommitNav />
+    <CommitNav>
+      <router-view name="subnav" />
+    </CommitNav>
     <router-view />
   </div>
 </template>
