@@ -2,10 +2,10 @@
   import { ref, computed, inject } from 'vue'
   import { RouterLink } from 'vue-router';
   import { 
-    getAvatars, AvatarConfig, Avatar, GroupedAvatars,
-    getMonsterCamps, MonsterCampConfig, MonsterCamp,
-    getMonsterTemplates, MonsterTemplateConfig, MonsterTemplate,
-    getMonsters, MonsterConfig, Monster, GroupedMonsters,
+    getAvatars, Avatar, AvatarConfig, GroupedAvatars,
+    getMonsterCamps, MonsterCamp, MonsterCampConfig, 
+    getMonsterTemplates, MonsterTemplate, MonsterTemplateConfig, 
+    getMonsters, Monster, MonsterConfig, GroupedMonsters,
   } from '../scripts/configsource.ts';
 
   const commitId = inject<string>('commitId', '')
@@ -17,6 +17,7 @@
 
   const search = ref<string>('')
   const avatarsSearchResults = computed(() => allAvatarsByDamageType())
+  // @ts-ignore
   const monstersSearchResults = computed(() => allMonstersByTemplateByCamp())
 
   function allAvatars() : Avatar[]
