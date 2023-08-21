@@ -1,18 +1,14 @@
 import { retrieveJson } from '../datasource';
-import translate from '../translate';
+import translate, { Translatable } from '../translate';
 
 export interface Avatar
 {
     AvatarID: number
-    AvatarName:
-    {
-        Hash: number
-        Text: string
-    }
+    AvatarName: Translatable
     JsonPath: string
     DamageType: string
-    RankIDList: [ id: number ]
-    SkillList: [ id: number ]
+    RankIDList: number[]
+    SkillList: number[]
     AvatarBaseType: string
     AIPath: string
 }
@@ -32,11 +28,12 @@ export async function getAvatars(commitId:string) : Promise<AvatarConfig>
         for (const key in results)
         {
             const avatar = results[key]
-
-            let name = await translate(commitId, avatar.AvatarName.Hash)
-            if (avatar.AvatarID > 8000)
-                name = name.replace('{NICKNAME}', `Trailblazer (${avatar.DamageType})`)
-            avatar.AvatarName.Text = name
+            await translate(commitId, avatar.AvatarName, (name) => 
+            {
+                if (avatar.AvatarID > 8000)
+                    name = name.replace('{NICKNAME}', `Trailblazer (${avatar.DamageType})`)
+                return name
+            })
         }
         config = avatarConfigCache[commitId] = results
         console.log('cached avatar config for ' + commitId)

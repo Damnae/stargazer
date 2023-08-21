@@ -1,13 +1,16 @@
 <script setup lang="ts">
   import { ref, watchEffect, } from 'vue'
   import { getAvatar, Avatar, } from '../scripts/sources/avatar.ts';
+  import { AvatarSkill, getAvatarSkillsByIds, } from '../scripts/sources/avatarskill.ts';
 
   const props = defineProps<{commitId:string, avatarId: number}>()
 
   const avatar = ref<Avatar>(await getAvatar(props.commitId, props.avatarId))
+  const avatarSkills = ref<AvatarSkill[]>([])
   watchEffect(async () => 
   {
     avatar.value = await getAvatar(props.commitId, props.avatarId)
+    avatarSkills.value = await getAvatarSkillsByIds(props.commitId, avatar.value.SkillList)
   })
 </script>
 
@@ -17,8 +20,10 @@
     <li>
       <div>Skills</div>
       <ul>
-        <template v-for="skillId in avatar.SkillList">
-          <li>{{ skillId }}</li>
+        <template v-for="avatarSkill in avatarSkills">
+          <li>
+            {{ avatarSkill.SkillTag.Text }} {{ avatarSkill.SkillTypeDesc.Text }} <span class="minor" :title="avatarSkill.SkillName.Text">{{ avatarSkill.SkillName.Text }}</span>
+          </li>
         </template>
       </ul>
     </li>
@@ -31,4 +36,3 @@
     margin:0;
   }
 </style>
-../scripts/avatarsource.ts

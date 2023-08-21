@@ -1,13 +1,21 @@
 import { retrieveJson } from './datasource'
 
-interface TranslationMap 
+export interface Translatable
 {
-    [key: string]: any
+    Hash: number
+    Text: string
 }
 
-const translationMap: TranslationMap = {}
+export default async function translate(commitId:string, translatable:Translatable, process?:(s: string) => string)
+{
+    let text = await translateHash(commitId, translatable.Hash)
+    if (process !== undefined)
+        text = process(text)
+    translatable.Text = text
+}
 
-export default async function translate(commitId:string, hash:number) : Promise<string>
+const translationMap: {[key: string]: string} = {}
+export async function translateHash(commitId:string, hash:number) : Promise<string>
 {
     if (commitId in translationMap)
     {

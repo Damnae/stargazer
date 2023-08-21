@@ -1,16 +1,12 @@
 import { retrieveJson } from '../datasource';
-import translate from '../translate';
+import translate, { Translatable } from '../translate';
 
 export interface Monster
 {
     MonsterID: number
     MonsterTemplateID: number
-    MonsterTemplate:MonsterTemplate
-    MonsterName:
-    {
-        Hash: number
-        Text: string
-    }
+    MonsterTemplate: MonsterTemplate
+    MonsterName: Translatable
     SkillList: [ id: number]
     DynamicValues: [ any ] // Seem always empty
     CustomValueTags: [ name: string]
@@ -25,11 +21,7 @@ export interface MonsterTemplate
     AtlasSortID: number
     MonsterCampID: number
     MonsterCamp: MonsterCamp
-    MonsterName:
-    {
-        Hash: number
-        Text: string
-    }
+    MonsterName: Translatable
     JsonConfig: string
     AIPath: string
 }
@@ -39,11 +31,7 @@ export interface MonsterCamp
     ID: number
     SortID: number
     AtlasSortID: number
-    Name:
-    {
-        Hash: number
-        Text: string
-    }
+    Name: Translatable
 }
 
 export interface MonsterConfig
@@ -56,12 +44,9 @@ const missingMonsterCamp:MonsterCamp =
     ID: -1,
     SortID: 9999,
     AtlasSortID: 9999,
-    Name:
-    {
-        Hash: 750427067,
-        Text: 'Unknown',
-    },
+    Name: { Hash: 750427067, Text: 'Unknown', },
 }
+
 const missingMonsterTemplate:MonsterTemplate = 
 {     
     MonsterTemplateID: -1,
@@ -69,11 +54,7 @@ const missingMonsterTemplate:MonsterTemplate =
     AtlasSortID: 9999,
     MonsterCampID: -1,
     MonsterCamp: missingMonsterCamp,
-    MonsterName:
-    {
-        Hash: 750427067,
-        Text: 'Unknown',
-    },
+    MonsterName: { Hash: 750427067, Text: 'Unknown', },
     JsonConfig: '',
     AIPath: '',
 }
@@ -88,7 +69,7 @@ export async function getMonsters(commitId:string) : Promise<MonsterConfig>
         for (const key in camps)
         {
             const camp = camps[key] as MonsterCamp
-            camp.Name.Text = await translate(commitId, camp.Name.Hash)
+            await translate(commitId, camp.Name)
         }
 
         const templates = await retrieveJson('ExcelOutput/MonsterTemplateConfig.json', commitId, false)
@@ -96,7 +77,7 @@ export async function getMonsters(commitId:string) : Promise<MonsterConfig>
         {
             const template = templates[key] as MonsterTemplate
             const parentTemplate = templates[template.TemplateGroupID] as MonsterTemplate
-            template.MonsterName.Text = await translate(commitId, template.MonsterName.Hash)
+            await translate(commitId, template.MonsterName)
 
             const monsterCampId = template.MonsterCampID ?? parentTemplate?.MonsterCampID
             template.MonsterCamp = camps[monsterCampId] ?? missingMonsterCamp
@@ -106,7 +87,7 @@ export async function getMonsters(commitId:string) : Promise<MonsterConfig>
         for (const key in monsters)
         {
             const monster = monsters[key]
-            monster.MonsterName.Text = await translate(commitId, monster.MonsterName.Hash)
+            await translate(commitId, monster.MonsterName)
             monster.MonsterTemplate = templates[monster.MonsterTemplateID] ?? missingMonsterTemplate
         }
 

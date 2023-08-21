@@ -77,7 +77,7 @@
                   <template v-for="avatar in avatars" :key="avatar.AvatarID">
                     <li>
                       <RouterLink :to="{ name:'avatar', params:{ commitId: commitId, avatarId: avatar.AvatarID }}">
-                        {{ avatar.AvatarName.Text }}
+                        <span :title="avatar.AvatarName.Text">{{ avatar.AvatarName.Text }}</span>
                       </RouterLink>
                     </li>
                   </template>
@@ -99,12 +99,12 @@
                   <template v-for="(monsters, monsterTemplateName) in monsterTemplate">
                     <li>
 
-                      <div>{{ monsterTemplateName }}</div>
+                      <div :title="monsterTemplateName.toString()">{{ monsterTemplateName }}</div>
                       <ul>
                         <template v-for="monster in monsters">
                           <li>
                             <RouterLink :to="{ name:'monster', params:{ commitId: commitId, monsterId: monster.MonsterID }}">
-                              {{ monster.MonsterName.Text }}
+                              <span :title="monster.MonsterName.Text">{{ monster.MonsterName.Text }}</span>
                             </RouterLink>
                           </li>
                         </template>
