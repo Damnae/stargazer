@@ -1,6 +1,8 @@
 import { retrieveJson } from '../datasource';
 import translate, { Translatable } from '../translate';
 
+// AvatarRankConfig -> eidolons
+
 export interface Avatar
 {
     AvatarID: number

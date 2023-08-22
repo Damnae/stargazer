@@ -2,8 +2,9 @@
   import { ref, watchEffect, } from 'vue'
   import { getMonster, Monster, } from '../scripts/sources/monster.ts';
   import { getCharacterByMonster, Character } from '../scripts/sources/character';
-  import { MonsterSkill, getMonsterSkillsByIds, } from '../scripts/sources/monsterskill';
+  import { getMonsterSkillsByIds, MonsterSkill, } from '../scripts/sources/monsterskill';
   import CharacterSkillNav from './CharacterSkillNav.vue';
+  import CharacterNav from './CharacterNav.vue';
 
   const props = defineProps<{commitId:string, monsterId:number}>()
 
@@ -33,6 +34,9 @@
         </template>
       </ul>
     </li>
+    <li>
+      <CharacterNav :character="character" />
+    </li>
   </ul>
 </template>
 
@@ -42,4 +46,3 @@
     margin:0;
   }
 </style>
-../scripts/avatarsource.ts

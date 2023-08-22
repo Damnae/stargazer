@@ -124,7 +124,12 @@
     <hr />
 
     <section class="subnav">
-      <slot />
+      <Suspense>
+        <slot />
+        <template #fallback>
+          Loading...
+        </template>
+      </Suspense>
     </section>
   </nav>
 </template>

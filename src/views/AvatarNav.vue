@@ -2,8 +2,9 @@
   import { ref, watchEffect, } from 'vue'
   import { getAvatar, Avatar, } from '../scripts/sources/avatar';
   import { getCharacterByAvatar, Character } from '../scripts/sources/character';
-  import { AvatarSkill, getAvatarSkillsByIds, } from '../scripts/sources/avatarskill';
+  import { getAvatarSkillsByIds, AvatarSkill, } from '../scripts/sources/avatarskill';
   import CharacterSkillNav from './CharacterSkillNav.vue';
+  import CharacterNav from './CharacterNav.vue';
 
   const props = defineProps<{commitId:string, avatarId:number}>()
 
@@ -32,6 +33,9 @@
           </li>
         </template>
       </ul>
+    </li>
+    <li>
+      <CharacterNav :character="character" />
     </li>
   </ul>
 </template>

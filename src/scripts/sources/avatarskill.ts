@@ -76,9 +76,11 @@ export async function getAvatarSkill(commitId:string, avatarSkillId:number) : Pr
     let skill = ranks[Object.keys(ranks).length * 2 / 3]
     if (skill == null)
     {
+        // TODO parse these from MazeSkill.json using RelatedAvatarSkill as ID
         skill = structuredClone(missingAvatarSkill)
         skill.SkillID = avatarSkillId
         skill.SkillName.Text = avatarSkillId.toString()
+        skill.SkillTypeDesc.Text = 'Maze(?)'
     }
     return skill
 }

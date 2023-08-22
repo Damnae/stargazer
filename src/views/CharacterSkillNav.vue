@@ -1,8 +1,7 @@
 <script setup lang="ts">
-  import { ref, watchEffect, } from 'vue'
-  import { getCharacterByAvatar, Character } from '../scripts/sources/character';
+  import { Character } from '../scripts/sources/character';
 
-  const props = defineProps<{skillTriggerKey:string, character:Character}>()
+  defineProps<{skillTriggerKey:string, character:Character}>()
 </script>
 
 <template>

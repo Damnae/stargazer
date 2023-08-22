@@ -81,6 +81,14 @@ ul.navtree li > div:after
   content:' ⇲';
   color:grey;
 }
+ul.navtree a
+{ 
+  display:block;
+}
+ul.navtree a:hover
+{ 
+  background:rgb(42, 42, 42);
+}
 
 .major
 {

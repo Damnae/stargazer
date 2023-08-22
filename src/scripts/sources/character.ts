@@ -21,14 +21,14 @@ export interface Character
                 [
                     {
                         GroupName:string
-                        Weight:
+                        Weight?:
                         {
                             Value: number
                         }
                     }
                 ]
             }
-            ChildSkillList?: string[] // used by PMC's ult
+            ChildSkillList?: string[] // used by Phys MC's ult
         }
     ]
     AbilityList: string[]
