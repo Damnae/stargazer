@@ -69,7 +69,7 @@
         <li>
           <div>Avatars</div>
           <ul>
-            <template v-for="(avatars, damageType) in avatarsSearchResults">
+            <template v-for="(avatars, damageType) in avatarsSearchResults" :key="damageType">
               <li>
                 
                 <div>{{ damageType }}</div>
@@ -101,7 +101,7 @@
 
                       <div :title="monsterTemplateName.toString()">{{ monsterTemplateName }}</div>
                       <ul>
-                        <template v-for="monster in monsters">
+                        <template v-for="monster in monsters" :key="monster.MonsterID">
                           <li>
                             <RouterLink :to="{ name:'monster', params:{ commitId: commitId, monsterId: monster.MonsterID }}">
                               <span :title="monster.MonsterName.Text">{{ monster.MonsterName.Text }}</span>
@@ -137,7 +137,7 @@
 <style scoped>
   nav
   {
-    width:20rem;
+    width:25rem;
     flex-shrink:0;
 
     display:flex;

@@ -14,10 +14,10 @@ const routes =
 [
     { path: '/', name: 'home', component: Title },
     { path: '/c/:commitId', name: 'commit', component: Commit, props:true, children: [
-        { path: '/c/:commitId/a/:avatarId(\\d+)', name: 'avatar', 
+        { path: '/c/:commitId/avatar/:avatarId(\\d+)', name: 'avatar', 
             components: { subnav: AvatarNav }, 
             props:{ subnav:toRouteProps({avatarId: 'number'})}, },
-        { path: '/c/:commitId/m/:monsterId(\\d+)', name: 'monster', 
+        { path: '/c/:commitId/monster/:monsterId(\\d+)', name: 'monster', 
             components: { subnav: MonsterNav }, 
             props:{ subnav:toRouteProps({monsterId: 'number'})}, },
     ]},

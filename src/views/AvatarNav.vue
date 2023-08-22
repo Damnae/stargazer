@@ -3,14 +3,14 @@
   import { getAvatar, Avatar, } from '../scripts/sources/avatar';
   import { getCharacterByAvatar, Character } from '../scripts/sources/character';
   import { getAvatarSkillsByIds, AvatarSkill, } from '../scripts/sources/avatarskill';
-  import CharacterSkillNav from './CharacterSkillNav.vue';
-  import CharacterNav from './CharacterNav.vue';
+  import CharacterSkillAbilitiesNav from './CharacterSkillAbilitiesNav.vue';
+  import CharacterOtherAbilitiesNav from './CharacterOtherAbilitiesNav.vue';
 
   const props = defineProps<{commitId:string, avatarId:number}>()
 
   const avatar = ref<Avatar>(await getAvatar(props.commitId, props.avatarId))
   const avatarSkills = ref<AvatarSkill[]>([])
-  const character = ref<Character>(await getCharacterByAvatar(props.commitId, avatar.value))
+  const character = ref<Character>()
 
   watchEffect(async () => 
   {
@@ -22,20 +22,21 @@
 
 <template>
   <h1>{{ avatar.AvatarName.Text }}</h1>
+  <span v-if="!character" class="minor">(Missing character data)</span>
   <ul class="navtree">
     <li>
       <div>Skills</div>
       <ul>
-        <template v-for="skill in avatarSkills">
+        <template v-for="skill in avatarSkills" :key="skill.SkillID">
           <li>
             <div :title="skill.SkillTriggerKey">{{ skill.SkillTag.Text }} {{ skill.SkillTypeDesc.Text }} <span class="minor" :title="skill.SkillName.Text">{{ skill.SkillName.Text }}</span></div>
-            <CharacterSkillNav :skillTriggerKey="skill.SkillTriggerKey" :character="character" />
+            <CharacterSkillAbilitiesNav v-if="character" :skillTriggerKey="skill.SkillTriggerKey" :character="character" />
           </li>
         </template>
       </ul>
     </li>
-    <li>
-      <CharacterNav :character="character" />
+    <li v-if="character">
+      <CharacterOtherAbilitiesNav :character="character" />
     </li>
   </ul>
 </template>
