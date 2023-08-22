@@ -7,18 +7,18 @@ import { toRouteProps } from './scripts/common'
 
 import Title from './views/Title.vue'
 import Commit from './views/Commit.vue'
-import AvatarNav from './views/AvatarNav.vue'
-import MonsterNav from './views/MonsterNav.vue'
+import AvatarSubNav from './views/navigation/AvatarSubNav.vue'
+import MonsterSubNav from './views/navigation/MonsterSubNav.vue'
 
 const routes = 
 [
     { path: '/', name: 'home', component: Title },
     { path: '/c/:commitId', name: 'commit', component: Commit, props:true, children: [
         { path: '/c/:commitId/avatar/:avatarId(\\d+)', name: 'avatar', 
-            components: { subnav: AvatarNav }, 
+            components: { subnav: AvatarSubNav }, 
             props:{ subnav:toRouteProps({avatarId: 'number'})}, },
         { path: '/c/:commitId/monster/:monsterId(\\d+)', name: 'monster', 
-            components: { subnav: MonsterNav }, 
+            components: { subnav: MonsterSubNav }, 
             props:{ subnav:toRouteProps({monsterId: 'number'})}, },
     ]},
 ]

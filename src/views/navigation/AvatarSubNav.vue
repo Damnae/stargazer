@@ -1,8 +1,8 @@
 <script setup lang="ts">
   import { ref, watchEffect, } from 'vue'
-  import { getAvatar, Avatar, } from '../scripts/sources/avatar';
-  import { getCharacterByAvatar, Character } from '../scripts/sources/character';
-  import { getAvatarSkillsByIds, AvatarSkill, } from '../scripts/sources/avatarskill';
+  import { getAvatar, Avatar, } from '../../scripts/sources/avatar';
+  import { getCharacterByAvatar, Character } from '../../scripts/sources/character';
+  import { getAvatarSkillsByIds, AvatarSkill, } from '../../scripts/sources/avatarskill';
   import CharacterSkillAbilitiesNav from './CharacterSkillAbilitiesNav.vue';
   import CharacterOtherAbilitiesNav from './CharacterOtherAbilitiesNav.vue';
 
@@ -36,6 +36,7 @@
       </ul>
     </li>
     <li v-if="character">
+      <div>Other Abilities</div>
       <CharacterOtherAbilitiesNav :character="character" />
     </li>
   </ul>

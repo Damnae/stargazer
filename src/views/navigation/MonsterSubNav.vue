@@ -1,8 +1,8 @@
 <script setup lang="ts">
   import { ref, watchEffect, } from 'vue'
-  import { getMonster, Monster, } from '../scripts/sources/monster.ts';
-  import { getCharacterByMonster, Character } from '../scripts/sources/character';
-  import { getMonsterSkillsByIds, MonsterSkill, } from '../scripts/sources/monsterskill';
+  import { getMonster, Monster, } from '../../scripts/sources/monster.ts';
+  import { getCharacterByMonster, Character } from '../../scripts/sources/character';
+  import { getMonsterSkillsByIds, MonsterSkill, } from '../../scripts/sources/monsterskill';
   import CharacterSkillAbilitiesNav from './CharacterSkillAbilitiesNav.vue';
   import CharacterOtherAbilitiesNav from './CharacterOtherAbilitiesNav.vue';
 
@@ -10,7 +10,7 @@
 
   const monster = ref<Monster>(await getMonster(props.commitId, props.monsterId))
   const monsterSkills = ref<MonsterSkill[]>([])
-  const character = ref<Character>(await getCharacterByMonster(props.commitId, monster.value))
+  const character = ref<Character>()
 
   watchEffect(async () => 
   {
@@ -37,9 +37,6 @@
     </li>
     <li v-if="character">
       <CharacterOtherAbilitiesNav :character="character" />
-    </li>
-    <li>
-      <pre>{{ monster }}</pre>
     </li>
   </ul>
 </template>

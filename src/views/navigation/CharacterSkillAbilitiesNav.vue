@@ -1,8 +1,8 @@
 <script setup lang="ts">
   import { ref, watchEffect } from 'vue'
-  import { Character } from '../scripts/sources/character';
+  import { Character } from '../../scripts/sources/character';
 
-  const props = defineProps<{skillTriggerKey:string, character:Character | undefined}>()
+  const props = defineProps<{skillTriggerKey:string, character:Character}>()
   const abilities = ref<string[]>([])
   watchEffect(() =>
   {
