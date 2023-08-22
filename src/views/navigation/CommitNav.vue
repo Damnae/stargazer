@@ -42,7 +42,6 @@
   nav
   {
     width:25rem;
-    flex-shrink:0;
 
     display:flex;
     flex-direction: column;
@@ -75,4 +74,3 @@
     flex-shrink: 0;
   }
 </style>
-../scripts/avatarsource.ts

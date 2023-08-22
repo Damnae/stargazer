@@ -48,7 +48,7 @@
               <ul>
                 <template v-for="monster in monsters" :key="monster.MonsterID">
                   <li>
-                    <RouterLink :to="{ name:'monster', params:{ commitId: commitId, monsterId: monster.MonsterID }}">
+                    <RouterLink :to="{ name:'monster', params:{ commitId: commitId, objectId: monster.MonsterID }}">
                       <span :title="monster.MonsterName.Text">{{ monster.MonsterName.Text }}</span>
                     </RouterLink>
                   </li>

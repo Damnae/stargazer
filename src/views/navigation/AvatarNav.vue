@@ -40,7 +40,7 @@
         <ul>
           <template v-for="avatar in avatars" :key="avatar.AvatarID">
             <li>
-              <RouterLink :to="{ name:'avatar', params:{ commitId: commitId, avatarId: avatar.AvatarID }}">
+              <RouterLink :to="{ name:'avatar', params:{ commitId: commitId, objectId: avatar.AvatarID }}">
                 <span :title="avatar.AvatarName.Text">{{ avatar.AvatarName.Text }}</span>
               </RouterLink>
             </li>

@@ -6,15 +6,15 @@
   import CharacterSkillAbilitiesNav from './CharacterSkillAbilitiesNav.vue';
   import CharacterOtherAbilitiesNav from './CharacterOtherAbilitiesNav.vue';
 
-  const props = defineProps<{commitId:string, avatarId:number}>()
+  const props = defineProps<{commitId:string, objectId:number}>()
 
-  const avatar = ref<Avatar>(await getAvatar(props.commitId, props.avatarId))
+  const avatar = ref<Avatar>(await getAvatar(props.commitId, props.objectId))
   const avatarSkills = ref<AvatarSkill[]>([])
   const character = ref<Character>()
 
   watchEffect(async () => 
   {
-    avatar.value = await getAvatar(props.commitId, props.avatarId)
+    avatar.value = await getAvatar(props.commitId, props.objectId)
     avatarSkills.value = await getAvatarSkillsByIds(props.commitId, avatar.value.SkillList)
     character.value = await getCharacterByAvatar(props.commitId, avatar.value)
   })
@@ -30,14 +30,16 @@
         <template v-for="skill in avatarSkills" :key="skill.SkillID">
           <li>
             <div :title="skill.SkillTriggerKey">{{ skill.SkillTag.Text }} {{ skill.SkillTypeDesc.Text }} <span class="minor" :title="skill.SkillName.Text">{{ skill.SkillName.Text }}</span></div>
-            <CharacterSkillAbilitiesNav v-if="character" :skillTriggerKey="skill.SkillTriggerKey" :character="character" />
+            <CharacterSkillAbilitiesNav v-if="character" :character="character" :skillTriggerKey="skill.SkillTriggerKey" 
+              routeName="avatarSkillAbility" :skillId="skill.SkillID" :objectId="objectId"/>
           </li>
         </template>
       </ul>
     </li>
     <li v-if="character">
       <div>Other Abilities</div>
-      <CharacterOtherAbilitiesNav :character="character" />
+      <CharacterOtherAbilitiesNav :character="character" 
+        routeName="avatarAbility" :objectId="objectId" />
     </li>
   </ul>
 </template>

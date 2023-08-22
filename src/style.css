@@ -55,6 +55,19 @@ button:focus-visible {
   margin:.5rem 0;
   border-bottom: 1px solid #000;
 }
+nav.panel 
+{
+  flex-shrink:0;
+}
+main.panel 
+{
+  flex-grow: 1;
+}
+main h1:first-child
+{
+  margin-top:0;
+  margin-left: .5em;
+}
 
 ul.navtree
 {

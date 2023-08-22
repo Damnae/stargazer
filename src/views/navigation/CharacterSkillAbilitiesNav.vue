@@ -1,8 +1,10 @@
 <script setup lang="ts">
-  import { ref, watchEffect } from 'vue'
+  import { ref, inject, watchEffect } from 'vue'
   import { Character } from '../../scripts/sources/character';
 
-  const props = defineProps<{skillTriggerKey:string, character:Character}>()
+  const props = defineProps<{character:Character, skillTriggerKey:string, routeName:string, skillId:number, objectId:number}>()
+  const commitId = inject<string>('commitId') as string
+
   const abilities = ref<string[]>([])
   watchEffect(() =>
   {
@@ -20,7 +22,9 @@
   <ul v-if="abilities.length > 0">
     <template v-for="ability in abilities" :key="ability">
       <li>
-        <span :title="ability">{{ ability }}</span>
+        <RouterLink :to="{ name:routeName, params:{ commitId: commitId, skillId: skillId, objectId: objectId, abilityId:ability }}">
+          <span :title="ability">{{ ability }}</span>
+        </RouterLink>
       </li>
     </template>
   </ul>
