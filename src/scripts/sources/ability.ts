@@ -103,7 +103,7 @@ function resolveDynamicValue(value:CharacterDynamicValue, creature:Creature, ski
 
     console.log(`trace param not found for ${location}/${value.ReadInfo.Type}/${index}, ${trace?.PointID} in ${JSON.stringify(trace?.ParamList)}`)
   }
-  return 0
+  return 88888888
 }
 
 function explainDynamicValue(value:CharacterDynamicValue) : string
@@ -128,5 +128,5 @@ const dynamicValueTypeToIndex:{[key:string]: number} =
 
 function getIndexFromDynamicValueType(value:string | number) : number
 {
-  return dynamicValueTypeToIndex[value] ?? value
+  return (dynamicValueTypeToIndex[value] ?? value) / 2
 }
