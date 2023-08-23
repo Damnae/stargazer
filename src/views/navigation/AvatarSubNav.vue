@@ -24,6 +24,7 @@
   <h1>{{ avatar.AvatarName.Text }}</h1>
   <span v-if="!character" class="minor">(Missing character data)</span>
   <ul class="navtree">
+    
     <li>
       <div>Skills</div>
       <ul>
@@ -43,6 +44,7 @@
         </template>
       </ul>
     </li>
+
     <li v-if="character">
       <div>Other Abilities</div>
       <CharacterOtherAbilitiesNav :character="character" v-slot="slotProps">
@@ -51,6 +53,29 @@
         </RouterLink>
       </CharacterOtherAbilitiesNav>
     </li>
+
+    <li v-if="avatar.Traces.length > 0">
+      <div>Traces</div>
+      <ul>
+        <template v-for="(trace, index) in avatar.Traces.filter(t => t.PointType === 3)" :key="trace.PointID">
+          <li>
+            <div>
+              A{{ (index + 1) * 2 }} 
+              <span class="minor">{{ trace.PointName }}</span>
+              <span class="minor">{{ trace.PointID }}</span>
+            </div>
+            <ul v-if="trace.AbilityName">
+              <li>
+                <RouterLink :to="{ name:'avatarAbility', params:{ commitId: commitId, objectId: objectId, abilityId: trace.AbilityName, }}">
+                  {{ trace.AbilityName }}
+                </RouterLink>
+              </li>
+            </ul>
+          </li>
+        </template>
+      </ul>
+    </li>
+
     <li v-if="avatar.Eidolons.length > 0">
       <div>Eidolons</div>
       <ul>
@@ -74,6 +99,7 @@
         </template>
       </ul>
     </li>
+
   </ul>
 </template>
 

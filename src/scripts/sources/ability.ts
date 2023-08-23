@@ -74,9 +74,10 @@ function resolveDynamicValue(value:CharacterDynamicValue, creature:Creature, ski
   {
     // Skills
     const skill = skills.find(s => s.SkillTriggerKey == location)
-    if (skill)
-      return skill.ParamList[index]?.Value ?? 88888888
-    else console.log(`skill not found for ${location}/${index}`)
+    if (skill && index in skill.ParamList)
+        return skill.ParamList[index].Value ?? 88888888
+
+    console.log(`skill param not found for ${location}/${value.ReadInfo.Type}/${index}, ${skill?.SkillName.Text} in ${JSON.stringify(skill?.ParamList)}`)
   }
   else if (location.startsWith('Rank'))
   {
@@ -84,14 +85,23 @@ function resolveDynamicValue(value:CharacterDynamicValue, creature:Creature, ski
     const avatar = creature as Avatar
     const eidolonRank = parseInt(location.match(/\d+/)?.[0] || "0", 10)
     const eidolon = avatar.Eidolons[eidolonRank - 1]
-    if (eidolon)
-      return eidolon.Param[index]?.Value ?? 88888888
-    else console.log(`eidolon not found for ${location}/${index}`)
-  }
-  else if (location.startsWith('Point'))
-  {
-    // Traces?
+    if (eidolon && index in eidolon.Param)
+      return eidolon.Param[index].Value ?? 88888888
 
+    console.log(`eidolon param not found for ${location}/${value.ReadInfo.Type}/${index}, E${eidolon?.Rank} in ${JSON.stringify(eidolon?.Param)}`)
+  }
+  else if (location.startsWith('PointB'))
+  {
+    // Ascension Traces
+    const avatar = creature as Avatar
+    const traceRank = parseInt(location.match(/\d+/)?.[0] || "0", 10)
+    // This assumes traces are defined in the right order...
+    const traces = avatar.Traces.filter(t => t.PointType === 3)
+    const trace = traces[traceRank - 1]
+    if (trace && index in trace.ParamList)
+      return trace.ParamList[index].Value ?? 88888888
+
+    console.log(`trace param not found for ${location}/${value.ReadInfo.Type}/${index}, ${trace?.PointID} in ${JSON.stringify(trace?.ParamList)}`)
   }
   return 0
 }

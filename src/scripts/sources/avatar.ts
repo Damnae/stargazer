@@ -3,13 +3,19 @@ import translate, { Translatable, } from '../translate';
 import { AbilityParam } from './ability';
 import { Creature } from './creature';
 
+// Eidolons
+
 export interface AvatarRank
 {
     RankID: number
     Rank: number
-    Trigger: Translatable
-    Name: string // Look like keys that need to be hashed
-    Desc: string // This too
+    Trigger: 
+    {
+        // No idea what this is, doesn't look like Translatable
+        Hash: number 
+    }
+    Name: string
+    Desc: string
     SkillAddLevelList: 
     {
         [skillId: number]: number
@@ -23,6 +29,52 @@ export interface AvatarRankConfig
     [key: string]: AvatarRank
 }
 
+// Traces
+
+export interface AvatarSkillTree
+{
+    PointID: number
+    AvatarID: number
+    Level: number
+    MaxLevel: number
+    PointName: string
+    PointDesc: string
+    PointType: number
+    Anchor: string
+    DefaultUnlock: boolean
+    PrePoint: number[]
+    StatusAddList: 
+    [
+        {
+            PropertyType: string
+            Value: 
+            {
+                Value: number
+            }
+        }
+    ]
+    LevelUpSkillID: number[]
+    PointTriggerKey: 
+    {
+        // No idea what this is, doesn't look like Translatable
+        Hash: number 
+    }
+    AbilityName:string
+    ParamList: AbilityParam[]
+}
+
+export interface AvatarSkillTreeRank
+{
+    [rank: number]: AvatarSkillTree
+}
+
+export interface AvatarSkillTreeConfig
+{
+    [key: string]: AvatarSkillTreeRank
+}
+
+// Avatar
+
 export interface Avatar extends Creature
 {
     AvatarID: number
@@ -31,6 +83,7 @@ export interface Avatar extends Creature
     DamageType: string
     RankIDList: number[]
     Eidolons: AvatarRank[]
+    Traces: AvatarSkillTree[]
     SkillList: number[]
     DynamicValues?: [ any ] // Just assuming they could have them here like for some monsters?
     AvatarBaseType: string
@@ -65,7 +118,19 @@ export async function getAvatars(commitId:string) : Promise<AvatarConfig>
                 return name
             })
             avatar.Eidolons = avatar.RankIDList.map(v => eidolons[v])
+            avatar.Traces = []
         }
+
+        const traceRanks = await retrieveJson('ExcelOutput/AvatarSkillTreeConfig.json', commitId, false) as AvatarSkillTreeConfig
+        // Fields that look translatable are just not
+        for (const key in traceRanks)
+        {
+            const ranks = traceRanks[key]
+            const trace = ranks[Object.keys(ranks).length]
+            const avatar = avatars[trace.AvatarID]
+            avatar.Traces.push(trace)
+        }
+
         config = avatarConfigCache[commitId] = avatars
         console.log('cached avatar config for ' + commitId)
     }
