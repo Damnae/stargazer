@@ -30,16 +30,22 @@
         <template v-for="skill in monsterSkills" :key="skill.SkillID">
           <li>
             <div :title="skill.SkillTriggerKey">{{ skill.SkillTag.Text }} {{ skill.SkillTypeDesc.Text }} <span class="minor" :title="skill.SkillName.Text">{{ skill.SkillName.Text }}</span></div>
-            <CharacterSkillAbilitiesNav v-if="character" :character="character" :skillTriggerKey="skill.SkillTriggerKey" 
-              routeName="monsterSkillAbility" :skillId="skill.SkillID" :objectId="objectId"/>
+            <CharacterSkillAbilitiesNav v-if="character" :character="character" :skillTriggerKey="skill.SkillTriggerKey" v-slot="slotProps">
+              <RouterLink :to="{ name:'monsterSkillAbility', params:{ commitId: commitId, skillId: skill.SkillID, objectId: objectId, abilityId: slotProps.ability }}">
+                {{ slotProps.ability }}
+              </RouterLink>
+            </CharacterSkillAbilitiesNav>
           </li>
         </template>
       </ul>
     </li>
     <li v-if="character">
       <div>Other Abilities</div>
-      <CharacterOtherAbilitiesNav :character="character"
-        routeName="monsterAbility" :objectId="objectId" />
+      <CharacterOtherAbilitiesNav :character="character" v-slot="slotProps">
+        <RouterLink :to="{ name:'monsterAbility', params:{ commitId: commitId, objectId: objectId, abilityId: slotProps.ability, }}">
+          {{ slotProps.ability }}
+        </RouterLink>
+      </CharacterOtherAbilitiesNav>
     </li>
   </ul>
 </template>
