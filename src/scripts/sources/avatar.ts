@@ -1,9 +1,10 @@
 import { retrieveJson } from '../datasource';
 import translate, { Translatable } from '../translate';
+import { Creature } from './creature';
 
 // AvatarRankConfig -> eidolons
 
-export interface Avatar
+export interface Avatar extends Creature
 {
     AvatarID: number
     AvatarName: Translatable

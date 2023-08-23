@@ -1,19 +1,11 @@
 import { retrieveJson } from '../datasource';
-import translate, { Translatable } from '../translate';
-import { AbilityParam } from './ability';
+import translate from '../translate';
+import { CreatureSkill } from './skill';
 
-export interface AvatarSkill
+export interface AvatarSkill extends CreatureSkill
 {
-    SkillID: number
-    SkillName: Translatable
-    SkillTag: Translatable
-    SkillTypeDesc: Translatable
-    SkillDesc: Translatable
-    SimpleSkillDesc: Translatable
-    SkillTriggerKey: string
-    RatedSkillTreeID: number[]
-    RatedRankID: number[]
-    ParamList: AbilityParam[]
+    RatedSkillTreeID: [],
+    RatedRankID: []
 }
 
 export interface AvatarSkillRanks

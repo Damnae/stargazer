@@ -1,7 +1,8 @@
 import { retrieveJson } from '../datasource';
 import translate, { Translatable } from '../translate';
+import { Creature } from './creature';
 
-export interface Monster
+export interface Monster extends Creature
 {
     MonsterID: number
     MonsterTemplateID: number

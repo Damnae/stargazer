@@ -1,18 +1,10 @@
 import { retrieveJson } from '../datasource';
-import translate, { Translatable } from '../translate';
-import { AbilityParam } from './ability';
+import translate from '../translate';
+import { CreatureSkill } from './skill';
 
-export interface MonsterSkill
+export interface MonsterSkill extends CreatureSkill
 {
-    SkillID: number
-    SkillName: Translatable
-    SkillTag: Translatable
-    SkillTypeDesc: Translatable
-    SkillDesc: Translatable
-    SimpleSkillDesc: Translatable
-    SkillTriggerKey: string
     PhaseList: string[]
-    ParamList: AbilityParam[]
 }
 
 export interface MonsterSkillConfig

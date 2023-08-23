@@ -1,28 +1,28 @@
 <script setup lang="ts">
-  import { ref, watchEffect, } from 'vue'
-  import { getMonster, Monster, } from '../../scripts/sources/monster.ts';
-  import { getMonsterSkill, MonsterSkill, } from '../../scripts/sources/monsterskill';
-  import { getCharacterByMonster, Character } from '../../scripts/sources/character';
+  import { ref, watch, } from 'vue'
+  import { getMonster, } from '../../scripts/sources/monster';
+  import { getMonsterSkillsByIds, } from '../../scripts/sources/monsterskill';
+  import { getCharacterByMonster, } from '../../scripts/sources/character';
+  import { buildAbilityContext, AbilityContext, } from '../../scripts/sources/ability';
   import Ability from './Ability.vue';
 
-  const props = defineProps<{commitId:string, objectId:number, skillId?:number, abilityId:string}>()
+  const props = defineProps<{commitId:string, objectId:number, abilityId:string}>()
+  
+  const abilityContext = ref<AbilityContext>(await getAbilityContext())
+  watch(props, async () => abilityContext.value = await getAbilityContext())
 
-  const monster = ref<Monster>(await getMonster(props.commitId, props.objectId))
-  const monsterSkill = ref<MonsterSkill>()
-  const character = ref<Character>()
-
-  watchEffect(async () => 
+  async function getAbilityContext()
   {
-    monster.value = await getMonster(props.commitId, props.objectId)
-    if (props.skillId)
-      monsterSkill.value = await getMonsterSkill(props.commitId, props.skillId)
-    character.value = await getCharacterByMonster(props.commitId, monster.value)
-  })
+    const monster = await getMonster(props.commitId, props.objectId)
+    const monsterSkills = await getMonsterSkillsByIds(props.commitId, monster.SkillList)
+    const character = await getCharacterByMonster(props.commitId, monster)
+    return buildAbilityContext(monster, monsterSkills, character)
+  }
 </script>
 
-<template>
+<template> 
   <main class="panel">
-    <Ability :abilityId="abilityId" />
+    <Ability :abilityId="abilityId" :context="abilityContext" />
   </main>
 </template>
 
