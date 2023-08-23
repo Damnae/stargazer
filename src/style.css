@@ -94,11 +94,24 @@ ul.navtree li > div:after
   content:' ⇲';
   color:grey;
 }
+ul.navtree li > div > span:nth-child(1)
+{ 
+  display:none;
+}
+ul.navtree li:hover > div > span:nth-child(1)
+{ 
+  display:unset;
+}
+ul.navtree li:hover > div > span:nth-child(2)
+{ 
+  display:none;
+}
 ul.navtree a
 { 
   display:block;
 }
-ul.navtree a:hover, ul.navtree a.router-link-active
+ul.navtree a:hover, 
+ul.navtree a.router-link-active
 { 
   background:rgb(42, 42, 42);
 }

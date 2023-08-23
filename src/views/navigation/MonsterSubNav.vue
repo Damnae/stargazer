@@ -29,7 +29,11 @@
       <ul>
         <template v-for="skill in monsterSkills" :key="skill.SkillID">
           <li>
-            <div :title="skill.SkillTriggerKey">{{ skill.SkillTag.Text }} {{ skill.SkillTypeDesc.Text }} <span class="minor" :title="skill.SkillName.Text">{{ skill.SkillName.Text }}</span></div>
+            <div>
+              {{ skill.SkillTag.Text }} {{ skill.SkillTypeDesc.Text }} 
+              <span class="minor">{{ skill.SkillTriggerKey }}</span> 
+              <span class="minor" :title="skill.SkillName.Text">{{ skill.SkillName.Text }}</span>
+            </div>
             <CharacterSkillAbilitiesNav v-if="character" :character="character" :skillTriggerKey="skill.SkillTriggerKey" v-slot="slotProps">
               <RouterLink :to="{ name:'monsterAbility', params:{ commitId: commitId, objectId: objectId, abilityId: slotProps.ability }}">
                 {{ slotProps.ability }}

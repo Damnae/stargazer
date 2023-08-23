@@ -40,7 +40,7 @@ export function buildAbilityContext(_creature:Creature, skills:CreatureSkill[], 
   return {
     DynamicValues: 
     [
-      // Avatar / Monster could have them?
+      // Avatar / Monster could have them? (Creature)
       {
         Source: 'character',
         Values: characterValues,
@@ -92,9 +92,9 @@ function resolveDynamicValue(value:CharacterDynamicValue, skills:CreatureSkill[]
 function explainDynamicValue(value:CharacterDynamicValue) : string
 {
   if (!value.ReadInfo)
-    return 'undefined'
+    return 'var'
 
-  return `${value.ReadInfo.Str}/${getIndexFromDynamicValueType(value.ReadInfo.Type)}`
+  return `${value.ReadInfo.Str}[${getIndexFromDynamicValueType(value.ReadInfo.Type)}]`
 }
 
 const dynamicValueTypeToIndex:{[key:string]: number} =
