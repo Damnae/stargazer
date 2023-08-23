@@ -11,6 +11,7 @@ export interface Avatar
     DamageType: string
     RankIDList: number[]
     SkillList: number[]
+    DynamicValues?: [ any ] // Just assuming they could have them here like for some monsters?
     AvatarBaseType: string
     AIPath: string
 }

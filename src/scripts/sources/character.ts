@@ -47,15 +47,17 @@ export interface Character
     {
         Values:
         {
-            [key: number]: 
-            {
-                Readinfo?:
-                {
-                    Type: string
-                    Str: string
-                }
-            }
+            [key: number]: CharacterDynamicValue
         }
+    }
+}
+
+export interface CharacterDynamicValue
+{
+    ReadInfo?:
+    {
+        Type: string
+        Str: string
     }
 }
 

@@ -1,5 +1,6 @@
 import { retrieveJson } from '../datasource';
 import translate, { Translatable } from '../translate';
+import { AbilityParam } from './ability';
 
 export interface MonsterSkill
 {
@@ -11,12 +12,7 @@ export interface MonsterSkill
     SimpleSkillDesc: Translatable
     SkillTriggerKey: string
     PhaseList: string[]
-    ParamList:
-    [
-        { 
-            Value: number 
-        }
-    ]
+    ParamList: AbilityParam[]
 }
 
 export interface MonsterSkillConfig

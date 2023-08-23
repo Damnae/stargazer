@@ -1,5 +1,5 @@
 <script setup lang="ts">
-  import { ref, inject, provide, } from 'vue'
+  import { ref, inject, } from 'vue'
 
   const props = defineProps<{abilityId:string}>()
   const commitId = inject<string>('commitId') as string

@@ -8,7 +8,7 @@ export interface Monster
     MonsterTemplate: MonsterTemplate
     MonsterName: Translatable
     SkillList: [ id: number]
-    DynamicValues: [ any ] // Seem always empty
+    DynamicValues?: [ any ] // Seem always empty
     CustomValueTags: [ name: string]
     AbilityNameList: [ name: string]
     OverrideAIPath: string

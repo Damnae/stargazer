@@ -1,5 +1,6 @@
 import { retrieveJson } from '../datasource';
 import translate, { Translatable } from '../translate';
+import { AbilityParam } from './ability';
 
 export interface AvatarSkill
 {
@@ -12,12 +13,7 @@ export interface AvatarSkill
     SkillTriggerKey: string
     RatedSkillTreeID: number[]
     RatedRankID: number[]
-    ParamList:
-    [
-        { 
-            Value: number 
-        }
-    ]
+    ParamList: AbilityParam[]
 }
 
 export interface AvatarSkillRanks
