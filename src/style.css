@@ -94,17 +94,17 @@ ul.navtree li > div:after
   content:' ⇲';
   color:grey;
 }
-ul.navtree li > div > span:nth-child(1)
+ul.navtree li > div > span:nth-child(2)
 { 
   display:none;
 }
 ul.navtree li:hover > div > span:nth-child(1)
 { 
-  display:unset;
+  display:none;
 }
 ul.navtree li:hover > div > span:nth-child(2)
 { 
-  display:none;
+  display:unset;
 }
 ul.navtree a
 { 

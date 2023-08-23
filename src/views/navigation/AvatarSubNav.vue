@@ -31,8 +31,8 @@
           <li>
             <div>
               {{ skill.SkillTag.Text }} {{ skill.SkillTypeDesc.Text }} 
-              <span class="minor">{{ skill.SkillTriggerKey }}</span> 
               <span class="minor" :title="skill.SkillName.Text">{{ skill.SkillName.Text }}</span>
+              <span class="minor">{{ skill.SkillTriggerKey }}</span> 
             </div>
             <CharacterSkillAbilitiesNav v-if="character" :character="character" :skillTriggerKey="skill.SkillTriggerKey" v-slot="slotProps">
               <RouterLink :to="{ name:'avatarAbility', params:{ commitId: commitId, objectId: objectId, abilityId: slotProps.ability }}">
@@ -50,6 +50,29 @@
           {{ slotProps.ability }}
         </RouterLink>
       </CharacterOtherAbilitiesNav>
+    </li>
+    <li v-if="avatar.Eidolons.length > 0">
+      <div>Eidolons</div>
+      <ul>
+        <template v-for="eidolon in avatar.Eidolons" :key="eidolon.RankID">
+          <li>
+            <div>
+              E{{ eidolon.Rank }} 
+              <span class="minor">{{ eidolon.Name }}</span>
+              <span class="minor">{{ eidolon.RankID }}</span>
+            </div>
+            <ul v-if="eidolon.RankAbility.length > 0">
+              <template v-for="ability in eidolon.RankAbility" :key="ability">
+                <li>
+                  <RouterLink :to="{ name:'avatarAbility', params:{ commitId: commitId, objectId: objectId, abilityId: ability, }}">
+                    {{ ability }}
+                  </RouterLink>
+                </li>
+              </template>
+            </ul>
+          </li>
+        </template>
+      </ul>
     </li>
   </ul>
 </template>
