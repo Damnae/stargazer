@@ -26,10 +26,6 @@ const routes:Readonly<RouteRecordRaw[]> =
             name: 'avatarAbility', components: { subnav: AvatarSubNav, default: AvatarAbility, }, 
             props:{ subnav:toRouteProps({ objectId:'number', abilityId:false }), default:toRouteProps({ objectId: 'number' }) },
         },
-        { path: '/ability-:abilityId/from/avatar-:objectId/skill-:skillId/@:commitId', 
-            name: 'avatarSkillAbility', components: { subnav: AvatarSubNav, default: AvatarAbility, },  
-            props:{ subnav:toRouteProps({ objectId:'number', skillId:false, abilityId :false }), default:toRouteProps({ objectId: 'number', skillId: 'number' }) },
-        },
         // Monsters
         { path: '/monster-:objectId/@:commitId', 
             name: 'monster', components: { subnav: MonsterSubNav, }, 
@@ -38,10 +34,6 @@ const routes:Readonly<RouteRecordRaw[]> =
         { path: '/ability-:abilityId/from/monster-:objectId/@:commitId', 
             name: 'monsterAbility', components: { subnav: MonsterSubNav, default: MonsterAbility, },
             props:{ subnav:toRouteProps({ objectId:'number', abilityId:false }), default:toRouteProps({ objectId: 'number' }) },
-        },
-        { path: '/ability-:abilityId/from/monster-:objectId/skill-:skillId/@:commitId', 
-            name: 'monsterSkillAbility', components: { subnav: MonsterSubNav, default: MonsterAbility, },
-            props:{ subnav:toRouteProps({ objectId:'number', skillId:false, abilityId:false }), default:toRouteProps({ objectId: 'number', skillId: 'number' }) },
         },
     ]},
 ]

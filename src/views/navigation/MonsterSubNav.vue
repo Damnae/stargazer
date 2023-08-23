@@ -31,7 +31,7 @@
           <li>
             <div :title="skill.SkillTriggerKey">{{ skill.SkillTag.Text }} {{ skill.SkillTypeDesc.Text }} <span class="minor" :title="skill.SkillName.Text">{{ skill.SkillName.Text }}</span></div>
             <CharacterSkillAbilitiesNav v-if="character" :character="character" :skillTriggerKey="skill.SkillTriggerKey" v-slot="slotProps">
-              <RouterLink :to="{ name:'monsterSkillAbility', params:{ commitId: commitId, skillId: skill.SkillID, objectId: objectId, abilityId: slotProps.ability }}">
+              <RouterLink :to="{ name:'monsterAbility', params:{ commitId: commitId, objectId: objectId, abilityId: slotProps.ability }}">
                 {{ slotProps.ability }}
               </RouterLink>
             </CharacterSkillAbilitiesNav>
