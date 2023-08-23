@@ -15,33 +15,33 @@ import MonsterAbility from './views/abilities/MonsterAbility.vue'
 const routes:Readonly<RouteRecordRaw[]> = 
 [
     { path: '/', name: 'home', component: Title },
-    { path: '/c/:commitId', name: 'commit', component: Commit, props:true, children: 
+    { path: '/@:commitId', name: 'commit', component: Commit, props:true, children: 
     [
         // Avatars
-        { path: '/c/:commitId/avatar/:objectId', 
+        { path: '/avatar-:objectId/@:commitId', 
             name: 'avatar', components: { subnav: AvatarSubNav, }, 
-            props:{ subnav:toRouteProps({commitId:'string', objectId:'number'}) }, 
+            props:{ subnav:toRouteProps({ commitId:'string', objectId:'number' }) }, 
         },
-        { path: '/c/:commitId/avatar/:objectId/ability/:abilityId', 
+        { path: '/ability-:abilityId/from/avatar-:objectId/@:commitId', 
             name: 'avatarAbility', components: { subnav: AvatarSubNav, default: AvatarAbility, }, 
-            props:{ subnav:toRouteProps({objectId:'number', abilityId:false}), default:toRouteProps({objectId: 'number'}) },
+            props:{ subnav:toRouteProps({ objectId:'number', abilityId:false }), default:toRouteProps({ objectId: 'number' }) },
         },
-        { path: '/c/:commitId/avatar/:objectId/skill/:skillId/ability/:abilityId', 
+        { path: '/ability-:abilityId/from/avatar-:objectId/skill-:skillId/@:commitId', 
             name: 'avatarSkillAbility', components: { subnav: AvatarSubNav, default: AvatarAbility, },  
-            props:{ subnav:toRouteProps({objectId:'number', skillId:false, abilityId :false}), default:toRouteProps({objectId: 'number', skillId: 'number',}) },
+            props:{ subnav:toRouteProps({ objectId:'number', skillId:false, abilityId :false }), default:toRouteProps({ objectId: 'number', skillId: 'number' }) },
         },
         // Monsters
-        { path: '/c/:commitId/monster/:objectId', 
+        { path: '/monster-:objectId/@:commitId', 
             name: 'monster', components: { subnav: MonsterSubNav, }, 
-            props:{ subnav:toRouteProps({objectId:'number',})},
+            props:{ subnav:toRouteProps({ objectId:'number' })},
         },
-        { path: '/c/:commitId/monster/:objectId/ability/:abilityId', 
+        { path: '/ability-:abilityId/from/monster-:objectId/@:commitId', 
             name: 'monsterAbility', components: { subnav: MonsterSubNav, default: MonsterAbility, },
-            props:{ subnav:toRouteProps({objectId:'number', abilityId:false}), default:toRouteProps({objectId: 'number'}) },
+            props:{ subnav:toRouteProps({ objectId:'number', abilityId:false }), default:toRouteProps({ objectId: 'number' }) },
         },
-        { path: '/c/:commitId/monster/:objectId/skill/:skillId/ability/:abilityId', 
+        { path: '/ability-:abilityId/from/monster-:objectId/skill-:skillId/@:commitId', 
             name: 'monsterSkillAbility', components: { subnav: MonsterSubNav, default: MonsterAbility, },
-            props:{ subnav:toRouteProps({objectId:'number', skillId:false, abilityId:false}), default:toRouteProps({objectId: 'number', skillId: 'number',}) },
+            props:{ subnav:toRouteProps({ objectId:'number', skillId:false, abilityId:false }), default:toRouteProps({ objectId: 'number', skillId: 'number' }) },
         },
     ]},
 ]

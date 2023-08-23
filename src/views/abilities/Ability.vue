@@ -6,7 +6,9 @@
 </script>
 
 <template>
-  <h1>{{ abilityId.replace(/_/g, " ") }}</h1>
+  <header>
+    <h1>{{ abilityId.replace(/_/g, " ") }}</h1>
+  </header>
 </template>
 
 <style scoped>

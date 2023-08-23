@@ -1,8 +1,8 @@
 <script setup lang="ts">
   import { ref, watchEffect, } from 'vue'
   import { getAvatar, Avatar, } from '../../scripts/sources/avatar';
-  import { getCharacterByAvatar, Character } from '../../scripts/sources/character';
   import { getAvatarSkill, AvatarSkill, } from '../../scripts/sources/avatarskill';
+  import { getCharacterByAvatar, Character } from '../../scripts/sources/character';
   import Ability from './Ability.vue';
 
   const props = defineProps<{commitId:string, objectId:number, skillId?:number, abilityId:string}>()

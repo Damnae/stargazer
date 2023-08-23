@@ -1,8 +1,8 @@
 <script setup lang="ts">
   import { ref, watchEffect, } from 'vue'
   import { getMonster, Monster, } from '../../scripts/sources/monster.ts';
-  import { getCharacterByMonster, Character } from '../../scripts/sources/character';
   import { getMonsterSkill, MonsterSkill, } from '../../scripts/sources/monsterskill';
+  import { getCharacterByMonster, Character } from '../../scripts/sources/character';
   import Ability from './Ability.vue';
 
   const props = defineProps<{commitId:string, objectId:number, skillId?:number, abilityId:string}>()

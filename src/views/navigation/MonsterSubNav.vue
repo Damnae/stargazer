@@ -1,8 +1,8 @@
 <script setup lang="ts">
   import { ref, watchEffect, } from 'vue'
   import { getMonster, Monster, } from '../../scripts/sources/monster.ts';
-  import { getCharacterByMonster, Character } from '../../scripts/sources/character';
   import { getMonsterSkillsByIds, MonsterSkill, } from '../../scripts/sources/monsterskill';
+  import { getCharacterByMonster, Character } from '../../scripts/sources/character';
   import CharacterSkillAbilitiesNav from './CharacterSkillAbilitiesNav.vue';
   import CharacterOtherAbilitiesNav from './CharacterOtherAbilitiesNav.vue';
 
