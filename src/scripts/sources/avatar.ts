@@ -15,7 +15,7 @@ export interface AvatarRank
         [skillId: number]: number
     }
     RankAbility: string[]
-    ParamList: AbilityParam[]
+    Param: AbilityParam[]
 }
 
 export interface AvatarRankConfig

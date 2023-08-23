@@ -25,16 +25,17 @@ export interface AbilityParam
 }
 
 import { Creature, } from './creature';
+import { Avatar, } from './avatar';
 import { CreatureSkill, } from './skill';
 import { Character, CharacterDynamicValue, } from './character';
 
-export function buildAbilityContext(_creature:Creature, skills:CreatureSkill[], character:Character) : AbilityContext
+export function buildAbilityContext(creature:Creature, skills:CreatureSkill[], character:Character) : AbilityContext
 {
   const characterValues:AbilityContextDynamicValues = Object.fromEntries(
       Object.entries(character.DynamicValues?.Values ?? {})
         .map(([key, value], _index) => [key, 
           { Name:getDynamicValueName(key), 
-            Value:resolveDynamicValue(value, skills), 
+            Value:resolveDynamicValue(value, creature, skills), 
             From:`character/${explainDynamicValue(value)}` }]))
 
   return {
@@ -56,7 +57,7 @@ function getDynamicValueName(hash:string) : string
   return hash
 }
 
-function resolveDynamicValue(value:CharacterDynamicValue, skills:CreatureSkill[]) : number
+function resolveDynamicValue(value:CharacterDynamicValue, creature:Creature, skills:CreatureSkill[]) : number
 {
   if (!value.ReadInfo)
     return 0
@@ -71,15 +72,21 @@ function resolveDynamicValue(value:CharacterDynamicValue, skills:CreatureSkill[]
   }
   else if (location.startsWith('Skill'))
   {
+    // Skills
     const skill = skills.find(s => s.SkillTriggerKey == location)
     if (skill)
-      return skill.ParamList[index]?.Value ?? 0
+      return skill.ParamList[index]?.Value ?? 88888888
     else console.log(`skill not found for ${location}/${index}`)
   }
   else if (location.startsWith('Rank'))
   {
     // Eidolons
-
+    const avatar = creature as Avatar
+    const eidolonRank = parseInt(location.match(/\d+/)?.[0] || "0", 10)
+    const eidolon = avatar.Eidolons[eidolonRank - 1]
+    if (eidolon)
+      return eidolon.Param[index]?.Value ?? 88888888
+    else console.log(`eidolon not found for ${location}/${index}`)
   }
   else if (location.startsWith('Point'))
   {
