@@ -70,7 +70,8 @@ function resolveDynamicValue(value:CharacterDynamicValue, creature:Creature, ski
     // Technique
 
   }
-  else if (location.startsWith('Skill'))
+  else if (location.startsWith('Skill') 
+    || location.startsWith('PassiveSkill'))
   {
     // Skills
     const skill = skills.find(s => s.SkillTriggerKey == location)
@@ -103,6 +104,8 @@ function resolveDynamicValue(value:CharacterDynamicValue, creature:Creature, ski
 
     console.log(`trace param not found for ${location}/${value.ReadInfo.Type}/${index}, ${trace?.PointID} in ${JSON.stringify(trace?.ParamList)}`)
   }
+  else console.log(`dynamicvalue not implemented for ${location}/${value.ReadInfo.Type}/${index}`)
+  
   return 88888888
 }
 
