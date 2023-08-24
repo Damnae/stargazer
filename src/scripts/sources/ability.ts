@@ -130,3 +130,10 @@ function getIndexFromDynamicValueType(value:string | number) : number
 {
   return (dynamicValueTypeToIndex[value] ?? value) / 2
 }
+
+
+
+// Code refers to Dynamic Values
+// Dynamic Values can be initialized from a ParamList and an index
+
+// https://github.com/Dimbreath/StarRailData/blob/master/Config/ConfigAbility/EquipmemtAbility.json#L9722C7-L9722C22

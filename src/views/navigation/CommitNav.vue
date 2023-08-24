@@ -2,6 +2,8 @@
   import { ref, provide } from 'vue'
   import AvatarNav from './AvatarNav.vue'
   import MonsterNav from './MonsterNav.vue'
+  import EquipmentNav from './EquipmentNav.vue'
+  import RelicSetNav from './RelicSetNav.vue'
 
   const search = ref<string>('')
   provide('search', search)
@@ -13,6 +15,14 @@
     <section class="mainnav">
       <input v-model.trim="search" placeholder="Search" />
       <ul class="navtree">
+        <li>
+          <div>Relic Sets</div>
+          <RelicSetNav />
+        </li>
+        <li>
+          <div>Light Cones</div>
+          <EquipmentNav />
+        </li>
         <li>
           <div>Avatars</div>
           <AvatarNav />

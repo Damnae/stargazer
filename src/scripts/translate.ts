@@ -43,3 +43,24 @@ export function getHash(key:string) : number
     }
     return hash1 + Math.imul(hash2, 1566083941);
 }
+
+const pathInternalNameToHash:{[key:string]: number} = 
+{
+    Warrior: 209078842,     // Destruction
+    Rogue: 612363369,       // The Hunt
+    Mage: -953720572,       // Erudition
+    Shaman: -194205685,     // Harmony
+    Warlock: -1760289626,   // Nihility
+    Knight: -1357005099,    // Preservation
+    Priest: 1371878256,     // Abundance
+    Unknown: 1775162783,    // Unknown
+}
+
+export async function translatePath(commitId:string, pathInternalName:string) : Promise<string>
+{
+    const hash = pathInternalNameToHash[pathInternalName]
+    if (hash === undefined)
+        return pathInternalName
+
+    return await translateHash(commitId, hash) ?? pathInternalName
+}

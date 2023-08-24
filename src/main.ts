@@ -11,6 +11,10 @@ import AvatarSubNav from './views/navigation/AvatarSubNav.vue'
 import MonsterSubNav from './views/navigation/MonsterSubNav.vue'
 import AvatarAbility from './views/abilities/AvatarAbility.vue'
 import MonsterAbility from './views/abilities/MonsterAbility.vue'
+import EquipmentSubNav from './views/navigation/EquipmentSubNav.vue'
+import EquipmentAbility from './views/abilities/EquipmentAbility.vue'
+import RelicSetSubNav from './views/navigation/RelicSetSubNav.vue'
+import RelicSetAbility from './views/abilities/RelicSetAbility.vue'
 
 const routes:Readonly<RouteRecordRaw[]> = 
 [
@@ -33,6 +37,24 @@ const routes:Readonly<RouteRecordRaw[]> =
         },
         { path: '/ability-:abilityId/from/monster-:objectId/@:commitId', 
             name: 'monsterAbility', components: { subnav: MonsterSubNav, default: MonsterAbility, },
+            props:{ subnav:toRouteProps({ objectId:'number', abilityId:false }), default:toRouteProps({ objectId: 'number' }) },
+        },
+        // Light Cones
+        { path: '/lightcone-:objectId/@:commitId', 
+            name: 'equipment', components: { subnav: EquipmentSubNav, }, 
+            props:{ subnav:toRouteProps({ objectId:'number' })},
+        },
+        { path: '/ability-:abilityId/from/lightcone-:objectId/@:commitId', 
+            name: 'equipmentAbility', components: { subnav: EquipmentSubNav, default: EquipmentAbility, },
+            props:{ subnav:toRouteProps({ objectId:'number', abilityId:false }), default:toRouteProps({ objectId: 'number' }) },
+        },
+        // Relic Sets
+        { path: '/relicset-:objectId/@:commitId', 
+            name: 'relicset', components: { subnav: RelicSetSubNav, }, 
+            props:{ subnav:toRouteProps({ objectId:'number' })},
+        },
+        { path: '/ability-:abilityId/from/relicset-:objectId/@:commitId', 
+            name: 'relicsetAbility', components: { subnav: RelicSetSubNav, default: RelicSetAbility, },
             props:{ subnav:toRouteProps({ objectId:'number', abilityId:false }), default:toRouteProps({ objectId: 'number' }) },
         },
     ]},

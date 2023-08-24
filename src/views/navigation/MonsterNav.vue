@@ -1,8 +1,8 @@
 <script setup lang="ts">
   import { ref, computed, inject, Ref, } from 'vue'
   import { RouterLink } from 'vue-router';
-  import { Grouped2, } from '../../scripts/common.ts';
-  import { getMonsters, Monster, MonsterConfig, } from '../../scripts/sources/monster.ts';
+  import { Grouped2, } from '../../scripts/common';
+  import { getMonsters, Monster, MonsterConfig, } from '../../scripts/sources/monster';
 
   const commitId = inject<string>('commitId') as string
   const search = inject<Ref<string>>('search') as Ref<string>

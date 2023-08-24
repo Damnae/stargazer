@@ -45,15 +45,6 @@
       </ul>
     </li>
 
-    <li v-if="character">
-      <div>Other Abilities</div>
-      <CharacterOtherAbilitiesNav :character="character" v-slot="slotProps">
-        <RouterLink :to="{ name:'avatarAbility', params:{ commitId: commitId, objectId: objectId, abilityId: slotProps.ability, }}">
-          {{ slotProps.ability }}
-        </RouterLink>
-      </CharacterOtherAbilitiesNav>
-    </li>
-
     <li v-if="avatar.Traces.length > 0">
       <div>Traces</div>
       <ul>
@@ -98,6 +89,15 @@
           </li>
         </template>
       </ul>
+    </li>
+
+    <li v-if="character">
+      <div>Other Abilities</div>
+      <CharacterOtherAbilitiesNav :character="character" v-slot="slotProps">
+        <RouterLink :to="{ name:'avatarAbility', params:{ commitId: commitId, objectId: objectId, abilityId: slotProps.ability, }}">
+          {{ slotProps.ability }}
+        </RouterLink>
+      </CharacterOtherAbilitiesNav>
     </li>
 
   </ul>
