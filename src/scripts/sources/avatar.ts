@@ -1,6 +1,6 @@
 import { retrieveJson } from '../datasource';
 import translate, { Translatable, } from '../translate';
-import { AbilityParam } from './ability';
+import { GamecoreParam } from './gamecore';
 import { Creature } from './creature';
 
 // Eidolons
@@ -21,7 +21,7 @@ export interface AvatarRank
         [skillId: number]: number
     }
     RankAbility: string[]
-    Param: AbilityParam[]
+    Param: GamecoreParam[]
 }
 
 export interface AvatarRankConfig
@@ -60,7 +60,7 @@ export interface AvatarSkillTree
         Hash: number 
     }
     AbilityName:string
-    ParamList: AbilityParam[]
+    ParamList: GamecoreParam[]
 }
 
 export interface AvatarSkillTreeRank

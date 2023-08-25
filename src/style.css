@@ -59,14 +59,20 @@ nav.panel
 {
   flex-shrink:0;
 }
-main.panel 
+main.panel, 
+aside.panel 
 {
   flex-grow: 1;
+  flex-shrink: 1;
 }
-main h1:first-child
+main h1:first-child,
+aside h1:first-child
 {
-  margin-top:0;
-  margin-left: .5em;
+  margin: 0 .5rem .5rem .5rem;
+  height:3rem;
+  line-height:3rem;
+  overflow:hidden;
+  text-overflow: ellipsis;
 }
 
 ul.navtree

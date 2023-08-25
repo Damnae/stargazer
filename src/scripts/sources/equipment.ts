@@ -1,6 +1,6 @@
 import { retrieveJson } from '../datasource';
 import translate, { Translatable, translatePath, } from '../translate';
-import { AbilityParam } from './ability';
+import { GamecoreParam } from './gamecore';
 
 // ItemConfigEquipment.json ?
 // EquipmentPromotionConfig.json ?
@@ -13,7 +13,7 @@ export interface EquipmentSkill
     SkillName: Translatable
     SkillDesc: Translatable
     AbilityName: string
-    ParamList: AbilityParam[]
+    ParamList: GamecoreParam[]
     AbilityProperty: 
     [
         {

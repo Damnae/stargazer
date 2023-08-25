@@ -1,6 +1,7 @@
 import { retrieveJson } from '../datasource';
 import translate, { Translatable } from '../translate';
 import { Creature } from './creature';
+import { DynamicValues } from './gamecore';
 
 export interface Monster extends Creature
 {
@@ -9,7 +10,7 @@ export interface Monster extends Creature
     MonsterTemplate: MonsterTemplate
     MonsterName: Translatable
     SkillList: [ id: number]
-    DynamicValues?: [ any ] // Seem always empty
+    DynamicValues?: DynamicValues // Seem always empty
     CustomValueTags: [ name: string]
     AbilityNameList: [ name: string]
     OverrideAIPath: string

@@ -1,5 +1,5 @@
 import { Translatable } from '../translate';
-import { AbilityParam } from './ability';
+import { GamecoreParam } from './gamecore';
 
 // AvatarSkillConfig.json       
 //      skill, with ranks
@@ -18,7 +18,7 @@ export interface CreatureSkill
   SkillDesc: Translatable
   SimpleSkillDesc: Translatable
   SkillTriggerKey: string
-  ParamList: AbilityParam[]
+  ParamList: GamecoreParam[]
 }
 
 // EquipmentSkillConfig.json    
@@ -42,7 +42,7 @@ export interface EquipmentSkill
         }
       }
     ]
-    ParamList: AbilityParam[]
+    ParamList: GamecoreParam[]
 }
 
 // BattleEventSkillConfig.json  
@@ -60,7 +60,7 @@ export interface BattleEventSkill
     SimpleSkillDesc: Translatable
     SkillTriggerKey: string
     PhaseList: string[]
-    ParamList: AbilityParam[]
+    ParamList: GamecoreParam[]
 }
 
 // RelicSetSkillConfig.json     
@@ -83,6 +83,6 @@ export interface RelicSetSkill
       }
     ],
     AbilityName: string
-    AbilityParamList: AbilityParam[]
+    AbilityParamList: GamecoreParam[]
 }
 

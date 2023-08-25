@@ -1,6 +1,6 @@
 import { retrieveJson } from '../datasource';
 import translate, { Translatable, } from '../translate';
-import { AbilityParam } from './ability';
+import { GamecoreParam } from './gamecore';
 
 // Relic Set Skill
 
@@ -10,7 +10,7 @@ export interface RelicSetSkill
     RequireNum: Number
     SkillDesc: string
     AbilityName: string
-    AbilityParamList: AbilityParam[]
+    AbilityParamList: GamecoreParam[]
     PropertyList: 
     [
         {

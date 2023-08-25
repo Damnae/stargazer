@@ -43,22 +43,22 @@ const configDB = openDB<ConfigDBv1>('configDB', configDBVersion,
 export async function retrieveJson(request:string, commit:string, useApi:boolean) : Promise<any>
 {
     let url = useApi ? apiBase : jsonBase
-    if (commit != null)
+    if (!useApi && commit != null)
         url += `${commit}/`
     url += request
 
-    if (!useApi)
     {
         const existing = await (await configDB).get('files', IDBKeyRange.only([commit, request]));
         if (existing?.hash)
             return JSON.parse(existing.content);
     }
 
-    const result = await fetch(url, { headers: { 'Accept': 'application/json', } })
+    const cache = useApi ? 'force-cache' : 'default'
+    const result = await fetch(url, { headers: { 'Accept': 'application/json', }, cache })
         .then(response => response.json())
         .catch(error => console.log(`fileDB error: ${error}`))
     
-    if (!useApi && result)
+    if (result)
     {
         await (await configDB).put('files', { hash:commit, path:request, content:JSON.stringify(result) })
         console.log(`fileDB stored ${request} @${commit}`)

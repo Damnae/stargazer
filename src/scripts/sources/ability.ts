@@ -1,142 +1,243 @@
+import { retrieveJson } from '../datasource';
+import { GamecoreBlock, GamecoreTargetType, DynamicExpression, DynamicValues, } from './gamecore';
+
+// TODO look at StatusConfig
+
+export interface ModifierEventHandler
+{
+  CallbackConfig: GamecoreBlock[]
+}
+
+export interface ModifierPreshowConfig
+{
+  SkillTypes: string[]
+  TargetType: GamecoreTargetType
+  Condition: GamecoreBlock
+  ActionDelayPreshowConfig:
+  {
+    [property:string]: DynamicExpression
+  }
+}
+
+export interface Modifier
+{
+  BehaviorFlagList?:string[]
+  UseSnapshotEntity?:boolean
+  EnterBattlePriority?:string
+  Count?:number
+  LifeTime?:number
+  LifeStepMoment?:string
+  Stacking?:string
+  MaxLayer?:number
+  LayerAddWhenStack?: DynamicExpression
+  PerformTime?:DynamicExpression
+  DynamicValues?: DynamicValues
+  ModifierAffectedPreshowConfig?: ModifierPreshowConfig
+  _CallbackList?:
+  {
+    [eventName:string]: ModifierEventHandler
+  }
+  UIConfig?: 
+  {
+    UIEffectPath:string
+    UIPosition:string
+    ModifierUIPriority:string
+  }
+}
+
+export interface Ability
+{
+  Name:string
+  TargetInfo:
+  {
+    TargetType:string
+  }
+  OnStart?: GamecoreBlock[]
+  DynamicValues?: DynamicValues
+  Modifiers?:
+  {
+    [key:string]: Modifier
+  }
+}
+
+export interface AbilityConfig
+{
+  AbilityList: Ability[]
+  GlobalModifiers?:
+  {
+    [key:string]: Modifier
+  }
+}
+
+export interface ModifierConfig
+{
+  ModifierMap:
+  {
+    [key:string]: Modifier
+  }
+}
+
 export interface AbilityContext
 {
-  DynamicValues:
-  [
-    {
-      Source: string
-      Values?: AbilityContextDynamicValues
-    }
-  ]
+  Abilities: AbilityConfig[]
+  Modifiers: ModifierConfig[]
 }
 
-export interface AbilityContextDynamicValues
+export enum AbilityContextType
 {
-  [hash: number]: 
+  Avatar = 'Avatar',
+  Monster = 'Monster',
+  Equipment = 'Equipment',
+  RelicSet = 'RelicSet',
+  BattleEvent = 'BattleEvent',
+  Level = 'Level',
+}
+
+const contextTypeToPaths =
+{
+  Avatar: 
   {
-    Name?: string
-    Value: number
-    From: string
-  }
-}
-
-export interface AbilityParam
-{
-    Value: number 
-}
-
-import { Creature, } from './creature';
-import { Avatar, } from './avatar';
-import { CreatureSkill, } from './skill';
-import { Character, CharacterDynamicValue, } from './character';
-
-export function buildAbilityContext(creature:Creature, skills:CreatureSkill[], character:Character) : AbilityContext
-{
-  const characterValues:AbilityContextDynamicValues = Object.fromEntries(
-      Object.entries(character.DynamicValues?.Values ?? {})
-        .map(([key, value], _index) => [key, 
-          { Name:getDynamicValueName(key), 
-            Value:resolveDynamicValue(value, creature, skills), 
-            From:`character/${explainDynamicValue(value)}` }]))
-
-  return {
-    DynamicValues: 
+    Abilities:
     [
-      // Avatar / Monster could have them? (Creature)
-      {
-        Source: 'character',
-        Values: characterValues,
-      },
-      // Can also be on modifiers
+      'Config/ConfigAbility/Common_Additional_Ability.json',
+      'Config/ConfigAbility/Avatar',
+      //'Config/ConfigAbility/Avatar/Camera',
+      //'Config/ConfigAbility/Avatar/Assistant',
+      //'Config/ConfigAbility/Avatar/Assistant/Camera',
     ],
-  }
-}
-
-function getDynamicValueName(hash:string) : string
-{
-    // TODO
-  return hash
-}
-
-function resolveDynamicValue(value:CharacterDynamicValue, creature:Creature, skills:CreatureSkill[]) : number
-{
-  if (!value.ReadInfo)
-    return 0
-
-  const location = value.ReadInfo.Str
-  const index = getIndexFromDynamicValueType(value.ReadInfo.Type)
-
-  if (location.startsWith('SkillMaze'))
+    Modifiers:
+    [
+      //'Config/ConfigGlobalModifier/GlobalModifier.json',
+      //'Config/ConfigGlobalModifier/GlobalModifier_System.json',
+      'Config/ConfigGlobalModifier/GlobalModifier_Common_Property.json',
+      'Config/ConfigGlobalModifier/GlobalModifier_Common_Specific.json',
+      'Config/ConfigGlobalModifier/GlobalModifier_Avatar.json',
+      //'Config/ConfigGlobalModifier/GlobalModifier_Avatar_AssistantTrigger.json',
+    ],
+  },
+  Monster: 
   {
-    // Technique
-
-  }
-  else if (location.startsWith('Skill') 
-    || location.startsWith('PassiveSkill'))
+    Abilities:
+    [
+      'Config/ConfigAbility/Common_Additional_Ability.json',
+      'Config/ConfigAbility/Monster',
+      //'Config/ConfigAbility/Monster/Camera',
+    ],
+    Modifiers:
+    [
+      //'Config/ConfigGlobalModifier/GlobalModifier.json',
+      //'Config/ConfigGlobalModifier/GlobalModifier_System.json',
+      'Config/ConfigGlobalModifier/GlobalModifier_Common_Property.json',
+      'Config/ConfigGlobalModifier/GlobalModifier_Common_Specific.json',
+      'Config/ConfigGlobalModifier/GlobalModifier_Monster.json',
+    ],
+  },
+  Equipment: 
   {
-    // Skills
-    const skill = skills.find(s => s.SkillTriggerKey == location)
-    if (skill && index in skill.ParamList)
-        return skill.ParamList[index].Value ?? 88888888
-
-    console.log(`skill param not found for ${location}/${value.ReadInfo.Type}/${index}, ${skill?.SkillName.Text} in ${JSON.stringify(skill?.ParamList)}`)
-  }
-  else if (location.startsWith('Rank'))
+    Abilities:
+    [
+      'Config/ConfigAbility/Common_Additional_Ability.json',
+      'Config/ConfigAbility/EquipmemtAbility.json',
+    ],
+    Modifiers:
+    [
+      //'Config/ConfigGlobalModifier/GlobalModifier.json',
+      //'Config/ConfigGlobalModifier/GlobalModifier_System.json',
+      'Config/ConfigGlobalModifier/GlobalModifier_Common_Property.json',
+      'Config/ConfigGlobalModifier/GlobalModifier_Common_Specific.json',
+    ],
+  },
+  RelicSet: 
   {
-    // Eidolons
-    const avatar = creature as Avatar
-    const eidolonRank = parseInt(location.match(/\d+/)?.[0] || "0", 10)
-    const eidolon = avatar.Eidolons[eidolonRank - 1]
-    if (eidolon && index in eidolon.Param)
-      return eidolon.Param[index].Value ?? 88888888
-
-    console.log(`eidolon param not found for ${location}/${value.ReadInfo.Type}/${index}, E${eidolon?.Rank} in ${JSON.stringify(eidolon?.Param)}`)
-  }
-  else if (location.startsWith('PointB'))
+    Abilities:
+    [
+      'Config/ConfigAbility/Common_Additional_Ability.json',
+      'Config/ConfigAbility/RelicAbility.json',
+    ],
+    Modifiers:
+    [
+      //'Config/ConfigGlobalModifier/GlobalModifier.json',
+      //'Config/ConfigGlobalModifier/GlobalModifier_System.json',
+      'Config/ConfigGlobalModifier/GlobalModifier_Common_Property.json',
+      'Config/ConfigGlobalModifier/GlobalModifier_Common_Specific.json',
+    ],
+  },
+  BattleEvent: 
   {
-    // Ascension Traces
-    const avatar = creature as Avatar
-    const traceRank = parseInt(location.match(/\d+/)?.[0] || "0", 10)
-    // This assumes traces are defined in the right order...
-    const traces = avatar.Traces.filter(t => t.PointType === 3)
-    const trace = traces[traceRank - 1]
-    if (trace && index in trace.ParamList)
-      return trace.ParamList[index].Value ?? 88888888
+    Abilities:
+    [
+      'Config/ConfigAbility/Common_Additional_Ability.json',
+      'Config/ConfigAbility/BattleEventAbility.json',
+      'Config/ConfigAbility/StageBattleEventAbility.json',
+      'Config/ConfigAbility/BattleEvent',
+      //'Config/ConfigAbility/BattleEvent/Camera',
+    ],
+    Modifiers:
+    [
+      //'Config/ConfigGlobalModifier/GlobalModifier.json',
+      //'Config/ConfigGlobalModifier/GlobalModifier_System.json',
+      'Config/ConfigGlobalModifier/GlobalModifier_Common_Property.json',
+      'Config/ConfigGlobalModifier/GlobalModifier_Common_Specific.json',
+    ],
+  },
+  Level: 
+  {
+    Abilities:
+    [
+      'Config/ConfigAbility/Common_Additional_Ability.json',
+      'Config/ConfigAbility/Level',
+    ],
+    Modifiers:
+    [
+      //'Config/ConfigGlobalModifier/GlobalModifier.json',
+      //'Config/ConfigGlobalModifier/GlobalModifier_System.json',
+      'Config/ConfigGlobalModifier/GlobalModifier_Common_Property.json',
+      'Config/ConfigGlobalModifier/GlobalModifier_Common_Specific.json',
+      'Config/ConfigGlobalModifier/GlobalModifier_Level.json',
+    ],
+  },
+}
 
-    console.log(`trace param not found for ${location}/${value.ReadInfo.Type}/${index}, ${trace?.PointID} in ${JSON.stringify(trace?.ParamList)}`)
+
+const abilityContextConfigCache:{[commitId: string]: {[type: string]: AbilityContext}} = {}
+export async function getAbilityContext(commitId:string, type:AbilityContextType) : Promise<AbilityContext>
+{
+  const context:AbilityContext = 
+  {
+    Abilities: [],
+    Modifiers: []
   }
-  else console.log(`dynamicvalue not implemented for ${location}/${value.ReadInfo.Type}/${index}`)
-  
-  return 88888888
+  const paths = contextTypeToPaths[type]
+  for (const path of paths.Abilities)
+  {
+    if (path.endsWith('.json'))
+      context.Abilities.push(await getAbilities(commitId, path) as AbilityConfig)
+    else
+    {
+      const response = await retrieveJson(`git/trees/${commitId}:${path}`, commitId, true)
+      const tree = response.tree
+      if (tree !== undefined)
+        for (const treePath of tree.map((t:any) => t.path))
+          if (treePath.endsWith('.json'))
+            context.Abilities.push(await getAbilities(commitId, `${path}/${treePath}`) as AbilityConfig)
+    }
+  }
+  for (const path of paths.Modifiers)
+      context.Modifiers.push(await getModifiers(commitId, path) as ModifierConfig)
+
+  // TODO cache in abilityContextConfigCache
+
+  return context
 }
 
-function explainDynamicValue(value:CharacterDynamicValue) : string
+async function getAbilities(commitId:string, path:string) : Promise<AbilityConfig>
 {
-  if (!value.ReadInfo)
-    return 'var'
-
-  return `${value.ReadInfo.Str}[${getIndexFromDynamicValueType(value.ReadInfo.Type)}]`
+  const result = await retrieveJson(path, commitId, false) as AbilityConfig
+  return result
 }
 
-const dynamicValueTypeToIndex:{[key:string]: number} =
+async function getModifiers(commitId:string, path:string) : Promise<ModifierConfig>
 {
-  None: 0,
-  SkillParam: 1,
-  SkillTreeParam: 2,
-  SkillEquip: 3,
-  SkillRank: 4,
-  SkillRelic: 5,
-  BattleEvent: 6,
-  StageBattleEvent: 7,
+  const result = await retrieveJson(path, commitId, false) as ModifierConfig
+  return result
 }
-
-function getIndexFromDynamicValueType(value:string | number) : number
-{
-  return (dynamicValueTypeToIndex[value] ?? value) / 2
-}
-
-
-
-// Code refers to Dynamic Values
-// Dynamic Values can be initialized from a ParamList and an index
-
-// https://github.com/Dimbreath/StarRailData/blob/master/Config/ConfigAbility/EquipmemtAbility.json#L9722C7-L9722C22

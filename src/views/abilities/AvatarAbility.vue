@@ -3,27 +3,35 @@
   import { getAvatar, } from '../../scripts/sources/avatar';
   import { getAvatarSkillsByIds, } from '../../scripts/sources/avatarskill';
   import { getCharacterByAvatar, } from '../../scripts/sources/character';
-  import { buildAbilityContext, AbilityContext, } from '../../scripts/sources/ability';
+  import { getAbilityContext, AbilityContext, AbilityContextType, } from '../../scripts/sources/ability';
+  import { buildAbilityContext, GamecoreContext, } from '../../scripts/sources/gamecore';
   import Ability from './Ability.vue';
 
   const props = defineProps<{commitId:string, objectId:number, abilityId:string}>()
   
-  const abilityContext = ref<AbilityContext>(await getAbilityContext())
-  watch(props, async () => abilityContext.value = await getAbilityContext())
+  const gamecoreContext = ref<GamecoreContext>(await getGamecoreContext())
+  watch(props, async () => gamecoreContext.value = await getGamecoreContext())
 
-  async function getAbilityContext()
+  async function getGamecoreContext()
   {
     const avatar = await getAvatar(props.commitId, props.objectId)
     const avatarSkills = await getAvatarSkillsByIds(props.commitId, avatar.SkillList)
     const character = await getCharacterByAvatar(props.commitId, avatar)
     return buildAbilityContext(avatar, avatarSkills, character)
   }
+
+  const abilityContext = ref<AbilityContext>(await getAbilityContext(props.commitId, AbilityContextType.Avatar))
+  watch(props, async () => abilityContext.value = await getAbilityContext(props.commitId, AbilityContextType.Avatar))
 </script>
 
 <template> 
   <main class="panel">
-    <Ability :abilityId="abilityId" :context="abilityContext" />
+    <Ability :abilityId="abilityId" :context="gamecoreContext" />
   </main>
+  <aside class="panel">
+    <h1>Context</h1>
+    <pre>{{ abilityContext }}</pre>
+  </aside>
 </template>
 
 <style scoped>

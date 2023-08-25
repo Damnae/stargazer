@@ -1,36 +1,37 @@
 import { retrieveJson } from '../datasource';
 import { Avatar } from './avatar';
 import { Monster } from './monster';
+import { DynamicValues } from './gamecore';
 
-export interface Character
+export interface CharacterSkill
 {
-    SkillList: 
-    [
+    Name: string
+    SkillType: string
+    EntryAbility: string
+    PrepareAbility?: string
+    ComplexSkillAI?:
+    {
+        SkillBasicPower?:
         {
-            Name: string
-            SkillType: string
-            EntryAbility: string
-            PrepareAbility?: string
-            ComplexSkillAI?:
+            Value: number
+        }
+        Groups:
+        [
             {
-                SkillBasicPower?:
+                GroupName:string
+                Weight?:
                 {
                     Value: number
                 }
-                Groups:
-                [
-                    {
-                        GroupName:string
-                        Weight?:
-                        {
-                            Value: number
-                        }
-                    }
-                ]
             }
-            ChildSkillList?: string[] // used by Phys MC's ult
-        }
-    ]
+        ]
+    }
+    ChildSkillList?: string[] // used by Phys MC's ult
+}
+
+export interface Character
+{
+    SkillList: CharacterSkill[]
     AbilityList: string[]
     SkillAbilityList: 
     [
@@ -43,22 +44,7 @@ export interface Character
     {
         [key: string]: number
     }
-    DynamicValues?: 
-    {
-        Values:
-        {
-            [key: number]: CharacterDynamicValue
-        }
-    }
-}
-
-export interface CharacterDynamicValue
-{
-    ReadInfo?:
-    {
-        Type: string
-        Str: string
-    }
+    DynamicValues?: DynamicValues
 }
 
 export async function getCharacterByAvatar(commitId:string, avatar:Avatar) : Promise<Character>
@@ -70,7 +56,7 @@ export async function getCharacterByMonster(commitId:string, monster:Monster) : 
     return getCharacter(commitId, monster.MonsterTemplate.JsonConfig)
 }
 
-export async function getCharacter(commitId:string, path:string) : Promise<Character>
+async function getCharacter(commitId:string, path:string) : Promise<Character>
 {
     const result = await retrieveJson(path, commitId, false) as Character
     return result
