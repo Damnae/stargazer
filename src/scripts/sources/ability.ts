@@ -51,6 +51,7 @@ export interface Ability
   TargetInfo:
   {
     TargetType:string
+    MaxTargetCount?:number
   }
   OnStart?: GamecoreBlock[]
   DynamicValues?: DynamicValues
@@ -79,8 +80,14 @@ export interface ModifierConfig
 
 export interface AbilityContext
 {
-  Abilities: AbilityConfig[]
-  Modifiers: ModifierConfig[]
+  Abilities: 
+  {
+    [key:string]: Ability
+  }
+  Modifiers: 
+  {
+    [key:string]: Modifier
+  }
 }
 
 export enum AbilityContextType
@@ -198,36 +205,43 @@ const contextTypeToPaths =
   },
 }
 
-
-const abilityContextConfigCache:{[commitId: string]: {[type: string]: AbilityContext}} = {}
+const abilityContextCache:{[commitId: string]: {[type: string]: AbilityContext}} = {}
 export async function getAbilityContext(commitId:string, type:AbilityContextType) : Promise<AbilityContext>
 {
-  const context:AbilityContext = 
+  let result 
+  let container = abilityContextCache[commitId]
+  if (container === undefined)
+    container = abilityContextCache[commitId] = {}
+  else result = container[type]
+
+  if (result == undefined)
   {
-    Abilities: [],
-    Modifiers: []
-  }
-  const paths = contextTypeToPaths[type]
-  for (const path of paths.Abilities)
-  {
-    if (path.endsWith('.json'))
-      context.Abilities.push(await getAbilities(commitId, path) as AbilityConfig)
-    else
+    const context:AbilityContext = 
     {
-      const response = await retrieveJson(`git/trees/${commitId}:${path}`, commitId, true)
-      const tree = response.tree
-      if (tree !== undefined)
-        for (const treePath of tree.map((t:any) => t.path))
-          if (treePath.endsWith('.json'))
-            context.Abilities.push(await getAbilities(commitId, `${path}/${treePath}`) as AbilityConfig)
+      Abilities: {},
+      Modifiers: {},
     }
+    const paths = contextTypeToPaths[type]
+    for (const path of paths.Abilities)
+      if (path.endsWith('.json'))
+        mergeAbilityConfig(context, await getAbilities(commitId, path) as AbilityConfig)
+      else
+      {
+        const response = await retrieveJson(`git/trees/${commitId}:${path}`, commitId, true)
+        const tree = response.tree
+        if (tree !== undefined)
+          for (const treePath of tree.map((t:any) => t.path))
+            if (treePath.endsWith('.json'))
+              mergeAbilityConfig(context, await getAbilities(commitId, `${path}/${treePath}`) as AbilityConfig)
+      }
+      
+    for (const path of paths.Modifiers)
+      mergeModifierConfig(context, await getModifiers(commitId, path) as ModifierConfig)
+
+    result = container[type] = context
+    console.log(`cached ${type} ability context for ${commitId}`)
   }
-  for (const path of paths.Modifiers)
-      context.Modifiers.push(await getModifiers(commitId, path) as ModifierConfig)
-
-  // TODO cache in abilityContextConfigCache
-
-  return context
+  return result
 }
 
 async function getAbilities(commitId:string, path:string) : Promise<AbilityConfig>
@@ -240,4 +254,17 @@ async function getModifiers(commitId:string, path:string) : Promise<ModifierConf
 {
   const result = await retrieveJson(path, commitId, false) as ModifierConfig
   return result
+}
+
+function mergeAbilityConfig(into:AbilityContext, from:AbilityConfig)
+{
+  for (const ability of from.AbilityList)
+    into.Abilities[ability.Name] = ability
+  if (from.GlobalModifiers !== undefined)
+    Object.assign(into.Modifiers, from.GlobalModifiers)
+}
+
+function mergeModifierConfig(into:AbilityContext, from:ModifierConfig)
+{
+  Object.assign(into.Modifiers, from.ModifierMap)
 }

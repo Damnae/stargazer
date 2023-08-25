@@ -26,11 +26,10 @@
 
 <template> 
   <main class="panel">
-    <Ability :abilityId="abilityId" :context="gamecoreContext" />
+    <Ability :abilityId="abilityId" :abilityContext="abilityContext" />
   </main>
   <aside class="panel">
     <h1>Context</h1>
-    <pre>{{ abilityContext }}</pre>
   </aside>
 </template>
 

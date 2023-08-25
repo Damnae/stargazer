@@ -1,6 +1,7 @@
 <script setup lang="ts">
   import { ref, watch } from 'vue';
   import { getAbilityContext, AbilityContext, AbilityContextType, } from '../../scripts/sources/ability';
+  import Ability from './Ability.vue';
 
   const props = defineProps<{commitId:string, objectId:number, abilityId:string}>()
   
@@ -10,10 +11,10 @@
 
 <template> 
   <main class="panel">
+    <Ability :abilityId="abilityId" :abilityContext="abilityContext" />
   </main>
   <aside class="panel">
     <h1>Context</h1>
-    <pre>{{ abilityContext }}</pre>
   </aside>
 </template>
 
