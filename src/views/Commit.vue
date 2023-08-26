@@ -1,6 +1,6 @@
 <script setup lang="ts">
   import { provide } from 'vue'
-  import CommitNav from './navigation/CommitNav.vue'
+  import CommitNav from '@/views/navigation/CommitNav.vue'
 
   const props = defineProps<{commitId:string}>()
   provide<string>('commitId', props.commitId)

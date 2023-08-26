@@ -1,18 +1,18 @@
 import { retrieveJson } from '../datasource';
-import { GamecoreBlock, GamecoreTargetType, DynamicExpression, DynamicValues, } from './gamecore';
+import { GamecoreNode, GamecoreTargetType, DynamicExpression, DynamicValues, } from './gamecore';
 
 // TODO look at StatusConfig
 
 export interface ModifierEventHandler
 {
-  CallbackConfig: GamecoreBlock[]
+  CallbackConfig: GamecoreNode[]
 }
 
 export interface ModifierPreshowConfig
 {
   SkillTypes: string[]
   TargetType: GamecoreTargetType
-  Condition: GamecoreBlock
+  Condition: GamecoreNode
   ActionDelayPreshowConfig:
   {
     [property:string]: DynamicExpression
@@ -53,7 +53,7 @@ export interface Ability
     TargetType:string
     MaxTargetCount?:number
   }
-  OnStart?: GamecoreBlock[]
+  OnStart?: GamecoreNode[]
   DynamicValues?: DynamicValues
   Modifiers?:
   {

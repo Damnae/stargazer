@@ -1,6 +1,6 @@
 <script setup lang="ts">
   import { ref, watchEffect, } from 'vue'
-  import { getRelicSet, RelicSet, } from '../../scripts/sources/relicset';
+  import { getRelicSet, RelicSet, } from '@/scripts/sources/relicset';
 
   const props = defineProps<{commitId:string, objectId:number}>()
 

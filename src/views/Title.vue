@@ -1,6 +1,6 @@
 <script setup lang="ts">
   import { ref } from 'vue';
-  import { retrieveCommits, DataSourceCommit } from '../scripts/datasource'
+  import { retrieveCommits, DataSourceCommit } from '@/scripts/datasource'
 
   const commitEntries = ref<DataSourceCommit[]>(await retrieveCommits());
 </script>

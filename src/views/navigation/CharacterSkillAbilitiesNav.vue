@@ -1,6 +1,6 @@
 <script setup lang="ts">
   import { ref, watchEffect } from 'vue'
-  import { Character } from '../../scripts/sources/character';
+  import { Character } from '@/scripts/sources/character';
 
   const props = defineProps<{character:Character, skillTriggerKey:string}>()
 

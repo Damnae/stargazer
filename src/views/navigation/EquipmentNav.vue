@@ -1,8 +1,8 @@
 <script setup lang="ts">
   import { ref, computed, inject, Ref, } from 'vue'
   import { RouterLink } from 'vue-router';
-  import { Grouped, } from '../../scripts/common.ts';
-  import { getEquipments, Equipment, EquipmentConfig, } from '../../scripts/sources/equipment';
+  import { Grouped, } from '@/scripts/common.ts';
+  import { getEquipments, Equipment, EquipmentConfig, } from '@/scripts/sources/equipment';
 
   const commitId = inject<string>('commitId') as string
   const search = inject<Ref<string>>('search') as Ref<string>

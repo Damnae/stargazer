@@ -28,9 +28,6 @@
   <main class="panel">
     <Ability :abilityId="abilityId" :abilityContext="abilityContext" />
   </main>
-  <aside class="panel">
-    <h1>Context</h1>
-  </aside>
 </template>
 
 <style scoped>

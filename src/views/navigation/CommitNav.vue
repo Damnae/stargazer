@@ -16,20 +16,20 @@
       <input v-model.trim="search" placeholder="Search" />
       <ul class="navtree">
         <li>
-          <div>Relic Sets</div>
-          <RelicSetNav />
-        </li>
-        <li>
-          <div>Light Cones</div>
-          <EquipmentNav />
-        </li>
-        <li>
           <div>Avatars</div>
           <AvatarNav />
         </li>
         <li>
           <div>Monsters</div>
           <MonsterNav />
+        </li>
+        <li>
+          <div>Light Cones</div>
+          <EquipmentNav />
+        </li>
+        <li>
+          <div>Relic Sets</div>
+          <RelicSetNav />
         </li>
       </ul>
     </section>
@@ -51,8 +51,6 @@
 <style scoped>
   nav
   {
-    width:25rem;
-
     display:flex;
     flex-direction: column;
   }

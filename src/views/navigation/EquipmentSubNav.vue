@@ -1,6 +1,6 @@
 <script setup lang="ts">
   import { ref, watchEffect, } from 'vue'
-  import { getEquipment, Equipment, } from '../../scripts/sources/equipment';
+  import { getEquipment, Equipment, } from '@/scripts/sources/equipment';
 
   const props = defineProps<{commitId:string, objectId:number}>()
 

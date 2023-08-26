@@ -1,8 +1,8 @@
 <script setup lang="ts">
   import { ref, watchEffect, } from 'vue'
-  import { getAvatar, Avatar, } from '../../scripts/sources/avatar';
-  import { getAvatarSkillsByIds, AvatarSkill, } from '../../scripts/sources/avatarskill';
-  import { getCharacterByAvatar, Character } from '../../scripts/sources/character';
+  import { getAvatar, Avatar, } from '@/scripts/sources/avatar';
+  import { getAvatarSkillsByIds, AvatarSkill, } from '@/scripts/sources/avatarskill';
+  import { getCharacterByAvatar, Character } from '@/scripts/sources/character';
   import CharacterSkillAbilitiesNav from './CharacterSkillAbilitiesNav.vue';
   import CharacterOtherAbilitiesNav from './CharacterOtherAbilitiesNav.vue';
 

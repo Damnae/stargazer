@@ -1,8 +1,8 @@
 <script setup lang="ts">
   import { ref, watchEffect, } from 'vue'
-  import { getMonster, Monster, } from '../../scripts/sources/monster.ts';
-  import { getMonsterSkillsByIds, MonsterSkill, } from '../../scripts/sources/monsterskill';
-  import { getCharacterByMonster, Character } from '../../scripts/sources/character';
+  import { getMonster, Monster, } from '@/scripts/sources/monster.ts';
+  import { getMonsterSkillsByIds, MonsterSkill, } from '@/scripts/sources/monsterskill';
+  import { getCharacterByMonster, Character } from '@/scripts/sources/character';
   import CharacterSkillAbilitiesNav from './CharacterSkillAbilitiesNav.vue';
   import CharacterOtherAbilitiesNav from './CharacterOtherAbilitiesNav.vue';
 
@@ -30,9 +30,9 @@
         <template v-for="skill in monsterSkills" :key="skill.SkillID">
           <li>
             <div>
-              {{ skill.SkillTag.Text }} {{ skill.SkillTypeDesc.Text }} 
+              {{ skill.SkillTag.Text }} {{ skill.SkillTypeDesc.Text }}
+              <span class="minor" :title="skill.SkillName.Text">{{ skill.SkillName.Text }}</span> 
               <span class="minor">{{ skill.SkillTriggerKey }}</span> 
-              <span class="minor" :title="skill.SkillName.Text">{{ skill.SkillName.Text }}</span>
             </div>
             <CharacterSkillAbilitiesNav v-if="character" :character="character" :skillTriggerKey="skill.SkillTriggerKey" v-slot="slotProps">
               <RouterLink :to="{ name:'monsterAbility', params:{ commitId: commitId, objectId: objectId, abilityId: slotProps.ability }}">

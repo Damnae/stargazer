@@ -1,7 +1,7 @@
 <script setup lang="ts">
   import { ref, computed, inject, Ref, } from 'vue'
   import { RouterLink } from 'vue-router';
-  import { getRelicSets, RelicSet, RelicSetConfig, } from '../../scripts/sources/relicset';
+  import { getRelicSets, RelicSet, RelicSetConfig, } from '@/scripts/sources/relicset';
 
   const commitId = inject<string>('commitId') as string
   const search = inject<Ref<string>>('search') as Ref<string>

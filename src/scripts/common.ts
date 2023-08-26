@@ -37,6 +37,22 @@ export function toRouteProps(mapping:KeyAny)
     }
 }
 
+export function cleanGamecoreName(value: string) 
+{
+    var parts = value.split('.');
+    if (parts.length === 3)
+        return  parts[2].split(/([A-Z][a-z]+)/).filter(e => e).join(' ');
+    return value;
+}
+
+export function gamecoreToComponentName(value: string) 
+{
+    var parts = value.split('.');
+    if (parts.length === 3)
+        return parts[2];
+    return value;
+}
+
 export function delay(ms: number) 
 {
     return new Promise(resolve => setTimeout(resolve, ms));

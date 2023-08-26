@@ -32,12 +32,12 @@ export interface DynamicExpression
   }
 }
 
-export interface GamecoreBlock
+export interface GamecoreNode
 {
   $type: string
 }
 
-export interface GamecoreTargetType extends GamecoreBlock
+export interface GamecoreTargetType extends GamecoreNode
 {
   Alias?: string
 }
