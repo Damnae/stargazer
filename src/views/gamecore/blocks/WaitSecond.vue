@@ -1,15 +1,19 @@
 <script setup lang="ts">
   import { AbilityContext, } from '@/scripts/sources/ability';
   import { GamecoreNode, } from '@/scripts/sources/gamecore';
-  import { cleanGamecoreName, } from '@/scripts/common';
   import BlockLayout from '@/views/gamecore/BlockLayout.vue';
 
-  defineProps<{node:GamecoreNode, abilityContext:AbilityContext}>()
+  const props = defineProps<{node:GamecoreNode, abilityContext:AbilityContext}>()
+  const node = props.node as unknown as 
+  {
+    WaitTime:number
+  }
 </script>
 
 <template>
-  <BlockLayout :node="node">
-    <span class="notimplemented">{{ cleanGamecoreName(node.$type) }}</span>
+  <BlockLayout :node="node" :cosmetic="true">
+    Wait for 
+    <em>{{ node.WaitTime }}</em> seconds
   </BlockLayout>
 </template>
 

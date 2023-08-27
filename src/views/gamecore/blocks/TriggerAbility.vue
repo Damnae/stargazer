@@ -2,7 +2,6 @@
   import { AbilityContext, } from '@/scripts/sources/ability';
   import { GamecoreNode, 
     GamecoreTargetType, evaluateTargetType, 
-    DynamicExpression, evaluateDynamicExpression, 
   } from '@/scripts/sources/gamecore';
   import BlockLayout from '@/views/gamecore/BlockLayout.vue';
 
@@ -10,33 +9,22 @@
   const node = props.node as unknown as 
   {
     TargetType?:GamecoreTargetType
-    AnimStateName?:string
-    NormalizedTimeEnd?:DynamicExpression
+    AbilityName:string
   }
 </script>
 
 <template>
-  <BlockLayout :node="node" :cosmetic="true">
+  <BlockLayout :node="node">
    
-    Wait for 
-    
+    Trigger 
     <template v-if="node.TargetType">
       <em>{{ evaluateTargetType(node.TargetType) }}</em>'s 
     </template>
 
-    <template v-if="node.AnimStateName">
-      <em>{{ node.AnimStateName }}</em>'s 
-    </template>
-
-    animation to 
-
-    <template v-if="node.AnimStateName">
-      reach <em>{{ evaluateDynamicExpression(node.NormalizedTimeEnd) }}</em>%
-    </template>
-    <template v-else>
-      <!-- see Avatar_Himeko_Skill02_Phase02 -->
-      start(?)
-    </template>
+    ability
+    <RouterLink :to="{  }">
+      <em>{{ node.AbilityName }}</em>
+    </RouterLink>
 
   </BlockLayout>
 </template>

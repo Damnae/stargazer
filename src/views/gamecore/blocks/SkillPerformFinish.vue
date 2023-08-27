@@ -1,7 +1,7 @@
 <script setup lang="ts">
   import { AbilityContext, } from '@/scripts/sources/ability';
-  import { GamecoreNode, } from '@/scripts/sources/gamecore';
-  import { cleanGamecoreName, } from '@/scripts/common';
+  import { GamecoreNode, 
+  } from '@/scripts/sources/gamecore';
   import BlockLayout from '@/views/gamecore/BlockLayout.vue';
 
   defineProps<{node:GamecoreNode, abilityContext:AbilityContext}>()
@@ -9,7 +9,7 @@
 
 <template>
   <BlockLayout :node="node">
-    <span class="notimplemented">{{ cleanGamecoreName(node.$type) }}</span>
+    Finalize Skill
   </BlockLayout>
 </template>
 

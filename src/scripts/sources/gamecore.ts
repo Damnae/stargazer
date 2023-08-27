@@ -30,6 +30,10 @@ export interface DynamicExpression
     ]
     DynamicHashes: number[]
   }
+  FixedValue?:
+  {
+    Value:number
+  }
 }
 
 export interface GamecoreNode
@@ -70,7 +74,23 @@ export interface GamecoreParam
     Value: number 
 }
 
+export function evaluateTargetType(targetType?:GamecoreTargetType) : string
+{
+  if (targetType?.Alias)
+    return targetType.Alias
+  return 'unknown'
+}
 
+export function evaluateDynamicExpression(expression?:DynamicExpression) : string
+{
+  if (!expression)
+    return 'missing'
+  
+  if (expression.FixedValue)
+    return expression.FixedValue.Value.toFixed(4).toString()
+
+  return 'unknown'
+}
 
 import { Avatar, } from './avatar';
 import { Creature, } from './creature';
