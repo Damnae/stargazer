@@ -1,6 +1,6 @@
 <script setup lang="ts">
   import { ref, computed, inject, Ref, } from 'vue'
-  import { RouterLink } from 'vue-router';
+  import { RouterLink, } from 'vue-router';
   import { Grouped, } from '@/scripts/common';
   import { getAvatars, Avatar, AvatarConfig, } from '@/scripts/sources/avatar';
 

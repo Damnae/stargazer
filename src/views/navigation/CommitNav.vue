@@ -37,12 +37,7 @@
     <hr />
 
     <section class="subnav">
-      <Suspense>
-        <slot />
-        <template #fallback>
-          Loading...
-        </template>
-      </Suspense>
+      <slot />
     </section>
 
   </nav>

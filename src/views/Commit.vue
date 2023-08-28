@@ -9,9 +9,9 @@
 <template>
   <div class="commit-layout">
     <CommitNav>
-      <router-view name="subnav" />
+      <RouterView name="subnav" />
     </CommitNav>
-    <router-view />
+    <RouterView />
   </div>
 </template>
 

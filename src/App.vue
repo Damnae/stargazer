@@ -6,7 +6,7 @@ import Footer from './views/Footer.vue'
   <div class="main-layout">
     <div class="main-content-layout">
       <Suspense>
-        <router-view />
+        <RouterView />
         <template #fallback>
           Loading...
         </template>
