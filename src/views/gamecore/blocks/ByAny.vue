@@ -14,7 +14,7 @@
 
 <template>
   <BlockLayout :source="node">
-    <span class="flow">All</span>
+    <span class="flow">Any</span>
     <template #content>
       <AnyBlock v-for="predicate in node.PredicateList" :node="predicate" :abilityContext="abilityContext" />
     </template>

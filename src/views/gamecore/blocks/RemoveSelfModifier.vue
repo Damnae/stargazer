@@ -1,6 +1,6 @@
 <script setup lang="ts">
   import { AbilityContext, } from '@/scripts/sources/ability';
-  import { GamecoreNode, 
+  import { GamecoreNode,
   } from '@/scripts/sources/gamecore';
   import BlockLayout from '@/views/gamecore/BlockLayout.vue';
 
@@ -9,7 +9,7 @@
 
 <template>
   <BlockLayout :source="node">
-    Finalize Skill
+    Remove this modifier
   </BlockLayout>
 </template>
 

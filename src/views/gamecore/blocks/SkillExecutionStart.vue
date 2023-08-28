@@ -8,7 +8,7 @@
 </script>
 
 <template>
-  <BlockLayout :node="node">
+  <BlockLayout :source="node">
     Begin Skill
   </BlockLayout>
 </template>

@@ -23,7 +23,7 @@
 </script>
 
 <template>
-  <BlockLayout :node="node">
+  <BlockLayout :source="node">
     Has trace <em>{{ traceName }}</em>
   </BlockLayout>
 </template>

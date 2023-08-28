@@ -1,8 +1,7 @@
 <script setup lang="ts">
-  import { GamecoreNode, } from '@/scripts/sources/gamecore';
-import { ref } from 'vue';
+  import { ref } from 'vue';
 
-  defineProps<{node:GamecoreNode, cosmetic?:boolean}>()
+  defineProps<{source?:any, cosmetic?:boolean}>()
   const open = ref(false)
 </script>
 
@@ -12,8 +11,8 @@ import { ref } from 'vue';
       <slot>
       </slot>
     </div>
-    <div class="block-source">
-      <pre v-show="open">{{ node }}</pre>
+    <div v-if="source" class="block-source">
+      <pre v-show="open">{{ source }}</pre>
     </div>
     <div v-show="!open" v-if="$slots.content" class="block-content">
       <slot name="content">

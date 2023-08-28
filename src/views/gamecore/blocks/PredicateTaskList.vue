@@ -19,7 +19,7 @@
 </script>
 
 <template>
-  <BlockLayout :node="node">
+  <BlockLayout :source="node">
     <span class="flow">If</span>
     <template #content>
       

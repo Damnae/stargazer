@@ -57,8 +57,7 @@ button:focus-visible {
 }
 nav.panel 
 {
-  min-width:20rem;
-  max-width:25rem;
+  width:20rem;
 }
 main.panel, 
 aside.panel 
@@ -84,6 +83,13 @@ main.panel section
 {
   overflow: auto scroll;
   scrollbar-width: thin;
+}
+@media (min-aspect-ratio: 4/3) 
+{
+  nav.panel 
+  {
+    width:25rem;
+  }
 }
 
 ul.navtree

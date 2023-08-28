@@ -14,7 +14,7 @@ export default defineConfig(async ({ command, mode, ssrBuild }) =>
   console.log(gamecorePaths)
   return {
     plugins: [vue()],
-    base: command === 'serve' ? '/' : '/stargazer/',
+    base: command === 'serve' ? '/' : '/', // '/stargazer/',
     resolve: 
     {
       alias: 

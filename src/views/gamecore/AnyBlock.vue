@@ -7,15 +7,17 @@
   const props = defineProps<{node:GamecoreNode, abilityContext:AbilityContext}>()
   let blockName = gamecoreToComponentName(props.node.$type)
   const blockComponent = defineAsyncComponent({
-    loader: async () => {
-      try { return await import(`./blocks/${blockName}.vue`) } 
+    loader: async () => 
+    {
+      try { return await import(`./blocks/${blockName}.vue`) }
       catch (error:any) 
       { 
         if (!error.toString().includes('Unknown variable dynamic import'))
           console.error(error)
-        return await import(`./MissingBlock.vue`) 
+        return await import(`./MissingBlock.vue`)
       }
     },
+    delay:0,
   })
 </script>
 

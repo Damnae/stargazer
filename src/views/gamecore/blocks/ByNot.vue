@@ -13,7 +13,7 @@
 </script>
 
 <template>
-  <BlockLayout :node="node">
+  <BlockLayout :source="node">
     <span class="flow">Not</span>
     <template #content>
       <AnyBlock :node="node.Predicate" :abilityContext="abilityContext" />

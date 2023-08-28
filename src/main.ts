@@ -60,11 +60,16 @@ const routes:Readonly<RouteRecordRaw[]> =
     ]},
 ]
 
+const router = createRouter({ 
+    routes: routes, 
+    history: createWebHashHistory(), 
+})
+
 // App
 
 import { createApp } from 'vue'
 import App from './App.vue'
 
 createApp(App)
-    .use(createRouter({ history: createWebHashHistory(), routes: routes, }))
+    .use(router)
     .mount('#app')

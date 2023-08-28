@@ -14,7 +14,7 @@
 </script>
 
 <template>
-  <BlockLayout :node="node">
+  <BlockLayout :source="node">
    
     Trigger 
     <template v-if="node.TargetType">

@@ -8,7 +8,7 @@
 </script>
 
 <template>
-  <BlockLayout :node="node">
+  <BlockLayout :source="node">
     <span class="notimplemented">{{ cleanGamecoreName(node.$type) }}</span>
   </BlockLayout>
 </template>

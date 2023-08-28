@@ -1,3 +1,4 @@
+import { cleanupNumber } from '../common'
 
 export interface DynamicValue
 {
@@ -87,7 +88,7 @@ export function evaluateDynamicExpression(expression?:DynamicExpression) : strin
     return 'missing'
   
   if (expression.FixedValue)
-    return expression.FixedValue.Value.toFixed(4).toString()
+    return cleanupNumber(expression.FixedValue.Value)
 
   return 'unknown'
 }

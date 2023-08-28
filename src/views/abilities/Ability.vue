@@ -2,16 +2,17 @@
   import { ref, watch, } from 'vue'
   import { AbilityContext } from '../../scripts/sources/ability';
   import AnyBlock from '../gamecore/AnyBlock.vue';
+  import Modifier from './Modifier.vue';
 
   const props = defineProps<{abilityId:string, abilityContext:AbilityContext}>()
 
   const ability = ref(props.abilityContext.Abilities[props.abilityId])
-  watch(props, async () => ability.value = props.abilityContext.Abilities[props.abilityId])
+  watch(props, () => ability.value = props.abilityContext.Abilities[props.abilityId])
 </script>
 
 <template>
   <header>
-    <h1>{{ abilityId.replace(/_/g, " ") }}</h1>
+    <h1>{{ ability?.Name.replace(/_/g, " ") }}</h1>
   </header>
   <section :key="ability?.Name">
     
@@ -26,7 +27,7 @@
           <h2>Modifiers</h2>
           <template v-for="(modifier, modifierName) in ability.Modifiers">
             <h3>{{ modifierName }}</h3>
-            <pre>{{ modifier }}</pre>
+            <Modifier :modifier="modifier" :abilityContext="abilityContext" />
           </template>
         </div>
       </template>

@@ -13,7 +13,7 @@
 </script>
 
 <template>
-  <BlockLayout :node="node">
+  <BlockLayout :source="node">
     <em>{{ evaluateDynamicExpression(node.Chance) }}</em>% chance
   </BlockLayout>
 </template>

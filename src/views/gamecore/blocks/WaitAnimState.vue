@@ -16,7 +16,7 @@
 </script>
 
 <template>
-  <BlockLayout :node="node" :cosmetic="true">
+  <BlockLayout :source="node" :cosmetic="true">
    
     Wait for 
     

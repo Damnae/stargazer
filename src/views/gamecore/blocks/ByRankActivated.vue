@@ -24,7 +24,7 @@
 </script>
 
 <template>
-  <BlockLayout :node="node">
+  <BlockLayout :source="node">
     Has eidolon <em>{{ eidolonName }}</em>
   </BlockLayout>
 </template>

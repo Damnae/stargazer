@@ -33,6 +33,23 @@ export interface Modifier
   PerformTime?:DynamicExpression
   DynamicValues?: DynamicValues
   ModifierAffectedPreshowConfig?: ModifierPreshowConfig
+  OnAbilityPropertyChange?:
+  [
+    {
+      Property:string
+      Ranges:
+      [
+        {
+          Min?:DynamicExpression
+          Max?:DynamicExpression
+          MaxInclusive?:boolean
+          OnEnterRange?: GamecoreNode[]
+          OnExitRange?: GamecoreNode[]
+          OnChange?: GamecoreNode[]
+        }
+      ]
+    }
+  ]
   _CallbackList?:
   {
     [eventName:string]: ModifierEventHandler

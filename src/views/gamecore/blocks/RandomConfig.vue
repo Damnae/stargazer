@@ -15,7 +15,7 @@ import AnyBlock from '../AnyBlock.vue';
 </script>
 
 <template>
-  <BlockLayout :node="node">
+  <BlockLayout :source="node">
     <span class="flow">Random</span>
     <template #content>
       <template v-for="task, index in node.TaskList">
