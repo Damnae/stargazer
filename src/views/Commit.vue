@@ -1,5 +1,6 @@
 <script setup lang="ts">
   import { provide } from 'vue'
+  import Loading from '@/views/Loading.vue';
   import CommitNav from '@/views/navigation/CommitNav.vue'
 
   const props = defineProps<{commitId:string}>()
@@ -11,7 +12,20 @@
     <CommitNav>
       <RouterView name="subnav" />
     </CommitNav>
-    <RouterView />
+
+    <RouterView v-slot="{ Component }">
+      <template v-if="Component">
+        <Suspense>
+
+          <component :is="Component"></component>
+          <template #fallback>
+            <Loading />
+          </template>
+
+        </Suspense>
+      </template>
+    </RouterView>
+
   </div>
 </template>
 

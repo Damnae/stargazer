@@ -6,43 +6,29 @@
 </script>
 
 <template>
-  <section>
+  <section class="maintitle">
     <h1>Stargazer</h1>
-      <template v-if="commitEntries">
-        <p>Pick a version:</p>
-        <ul>
-          <li v-for="(commitEntry, index) in commitEntries">
-            <RouterLink :to="{ name:'commit', params:{ commitId: commitEntry.sha }}">
-              <div class="identity">
-                <span class="minor">{{ commitEntry.commit.committer.date.toLocaleString() }}</span>
-                <span class="minor">({{ commitEntry.sha }})</span>
-              </div>
-              <div class="message">
-                <span v-if="index == 0" class="major">Latest</span>
-                {{ commitEntry.commit.message }}
-              </div>
-            </RouterLink>
-          </li>
-        </ul>
-      </template>
+    <template v-if="commitEntries">
+      <p>Pick a version:</p>
+      <ul>
+        <li v-for="(commitEntry, index) in commitEntries">
+          <RouterLink :to="{ name:'commit', params:{ commitId: commitEntry.sha }}">
+            <div class="identity">
+              <span class="minor">{{ commitEntry.commit.committer.date.toLocaleString() }}</span>
+              <span class="minor">({{ commitEntry.sha }})</span>
+            </div>
+            <div class="message">
+              <span v-if="index == 0" class="major">Latest</span>
+              {{ commitEntry.commit.message }}
+            </div>
+          </RouterLink>
+        </li>
+      </ul>
+    </template>
   </section>
 </template>
 
 <style scoped>
-  section
-  {
-    margin: auto;
-  }
-  h1
-  {
-    text-align: center;
-    font-size: 3.2em;
-    line-height: 1.1;
-  }
-  h1 + p
-  {
-    text-align: center;
-  }
   ul 
   {
     list-style: none;

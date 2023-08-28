@@ -1,18 +1,21 @@
 <script setup lang="ts">
-import Footer from './views/Footer.vue'
+import Loading from '@/views/Loading.vue';
+import Footer from '@/views/Footer.vue'
 </script>
 
 <template>
   <div class="main-layout">
     <div class="main-content-layout">
-      
+
       <RouterView v-slot="{ Component }">
         <template v-if="Component">
           <Suspense>
+
             <component :is="Component"></component>
             <template #fallback>
-              Loading...
+              <Loading />
             </template>
+
           </Suspense>
         </template>
       </RouterView>
@@ -25,6 +28,8 @@ import Footer from './views/Footer.vue'
 </template>
 
 <style scoped>
+
+
 .main-layout
 {
   display: flex;
