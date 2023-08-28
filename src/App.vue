@@ -5,12 +5,18 @@ import Footer from './views/Footer.vue'
 <template>
   <div class="main-layout">
     <div class="main-content-layout">
-      <Suspense>
-        <RouterView />
-        <template #fallback>
-          Loading...
+      
+      <RouterView v-slot="{ Component }">
+        <template v-if="Component">
+          <Suspense>
+            <component :is="Component"></component>
+            <template #fallback>
+              Loading...
+            </template>
+          </Suspense>
         </template>
-      </Suspense>
+      </RouterView>
+
     </div>
     <div class="main-footer-layout">
       <Footer>🌠</Footer>
