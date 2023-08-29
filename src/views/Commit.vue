@@ -1,10 +1,16 @@
 <script setup lang="ts">
-  import { provide } from 'vue'
+  import { onErrorCaptured, provide, ref } from 'vue'
   import Loading from '@/views/Loading.vue';
   import CommitNav from '@/views/navigation/CommitNav.vue'
 
   const props = defineProps<{commitId:string}>()
   provide<string>('commitId', props.commitId)
+
+  const errorMessage = ref('')
+  onErrorCaptured((error, _instance, info) => 
+  {
+    errorMessage.value = `❌ Error in ${info}, ${error}`
+  })
 </script>
 
 <template>
@@ -13,7 +19,7 @@
       <RouterView name="subnav" />
     </CommitNav>
 
-    <RouterView v-slot="{ Component }">
+    <RouterView v-if="!errorMessage" v-slot="{ Component }">
       <template v-if="Component">
         <Suspense>
 
@@ -25,6 +31,7 @@
         </Suspense>
       </template>
     </RouterView>
+    <Loading v-else :message="errorMessage" />
 
   </div>
 </template>

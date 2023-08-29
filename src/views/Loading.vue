@@ -1,15 +1,22 @@
 <script setup lang="ts">
+  defineProps<{message?:string}>()
 </script>
 
 <template>
   <section class="maintitle">
     <h1>Stargazer</h1>
     <span class="loader"></span>
-    <p class="minor">Shit is loading. -- Source: Just trust me bro.</p>
+    <p v-if="message">{{ message }}</p>
+    <p v-else class="minor">It's loading. -- Source: Just trust me bro.</p>
   </section>
 </template>
 
 <style scoped>
+.maintitle 
+{
+  width:20em;
+  text-align:center;
+}
 .loader 
 {
   width: 100%;
