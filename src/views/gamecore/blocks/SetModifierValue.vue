@@ -9,27 +9,23 @@
   const props = defineProps<{node:GamecoreNode}>()
   const node = props.node as unknown as 
   {
-    ReadTargetType?:GamecoreTargetType
+    TargetType?:GamecoreTargetType
     ModifierName:string
-    DynamicKey:string
-    ValueType?:string
-    Multiplier?:DynamicExpression
+    Value?:DynamicExpression
   }
 </script>
 
 <template>
   <BlockLayout :source="node">
-    
-    Set <em>{{ node.DynamicKey }}</em>
 
-    to 
-    <template v-if="node.ReadTargetType">
-      <em>{{ evaluateTargetType(node.ReadTargetType) }}</em>'s
+    Set 
+    <template v-if="node.TargetType">
+      <em>{{ evaluateTargetType(node.TargetType) }}</em>'s
     </template>
     <RouterLink :to="{  }">
       <em>{{ node.ModifierName }}</em>
-    </RouterLink>
-    (Multiplied by <em><EvaluateExpression :expression="node.Multiplier" /></em>)
+    </RouterLink>'s
+    value to <em><EvaluateExpression :expression="node.Value" /></em>
 
   </BlockLayout>
 </template>

@@ -1,0 +1,34 @@
+<script setup lang="ts">
+  import { getHash } from '@/scripts/translate';
+  import { GamecoreNode, 
+    DynamicExpression, 
+  } from '@/scripts/sources/gamecore';
+  import BlockLayout from '@/views/gamecore/BlockLayout.vue';
+  import EvaluateExpression from '../EvaluateExpression.vue';
+
+  const props = defineProps<{node:GamecoreNode}>()
+  const node = props.node as unknown as 
+  {
+    [key:string]:DynamicExpression
+  }
+</script>
+
+<template>
+  <BlockLayout :source="node">
+
+    <span class="flow">Modify damage data</span>
+
+    <template #content>
+      <template v-for="expression, key in node">
+        <BlockLayout v-if="key != '$type'" :source="expression">
+          
+          Set <em :title="getHash(key.toString()).toString()">{{ key }}</em> to <em><EvaluateExpression :expression="expression" /></em>
+        </BlockLayout>
+      </template>
+    </template>
+
+  </BlockLayout>
+</template>
+
+<style scoped>
+</style>

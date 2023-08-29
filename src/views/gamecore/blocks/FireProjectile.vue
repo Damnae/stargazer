@@ -16,7 +16,7 @@
 
 <template>
   <BlockLayout :source="node" :cosmetic="!hasOnHit">
-    <span class="flow">
+    <span :class="hasOnHit ? 'flow' : ''">
       Fire projectile 
       <template v-if="node.TargetType">
         at {{ evaluateTargetType(node.TargetType) }}
@@ -36,7 +36,7 @@
       <BlockLayout v-if="node.WaitProjectileFinish" :cosmetic="true">
         Wait for the projectile to finish
       </BlockLayout>
-      
+
     </template>
   </BlockLayout>
 </template>
