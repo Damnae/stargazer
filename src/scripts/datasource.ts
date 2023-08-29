@@ -82,6 +82,6 @@ export interface DataSourceCommit
 
 export function retrieveCommits() : Promise<DataSourceCommit[]>
 {
-    return fetch(apiBase + 'commits', { headers: { 'Accept': 'application/json', }, cache: 'force-cache' })
+    return fetch(apiBase + 'commits', { headers: { 'Accept': 'application/json', } })
         .then(response => response.json());
 }
