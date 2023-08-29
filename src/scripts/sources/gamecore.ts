@@ -51,13 +51,11 @@ export interface GamecoreTargetType extends GamecoreNode
 
 export interface GamecoreContext
 {
-  DynamicValues:
-  [
-    {
-      Source: string
-      Values?: GamecoreContextDynamicValues
-    }
-  ]
+  Params: 
+  {
+    [key:string]:GamecoreParam[]
+  }
+  DynamicValues?: DynamicValues
 }
 
 export interface GamecoreContextDynamicValues
@@ -98,7 +96,7 @@ import { Creature, } from './creature';
 import { CreatureSkill, } from './skill';
 import { Character, } from './character';
 
-export function buildAbilityContext(creature:Creature, skills:CreatureSkill[], character:Character) : GamecoreContext
+export function buildGamecoreContext(creature:Creature, skills:CreatureSkill[], character:Character) : GamecoreContext
 {
   const characterValues:GamecoreContextDynamicValues = Object.fromEntries(
       Object.entries(character.DynamicValues?.Values ?? {})
@@ -106,18 +104,6 @@ export function buildAbilityContext(creature:Creature, skills:CreatureSkill[], c
           { Name: getDynamicValueName(key), 
             Value: resolveDynamicValue(value, creature, skills), 
             From: `character/${explainDynamicValue(value)}` }]))
-
-  return {
-    DynamicValues: 
-    [
-      // Avatar / Monster could have them? (Creature)
-      {
-        Source: 'character',
-        Values: characterValues,
-      },
-      // Can also be on modifiers
-    ],
-  }
 }
 
 function getDynamicValueName(hash:string) : string

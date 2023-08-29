@@ -16,7 +16,6 @@
         return await import(`./MissingBlock.vue`)
       }
     },
-    delay:0,
   })
 </script>
 

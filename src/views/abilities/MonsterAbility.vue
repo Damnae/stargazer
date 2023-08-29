@@ -1,10 +1,10 @@
 <script setup lang="ts">
-  import {  ref, watch, provide,} from 'vue'
-  import { getMonster, } from '../../scripts/sources/monster';
-  import { getMonsterSkillsByIds, } from '../../scripts/sources/monsterskill';
-  import { getCharacterByMonster, } from '../../scripts/sources/character';
-  import { getAbilityContext, AbilityContext, AbilityContextType, } from '../../scripts/sources/ability';
-  import { buildAbilityContext, GamecoreContext, } from '../../scripts/sources/gamecore';
+  import { ref, watch, provide,} from 'vue'
+  import { getMonster, } from '@/scripts/sources/monster';
+  import { getMonsterSkillsByIds, } from '@/scripts/sources/monsterskill';
+  import { getCharacterByMonster, } from '@/scripts/sources/character';
+  import { getAbilityContext, AbilityContext, AbilityContextType, } from '@/scripts/sources/ability';
+  import { GamecoreContext, } from '@/scripts/sources/gamecore';
   import Ability from './Ability.vue';
 
   const props = defineProps<{commitId:string, objectId:number, abilityId:string}>()
@@ -23,9 +23,21 @@
     const monster = await getMonster(props.commitId, props.objectId)
     const monsterSkills = await getMonsterSkillsByIds(props.commitId, monster.SkillList)
     const character = await getCharacterByMonster(props.commitId, monster)
-    return buildAbilityContext(monster, monsterSkills, character)
+
+    const context:GamecoreContext = 
+    {
+      Params: {},
+      DynamicValues: character.DynamicValues,
+    }
+
+    for (const skill of monsterSkills)
+      if (skill.SkillTriggerKey)
+        context.Params[skill.SkillTriggerKey] = skill.ParamList
+
+    return context
   }
   
+  provide('getGamecoreContext', () => gamecoreContext.value)
   provide('getAbilityContext', () => abilityContext.value)
   provide('createAbilityRoute', (abilityId:string) : object => { return { name:'monsterAbility', params:{ commitId: props.commitId, objectId: props.objectId, abilityId: abilityId, } }})
 </script>

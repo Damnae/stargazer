@@ -228,6 +228,15 @@ ul.navtree a.router-link-active
   color:darkgoldenrod;
   font-style: normal;
 }
+.block a em
+{
+  color:rgb(137, 169, 201);
+  font-style: normal;
+}
+.block a:hover em
+{
+  color:rgb(135, 183, 231);
+}
 .block .cosmetic em
 {
   color:rgba(184, 135, 11, 0.33);
