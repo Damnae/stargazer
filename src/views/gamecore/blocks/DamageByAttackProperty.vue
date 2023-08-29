@@ -1,6 +1,5 @@
 <script setup lang="ts">
   import { inject, Ref, } from 'vue';
-  import { getHash } from '@/scripts/translate';
   import { GamecoreNode, GamecoreContext,
     GamecoreTargetType, evaluateTargetType, 
     DynamicExpression, evaluateDynamicExpression,
