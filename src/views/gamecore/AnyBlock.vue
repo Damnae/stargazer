@@ -17,10 +17,14 @@
       }
     },
   })
+  const inversibleNode = props.node as unknown as 
+  {
+    Inverse:boolean
+  }
 </script>
 
 <template>
-  <component :is="blockComponent" :node="node" />
+  <component :is="blockComponent" :node="node" :class="inversibleNode.Inverse ? 'inverted' : ''" />
 </template>
 
 <style scoped>

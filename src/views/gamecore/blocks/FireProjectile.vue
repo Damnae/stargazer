@@ -33,10 +33,11 @@
         </template>
       </div>
 
+      <BlockLayout v-if="node.WaitProjectileFinish" :cosmetic="true">
+        Wait for the projectile to finish
+      </BlockLayout>
+      
     </template>
-  </BlockLayout>
-  <BlockLayout v-if="node.WaitProjectileFinish" :cosmetic="true">
-    Wait for the projectile to finish
   </BlockLayout>
 </template>
 

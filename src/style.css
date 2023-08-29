@@ -215,6 +215,13 @@ ul.navtree a.router-link-active
   background: linear-gradient(90deg, rgba(64,64,64,1) 0%, rgba(64,64,64,0) 5em);
 }
 
+.block.inverted:before
+{
+  content: 'Not';
+  float: left;
+  padding-right: .25em;
+}
+
 .block .cosmetic
 {
   color:rgb(96, 96, 96);
