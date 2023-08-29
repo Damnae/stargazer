@@ -80,7 +80,7 @@ export function evaluateTargetType(targetType?:GamecoreTargetType) : string
   return 'unknown'
 }
 
-export function evaluateDynamicExpression(expression?:DynamicExpression, _context?:GamecoreContext) : string
+export function evaluateDynamicExpression(expression?:DynamicExpression, context?:GamecoreContext) : string
 {
   if (!expression)
     return 'missing'
@@ -108,7 +108,14 @@ export function evaluateDynamicExpression(expression?:DynamicExpression, _contex
           stack.push(cleanupNumber(constants?.[bytes.charCodeAt(++i)]?.Value));
           break;
         case 1: // Variable
-          stack.push(`Var(${variables?.[bytes.charCodeAt(++i)]})`);
+          const hash = variables?.[bytes.charCodeAt(++i)]
+          let variable = `Var(${hash})`
+          if (context?.DynamicValues)
+          {
+            const dynamicValue = context.DynamicValues.Values[hash]
+            variable = explainDynamicValue(dynamicValue, context.Params) ?? variable
+          }
+          stack.push(variable);
           break;
         case 2: // Add
           var right = stack.pop();
@@ -153,6 +160,18 @@ export function evaluateDynamicExpression(expression?:DynamicExpression, _contex
   }
 
   return 'unknown'
+}
+
+function explainDynamicValue(value:DynamicValue, params:{[key:string]:GamecoreParam[]}) : string | undefined
+{
+  if (value.ReadInfo)
+  {
+    const paramList = params[value.ReadInfo.Str]
+    const paramValue = cleanupNumber(paramList?.[getIndexFromDynamicValueType(value.ReadInfo.Type)]?.Value)
+//paramValue ?? 
+    return `${value.ReadInfo.Str}(${paramValue})` ??
+          `${value.ReadInfo.Str}[${getIndexFromDynamicValueType(value.ReadInfo.Type)}]`
+  }
 }
 
 import { Avatar, } from './avatar';
@@ -226,14 +245,6 @@ function resolveDynamicValue(value:DynamicValue, creature:Creature, skills:Creat
   else console.log(`dynamicvalue not implemented for ${location}/${value.ReadInfo.Type}/${index}`)
   
   return 88888888
-}
-
-function explainDynamicValue(value:DynamicValue) : string
-{
-  if (!value.ReadInfo)
-    return 'var'
-
-  return `${value.ReadInfo.Str}[${getIndexFromDynamicValueType(value.ReadInfo.Type)}]`
 }
 
 const dynamicValueTypeToIndex:{[key:string]: number} =
