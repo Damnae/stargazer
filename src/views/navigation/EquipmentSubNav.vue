@@ -30,7 +30,6 @@
       </ul>
     </li>
   </ul>
-  <pre>{{ equipment }}</pre>
 </template>
 
 <style scoped>

@@ -35,7 +35,6 @@
       </ul>
     </li>
   </ul>
-  <pre>{{ relicset }}</pre>
 </template>
 
 <style scoped>
