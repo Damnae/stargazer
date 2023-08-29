@@ -45,6 +45,7 @@ export interface GamecoreNode
 export interface GamecoreTargetType extends GamecoreNode
 {
   Alias?: string
+  Targets?: GamecoreTargetType[]
 }
 
 // Context
@@ -77,6 +78,10 @@ export function evaluateTargetType(targetType?:GamecoreTargetType) : string
 {
   if (targetType?.Alias)
     return targetType.Alias
+  
+  if (targetType?.Targets)
+    return targetType.Targets.map(t => evaluateTargetType(t)).join(', ')
+
   return 'unknown'
 }
 

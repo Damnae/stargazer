@@ -1,20 +1,28 @@
 <script setup lang="ts">
   import { GamecoreNode, 
-    DynamicExpression, 
+    GamecoreTargetType, evaluateTargetType, 
   } from '@/scripts/sources/gamecore';
   import BlockLayout from '@/views/gamecore/BlockLayout.vue';
-  import EvaluateExpression from '../EvaluateExpression.vue';
 
   const props = defineProps<{node:GamecoreNode}>()
   const node = props.node as unknown as 
   {
-    Chance:DynamicExpression
+    ReadTargetType?:GamecoreTargetType
+    DynamicKey:string
+    Value?:string
   }
 </script>
 
 <template>
   <BlockLayout :source="node">
-    <em><EvaluateExpression :expression="node.Chance" /></em>% chance
+
+    Set <em>{{ node.DynamicKey }}</em>
+
+    to 
+    <template v-if="node.ReadTargetType">
+      <em>{{ evaluateTargetType(node.ReadTargetType) }}</em>'s
+    </template>
+    <em>{{ node.Value }}</em>
   </BlockLayout>
 </template>
 

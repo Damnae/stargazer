@@ -1,5 +1,6 @@
 <script setup lang="ts">
   import { GamecoreNode, 
+    GamecoreTargetType,
     DynamicExpression, 
   } from '@/scripts/sources/gamecore';
   import BlockLayout from '@/views/gamecore/BlockLayout.vue';
@@ -8,13 +9,18 @@
   const props = defineProps<{node:GamecoreNode}>()
   const node = props.node as unknown as 
   {
-    Chance:DynamicExpression
+    TargetType?:GamecoreTargetType
+    DynamicKey:string
+    Value?:DynamicExpression
   }
 </script>
 
 <template>
   <BlockLayout :source="node">
-    <em><EvaluateExpression :expression="node.Chance" /></em>% chance
+
+    Set <em>{{ node.DynamicKey }}</em>
+    to <em><EvaluateExpression :expression="node.Value" /></em>
+
   </BlockLayout>
 </template>
 
