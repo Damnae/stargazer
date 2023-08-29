@@ -1,5 +1,4 @@
 <script setup lang="ts">
-  import { AbilityContext, } from '@/scripts/sources/ability';
   import { GamecoreNode, 
     GamecoreTargetType, evaluateTargetType, 
     DynamicExpression, evaluateDynamicExpression,
@@ -7,7 +6,7 @@
   import BlockLayout from '@/views/gamecore/BlockLayout.vue';
   import { getHash } from '@/scripts/translate';
 
-  const props = defineProps<{node:GamecoreNode, abilityContext:AbilityContext}>()
+  const props = defineProps<{node:GamecoreNode}>()
   const node = props.node as unknown as 
   {
     TargetType?:GamecoreTargetType

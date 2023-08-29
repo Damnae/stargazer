@@ -25,13 +25,15 @@
     const character = await getCharacterByAvatar(props.commitId, avatar)
     return buildAbilityContext(avatar, avatarSkills, character)
   }
-
+  
+  provide('getGamecoreContext', () => gamecoreContext.value)
+  provide('getAbilityContext', () => abilityContext.value)
   provide('createAbilityRoute', (abilityId:string) : object => { return { name:'avatarAbility', params:{ commitId: props.commitId, objectId: props.objectId, abilityId: abilityId, } }})
 </script>
 
 <template> 
   <main class="panel">
-    <Ability :abilityId="abilityId" :abilityContext="abilityContext" />
+    <Ability :abilityId="abilityId" />
   </main>
 </template>
 

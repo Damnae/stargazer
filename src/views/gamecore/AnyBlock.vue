@@ -1,10 +1,9 @@
 <script setup lang="ts">
   import { defineAsyncComponent, } from 'vue'
-  import { AbilityContext, } from '@/scripts/sources/ability';
   import { GamecoreNode, } from '@/scripts/sources/gamecore';
   import { gamecoreToComponentName, } from '@/scripts/common';
 
-  const props = defineProps<{node:GamecoreNode, abilityContext:AbilityContext}>()
+  const props = defineProps<{node:GamecoreNode}>()
   let blockName = gamecoreToComponentName(props.node.$type)
   const blockComponent = defineAsyncComponent({
     loader: async () => 
@@ -22,7 +21,7 @@
 </script>
 
 <template>
-  <component :is="blockComponent" :node="node" :abilityContext="abilityContext" />
+  <component :is="blockComponent" :node="node" />
 </template>
 
 <style scoped>

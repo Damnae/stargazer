@@ -7,13 +7,14 @@
   
   const abilityContext = ref<AbilityContext>(await getAbilityContext(props.commitId, AbilityContextType.RelicSet))
   watch(props, async () => abilityContext.value = await getAbilityContext(props.commitId, AbilityContextType.RelicSet))
-
+  
+  provide('getAbilityContext', () => abilityContext.value)
   provide('createAbilityRoute', (abilityId:string) : object => { return { name:'relicsetAbility', params:{ commitId: props.commitId, objectId: props.objectId, abilityId: abilityId, } }})
 </script>
 
 <template> 
   <main class="panel">
-    <Ability :abilityId="abilityId" :abilityContext="abilityContext" />
+    <Ability :abilityId="abilityId" />
   </main>
 </template>
 

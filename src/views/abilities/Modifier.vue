@@ -1,9 +1,9 @@
 <script setup lang="ts">
   import { evaluateDynamicExpression } from '@/scripts/sources/gamecore';
-  import { Modifier, AbilityContext, } from '../../scripts/sources/ability';
+  import { Modifier, } from '../../scripts/sources/ability';
   import AnyBlock from '../gamecore/AnyBlock.vue';
   import BlockLayout from '../gamecore/BlockLayout.vue';
-  defineProps<{modifier:Modifier, abilityContext:AbilityContext}>()
+  defineProps<{modifier:Modifier}>()
 </script>
 
 <template>
@@ -73,7 +73,7 @@
         <BlockLayout :source="e">
           <span class="flow">{{ key }}</span>
           <template #content>
-            <AnyBlock v-for="n in e.CallbackConfig" :node="n" :abilityContext="abilityContext" />
+            <AnyBlock v-for="n in e.CallbackConfig" :node="n" />
           </template>
         </BlockLayout>
       </template>
@@ -100,19 +100,19 @@
                   <BlockLayout v-if="r.OnEnterRange" :source="r.OnEnterRange">
                     <span class="flow">On Enter Range</span>
                     <template #content>
-                      <AnyBlock v-for="n in r.OnEnterRange" :node="n" :abilityContext="abilityContext" />
+                      <AnyBlock v-for="n in r.OnEnterRange" :node="n" />
                     </template>
                   </BlockLayout>
                   <BlockLayout v-if="r.OnExitRange" :source="r.OnExitRange">
                     <span class="flow">On Exit Range</span>
                     <template #content>
-                      <AnyBlock v-for="n in r.OnExitRange" :node="n" :abilityContext="abilityContext" />
+                      <AnyBlock v-for="n in r.OnExitRange" :node="n" />
                     </template>
                   </BlockLayout>
                   <BlockLayout v-if="r.OnChange" :source="r.OnChange">
                     <span class="flow">On Change</span>
                     <template #content>
-                      <AnyBlock v-for="n in r.OnChange" :node="n" :abilityContext="abilityContext" />
+                      <AnyBlock v-for="n in r.OnChange" :node="n" />
                     </template>
                   </BlockLayout>
                 </template>

@@ -1,11 +1,10 @@
 <script setup lang="ts">
-  import { AbilityContext, } from '@/scripts/sources/ability';
   import { GamecoreNode, 
   } from '@/scripts/sources/gamecore';
   import BlockLayout from '@/views/gamecore/BlockLayout.vue';
   import AnyBlock from '@/views/gamecore/AnyBlock.vue';
 
-  const props = defineProps<{node:GamecoreNode, abilityContext:AbilityContext}>()
+  const props = defineProps<{node:GamecoreNode}>()
   const node = props.node as unknown as 
   {
     Predicate:GamecoreNode
@@ -23,20 +22,20 @@
     <span class="flow">If</span>
     <template #content>
       
-      <AnyBlock :node="predicate" :abilityContext="abilityContext" />
+      <AnyBlock :node="predicate" />
 
       <div class="subblock">
         <template v-if="successTasks && successTasks.length > 0">
           <span class="flow">Then</span>
           <template v-for="n in successTasks">
-            <AnyBlock :node="n" :abilityContext="abilityContext" />
+            <AnyBlock :node="n" />
           </template>
         </template>
 
         <template v-if="failedTasks && failedTasks.length > 0">
           <span class="flow">Else</span>
           <template v-for="n in failedTasks">
-            <AnyBlock :node="n" :abilityContext="abilityContext" />
+            <AnyBlock :node="n" />
           </template>
         </template>
       </div>

@@ -1,12 +1,11 @@
 <script setup lang="ts">
-  import { AbilityContext, } from '@/scripts/sources/ability';
   import { GamecoreNode, 
     DynamicExpression, evaluateDynamicExpression, 
   } from '@/scripts/sources/gamecore';
   import BlockLayout from '@/views/gamecore/BlockLayout.vue';
 import AnyBlock from '../AnyBlock.vue';
 
-  const props = defineProps<{node:GamecoreNode, abilityContext:AbilityContext}>()
+  const props = defineProps<{node:GamecoreNode}>()
   const node = props.node as unknown as 
   {
     OddsList:DynamicExpression[]
@@ -20,7 +19,7 @@ import AnyBlock from '../AnyBlock.vue';
     <template #content>
       <template v-for="task, index in node.TaskList">
         <span class="flow"><em>{{ evaluateDynamicExpression(node.OddsList[index]) }}</em>%</span>
-        <AnyBlock :node="task" :abilityContext="abilityContext" />
+        <AnyBlock :node="task" />
       </template>
     </template>
   </BlockLayout>

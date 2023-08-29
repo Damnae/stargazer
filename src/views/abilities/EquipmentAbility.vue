@@ -8,12 +8,13 @@
   const abilityContext = ref<AbilityContext>(await getAbilityContext(props.commitId, AbilityContextType.Equipment))
   watch(props, async () => abilityContext.value = await getAbilityContext(props.commitId, AbilityContextType.Equipment))
 
+  provide('getAbilityContext', () => abilityContext.value)
   provide('createAbilityRoute', (abilityId:string) : object => { return { name:'equipmentAbility', params:{ commitId: props.commitId, objectId: props.objectId, abilityId: abilityId, } }})
 </script>
 
 <template> 
   <main class="panel">
-    <Ability :abilityId="abilityId" :abilityContext="abilityContext" />
+    <Ability :abilityId="abilityId" />
   </main>
 </template>
 

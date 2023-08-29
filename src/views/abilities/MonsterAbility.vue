@@ -25,13 +25,14 @@
     const character = await getCharacterByMonster(props.commitId, monster)
     return buildAbilityContext(monster, monsterSkills, character)
   }
-
+  
+  provide('getAbilityContext', () => abilityContext.value)
   provide('createAbilityRoute', (abilityId:string) : object => { return { name:'monsterAbility', params:{ commitId: props.commitId, objectId: props.objectId, abilityId: abilityId, } }})
 </script>
 
 <template> 
   <main class="panel">
-    <Ability :abilityId="abilityId" :abilityContext="abilityContext" />
+    <Ability :abilityId="abilityId" />
   </main>
 </template>
 

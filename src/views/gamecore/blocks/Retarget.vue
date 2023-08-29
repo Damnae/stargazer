@@ -1,5 +1,4 @@
 <script setup lang="ts">
-  import { AbilityContext, } from '@/scripts/sources/ability';
   import { GamecoreNode, 
     GamecoreTargetType, 
     DynamicExpression, evaluateDynamicExpression, evaluateTargetType, 
@@ -7,7 +6,7 @@
   import BlockLayout from '@/views/gamecore/BlockLayout.vue';
   import AnyBlock from '@/views/gamecore/AnyBlock.vue';
 
-  const props = defineProps<{node:GamecoreNode, abilityContext:AbilityContext}>()
+  const props = defineProps<{node:GamecoreNode}>()
   const node = props.node as unknown as 
   {
     TargetType:GamecoreTargetType
@@ -44,12 +43,12 @@
       <div class="subblock">
         <template v-if="node.Predicate">
           <span class="flow">With Condition</span>
-          <AnyBlock :node="node.Predicate" :abilityContext="abilityContext" />
+          <AnyBlock :node="node.Predicate" />
         </template>
         <template v-if="tasks && tasks.length > 0">
           <span class="flow">Do</span>
           <template v-for="n in tasks">
-            <AnyBlock :node="n" :abilityContext="abilityContext" />
+            <AnyBlock :node="n" />
           </template>
         </template>
       </div>
