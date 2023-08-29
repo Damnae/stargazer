@@ -1,10 +1,11 @@
 <script setup lang="ts">
-  import { GamecoreNode, 
+  import { inject, Ref, } from 'vue';
+  import { getHash } from '@/scripts/translate';
+  import { GamecoreNode, GamecoreContext,
     GamecoreTargetType, evaluateTargetType, 
     DynamicExpression, evaluateDynamicExpression,
   } from '@/scripts/sources/gamecore';
   import BlockLayout from '@/views/gamecore/BlockLayout.vue';
-  import { getHash } from '@/scripts/translate';
 
   const props = defineProps<{node:GamecoreNode}>()
   const node = props.node as unknown as 
@@ -20,6 +21,7 @@
       [key:string]:DynamicExpression
     }
   }
+  const gamecoreContext = inject('gamecoreContext') as Ref<GamecoreContext>
 </script>
 
 <template>
@@ -34,13 +36,13 @@
       to <em>{{ evaluateTargetType(node.TargetType) }}</em>
     </template>
     <template v-if="node.Chance">
-      with <em>{{ evaluateDynamicExpression(node.Chance) }}</em>% base chance
+      with <em>{{ evaluateDynamicExpression(node.Chance, gamecoreContext) }}</em>% base chance
     </template>
     <template v-if="node.MaxLayer">
-      with up to <em>{{ evaluateDynamicExpression(node.MaxLayer) }}</em> stacks
+      with up to <em>{{ evaluateDynamicExpression(node.MaxLayer, gamecoreContext) }}</em> stacks
     </template>
     <template v-if="node.LifeTime">
-      for <em>{{ evaluateDynamicExpression(node.LifeTime) }}</em> turns
+      for <em>{{ evaluateDynamicExpression(node.LifeTime, gamecoreContext) }}</em> turns
       <template v-if="!node.LifeStepImmediately">
         <span class="minor">(Excluding current turn)</span>
       </template>
@@ -51,7 +53,7 @@
 
     <template #content v-if="node.DynamicValues">
       <BlockLayout v-for="expression, key in node.DynamicValues" :source="expression">
-        With <em :title="getHash(key.toString()).toString()">{{ key }}</em> set to <em>{{ evaluateDynamicExpression(expression) }}</em>
+        With <em :title="getHash(key.toString()).toString()">{{ key }}</em> set to <em>{{ evaluateDynamicExpression(expression, gamecoreContext) }}</em>
       </BlockLayout>
     </template>
   </BlockLayout>

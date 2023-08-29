@@ -80,13 +80,77 @@ export function evaluateTargetType(targetType?:GamecoreTargetType) : string
   return 'unknown'
 }
 
-export function evaluateDynamicExpression(expression?:DynamicExpression) : string
+export function evaluateDynamicExpression(expression?:DynamicExpression, _context?:GamecoreContext) : string
 {
   if (!expression)
     return 'missing'
   
   if (expression.FixedValue)
     return cleanupNumber(expression.FixedValue.Value)
+
+  if (expression.PostfixExpr)
+  {
+    var postFixExpr = expression.PostfixExpr;
+    var opCodes = postFixExpr.OpCodes;
+    var constants = postFixExpr.FixedValues;
+    var variables = postFixExpr.DynamicHashes;
+
+    var formula = '';
+    var stack:string[] = [];
+
+    var bytes = atob(opCodes);
+    for (var i = 0; i < bytes.length; i++)
+    {
+      var opCode = bytes.charCodeAt(i);
+      switch (opCode)
+      {
+        case 0: // Constant
+          stack.push(cleanupNumber(constants?.[bytes.charCodeAt(++i)]?.Value));
+          break;
+        case 1: // Variable
+          stack.push(`Var(${variables?.[bytes.charCodeAt(++i)]})`);
+          break;
+        case 2: // Add
+          var right = stack.pop();
+          var left = stack.pop();
+          stack.push(`(${left}) + (${right})`);
+          break;
+        case 3: // Subtract
+          var right = stack.pop();
+          var left = stack.pop();
+          stack.push(`(${left}) - (${right})`);
+          break;
+        case 4: // Multiply
+          var right = stack.pop();
+          var left = stack.pop();
+          stack.push(`(${left}) * (${right})`);
+          break;
+        case 5: // Divide
+          var right = stack.pop();
+          var left = stack.pop();
+          stack.push(`(${left}) / (${right})`);
+          break;
+        case 6: // Negative
+          var right = stack.pop();
+          stack.push(`-(${right})`);
+          break;
+        case 7: // Not
+          var right = stack.pop();
+          stack.push(`!(${right})`);
+          break;
+        case 8: // Call
+          var right = stack.pop();
+          stack.push(`Call(${bytes.charCodeAt(++i)}, ${right}`);
+          break;
+        case 9: // Return
+          var result = stack.pop();
+          formula = result ?? 'empty';
+          break;
+      }
+    }
+
+    return formula;
+  }
 
   return 'unknown'
 }
@@ -96,7 +160,7 @@ import { Creature, } from './creature';
 import { CreatureSkill, } from './skill';
 import { Character, } from './character';
 
-export function buildGamecoreContext(creature:Creature, skills:CreatureSkill[], character:Character) : GamecoreContext
+export function buildGamecoreContext(creature:Creature, skills:CreatureSkill[], character:Character) : void
 {
   const characterValues:GamecoreContextDynamicValues = Object.fromEntries(
       Object.entries(character.DynamicValues?.Values ?? {})

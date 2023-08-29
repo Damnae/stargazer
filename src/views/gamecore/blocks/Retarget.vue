@@ -1,7 +1,8 @@
 <script setup lang="ts">
-  import { GamecoreNode, 
-    GamecoreTargetType, 
-    DynamicExpression, evaluateDynamicExpression, evaluateTargetType, 
+  import { inject, Ref, } from 'vue';
+  import { GamecoreNode, GamecoreContext, 
+    GamecoreTargetType, evaluateTargetType, 
+    DynamicExpression, evaluateDynamicExpression,
   } from '@/scripts/sources/gamecore';
   import BlockLayout from '@/views/gamecore/BlockLayout.vue';
   import AnyBlock from '@/views/gamecore/AnyBlock.vue';
@@ -17,6 +18,7 @@
   }
 
   const tasks = node.TaskList;
+  const gamecoreContext = inject('gamecoreContext') as Ref<GamecoreContext>
 </script>
 
 <template>
@@ -24,7 +26,7 @@
     <span class="flow">
       Retarget
       <template v-if="node.MaxNumber">
-        up to {{ evaluateDynamicExpression(node.MaxNumber) }} in 
+        up to {{ evaluateDynamicExpression(node.MaxNumber, gamecoreContext) }} in 
       </template>
       <template v-else>
         all in 

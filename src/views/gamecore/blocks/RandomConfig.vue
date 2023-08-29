@@ -1,5 +1,6 @@
 <script setup lang="ts">
-  import { GamecoreNode, 
+  import { inject, Ref, } from 'vue';
+  import { GamecoreNode, GamecoreContext, 
     DynamicExpression, evaluateDynamicExpression, 
   } from '@/scripts/sources/gamecore';
   import BlockLayout from '@/views/gamecore/BlockLayout.vue';
@@ -11,6 +12,7 @@ import AnyBlock from '../AnyBlock.vue';
     OddsList:DynamicExpression[]
     TaskList:GamecoreNode[]
   }
+  const gamecoreContext = inject('gamecoreContext') as Ref<GamecoreContext>
 </script>
 
 <template>
@@ -18,7 +20,7 @@ import AnyBlock from '../AnyBlock.vue';
     <span class="flow">Random</span>
     <template #content>
       <template v-for="task, index in node.TaskList">
-        <span class="flow"><em>{{ evaluateDynamicExpression(node.OddsList[index]) }}</em>%</span>
+        <span class="flow"><em>{{ evaluateDynamicExpression(node.OddsList[index], gamecoreContext) }}</em>%</span>
         <AnyBlock :node="task" />
       </template>
     </template>

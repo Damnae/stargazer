@@ -1,5 +1,6 @@
 <script setup lang="ts">
-  import { GamecoreNode, 
+  import { Ref, inject } from 'vue';
+  import { GamecoreNode, GamecoreContext, 
     DynamicExpression, evaluateDynamicExpression, 
   } from '@/scripts/sources/gamecore';
   import BlockLayout from '@/views/gamecore/BlockLayout.vue';
@@ -13,11 +14,12 @@
   }
 
   const tasks = node.TaskList;
+  const gamecoreContext = inject('gamecoreContext') as Ref<GamecoreContext>
 </script>
 
 <template>
   <BlockLayout :source="node">
-    <span class="flow">Do {{ evaluateDynamicExpression(node.MaxLoopCount) }} times</span>
+    <span class="flow">Do {{ evaluateDynamicExpression(node.MaxLoopCount, gamecoreContext) }} times</span>
     <template #content>
       <template v-if="tasks && tasks.length > 0">
         <template v-for="n in tasks">

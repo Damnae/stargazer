@@ -1,13 +1,13 @@
 <script setup lang="ts">
-  import { computed, inject, } from 'vue'
-  import { AbilityContext } from '@/scripts/sources/ability';
+  import { Ref, computed, inject, } from 'vue'
+  import { Ability, AbilityContext, } from '@/scripts/sources/ability';
   import AnyBlock from '../gamecore/AnyBlock.vue';
   import Modifier from './Modifier.vue';
 
   const props = defineProps<{abilityId:string}>()
-  const getAbilityContext = inject('getAbilityContext') as () => AbilityContext
+  const abilityContext = inject('abilityContext') as Ref<AbilityContext>
 
-  const ability = computed(() => getAbilityContext().Abilities?.[props.abilityId])
+  const ability = computed<Ability>(() => abilityContext.value.Abilities?.[props.abilityId])
 </script>
 
 <template>

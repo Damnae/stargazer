@@ -1,5 +1,6 @@
 <script setup lang="ts">
-  import { GamecoreNode, 
+  import { inject, Ref, } from 'vue';
+  import { GamecoreNode, GamecoreContext, 
     GamecoreTargetType, evaluateTargetType, 
     DynamicExpression, evaluateDynamicExpression, 
   } from '@/scripts/sources/gamecore';
@@ -12,6 +13,7 @@
     AnimStateName?:string
     NormalizedTimeEnd?:DynamicExpression
   }
+  const gamecoreContext = inject('gamecoreContext') as Ref<GamecoreContext>
 </script>
 
 <template>
@@ -30,7 +32,7 @@
     animation to 
 
     <template v-if="node.AnimStateName">
-      reach <em>{{ evaluateDynamicExpression(node.NormalizedTimeEnd) }}</em>%
+      reach <em>{{ evaluateDynamicExpression(node.NormalizedTimeEnd, gamecoreContext) }}</em>%
     </template>
     <template v-else>
       <!-- see Avatar_Himeko_Skill02_Phase02 -->

@@ -28,8 +28,8 @@
     return context
   }
   
-  provide('getGamecoreContext', () => gamecoreContext.value)
-  provide('getAbilityContext', () => abilityContext.value)
+  provide('gamecoreContext', gamecoreContext)
+  provide('abilityContext', abilityContext)
   provide('createAbilityRoute', (abilityId:string) : object => { return { name:'relicsetAbility', params:{ commitId: props.commitId, objectId: props.objectId, abilityId: abilityId, } }})
 </script>
 
