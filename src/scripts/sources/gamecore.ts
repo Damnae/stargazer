@@ -164,7 +164,7 @@ export function evaluateDynamicExpression(expression?:DynamicExpression, context
 
 function explainDynamicValue(value:DynamicValue, params:{[key:string]:GamecoreParam[]}) : string | undefined
 {
-  if (value.ReadInfo)
+  if (value?.ReadInfo)
   {
     const paramList = params[value.ReadInfo.Str]
     const paramValue = cleanupNumber(paramList?.[getIndexFromDynamicValueType(value.ReadInfo.Type)]?.Value)
