@@ -40,7 +40,7 @@
 
     // Eidolons
     for (const [index, eidolon] of avatar.Eidolons.entries())
-      context.Params[`Rank0${index + 1}`] = eidolon.Param
+      context.Params[`Rank${(index + 1).toString().padStart(2, '0')}`] = eidolon.Param
 
     // Ascension Traces (This relies on them being in the correct order)
     for (const [index, trace] of avatar.Traces.filter(t => t.PointType === 3).entries())
