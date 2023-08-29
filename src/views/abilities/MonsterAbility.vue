@@ -1,5 +1,5 @@
 <script setup lang="ts">
-  import { ref, watch, } from 'vue'
+  import {  ref, watch, provide,} from 'vue'
   import { getMonster, } from '../../scripts/sources/monster';
   import { getMonsterSkillsByIds, } from '../../scripts/sources/monsterskill';
   import { getCharacterByMonster, } from '../../scripts/sources/character';
@@ -10,7 +10,13 @@
   const props = defineProps<{commitId:string, objectId:number, abilityId:string}>()
   
   const gamecoreContext = ref<GamecoreContext>(await getGamecoreContext())
-  watch(props, async () => gamecoreContext.value = await getGamecoreContext())
+  const abilityContext = ref<AbilityContext>(await getAbilityContext(props.commitId, AbilityContextType.Monster))
+
+  watch(props, async () => 
+  {
+    gamecoreContext.value = await getGamecoreContext()
+    abilityContext.value = await getAbilityContext(props.commitId, AbilityContextType.Monster)
+  })
 
   async function getGamecoreContext()
   {
@@ -20,8 +26,7 @@
     return buildAbilityContext(monster, monsterSkills, character)
   }
 
-  const abilityContext = ref<AbilityContext>(await getAbilityContext(props.commitId, AbilityContextType.Monster))
-  watch(props, async () => abilityContext.value = await getAbilityContext(props.commitId, AbilityContextType.Monster))
+  provide('createAbilityRoute', (abilityId:string) : object => { return { name:'monsterAbility', params:{ commitId: props.commitId, objectId: props.objectId, abilityId: abilityId, } }})
 </script>
 
 <template> 

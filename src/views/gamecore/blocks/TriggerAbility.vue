@@ -1,4 +1,5 @@
 <script setup lang="ts">
+  import { inject } from 'vue';
   import { AbilityContext, } from '@/scripts/sources/ability';
   import { GamecoreNode, 
     GamecoreTargetType, evaluateTargetType, 
@@ -11,6 +12,8 @@
     TargetType?:GamecoreTargetType
     AbilityName:string
   }
+
+  const createAbilityRoute = inject<(key:string) => object>('createAbilityRoute') as (key:string) => object
 </script>
 
 <template>
@@ -22,7 +25,7 @@
     </template>
 
     ability
-    <RouterLink :to="{  }">
+    <RouterLink :to="createAbilityRoute(node.AbilityName)">
       <em>{{ node.AbilityName }}</em>
     </RouterLink>
 

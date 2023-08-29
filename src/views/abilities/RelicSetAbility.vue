@@ -1,5 +1,5 @@
 <script setup lang="ts">
-  import { ref, watch } from 'vue';
+  import { ref, watch, provide, } from 'vue';
   import { getAbilityContext, AbilityContext, AbilityContextType, } from '../../scripts/sources/ability';
   import Ability from './Ability.vue';
 
@@ -7,6 +7,8 @@
   
   const abilityContext = ref<AbilityContext>(await getAbilityContext(props.commitId, AbilityContextType.RelicSet))
   watch(props, async () => abilityContext.value = await getAbilityContext(props.commitId, AbilityContextType.RelicSet))
+
+  provide('createAbilityRoute', (abilityId:string) : object => { return { name:'relicsetAbility', params:{ commitId: props.commitId, objectId: props.objectId, abilityId: abilityId, } }})
 </script>
 
 <template> 
