@@ -1,7 +1,6 @@
 <script setup lang="ts">
-  import { Ref, inject } from 'vue';
-  import { GamecoreNode, GamecoreContext, 
-    DynamicExpression, evaluateDynamicExpression, 
+  import { GamecoreNode, 
+    DynamicExpression, 
   } from '@/scripts/sources/gamecore';
   import BlockLayout from '@/views/gamecore/BlockLayout.vue';
 
@@ -10,12 +9,11 @@
   {
     Chance:DynamicExpression
   }
-  const gamecoreContext = inject('gamecoreContext') as Ref<GamecoreContext>
 </script>
 
 <template>
   <BlockLayout :source="node">
-    <em>{{ evaluateDynamicExpression(node.Chance, gamecoreContext) }}</em>% chance
+    <em><EvaluateExpression :expression="node.Chance" /></em>% chance
   </BlockLayout>
 </template>
 

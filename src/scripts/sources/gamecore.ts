@@ -167,7 +167,12 @@ function explainDynamicValue(value:DynamicValue, params:{[key:string]:GamecorePa
   if (value?.ReadInfo)
   {
     const paramList = params[value.ReadInfo.Str]
+    if (!paramList)
+      console.log(`params not found: ${value.ReadInfo.Str}[${getIndexFromDynamicValueType(value.ReadInfo.Type)}]`)
     const paramValue = cleanupNumber(paramList?.[getIndexFromDynamicValueType(value.ReadInfo.Type)]?.Value)
+    if (!paramValue)
+      console.log(`param not found: ${value.ReadInfo.Str}[${getIndexFromDynamicValueType(value.ReadInfo.Type)}]`)
+    
     //paramValue ?? 
     return `${value.ReadInfo.Str}(${paramValue})` ??
           `${value.ReadInfo.Str}[${getIndexFromDynamicValueType(value.ReadInfo.Type)}]`

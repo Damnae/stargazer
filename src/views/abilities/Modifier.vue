@@ -1,11 +1,9 @@
 <script setup lang="ts">
-  import { inject, Ref } from 'vue';
-  import { evaluateDynamicExpression, GamecoreContext, } from '@/scripts/sources/gamecore';
   import { Modifier, } from '../../scripts/sources/ability';
   import AnyBlock from '../gamecore/AnyBlock.vue';
   import BlockLayout from '../gamecore/BlockLayout.vue';
+  import EvaluateExpression from '../gamecore/EvaluateExpression.vue';
   defineProps<{modifier:Modifier}>()
-  const gamecoreContext = inject('gamecoreContext') as Ref<GamecoreContext>
 </script>
 
 <template>
@@ -55,13 +53,13 @@
   <BlockLayout v-if="modifier.LayerAddWhenStack" :source="modifier.LayerAddWhenStack">
     <span class="flow">LayerAddWhenStack</span>
     <template #content>
-      {{ evaluateDynamicExpression(modifier.LayerAddWhenStack, gamecoreContext) }}
+      <EvaluateExpression :expression="modifier.LayerAddWhenStack" />
     </template>
   </BlockLayout>
   <BlockLayout v-if="modifier.PerformTime" :source="modifier.PerformTime">
     <span class="flow">PerformTime</span>
     <template #content>
-      {{ evaluateDynamicExpression(modifier.PerformTime, gamecoreContext) }}
+      <EvaluateExpression :expression="modifier.PerformTime" />
     </template>
   </BlockLayout>
   <BlockLayout v-if="modifier.DynamicValues" :source=" modifier.DynamicValues">
@@ -92,8 +90,8 @@
             <template v-for="r in p.Ranges">
               <BlockLayout :source="r">
                 <span class="flow">
-                  Range {{ evaluateDynamicExpression(r.Min, gamecoreContext) }} 
-                  to {{ evaluateDynamicExpression(r.Max, gamecoreContext) }}
+                  Range <EvaluateExpression :expression="r.Min" />
+                  to <EvaluateExpression :expression="r.Max" />
                   <template v-if="r.MaxInclusive">
                     (Inclusive)
                   </template>

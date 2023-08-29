@@ -1,11 +1,11 @@
 <script setup lang="ts">
-  import { inject, Ref, } from 'vue';
   import { getHash } from '@/scripts/translate';
-  import { GamecoreNode, GamecoreContext,
+  import { GamecoreNode, 
     GamecoreTargetType, evaluateTargetType, 
-    DynamicExpression, evaluateDynamicExpression,
+    DynamicExpression, 
   } from '@/scripts/sources/gamecore';
   import BlockLayout from '@/views/gamecore/BlockLayout.vue';
+  import EvaluateExpression from '../EvaluateExpression.vue';
 
   const props = defineProps<{node:GamecoreNode}>()
   const node = props.node as unknown as 
@@ -21,7 +21,6 @@
       [key:string]:DynamicExpression
     }
   }
-  const gamecoreContext = inject('gamecoreContext') as Ref<GamecoreContext>
 </script>
 
 <template>
@@ -36,13 +35,13 @@
       to <em>{{ evaluateTargetType(node.TargetType) }}</em>
     </template>
     <template v-if="node.Chance">
-      with <em>{{ evaluateDynamicExpression(node.Chance, gamecoreContext) }}</em>% base chance
+      with <em><EvaluateExpression :expression="node.Chance" /></em>% base chance
     </template>
     <template v-if="node.MaxLayer">
-      with up to <em>{{ evaluateDynamicExpression(node.MaxLayer, gamecoreContext) }}</em> stacks
+      with up to <em><EvaluateExpression :expression="node.MaxLayer" /></em> stacks
     </template>
     <template v-if="node.LifeTime">
-      for <em>{{ evaluateDynamicExpression(node.LifeTime, gamecoreContext) }}</em> turns
+      for <em><EvaluateExpression :expression="node.LifeTime" /></em> turns
       <template v-if="!node.LifeStepImmediately">
         <span class="minor">(Excluding current turn)</span>
       </template>
@@ -53,7 +52,7 @@
 
     <template #content v-if="node.DynamicValues">
       <BlockLayout v-for="expression, key in node.DynamicValues" :source="expression">
-        With <em :title="getHash(key.toString()).toString()">{{ key }}</em> set to <em>{{ evaluateDynamicExpression(expression, gamecoreContext) }}</em>
+        With <em :title="getHash(key.toString()).toString()">{{ key }}</em> set to <em><EvaluateExpression :expression="expression" /></em>
       </BlockLayout>
     </template>
   </BlockLayout>

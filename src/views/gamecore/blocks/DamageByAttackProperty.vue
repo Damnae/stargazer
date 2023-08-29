@@ -1,10 +1,10 @@
 <script setup lang="ts">
-  import { inject, Ref, } from 'vue';
-  import { GamecoreNode, GamecoreContext,
+  import { GamecoreNode,
     GamecoreTargetType, evaluateTargetType, 
-    DynamicExpression, evaluateDynamicExpression,
+    DynamicExpression, 
   } from '@/scripts/sources/gamecore';
   import BlockLayout from '@/views/gamecore/BlockLayout.vue';
+  import EvaluateExpression from '../EvaluateExpression.vue';
 
   const props = defineProps<{node:GamecoreNode}>()
   const node = props.node as unknown as 
@@ -27,7 +27,6 @@
     }
     CanTriggerLastKill:boolean
   }
-  const gamecoreContext = inject('gamecoreContext') as Ref<GamecoreContext>
 </script>
 
 <template>
@@ -35,22 +34,22 @@
     
     Deal 
     <template v-if="node.AttackProperty?.HitSplitRatio">
-      <em>{{ evaluateDynamicExpression(node.AttackProperty.HitSplitRatio, gamecoreContext) }}</em> of 
+      <em><EvaluateExpression :expression="node.AttackProperty.HitSplitRatio" /></em> of 
     </template>
 
     <template v-if="node.AttackProperty?.DamagePercentage">
-      <em>{{ evaluateDynamicExpression(node.AttackProperty.DamagePercentage, gamecoreContext) }}</em>%
+      <em><EvaluateExpression :expression="node.AttackProperty.DamagePercentage" /></em>%
       {{ node.AttackProperty.FormulaType ?? "Atk" }} damage
     </template>
     <template v-if="node.AttackProperty?.ExtraDamagePercentage">
-      <em>{{ evaluateDynamicExpression(node.AttackProperty.ExtraDamagePercentage, gamecoreContext) }}</em>%
+      <em><EvaluateExpression :expression="node.AttackProperty.ExtraDamagePercentage" /></em>%
       {{ node.AttackProperty.ExtraFormulaType }} damage
     </template>
     <template v-if="node.AttackProperty?.DamageValue">
-      <em>{{ evaluateDynamicExpression(node.AttackProperty.DamageValue, gamecoreContext) }}</em> flat damage
+      <em><EvaluateExpression :expression="node.AttackProperty.DamageValue" /></em> flat damage
     </template>
     <template v-if="node.AttackProperty?.StanceValue">
-      <em>{{ evaluateDynamicExpression(node.AttackProperty.StanceValue, gamecoreContext) }}</em> toughness damage
+      <em><EvaluateExpression :expression="node.AttackProperty.StanceValue" /></em> toughness damage
     </template>
 
     <template v-if="node.AttackProperty?.DamageTypeFromAttacker">
