@@ -21,7 +21,7 @@
 
     <RouterView v-if="!errorMessage" v-slot="{ Component }">
       <template v-if="Component">
-        <Suspense>
+        <Suspense :timeout="100">
 
           <component :is="Component"></component>
           <template #fallback>

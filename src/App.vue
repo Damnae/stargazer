@@ -9,7 +9,7 @@ import Footer from '@/views/Footer.vue'
 
       <RouterView v-slot="{ Component }">
         <template v-if="Component">
-          <Suspense>
+          <Suspense :timeout="100">
 
             <component :is="Component"></component>
             <template #fallback>

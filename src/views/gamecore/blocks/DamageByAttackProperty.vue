@@ -16,6 +16,7 @@
       DamageTypeFromAttacker?:boolean
       HitSplitRatio?:DynamicExpression
       DamagePercentage?:DynamicExpression
+      BreakDamagePercentage?:DynamicExpression
       FormulaType?:string
       ExtraDamagePercentage?:DynamicExpression
       ExtraFormulaType?:string
@@ -39,8 +40,13 @@
 
     <template v-if="node.AttackProperty?.DamagePercentage">
       <em><EvaluateExpression :expression="node.AttackProperty.DamagePercentage" /></em>%
-      {{ node.AttackProperty.FormulaType ?? "Atk" }} damage
+      {{ node.AttackProperty.FormulaType ?? "ATK" }} damage
     </template>
+    <template v-else-if="node.AttackProperty?.BreakDamagePercentage">
+      <em><EvaluateExpression :expression="node.AttackProperty.BreakDamagePercentage" /></em>%
+      {{ node.AttackProperty.FormulaType ?? "ATK" }} damage
+    </template>
+
     <template v-if="node.AttackProperty?.ExtraDamagePercentage">
       <em><EvaluateExpression :expression="node.AttackProperty.ExtraDamagePercentage" /></em>%
       {{ node.AttackProperty.ExtraFormulaType }} damage
