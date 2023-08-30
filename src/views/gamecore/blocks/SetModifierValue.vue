@@ -1,4 +1,5 @@
 <script setup lang="ts">
+  import { inject } from 'vue';
   import { GamecoreNode, 
     GamecoreTargetType, evaluateTargetType, 
     DynamicExpression,
@@ -12,21 +13,37 @@
     TargetType?:GamecoreTargetType
     ModifierName:string
     Value?:DynamicExpression
+    ModifyFunction:string
   }
+  const createModifierRoute = inject<(key:string) => object>('createModifierRoute') as (key:string) => object
 </script>
 
 <template>
   <BlockLayout :source="node">
+    <template v-if="node.ModifyFunction">
+      
+      <em>{{ node.ModifyFunction }} <EvaluateExpression :expression="node.Value" /></em>
+      to
+      <template v-if="node.TargetType">
+        <em>{{ evaluateTargetType(node.TargetType) }}</em>'s
+      </template>
+      <RouterLink v-if="node.ModifierName" :to="createModifierRoute(node.ModifierName)">
+        <em>{{ node.ModifierName }}</em>
+      </RouterLink>
 
-    Set 
-    <template v-if="node.TargetType">
-      <em>{{ evaluateTargetType(node.TargetType) }}</em>'s
     </template>
-    <RouterLink :to="{  }">
-      <em>{{ node.ModifierName }}</em>
-    </RouterLink>'s
-    value to <em><EvaluateExpression :expression="node.Value" /></em>
+    <template v-else>
 
+      Set 
+      <template v-if="node.TargetType">
+        <em>{{ evaluateTargetType(node.TargetType) }}</em>'s
+      </template>
+      <RouterLink v-if="node.ModifierName" :to="createModifierRoute(node.ModifierName)">
+        <em>{{ node.ModifierName }}</em>
+      </RouterLink>'s
+      value to <em><EvaluateExpression :expression="node.Value" /></em>
+
+    </template>
   </BlockLayout>
 </template>
 

@@ -1,14 +1,14 @@
 <script setup lang="ts">
   import ProvideEquipmentContext from './ProvideEquipmentContext.vue';
-  import Ability from './Ability.vue';
+  import Modifier from './Modifier.vue';
 
-  defineProps<{commitId:string, objectId:number, abilityId:string}>()
+  defineProps<{commitId:string, objectId:number, modifierId:string}>()
 </script>
 
 <template> 
   <main class="panel">
     <ProvideEquipmentContext :commitId="commitId" :objectId="objectId">
-      <Ability :abilityId="abilityId" />
+      <Modifier :modifierId="modifierId" />
     </ProvideEquipmentContext>
   </main>
 </template>

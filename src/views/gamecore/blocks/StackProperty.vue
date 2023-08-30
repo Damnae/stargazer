@@ -18,18 +18,18 @@
 <template>
   <BlockLayout :source="node">
     
-    Add 
-    <template v-if="node.PropertyValue">
-      <em><EvaluateExpression :expression="node.PropertyValue" /></em> 
+    Increase
+    <template v-if="node.TargetType">
+      <em>{{ evaluateTargetType(node.TargetType) }}</em>'s
     </template>
-    stacks of
     <template v-if="node.Property">
       <em>{{ node.Property }}</em>
     </template>
-
-    <template v-if="node.TargetType">
-      to <em>{{ evaluateTargetType(node.TargetType) }}</em>
+    by
+    <template v-if="node.PropertyValue">
+      <em><EvaluateExpression :expression="node.PropertyValue" /></em> 
     </template>
+
   </BlockLayout>
 </template>
 

@@ -1,4 +1,5 @@
 <script setup lang="ts">
+  import { inject } from 'vue';
   import { GamecoreNode, 
     GamecoreTargetType, evaluateTargetType, 
     DynamicExpression,
@@ -15,6 +16,7 @@
     ValueType?:string
     Multiplier?:DynamicExpression
   }
+  const createModifierRoute = inject<(key:string) => object>('createModifierRoute') as (key:string) => object
 </script>
 
 <template>
@@ -26,7 +28,7 @@
     <template v-if="node.ReadTargetType">
       <em>{{ evaluateTargetType(node.ReadTargetType) }}</em>'s
     </template>
-    <RouterLink :to="{  }">
+    <RouterLink v-if="node.ModifierName" :to="createModifierRoute(node.ModifierName)">
       <em>{{ node.ModifierName }}</em>
     </RouterLink>
     (Multiplied by <em><EvaluateExpression :expression="node.Multiplier" /></em>)

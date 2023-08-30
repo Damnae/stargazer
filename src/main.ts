@@ -7,14 +7,22 @@ import { toRouteProps } from './scripts/common'
 
 import Title from './views/Title.vue'
 import Commit from './views/Commit.vue'
+
 import AvatarSubNav from './views/navigation/AvatarSubNav.vue'
 import MonsterSubNav from './views/navigation/MonsterSubNav.vue'
 import AvatarAbility from './views/abilities/AvatarAbility.vue'
+
+import AvatarModifier from './views/abilities/AvatarModifier.vue'
 import MonsterAbility from './views/abilities/MonsterAbility.vue'
+import MonsterModifier from './views/abilities/MonsterModifier.vue'
+
 import EquipmentSubNav from './views/navigation/EquipmentSubNav.vue'
 import EquipmentAbility from './views/abilities/EquipmentAbility.vue'
+import EquipmentModifier from './views/abilities/EquipmentModifier.vue'
+
 import RelicSetSubNav from './views/navigation/RelicSetSubNav.vue'
 import RelicSetAbility from './views/abilities/RelicSetAbility.vue'
+import RelicSetModifier from './views/abilities/RelicSetModifier.vue'
 
 const routes:Readonly<RouteRecordRaw[]> = 
 [
@@ -30,6 +38,10 @@ const routes:Readonly<RouteRecordRaw[]> =
             name: 'avatarAbility', components: { subnav: AvatarSubNav, default: AvatarAbility, }, 
             props:{ subnav:toRouteProps({ objectId:'number', abilityId:false }), default:toRouteProps({ objectId: 'number' }) },
         },
+        { path: '/modifier-:modifierId/from/avatar-:objectId/@:commitId', 
+            name: 'avatarModifier', components: { subnav: AvatarSubNav, default: AvatarModifier, }, 
+            props:{ subnav:toRouteProps({ objectId:'number', modifierId:false }), default:toRouteProps({ objectId: 'number' }) },
+        },
         // Monsters
         { path: '/monster-:objectId/@:commitId', 
             name: 'monster', components: { subnav: MonsterSubNav, }, 
@@ -38,6 +50,10 @@ const routes:Readonly<RouteRecordRaw[]> =
         { path: '/ability-:abilityId/from/monster-:objectId/@:commitId', 
             name: 'monsterAbility', components: { subnav: MonsterSubNav, default: MonsterAbility, },
             props:{ subnav:toRouteProps({ objectId:'number', abilityId:false }), default:toRouteProps({ objectId: 'number' }) },
+        },
+        { path: '/modifier-:modifierId/from/monster-:objectId/@:commitId', 
+            name: 'monsterModifier', components: { subnav: MonsterSubNav, default: MonsterModifier, }, 
+            props:{ subnav:toRouteProps({ objectId:'number', modifierId:false }), default:toRouteProps({ objectId: 'number' }) },
         },
         // Light Cones
         { path: '/lightcone-:objectId/@:commitId', 
@@ -48,6 +64,10 @@ const routes:Readonly<RouteRecordRaw[]> =
             name: 'equipmentAbility', components: { subnav: EquipmentSubNav, default: EquipmentAbility, },
             props:{ subnav:toRouteProps({ objectId:'number', abilityId:false }), default:toRouteProps({ objectId: 'number' }) },
         },
+        { path: '/modifier-:modifierId/from/lightcone-:objectId/@:commitId', 
+            name: 'equipmentModifier', components: { subnav: EquipmentSubNav, default: EquipmentModifier, }, 
+            props:{ subnav:toRouteProps({ objectId:'number', modifierId:false }), default:toRouteProps({ objectId: 'number' }) },
+        },
         // Relic Sets
         { path: '/relicset-:objectId/@:commitId', 
             name: 'relicset', components: { subnav: RelicSetSubNav, }, 
@@ -56,6 +76,10 @@ const routes:Readonly<RouteRecordRaw[]> =
         { path: '/ability-:abilityId/from/relicset-:objectId/@:commitId', 
             name: 'relicsetAbility', components: { subnav: RelicSetSubNav, default: RelicSetAbility, },
             props:{ subnav:toRouteProps({ objectId:'number', abilityId:false }), default:toRouteProps({ objectId: 'number' }) },
+        },
+        { path: '/modifier-:modifierId/from/relicset-:objectId/@:commitId', 
+            name: 'relicsetModifier', components: { subnav: RelicSetSubNav, default: RelicSetModifier, }, 
+            props:{ subnav:toRouteProps({ objectId:'number', modifierId:false }), default:toRouteProps({ objectId: 'number' }) },
         },
     ]},
 ]

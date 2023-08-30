@@ -1,4 +1,5 @@
 <script setup lang="ts">
+  import { inject } from 'vue';
   import { GamecoreNode, 
     GamecoreTargetType, evaluateTargetType, 
   } from '@/scripts/sources/gamecore';
@@ -10,6 +11,7 @@
     TargetType?:GamecoreTargetType
     ModifierName:string
   }
+  const createModifierRoute = inject<(key:string) => object>('createModifierRoute') as (key:string) => object
 </script>
 
 <template>
@@ -17,7 +19,9 @@
 
     <em>{{ evaluateTargetType(node.TargetType) }}</em>
     has modifier
-    <em>{{ node.ModifierName }}</em>
+    <RouterLink v-if="node.ModifierName" :to="createModifierRoute(node.ModifierName)">
+      <em>{{ node.ModifierName }}</em>
+    </RouterLink>
 
   </BlockLayout>
 </template>

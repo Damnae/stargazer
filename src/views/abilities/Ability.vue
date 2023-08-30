@@ -2,34 +2,41 @@
   import { Ref, computed, inject, } from 'vue'
   import { Ability, AbilityContext, } from '@/scripts/sources/ability';
   import AnyBlock from '../gamecore/AnyBlock.vue';
-  import Modifier from './Modifier.vue';
 
   const props = defineProps<{abilityId:string}>()
   const abilityContext = inject('abilityContext') as Ref<AbilityContext>
 
   const ability = computed<Ability>(() => abilityContext.value.Abilities?.[props.abilityId])
+  
+  const createModifierRoute = inject<(key:string) => object>('createModifierRoute') as (key:string) => object
 </script>
 
 <template>
   <header>
-    <h1>{{ ability?.Name.replace(/_/g, " ") }}</h1>
+    <h1>{{ abilityId.replace(/_/g, " ") }}</h1>
   </header>
-  <section :key="ability?.Name">
-    
+  <section :key="abilityId">
+
       <template v-if="ability">
+        
         <div v-if="ability.OnStart">
           <h2>On Start</h2>
           <template v-for="node in ability.OnStart">
             <AnyBlock :node="node" />
           </template>
         </div>
+
         <div v-if="ability.Modifiers">
           <h2>Modifiers</h2>
-          <template v-for="(modifier, modifierName) in ability.Modifiers">
-            <h3>{{ modifierName }}</h3>
-            <Modifier :modifier="modifier" />
-          </template>
+          <ul>
+            <li v-for="(_modifier, modifierName) in ability.Modifiers">
+              <RouterLink :to="createModifierRoute(modifierName.toString())">
+                {{ modifierName }}
+              </RouterLink>
+            </li>
+          </ul>
         </div>
+
       </template>
       <span v-else class="minor">(Ability {{ abilityId }} not found)</span>
     

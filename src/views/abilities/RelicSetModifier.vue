@@ -1,15 +1,15 @@
 <script setup lang="ts">
   import ProvideRelicSetContext from './ProvideRelicSetContext.vue';
-  import Ability from './Ability.vue';
+  import Modifier from './Modifier.vue';
 
-  defineProps<{commitId:string, objectId:number, abilityId:string}>()
+  defineProps<{commitId:string, objectId:number, modifierId:string}>()
 </script>
 
 <template> 
   <main class="panel">
     <ProvideRelicSetContext :commitId="commitId" :objectId="objectId">
-    <Ability :abilityId="abilityId" />
-  </ProvideRelicSetContext>
+      <Modifier :modifierId="modifierId" />
+    </ProvideRelicSetContext>
   </main>
 </template>
 

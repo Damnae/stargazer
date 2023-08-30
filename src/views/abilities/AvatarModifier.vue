@@ -1,14 +1,14 @@
 <script setup lang="ts">
   import ProvideAvatarContext from './ProvideAvatarContext.vue';
-  import Ability from './Ability.vue';
+  import Modifier from './Modifier.vue';
 
-  defineProps<{commitId:string, objectId:number, abilityId:string}>()
+  defineProps<{commitId:string, objectId:number, modifierId:string}>()
 </script>
 
 <template> 
   <main class="panel">
     <ProvideAvatarContext :commitId="commitId" :objectId="objectId">
-      <Ability :abilityId="abilityId" />
+      <Modifier :modifierId="modifierId" />
     </ProvideAvatarContext>
   </main>
 </template>

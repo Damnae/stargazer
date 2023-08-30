@@ -1,4 +1,5 @@
 <script setup lang="ts">
+  import { inject } from 'vue';
   import { getHash } from '@/scripts/translate';
   import { GamecoreNode, 
     GamecoreTargetType, evaluateTargetType, 
@@ -21,13 +22,14 @@
       [key:string]:DynamicExpression
     }
   }
+  const createModifierRoute = inject<(key:string) => object>('createModifierRoute') as (key:string) => object
 </script>
 
 <template>
   <BlockLayout :source="node">
 
     Add modifier
-    <RouterLink :to="{  }">
+    <RouterLink v-if="node.ModifierName" :to="createModifierRoute(node.ModifierName)">
       <em>{{ node.ModifierName }}</em>
     </RouterLink>
 
