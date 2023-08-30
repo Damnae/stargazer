@@ -4,6 +4,7 @@
     GamecoreTargetType, evaluateTargetType, 
     DynamicExpression,
   } from '@/scripts/sources/gamecore';
+  import useHashStore from '@/scripts/hashstore';
   import BlockLayout from '@/views/gamecore/BlockLayout.vue';
   import EvaluateExpression from '../EvaluateExpression.vue';
 
@@ -16,6 +17,10 @@
     ValueType?:string
     Multiplier?:DynamicExpression
   }
+  
+  if (node.DynamicKey)
+    useHashStore().register(node.DynamicKey)
+
   const createModifierRoute = inject<(key:string) => object>('createModifierRoute') as (key:string) => object
 </script>
 

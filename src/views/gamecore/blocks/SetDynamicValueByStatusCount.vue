@@ -2,6 +2,7 @@
   import { GamecoreNode, 
     GamecoreTargetType, evaluateTargetType, 
   } from '@/scripts/sources/gamecore';
+  import useHashStore from '@/scripts/hashstore';
   import BlockLayout from '@/views/gamecore/BlockLayout.vue';
 
   const props = defineProps<{node:GamecoreNode}>()
@@ -10,6 +11,9 @@
     ReadTargetType?:GamecoreTargetType
     DynamicKey:string
   }
+
+  if (node.DynamicKey)
+    useHashStore().register(node.DynamicKey)
 </script>
 
 <template>

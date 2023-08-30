@@ -3,6 +3,7 @@
     GamecoreTargetType, evaluateTargetType, 
     DynamicExpression,
   } from '@/scripts/sources/gamecore';
+  import useHashStore from '@/scripts/hashstore';
   import BlockLayout from '@/views/gamecore/BlockLayout.vue';
   import EvaluateExpression from '../EvaluateExpression.vue';
 
@@ -15,6 +16,9 @@
     Min:DynamicExpression
     Max:DynamicExpression
   }
+
+  if (node.Key)
+    useHashStore().register(node.Key)
 </script>
 
 <template>

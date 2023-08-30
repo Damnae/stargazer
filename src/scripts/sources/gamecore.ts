@@ -1,4 +1,5 @@
 import { cleanupNumber } from '../common'
+import useHashStore from '../hashstore'
 
 export interface DynamicValue
 {
@@ -95,13 +96,15 @@ export function evaluateDynamicExpression(expression?:DynamicExpression, context
 
   if (expression.PostfixExpr)
   {
-    var postFixExpr = expression.PostfixExpr;
-    var opCodes = postFixExpr.OpCodes;
-    var constants = postFixExpr.FixedValues;
-    var variables = postFixExpr.DynamicHashes;
+    const postFixExpr = expression.PostfixExpr;
+    const opCodes = postFixExpr.OpCodes;
+    const constants = postFixExpr.FixedValues;
+    const variables = postFixExpr.DynamicHashes;
 
-    var formula = '';
-    var stack:string[] = [];
+    const stack:string[] = [];
+    let formula = '';
+
+    const hashStore = useHashStore()
 
     var bytes = atob(opCodes);
     for (var i = 0; i < bytes.length; i++)
@@ -114,7 +117,7 @@ export function evaluateDynamicExpression(expression?:DynamicExpression, context
           break;
         case 1: // Variable
           const hash = variables?.[bytes.charCodeAt(++i)]
-          let variable = `Var(${hash})`
+          let variable = hashStore.translate(hash) ?? `Var(${hash})`
           if (context?.DynamicValues)
           {
             const dynamicValue = context.DynamicValues.Values[hash]

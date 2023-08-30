@@ -3,7 +3,8 @@
   import { Modifier, AbilityContext, } from '@/scripts/sources/ability';
   import BlockLayout from '../gamecore/BlockLayout.vue';
   import AnyBlock from '../gamecore/AnyBlock.vue';
-import EvaluateExpression from '../gamecore/EvaluateExpression.vue';
+  import EvaluateExpression from '../gamecore/EvaluateExpression.vue';
+import useHashStore from '@/scripts/hashstore';
 
   const props = defineProps<{modifierId:string}>()
   const abilityContext = inject('abilityContext') as Ref<AbilityContext>
@@ -22,6 +23,7 @@ import EvaluateExpression from '../gamecore/EvaluateExpression.vue';
     }
     return undefined
   })
+  const hashStore = useHashStore()
 </script>
 
 <template>
@@ -88,6 +90,11 @@ import EvaluateExpression from '../gamecore/EvaluateExpression.vue';
         </BlockLayout>
         <BlockLayout v-if="modifier.DynamicValues" :source=" modifier.DynamicValues">
           <span class="flow">Dynamic Values</span>
+          <template #content>
+            <BlockLayout v-for="value, key in modifier.DynamicValues.Values" :source="value" :title="key">
+              {{ hashStore.translate(key as number) ?? key }}
+            </BlockLayout>
+          </template>
         </BlockLayout>
 
         <BlockLayout v-if="modifier._CallbackList" :source="modifier._CallbackList">

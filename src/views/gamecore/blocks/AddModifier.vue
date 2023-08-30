@@ -7,6 +7,7 @@
   } from '@/scripts/sources/gamecore';
   import BlockLayout from '@/views/gamecore/BlockLayout.vue';
   import EvaluateExpression from '../EvaluateExpression.vue';
+import useHashStore from '@/scripts/hashstore';
 
   const props = defineProps<{node:GamecoreNode}>()
   const node = props.node as unknown as 
@@ -23,6 +24,13 @@
     }
   }
   const createModifierRoute = inject<(key:string) => object>('createModifierRoute') as (key:string) => object
+  
+  if (node.DynamicValues)
+  {
+    const hashStore = useHashStore()
+    for (const key of Object.keys(node.DynamicValues))
+      hashStore.register(key)
+  }
 </script>
 
 <template>
