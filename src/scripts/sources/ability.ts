@@ -19,6 +19,31 @@ export interface ModifierPreshowConfig
   }
 }
 
+export interface RangeWatcher
+{
+  Min?:DynamicExpression
+  Max?:DynamicExpression
+  MaxInclusive?:boolean
+  OnEnterRange?: GamecoreNode[]
+  OnExitRange?: GamecoreNode[]
+  OnChange?: GamecoreNode[]
+}
+
+export interface PropertyChangeWatcher
+{
+  Property:string
+  Ranges:RangeWatcher[]
+}
+
+export interface ValueChangeWatcher
+{
+  Key: 
+  {
+    Hash: number
+  },
+  Ranges:RangeWatcher[]
+}
+
 export interface Modifier
 {
   BehaviorFlagList?:string[]
@@ -33,23 +58,8 @@ export interface Modifier
   PerformTime?:DynamicExpression
   DynamicValues?: DynamicValues
   ModifierAffectedPreshowConfig?: ModifierPreshowConfig
-  OnAbilityPropertyChange?:
-  [
-    {
-      Property:string
-      Ranges:
-      [
-        {
-          Min?:DynamicExpression
-          Max?:DynamicExpression
-          MaxInclusive?:boolean
-          OnEnterRange?: GamecoreNode[]
-          OnExitRange?: GamecoreNode[]
-          OnChange?: GamecoreNode[]
-        }
-      ]
-    }
-  ]
+  OnAbilityPropertyChange?:PropertyChangeWatcher[]
+  OnDynamicValueChange?:ValueChangeWatcher[]
   _CallbackList?:
   {
     [eventName:string]: ModifierEventHandler

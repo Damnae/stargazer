@@ -1,14 +1,17 @@
 <script setup lang="ts">
   import { Ref, computed, inject, } from 'vue'
   import { Modifier, AbilityContext, } from '@/scripts/sources/ability';
+  import useHashStore from '@/scripts/hashstore';
   import EvaluateExpression from '../gamecore/EvaluateExpression.vue';
   import BlockLayout from '../gamecore/BlockLayout.vue';
   import AnyBlock from '../gamecore/AnyBlock.vue';
   import DynamicValues from './DynamicValues.vue';
+  import RangeChange from './RangeChange.vue';
 
   const props = defineProps<{modifierId:string}>()
   const abilityContext = inject('abilityContext') as Ref<AbilityContext>
 
+  //const gamecoreContext = inject('gamecoreContext') as Ref<GamecoreContext>
   const modifier = computed<Modifier | undefined>(() => 
   {
     const modifier = abilityContext.value.Modifiers?.[props.modifierId]
@@ -26,6 +29,7 @@
     }
     return undefined
   })
+  const hashStore = useHashStore()
 </script>
 
 <template>
@@ -107,43 +111,27 @@
         </BlockLayout>
 
         <BlockLayout v-if="modifier.OnAbilityPropertyChange" :source="modifier.OnAbilityPropertyChange">
-          <span class="flow">Properties</span>
+          <span class="flow">Property Watchers</span>
           <template #content>
             <template v-for="p in modifier.OnAbilityPropertyChange">
               <BlockLayout :source="p">
                 <span class="flow">Watch <em>{{ p.Property }}</em></span>
                 <template #content>
-                  <template v-for="r in p.Ranges">
-                    <BlockLayout :source="r">
-                      <span class="flow">
-                        Range <EvaluateExpression :expression="r.Min" />
-                        to <EvaluateExpression :expression="r.Max" />
-                        <template v-if="r.MaxInclusive">
-                          (Inclusive)
-                        </template>
-                      </span>
-                      <template #content>
-                        <BlockLayout v-if="r.OnEnterRange" :source="r.OnEnterRange">
-                          <span class="flow">On Enter Range</span>
-                          <template #content>
-                            <AnyBlock v-for="n in r.OnEnterRange" :node="n" />
-                          </template>
-                        </BlockLayout>
-                        <BlockLayout v-if="r.OnExitRange" :source="r.OnExitRange">
-                          <span class="flow">On Exit Range</span>
-                          <template #content>
-                            <AnyBlock v-for="n in r.OnExitRange" :node="n" />
-                          </template>
-                        </BlockLayout>
-                        <BlockLayout v-if="r.OnChange" :source="r.OnChange">
-                          <span class="flow">On Change</span>
-                          <template #content>
-                            <AnyBlock v-for="n in r.OnChange" :node="n" />
-                          </template>
-                        </BlockLayout>
-                      </template>
-                    </BlockLayout>
-                  </template>
+                  <RangeChange v-for="r in p.Ranges" :range="r" />
+                </template>
+              </BlockLayout>
+            </template>
+          </template>
+        </BlockLayout>
+
+        <BlockLayout v-if="modifier.OnDynamicValueChange" :source="modifier.OnDynamicValueChange">
+          <span class="flow">Dynamic Value Watchers</span>
+          <template #content>
+            <template v-for="p in modifier.OnDynamicValueChange">
+              <BlockLayout :source="p">
+                <span class="flow">Watch <em>{{ hashStore.translate(p.Key.Hash) ?? p.Key.Hash }}</em></span>
+                <template #content>
+                  <RangeChange v-for="r in p.Ranges" :range="r" />
                 </template>
               </BlockLayout>
             </template>
