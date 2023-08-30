@@ -15,6 +15,7 @@
     TargetType?:GamecoreTargetType
     ModifierName:string
     Chance?:DynamicExpression
+    LayerAddWhenStack?:DynamicExpression
     MaxLayer?:DynamicExpression
     LifeTime?:DynamicExpression
     LifeStepImmediately?:boolean
@@ -23,7 +24,6 @@
       [key:string]:DynamicExpression
     }
   }
-  const createModifierRoute = inject<(key:string) => object>('createModifierRoute') as (key:string) => object
   
   if (node.DynamicValues)
   {
@@ -31,12 +31,18 @@
     for (const key of Object.keys(node.DynamicValues))
       hashStore.register(key)
   }
+  
+  const createModifierRoute = inject<(key:string) => object>('createModifierRoute') as (key:string) => object
 </script>
 
 <template>
   <BlockLayout :source="node">
 
-    Add modifier
+    Add 
+    <template v-if="node.LayerAddWhenStack">
+      <em><EvaluateExpression :expression="node.LayerAddWhenStack" /></em> stacks of
+    </template>
+    modifier
     <RouterLink v-if="node.ModifierName" :to="createModifierRoute(node.ModifierName)">
       <em>{{ node.ModifierName }}</em>
     </RouterLink>
