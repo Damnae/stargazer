@@ -14,7 +14,7 @@
   const gamecoreContext = inject('gamecoreContext') as Ref<GamecoreContext>
   const modifier = ref<Modifier>()
 
-  watch([abilityContext, gamecoreContext], () =>
+  watch([props, abilityContext, gamecoreContext], () =>
   {
     const mod = abilityContext.value.Modifiers?.[props.modifierId]
     if (mod)
