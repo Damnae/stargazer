@@ -6,16 +6,19 @@ let dirty = false
 
 export default function useHashStore() 
 {
-  function register(name:string) : void
+  function register(name:string, autoCommit:boolean) : void
   {
     const hash = getHash(name)
     if (hash in hashToName)
       return;
 
+    //console.log(`registered ${hash} to ${name}`)
+
     hashToName[hash] = name
     dirty = true
 
-    console.log(`registered ${hash} to ${name}`)
+    if (autoCommit)
+      commit()
   }
 
   function translate(hash:number) : string | undefined
@@ -23,5 +26,14 @@ export default function useHashStore()
     return hashToName[hash]
   }
 
-  return { register, translate, }
+  function commit()
+  {
+    if (dirty)
+    {
+      dirty = false
+
+    }
+  }
+
+  return { register, translate, commit, }
 }

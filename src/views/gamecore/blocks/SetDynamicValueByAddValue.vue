@@ -18,7 +18,7 @@
   }
 
   if (node.Key)
-    useHashStore().register(node.Key)
+    useHashStore().register(node.Key, true)
 </script>
 
 <template>

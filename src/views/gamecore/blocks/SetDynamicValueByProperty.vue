@@ -14,7 +14,7 @@
   }
 
   if (node.DynamicKey)
-    useHashStore().register(node.DynamicKey)
+    useHashStore().register(node.DynamicKey, true)
 </script>
 
 <template>

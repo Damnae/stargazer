@@ -1,5 +1,6 @@
 <script setup lang="ts">
-  import { Ref, computed, inject, } from 'vue'
+  import { inject, ref, watch, Ref, } from 'vue'
+  import { GamecoreContext } from '@/scripts/sources/gamecore';
   import { Modifier, AbilityContext, } from '@/scripts/sources/ability';
   import useHashStore from '@/scripts/hashstore';
   import EvaluateExpression from '../gamecore/EvaluateExpression.vue';
@@ -10,25 +11,35 @@
 
   const props = defineProps<{modifierId:string}>()
   const abilityContext = inject('abilityContext') as Ref<AbilityContext>
+  const gamecoreContext = inject('gamecoreContext') as Ref<GamecoreContext>
+  const modifier = ref<Modifier>()
 
-  //const gamecoreContext = inject('gamecoreContext') as Ref<GamecoreContext>
-  const modifier = computed<Modifier | undefined>(() => 
+  watch([abilityContext, gamecoreContext], () =>
   {
-    const modifier = abilityContext.value.Modifiers?.[props.modifierId]
-    if (modifier)
-      return modifier
+    const mod = abilityContext.value.Modifiers?.[props.modifierId]
+    if (mod)
+    {  
+      modifier.value = mod
+      return 
+    }
 
     for (const ability of Object.values(abilityContext.value.Abilities))
     {
-      const modifier = ability.Modifiers?.[props.modifierId]
-      if (modifier)
+      const mod = ability.Modifiers?.[props.modifierId]
+      if (mod)
       {
-        // TODO ability.DynamicValues need to be available in the provided gamecoreContext
-        return modifier
+        if (ability.DynamicValues && gamecoreContext.value)
+          gamecoreContext.value.AbilityDynamicValues[ability.Name] = ability.DynamicValues
+
+        modifier.value = mod
+        return
       }
     }
-    return undefined
-  })
+
+    modifier.value = undefined
+  }, 
+  {immediate: true})
+
   const hashStore = useHashStore()
 </script>
 

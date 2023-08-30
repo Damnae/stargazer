@@ -19,7 +19,7 @@
   }
   
   if (node.DynamicKey)
-    useHashStore().register(node.DynamicKey)
+    useHashStore().register(node.DynamicKey, true)
 
   const createModifierRoute = inject<(key:string) => object>('createModifierRoute') as (key:string) => object
 </script>

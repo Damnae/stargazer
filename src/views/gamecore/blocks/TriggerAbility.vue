@@ -9,6 +9,7 @@
   const node = props.node as unknown as 
   {
     TargetType?:GamecoreTargetType
+    AbilityInherentTargetType?:GamecoreTargetType
     AbilityName:string
   }
 
@@ -27,6 +28,10 @@
     <RouterLink :to="createAbilityRoute(node.AbilityName)">
       <em>{{ node.AbilityName }}</em>
     </RouterLink>
+
+    <template v-if="node.AbilityInherentTargetType">
+      targeting <em>{{ evaluateTargetType(node.AbilityInherentTargetType) }}</em>
+    </template>
 
   </BlockLayout>
 </template>

@@ -27,6 +27,7 @@
     {
       Params: {},
       DynamicValues: character.DynamicValues,
+      AbilityDynamicValues: {},
     }
 
     // SkillMaze

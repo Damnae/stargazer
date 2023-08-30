@@ -27,6 +27,7 @@
     {
       Params: {},
       DynamicValues: character.DynamicValues,
+      AbilityDynamicValues: {},
     }
 
     for (const skill of monsterSkills)

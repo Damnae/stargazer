@@ -29,7 +29,8 @@
   {
     const hashStore = useHashStore()
     for (const key of Object.keys(node.DynamicValues))
-      hashStore.register(key)
+      hashStore.register(key, false)
+    hashStore.commit()
   }
   
   const createModifierRoute = inject<(key:string) => object>('createModifierRoute') as (key:string) => object

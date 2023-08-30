@@ -58,6 +58,10 @@ export interface GamecoreContext
     [key:string]:GamecoreParam[]
   }
   DynamicValues?: DynamicValues
+  AbilityDynamicValues: 
+  {
+    [abilityId:string]:DynamicValues
+  }
 }
 
 export interface GamecoreContextDynamicValues
@@ -118,10 +122,11 @@ export function evaluateDynamicExpression(expression?:DynamicExpression, context
         case 1: // Variable
           const hash = variables?.[bytes.charCodeAt(++i)]
           let variable = hashStore.translate(hash) ?? `Var(${hash})`
-          if (context?.DynamicValues)
+          if (context)
           {
-            const dynamicValue = context.DynamicValues.Values[hash]
-            variable = explainDynamicValue(dynamicValue, context.Params) ?? variable
+            const dynamicValue = findDynamicValue(hash, context)
+            if (dynamicValue)
+              variable = explainDynamicValue(dynamicValue, context.Params) ?? variable
           }
           stack.push(variable);
           break;
@@ -168,6 +173,26 @@ export function evaluateDynamicExpression(expression?:DynamicExpression, context
   }
 
   return 'unknown'
+}
+
+function findDynamicValue(hash:number, context?:GamecoreContext) : DynamicValue | undefined
+{
+  if (!context)
+    return undefined
+
+  if (context.DynamicValues)
+  {
+    const dynamicValue = context.DynamicValues.Values[hash]
+    if (dynamicValue)
+      return dynamicValue
+  }
+
+  for (var dynamicValues of Object.values(context.AbilityDynamicValues))
+  {
+    const dynamicValue = dynamicValues.Values[hash]
+    if (dynamicValue)
+      return dynamicValue
+  }
 }
 
 export function explainDynamicValueFromContext(value:DynamicValue, context:GamecoreContext) : string | undefined
