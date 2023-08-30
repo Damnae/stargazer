@@ -121,7 +121,7 @@ export function evaluateDynamicExpression(expression?:DynamicExpression, context
           break;
         case 1: // Variable
           const hash = variables?.[bytes.charCodeAt(++i)]
-          let variable = hashStore.translate(hash) ?? `Var(${hash})`
+          let variable = hashStore.translate(hash) ?? `Var[${hash}]`
           if (context)
           {
             const dynamicValue = findDynamicValue(hash, context)
