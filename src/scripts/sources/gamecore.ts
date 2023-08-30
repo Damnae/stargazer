@@ -170,6 +170,11 @@ export function evaluateDynamicExpression(expression?:DynamicExpression, context
   return 'unknown'
 }
 
+export function explainDynamicValueFromContext(value:DynamicValue, context:GamecoreContext) : string | undefined
+{
+  return explainDynamicValue(value, context.Params) ?? ''
+}
+
 function explainDynamicValue(value:DynamicValue, params:{[key:string]:GamecoreParam[]}) : string | undefined
 {
   if (value?.ReadInfo)

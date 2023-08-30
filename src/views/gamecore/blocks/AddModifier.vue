@@ -7,7 +7,7 @@
   } from '@/scripts/sources/gamecore';
   import BlockLayout from '@/views/gamecore/BlockLayout.vue';
   import EvaluateExpression from '../EvaluateExpression.vue';
-import useHashStore from '@/scripts/hashstore';
+  import useHashStore from '@/scripts/hashstore';
 
   const props = defineProps<{node:GamecoreNode}>()
   const node = props.node as unknown as 

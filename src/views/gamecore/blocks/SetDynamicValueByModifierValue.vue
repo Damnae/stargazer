@@ -33,10 +33,10 @@
     <template v-if="node.ReadTargetType">
       <em>{{ evaluateTargetType(node.ReadTargetType) }}</em>'s
     </template>
+    <em><EvaluateExpression :expression="node.Multiplier" /></em>x
     <RouterLink v-if="node.ModifierName" :to="createModifierRoute(node.ModifierName)">
       <em>{{ node.ModifierName }}</em>
     </RouterLink>
-    (Multiplied by <em><EvaluateExpression :expression="node.Multiplier" /></em>)
 
   </BlockLayout>
 </template>

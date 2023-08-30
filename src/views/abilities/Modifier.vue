@@ -1,10 +1,10 @@
 <script setup lang="ts">
   import { Ref, computed, inject, } from 'vue'
   import { Modifier, AbilityContext, } from '@/scripts/sources/ability';
+  import EvaluateExpression from '../gamecore/EvaluateExpression.vue';
   import BlockLayout from '../gamecore/BlockLayout.vue';
   import AnyBlock from '../gamecore/AnyBlock.vue';
-  import EvaluateExpression from '../gamecore/EvaluateExpression.vue';
-import useHashStore from '@/scripts/hashstore';
+  import DynamicValues from './DynamicValues.vue';
 
   const props = defineProps<{modifierId:string}>()
   const abilityContext = inject('abilityContext') as Ref<AbilityContext>
@@ -19,11 +19,13 @@ import useHashStore from '@/scripts/hashstore';
     {
       const modifier = ability.Modifiers?.[props.modifierId]
       if (modifier)
+      {
+        // TODO ability.DynamicValues need to be available in the provided gamecoreContext
         return modifier
+      }
     }
     return undefined
   })
-  const hashStore = useHashStore()
 </script>
 
 <template>
@@ -88,14 +90,7 @@ import useHashStore from '@/scripts/hashstore';
             <EvaluateExpression :expression="modifier.PerformTime" />
           </template>
         </BlockLayout>
-        <BlockLayout v-if="modifier.DynamicValues" :source=" modifier.DynamicValues">
-          <span class="flow">Dynamic Values</span>
-          <template #content>
-            <BlockLayout v-for="value, key in modifier.DynamicValues.Values" :source="value" :title="key">
-              {{ hashStore.translate(key as number) ?? key }}
-            </BlockLayout>
-          </template>
-        </BlockLayout>
+        <DynamicValues :dynamicValues="modifier.DynamicValues" />
 
         <BlockLayout v-if="modifier._CallbackList" :source="modifier._CallbackList">
           <span class="flow">Events</span>
