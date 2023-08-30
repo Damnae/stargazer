@@ -14,6 +14,7 @@
         if (sa.Skill == props.skillTriggerKey)
           abilities.value = sa.AbilityList
       }
+    abilities.value.sort((a, b) => a > b ? 1 : -1)
   })
 </script>
 
