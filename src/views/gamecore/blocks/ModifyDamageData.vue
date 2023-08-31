@@ -21,8 +21,7 @@
     <template #content>
       <template v-for="expression, key in node">
         <BlockLayout v-if="key != '$type'" :source="expression">
-          
-          Set <em :title="getHash(key.toString()).toString()">{{ key }}</em> to <em><EvaluateExpression :expression="expression" /></em>
+          Change <em :title="getHash(key.toString()).toString()">{{ key }}</em> to <em><EvaluateExpression :expression="expression" /></em>
         </BlockLayout>
       </template>
     </template>

@@ -13,6 +13,7 @@
     TargetType?:GamecoreTargetType
     ModifierName:string
     Value?:DynamicExpression
+    ValueType?:string
     ModifyFunction:string
   }
   const createModifierRoute = inject<(key:string) => object>('createModifierRoute') as (key:string) => object
@@ -28,8 +29,14 @@
         <em>{{ evaluateTargetType(node.TargetType) }}</em>'s
       </template>
       <RouterLink v-if="node.ModifierName" :to="createModifierRoute(node.ModifierName)">
-        <em>{{ node.ModifierName }}</em>
+        <em>{{ node.ModifierName }}</em>'s
       </RouterLink>
+      <template v-if="node.ValueType">
+        <em>{{ node.ValueType }}</em>
+      </template>
+      <template v-else>
+        value(?)
+      </template>
 
     </template>
     <template v-else>

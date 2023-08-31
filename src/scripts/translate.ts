@@ -6,7 +6,7 @@ export interface Translatable
     Text: string
 }
 
-export default async function translate(commitId:string, translatable:Translatable, process?:(s: string) => string)
+export default async function translate(commitId:string, translatable?:Translatable, process?:(s: string) => string)
 {
     if (!translatable)
         return

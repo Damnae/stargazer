@@ -1,25 +1,19 @@
 <script setup lang="ts">
-  import { inject } from 'vue';
+  import { inject, } from 'vue';
   import { GamecoreNode, 
-    GamecoreTargetType, evaluateTargetType, 
-    DynamicExpression,
+    DynamicExpression, 
   } from '@/scripts/sources/gamecore';
-  import useHashStore from '@/scripts/hashstore';
   import BlockLayout from '@/views/gamecore/BlockLayout.vue';
   import EvaluateExpression from '../EvaluateExpression.vue';
 
   const props = defineProps<{node:GamecoreNode}>()
   const node = props.node as unknown as 
   {
-    ReadTargetType?:GamecoreTargetType
     ModifierName:string
-    DynamicKey:string
-    ValueType?:string
-    Multiplier?:DynamicExpression
+    ValueType:string
+    CompareType?:string
+    CompareValue?:DynamicExpression
   }
-  
-  if (node.DynamicKey)
-    useHashStore().register(node.DynamicKey, true)
 
   const createModifierRoute = inject<(key:string) => object>('createModifierRoute') as (key:string) => object
 </script>
@@ -27,23 +21,20 @@
 <template>
   <BlockLayout :source="node">
     
-    Set <em>{{ node.DynamicKey }}</em>
-
-    to 
-    <template v-if="node.ReadTargetType">
-      <em>{{ evaluateTargetType(node.ReadTargetType) }}</em>'s
-    </template>
-    <em><EvaluateExpression :expression="node.Multiplier" /></em>x
+    Modifier 
     <RouterLink v-if="node.ModifierName" :to="createModifierRoute(node.ModifierName)">
       <em>{{ node.ModifierName }}</em>'s
     </RouterLink>
+    
     <template v-if="node.ValueType">
-      <em>{{ node.ValueType }}</em>
+      <em>{{ node.ValueType }}</em> is 
     </template>
-    <template v-else>
-      value(?)
+    <template v-if="node.CompareType">
+      <em>{{ node.CompareType }}</em> to 
     </template>
-
+    <template v-if="node.CompareValue">
+      <em><EvaluateExpression :expression="node.CompareValue" /></em>
+    </template>
 
   </BlockLayout>
 </template>
