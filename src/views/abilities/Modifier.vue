@@ -2,6 +2,7 @@
   import { inject, ref, watch, Ref, } from 'vue'
   import { GamecoreContext } from '@/scripts/sources/gamecore';
   import { Modifier, AbilityContext, } from '@/scripts/sources/ability';
+  import { Status, getStatuses } from '@/scripts/sources/status';
   import useHashStore from '@/scripts/hashstore';
   import EvaluateExpression from '../gamecore/EvaluateExpression.vue';
   import BlockLayout from '../gamecore/BlockLayout.vue';
@@ -9,7 +10,6 @@
   import DynamicValues from './DynamicValues.vue';
   import RangeChange from './RangeChange.vue';
   import ShowContext from './ShowContext.vue';
-import { Status, getStatuses } from '@/scripts/sources/status';
 
   const props = defineProps<{modifierId:string}>()
   const abilityContext = inject('abilityContext') as Ref<AbilityContext>
@@ -53,6 +53,14 @@ import { Status, getStatuses } from '@/scripts/sources/status';
   {
     const statuses = await getStatuses(commitId)
     status.value = Object.values(statuses).find(s => s.ModifierName == props.modifierId)
+
+    if (status.value)
+    {
+      const hashStore = useHashStore()
+      for (const name of status.value.ReadParamList)
+        hashStore.register(name, false)
+      hashStore.commit()
+    }
   }, 
   { immediate:true, })
 
