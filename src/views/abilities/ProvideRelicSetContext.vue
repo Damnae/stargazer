@@ -21,6 +21,7 @@
     const context:GamecoreContext = 
     {
       Params: {},
+      AbilityValues: {},
       AbilityDynamicValues: {},
     }
     for (const skill of Object.values(relicSet.Skills))

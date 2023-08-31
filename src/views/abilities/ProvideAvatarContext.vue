@@ -6,6 +6,8 @@
   import { getAbilityContext, AbilityContext, AbilityContextType, } from '@/scripts/sources/ability';
   import { GamecoreContext, } from '@/scripts/sources/gamecore';
 
+  import { buildAbilityValues, } from './helper'
+
   const props = defineProps<{commitId:string, objectId:number}>()
   
   const gamecoreContext = ref<GamecoreContext>(await getGamecoreContext())
@@ -26,6 +28,7 @@
     const context:GamecoreContext = 
     {
       Params: {},
+      AbilityValues: buildAbilityValues(character, avatarSkills),
       DynamicValues: character.DynamicValues,
       AbilityDynamicValues: {},
     }
@@ -48,7 +51,7 @@
 
     return context
   }
-  
+
   provide('gamecoreContext', gamecoreContext)
   provide('abilityContext', abilityContext)
   provide('createAbilityRoute', (abilityId:string) : object => { return { name:'avatarAbility', params:{ commitId: props.commitId, objectId: props.objectId, abilityId: abilityId, } }})

@@ -1,11 +1,21 @@
 <script setup lang="ts">
-  import { Ref, computed, inject, } from 'vue'
+  import { watch, inject, Ref, computed, } from 'vue'
   import { Ability, AbilityContext, } from '@/scripts/sources/ability';
   import AnyBlock from '../gamecore/AnyBlock.vue';
-import DynamicValues from './DynamicValues.vue';
+  import DynamicValues from './DynamicValues.vue';
+  import ShowContext from './ShowContext.vue';
+  import { GamecoreContext } from '@/scripts/sources/gamecore';
 
   const props = defineProps<{abilityId:string}>()
   const abilityContext = inject('abilityContext') as Ref<AbilityContext>
+  const gamecoreContext = inject('gamecoreContext') as Ref<GamecoreContext>
+
+  watch([props, gamecoreContext], () =>
+  {
+    if (gamecoreContext.value)
+      gamecoreContext.value.AbilityId = props.abilityId
+  }, 
+  {immediate: true})
 
   const ability = computed<Ability>(() => abilityContext.value.Abilities?.[props.abilityId])
   
@@ -46,6 +56,9 @@ import DynamicValues from './DynamicValues.vue';
       </template>
       <span v-else class="minor">(Ability {{ abilityId }} not found)</span>
     
+      <h2>Context</h2>
+      <ShowContext />
+
   </section>
 </template>
 

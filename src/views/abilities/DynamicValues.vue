@@ -1,8 +1,9 @@
 <script setup lang="ts">
+  import { Ref, inject } from 'vue';
+  import { GamecoreContext, 
+    DynamicValues, explainDynamicValueFromContext, } from '@/scripts/sources/gamecore';
   import useHashStore from '@/scripts/hashstore';
-  import { DynamicValues, GamecoreContext, explainDynamicValueFromContext, } from '@/scripts/sources/gamecore';
   import BlockLayout from '../gamecore/BlockLayout.vue';
-import { Ref, inject } from 'vue';
 
   defineProps<{dynamicValues?:DynamicValues}>()
   const gamecoreContext = inject('gamecoreContext') as Ref<GamecoreContext>

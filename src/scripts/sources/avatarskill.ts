@@ -30,6 +30,7 @@ const missingAvatarSkill:AvatarSkill =
     RatedSkillTreeID: [],
     RatedRankID: [],
     ParamList: [ { Value: 0, }],
+    ShowStanceList: []
 }
 
 const avatarSkillConfigCache:{[commitId: string]: AvatarSkillConfig} = {}

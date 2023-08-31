@@ -60,11 +60,10 @@
     <template v-if="node.LifeTime">
       for <em><EvaluateExpression :expression="node.LifeTime" /></em> turns
       <template v-if="!node.LifeStepImmediately">
-        <span class="minor">(Excluding current turn)</span>
       </template>
     </template>
     <template v-if="node.LifeStepImmediately">
-      <span class="minor">(Including current turn)</span>
+      <span class="minor">(Tick immediately)</span>
     </template>
 
     <template #content v-if="node.DynamicValues">

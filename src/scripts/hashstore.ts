@@ -33,7 +33,7 @@ for (const name of
   'MDF_SPValue', 'MDF_SPRatio', 'MDF_AddSPRatio',
   'MDF_ConvertRatio',
   'Modifier_Burn_DamagePercentage', 'Modifier_Electric_DamagePercentage', 'Modifier_Poison_DamagePercentage', 'Modifier_Frozen_DamagePercentage',
-  'Modifier_Tear_DamageRatio', 'Modifier_Tear_MaxPercentage',
+  'Modifier_Bleed_DamagePercentage', 'Modifier_Tear_DamageRatio', 'Modifier_Tear_MaxPercentage',
   'Modifier_Poison_PoisonLayer',
   'MDF_BuffLayer', 'MDF_CostLayer', 'MDF_Charge_Count', 'Modifier_Show_Count',
   'MDF_1', 'MDF_2', 'MDF_3', 'MDF_4', 'MDF_5', 'MDF_6', 'MDF_7', 'MDF_8',

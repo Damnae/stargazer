@@ -23,6 +23,7 @@ const missingMonsterSkill:MonsterSkill =
     SkillTriggerKey: '',
     PhaseList: [],
     ParamList: [{ Value: 0, }],
+    ShowStanceList: []
 }
 
 const monsterSkillConfigCache:{[commitId: string]: MonsterSkillConfig} = {}

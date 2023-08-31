@@ -51,17 +51,27 @@ export interface GamecoreTargetType extends GamecoreNode
 
 // Context
 
+export interface HashValues
+{
+  [abilityId:string]:
+  {
+    [hash:number]:number
+  }
+}
+
 export interface GamecoreContext
 {
   Params: 
   {
     [key:string]:GamecoreParam[]
   }
-  DynamicValues?: DynamicValues
+  AbilityValues:HashValues
+  DynamicValues?:DynamicValues
   AbilityDynamicValues: 
   {
     [abilityId:string]:DynamicValues
   }
+  AbilityId?:string
 }
 
 export interface GamecoreContextDynamicValues
@@ -127,6 +137,12 @@ export function evaluateDynamicExpression(expression?:DynamicExpression, context
             const dynamicValue = findDynamicValue(hash, context)
             if (dynamicValue)
               variable = explainDynamicValue(dynamicValue, context.Params) ?? variable
+            else if (context.AbilityId)
+            {
+              const value = context.AbilityValues[context.AbilityId]?.[hash]
+              if (value)
+                variable = cleanupNumber(value)
+            }
           }
           stack.push(variable);
           break;

@@ -24,6 +24,7 @@
       {
         "": equipment.Skill.ParamList
       },
+      AbilityValues: {},
       AbilityDynamicValues: {},
     }
     return context

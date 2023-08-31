@@ -5,6 +5,7 @@
   import { getCharacterByMonster, } from '@/scripts/sources/character';
   import { getAbilityContext, AbilityContext, AbilityContextType, } from '@/scripts/sources/ability';
   import { GamecoreContext, } from '@/scripts/sources/gamecore';
+  import { buildAbilityValues } from './helper';
 
   const props = defineProps<{commitId:string, objectId:number}>()
   
@@ -26,6 +27,7 @@
     const context:GamecoreContext = 
     {
       Params: {},
+      AbilityValues: buildAbilityValues(character, monsterSkills),
       DynamicValues: character.DynamicValues,
       AbilityDynamicValues: {},
     }

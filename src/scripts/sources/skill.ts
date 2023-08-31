@@ -18,6 +18,7 @@ export interface CreatureSkill
   SkillDesc: Translatable
   SimpleSkillDesc: Translatable
   SkillTriggerKey: string
+  ShowStanceList?: GamecoreParam[]
   ParamList: GamecoreParam[]
 }
 
