@@ -9,9 +9,6 @@
 <template>
   <BlockLayout :source="gamecoreContext">
     <span class="flow">Context</span>
-    <template #content>
-      
-    </template>
   </BlockLayout>
 </template>
 

@@ -26,7 +26,7 @@
     <template v-if="node.ReadTargetType">
       <em>{{ evaluateTargetType(node.ReadTargetType) }}</em>'s
     </template>
-    <em>{{ node.Value }}</em>
+    <em>{{ node.Value }}</em> property
   </BlockLayout>
 </template>
 

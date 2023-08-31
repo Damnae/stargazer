@@ -9,13 +9,13 @@
   import DynamicValues from './DynamicValues.vue';
   import RangeChange from './RangeChange.vue';
   import ShowContext from './ShowContext.vue';
+import { Status, getStatuses } from '@/scripts/sources/status';
 
   const props = defineProps<{modifierId:string}>()
   const abilityContext = inject('abilityContext') as Ref<AbilityContext>
   const gamecoreContext = inject('gamecoreContext') as Ref<GamecoreContext>
 
   const modifier = ref<Modifier>()
-
   watch([props, abilityContext, gamecoreContext], () =>
   {
     const mod = abilityContext.value.Modifiers?.[props.modifierId]
@@ -45,7 +45,16 @@
 
     modifier.value = undefined
   }, 
-  {immediate: true})
+  { immediate: true, })
+
+  const commitId = inject<string>('commitId') as string
+  const status = ref<Status>()
+  watch([props], async () =>
+  {
+    const statuses = await getStatuses(commitId)
+    status.value = Object.values(statuses).find(s => s.ModifierName == props.modifierId)
+  }, 
+  { immediate:true, })
 
   const hashStore = useHashStore()
 </script>
@@ -58,6 +67,23 @@
     
     <template v-if="modifier">
 
+      <BlockLayout v-if="status" :source="status">
+        <span class="flow">Status</span>
+        <template #content>
+          <div>
+            {{ status.StatusName.Text }}
+            <em>
+              (<template v-if="status.CanDispel">Dispellable</template>
+              <template v-else>Non-Dispellable</template>
+              {{ status.StatusType }})
+            </em>
+          </div>
+          <div>
+            <span class="minor" v-html="status.StatusDesc.Text">
+            </span>
+          </div>
+        </template>
+      </BlockLayout>
       <BlockLayout v-if="modifier.BehaviorFlagList" :source="modifier.BehaviorFlagList">
         <span class="flow">Flags</span>
         <template #content>

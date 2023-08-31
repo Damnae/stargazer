@@ -32,7 +32,7 @@
       hashStore.register(key, false)
     hashStore.commit()
   }
-  
+
   const createModifierRoute = inject<(key:string) => object>('createModifierRoute') as (key:string) => object
 </script>
 
