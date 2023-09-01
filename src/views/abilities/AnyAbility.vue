@@ -1,0 +1,17 @@
+<script setup lang="ts">
+  import ProvideEmptyContext from './ProvideEmptyContext.vue';
+  import Ability from './Ability.vue';
+
+  defineProps<{commitId:string, abilityId:string}>()
+</script>
+
+<template> 
+  <main class="panel">
+    <ProvideEmptyContext :commitId="commitId">
+      <Ability :abilityId="abilityId" />
+    </ProvideEmptyContext>
+  </main>
+</template>
+
+<style scoped>
+</style>

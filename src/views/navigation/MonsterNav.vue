@@ -13,7 +13,7 @@
   function allMonsters() : Monster[]
   {
     return Object.values(monsters.value)
-      .filter(v => v.MonsterName.Text.toLowerCase().includes(search.value.toLowerCase()))
+      .filter(v => v.SearchKeywords.some(k => k.includes(search.value.toLowerCase())))
       .sort((a, b) => a.MonsterName.Text > b.MonsterName.Text ? 1 : -1)
   }
 

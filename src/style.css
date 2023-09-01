@@ -154,6 +154,7 @@ aside h1:first-child
   line-height:3rem;
   overflow:hidden;
   text-overflow: ellipsis;
+  word-break: break-word;
 }
 main.panel
 {

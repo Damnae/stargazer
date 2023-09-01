@@ -12,7 +12,7 @@
   function allRelicSets() : RelicSet[]
   {
     return Object.values(relicsets.value)
-      .filter(v => v.SetName.Text.toLowerCase().includes(search.value.toLowerCase()))
+      .filter(v => v.SearchKeywords.some(k => k.includes(search.value.toLowerCase())))
       .sort((a, b) => a.SetName.Text > b.SetName.Text ? 1 : -1)
   }
 </script>

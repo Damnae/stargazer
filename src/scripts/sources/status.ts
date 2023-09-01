@@ -1,3 +1,4 @@
+import { cleanupMarkup } from '../common';
 import { retrieveJson } from '../datasource';
 import translate, { Translatable, } from '../translate';
 
@@ -5,7 +6,7 @@ import translate, { Translatable, } from '../translate';
 
 export interface Status
 {
-    StatusID: Number
+    StatusID: number
     StatusName: Translatable
     StatusDesc: Translatable
     StatusEffect: Translatable
@@ -13,6 +14,7 @@ export interface Status
     StatusType: string
     CanDispel: boolean
     ReadParamList: string[]
+    SearchKeywords:string[]
 }
 
 export interface StatusConfig
@@ -30,9 +32,16 @@ export async function getStatuses(commitId:string) : Promise<StatusConfig>
         for (const key in statuses)
         {
             const status = statuses[key]
-            await translate(commitId, status.StatusName)
-            await translate(commitId, status.StatusDesc)
+            await translate(commitId, status.StatusName, text => text ? cleanupMarkup(text) : status.ModifierName)
+            await translate(commitId, status.StatusDesc, text => cleanupMarkup(text))
             await translate(commitId, status.StatusEffect)
+
+            status.SearchKeywords = []
+            status.SearchKeywords.push(status.StatusName.Text.toLowerCase())
+            if (status.StatusName.Text != status.ModifierName)
+                status.SearchKeywords.push(status.ModifierName.toLowerCase())
+            if (status.StatusEffect.Text != status.StatusName.Text && status.StatusEffect.Text != status.StatusEffect.Hash.toString())
+                status.SearchKeywords.push(status.StatusEffect.Text.toLowerCase())
         }
 
         config = statusConfigCache[commitId] = statuses

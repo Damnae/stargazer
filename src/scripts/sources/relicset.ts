@@ -41,6 +41,7 @@ export interface RelicSet
     SetSkillList: number[]
     SetName: Translatable
     Skills: RelicSetSkillRank
+    SearchKeywords: string[]
 }
 
 export interface RelicSetConfig
@@ -62,6 +63,9 @@ export async function getRelicSets(commitId:string) : Promise<RelicSetConfig>
             const relicset = relicsets[key]
             await translate(commitId, relicset.SetName)
             relicset.Skills = relicsetSkills[relicset.SetID]
+
+            relicset.SearchKeywords = []
+            relicset.SearchKeywords.push(relicset.SetName.Text.toLowerCase())
         }
 
         config = relicsetConfigCache[commitId] = relicsets

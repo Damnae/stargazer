@@ -14,6 +14,7 @@ export interface Monster extends Creature
     CustomValueTags: [ name: string]
     AbilityNameList: [ name: string]
     OverrideAIPath: string
+    SearchKeywords: string[]
 }
 
 export interface MonsterTemplate
@@ -91,6 +92,9 @@ export async function getMonsters(commitId:string) : Promise<MonsterConfig>
             const monster = monsters[key]
             await translate(commitId, monster.MonsterName)
             monster.MonsterTemplate = templates[monster.MonsterTemplateID] ?? missingMonsterTemplate
+            
+            monster.SearchKeywords = []
+            monster.SearchKeywords.push(monster.MonsterName.Text.toLowerCase())
         }
 
         config = monsterConfigCache[commitId] = monsters

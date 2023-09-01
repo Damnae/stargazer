@@ -66,7 +66,7 @@
 
   function evaluateStatusDescription(status:Status) : string
   {
-    let description = status.StatusDesc.Text.replace(/(<([^>]+)>)/gi, "")
+    let description = status.StatusDesc.Text
     for (const [index, param] of status.ReadParamList.entries())
       description = description.replace(`#${index + 1}[i]`, param)
     return description

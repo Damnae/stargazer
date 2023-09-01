@@ -6,7 +6,7 @@ export interface Translatable
     Text: string
 }
 
-export default async function translate(commitId:string, translatable?:Translatable, process?:(s: string) => string)
+export default async function translate(commitId:string, translatable?:Translatable, process?:(s?: string) => string)
 {
     if (!translatable)
         return
@@ -14,20 +14,20 @@ export default async function translate(commitId:string, translatable?:Translata
     let text = await translateHash(commitId, translatable.Hash)
     if (process !== undefined)
         text = process(text)
-    translatable.Text = text
+    translatable.Text = text ?? translatable.Hash.toString()
 }
 
 const translationMap: {[key: string]: string} = {}
-export async function translateHash(commitId:string, hash:number) : Promise<string>
+export async function translateHash(commitId:string, hash:number) : Promise<string | undefined>
 {
     if (commitId in translationMap)
     {
         const translation = translationMap[commitId]
-        return Promise.resolve(translation[hash] ?? hash.toString())
+        return Promise.resolve(translation[hash])
     }
 
     const translation = translationMap[commitId] = await retrieveJson('TextMap/TextMapEN.json', commitId, false)
-    return translation[hash] ?? hash.toString()
+    return translation[hash]
 }
 
 export function getHash(key:string) : number

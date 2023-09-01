@@ -24,6 +24,13 @@ import RelicSetSubNav from './views/navigation/RelicSetSubNav.vue'
 import RelicSetAbility from './views/abilities/RelicSetAbility.vue'
 import RelicSetModifier from './views/abilities/RelicSetModifier.vue'
 
+import StatusSubNav from './views/navigation/StatusSubNav.vue'
+import StatusAbility from './views/abilities/StatusAbility.vue'
+import StatusModifier from './views/abilities/StatusModifier.vue'
+
+import AnyAbility from './views/abilities/AnyAbility.vue'
+import AnyModifier from './views/abilities/AnyModifier.vue'
+
 const routes:Readonly<RouteRecordRaw[]> = 
 [
     { path: '/', name: 'home', component: Title },
@@ -80,6 +87,28 @@ const routes:Readonly<RouteRecordRaw[]> =
         { path: '/modifier-:modifierId/from/relicset-:objectId/@:commitId', 
             name: 'relicsetModifier', components: { subnav: RelicSetSubNav, default: RelicSetModifier, }, 
             props:{ subnav:toRouteProps({ objectId:'number', modifierId:false }), default:toRouteProps({ objectId: 'number' }) },
+        },
+        // Status
+        { path: '/status-:objectId/@:commitId', 
+            name: 'status', components: { subnav: StatusSubNav, }, 
+            props:{ subnav:toRouteProps({ objectId:'number' })},
+        },
+        { path: '/ability-:abilityId/from/status-:objectId/@:commitId', 
+            name: 'statusAbility', components: { subnav: StatusSubNav, default: StatusAbility, },
+            props:{ subnav:toRouteProps({ objectId:'number', abilityId:false }), default:toRouteProps({ objectId: 'number' }) },
+        },
+        { path: '/modifier-:modifierId/from/status-:objectId/@:commitId', 
+            name: 'statusModifier', components: { subnav: StatusSubNav, default: StatusModifier, }, 
+            props:{ subnav:toRouteProps({ objectId:'number', modifierId:false }), default:toRouteProps({ objectId: 'number' }) },
+        },
+        // Ability / Modifier (no context)
+        { path: '/ability-:modifierId/@:commitId', 
+            name: 'ability', components: { default: AnyAbility, }, 
+            props:{ default:toRouteProps({ }) },
+        },
+        { path: '/modifier-:modifierId/@:commitId', 
+            name: 'modifier', components: { default: AnyModifier, }, 
+            props:{ default:toRouteProps({ }) },
         },
     ]},
 ]

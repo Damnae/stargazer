@@ -119,6 +119,7 @@ export interface AbilityContext
 
 export enum AbilityContextType
 {
+  All = 'All',
   Avatar = 'Avatar',
   Monster = 'Monster',
   Equipment = 'Equipment',
@@ -227,6 +228,31 @@ const contextTypeToPaths =
       //'Config/ConfigGlobalModifier/GlobalModifier_System.json',
       'Config/ConfigGlobalModifier/GlobalModifier_Common_Property.json',
       'Config/ConfigGlobalModifier/GlobalModifier_Common_Specific.json',
+      'Config/ConfigGlobalModifier/GlobalModifier_Level.json',
+    ],
+  },
+  All: 
+  {
+    Abilities:
+    [
+      'Config/ConfigAbility/Common_Additional_Ability.json',
+      'Config/ConfigAbility/Avatar',
+      'Config/ConfigAbility/Monster',
+      'Config/ConfigAbility/EquipmemtAbility.json',
+      'Config/ConfigAbility/RelicAbility.json',
+      'Config/ConfigAbility/BattleEventAbility.json',
+      'Config/ConfigAbility/StageBattleEventAbility.json',
+      'Config/ConfigAbility/BattleEvent',
+      'Config/ConfigAbility/Level',
+    ],
+    Modifiers:
+    [
+      //'Config/ConfigGlobalModifier/GlobalModifier.json',
+      //'Config/ConfigGlobalModifier/GlobalModifier_System.json',
+      'Config/ConfigGlobalModifier/GlobalModifier_Common_Property.json',
+      'Config/ConfigGlobalModifier/GlobalModifier_Common_Specific.json',
+      'Config/ConfigGlobalModifier/GlobalModifier_Avatar.json',
+      'Config/ConfigGlobalModifier/GlobalModifier_Monster.json',
       'Config/ConfigGlobalModifier/GlobalModifier_Level.json',
     ],
   },

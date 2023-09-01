@@ -37,9 +37,21 @@ export function toRouteProps(mapping:KeyAny)
     }
 }
 
-export function cleanupNumber(value:number) : string
+export function cleanupNumber(value?:number) : string
 {
-  return parseFloat(value.toFixed(4)).toString();
+    if (value === undefined)
+        return 'undefined'
+    return parseFloat(value.toFixed(4)).toString();
+}
+
+export function cleanupMarkup(value?:string) : string
+{
+    if (value === undefined)
+        return 'undefined'
+
+    return value
+        .replace(/(<([^>]+)>)/gi, "")
+        .replace(/\\n/gi, " ")
 }
 
 export function cleanGamecoreName(value: string) 

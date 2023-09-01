@@ -13,7 +13,7 @@
   function allAvatars() : Avatar[]
   {
     return Object.values(avatars.value)
-      .filter(v => v.AvatarName.Text.toLowerCase().includes(search.value.toLowerCase()))
+      .filter(v => v.SearchKeywords.some(k => k.includes(search.value.toLowerCase())))
       .sort((a, b) => a.AvatarName.Text > b.AvatarName.Text ? 1 : -1)
   }
 

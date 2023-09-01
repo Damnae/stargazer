@@ -4,6 +4,7 @@
   import MonsterNav from './MonsterNav.vue'
   import EquipmentNav from './EquipmentNav.vue'
   import RelicSetNav from './RelicSetNav.vue'
+  import StatusNav from './StatusNav.vue'
 
   const search = ref<string>('')
   provide('search', search)
@@ -30,6 +31,10 @@
         <li>
           <div>Relic Sets</div>
           <RelicSetNav />
+        </li>
+        <li>
+          <div>Status Effects</div>
+          <StatusNav />
         </li>
       </ul>
     </section>

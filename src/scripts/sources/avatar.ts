@@ -88,6 +88,7 @@ export interface Avatar extends Creature
     DynamicValues?: [ any ] // Just assuming they could have them here like for some monsters?
     AvatarBaseType: string
     AIPath: string
+    SearchKeywords: string[]
 }
 
 export interface AvatarConfig
@@ -113,12 +114,18 @@ export async function getAvatars(commitId:string) : Promise<AvatarConfig>
             const avatar = avatars[key]
             await translate(commitId, avatar.AvatarName, (name) => 
             {
+                if (!name)
+                    return avatar.AvatarID.toString()
+                
                 if (avatar.AvatarID > 8000)
                     name = name.replace('{NICKNAME}', `Trailblazer (${avatar.DamageType})`)
                 return name
             })
             avatar.Eidolons = avatar.RankIDList.map(v => eidolons[v])
             avatar.Traces = []
+
+            avatar.SearchKeywords = []
+            avatar.SearchKeywords.push(avatar.AvatarName.Text.toLowerCase())
         }
 
         const traceRanks = await retrieveJson('ExcelOutput/AvatarSkillTreeConfig.json', commitId, false) as AvatarSkillTreeConfig

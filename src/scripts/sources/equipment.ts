@@ -46,6 +46,7 @@ export interface Equipment
     AvatarBaseType: string
     SkillID: number
     Skill: EquipmentSkill
+    SearchKeywords:string[]
 }
 
 export interface EquipmentConfig
@@ -79,6 +80,9 @@ export async function getEquipments(commitId:string) : Promise<EquipmentConfig>
             //await translate(commitId, equipment.EquipmentDesc)
             equipment.AvatarBaseType = await translatePath(commitId, equipment.AvatarBaseType)
             equipment.Skill = equipmentSkills[equipment.SkillID]?.[1]
+
+            equipment.SearchKeywords = []
+            equipment.SearchKeywords.push(equipment.EquipmentName.Text.toLowerCase())
         }
 
         config = equipmentConfigCache[commitId] = equipments
