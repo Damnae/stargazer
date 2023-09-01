@@ -64,6 +64,14 @@
   }, 
   { immediate:true, })
 
+  function evaluateStatusDescription(status:Status) : string
+  {
+    let description = status.StatusDesc.Text.replace(/(<([^>]+)>)/gi, "")
+    for (const [index, param] of status.ReadParamList.entries())
+      description = description.replace(`#${index + 1}[i]`, param)
+    return description
+  }
+
   const hashStore = useHashStore()
 </script>
 
@@ -75,126 +83,112 @@
     
     <template v-if="modifier">
 
-      <BlockLayout v-if="status" :source="status">
-        <span class="flow">Status</span>
-        <template #content>
-          <div>
+      <template v-if="status">
+        <h2>Status</h2>
+        <BlockLayout :source="status">
+          <span>
             {{ status.StatusName.Text }}
+            <template v-if="status.StatusName.Text != status.StatusEffect.Text && status.StatusEffect.Text != status.StatusEffect.Hash.toString()">
+              - {{ status.StatusEffect.Text }}
+            </template>
             <em>
               (<template v-if="status.CanDispel">Dispellable</template>
               <template v-else>Non-Dispellable</template>
               {{ status.StatusType }})
             </em>
-          </div>
-          <div>
-            <span class="minor" v-html="status.StatusDesc.Text">
-            </span>
-          </div>
+          </span>
+          <template #content>
+            <span class="minor">{{ evaluateStatusDescription(status) }}</span>
+          </template>
+        </BlockLayout>
+      </template>
+
+      <h2>Properties</h2>
+      <table class="block">
+        <tr>
+          <th>Key</th>
+          <th>Value</th>
+        </tr>
+        <tr v-if="modifier.BehaviorFlagList">
+          <td>Flags</td>
+          <td><em>{{ modifier.BehaviorFlagList.join(', ') }}</em></td>
+        </tr>
+        <tr v-if="modifier.EnterBattlePriority">
+          <td>Enter Battle Priority</td>
+          <td><em>{{ modifier.EnterBattlePriority }}</em></td>
+        </tr>
+        <td v-if="modifier.LifeTime">
+          <td>Life Time</td>
+          <td><em>{{ modifier.LifeTime }}</em></td>
+        </td>
+        <tr v-if="modifier.LifeStepMoment">
+          <td>Life Step Moment</td>
+          <td><em>{{ modifier.LifeStepMoment }}</em></td>
+        </tr>
+        <tr v-if="modifier.Count">
+          <td>Count</td>
+          <td><em>{{ modifier.Count }}</em></td>
+        </tr>
+        <tr v-if="modifier.LayerAddWhenStack">
+          <td>Layer Add When Stack</td>
+          <td><em><EvaluateExpression :expression="modifier.LayerAddWhenStack" /></em></td>
+        </tr>
+        <tr v-if="modifier.MaxLayer">
+          <td>Max Layer</td>
+          <td><em>{{ modifier.MaxLayer }}</em></td>
+        </tr>
+        <tr v-if="modifier.Stacking">
+          <td>Stacking</td>
+          <td><em>{{ modifier.Stacking }}</em></td>
+        </tr>
+        <tr>
+          <td>Use Snapshot Entity</td>
+          <td><em>{{ !!modifier.UseSnapshotEntity }}</em></td>
+        </tr>
+        <tr v-if="modifier.PerformTime">
+          <td>Perform Time</td>
+          <td><em><EvaluateExpression :expression="modifier.PerformTime" /></em></td>
+        </tr>
+      </table>
+
+      <template v-if="modifier._CallbackList">
+        <h2>Events</h2>
+        <template v-for="(e, key) in modifier._CallbackList">
+          <BlockLayout :source="e">
+            <span class="flow">{{ key }}</span>
+            <template #content>
+              <AnyBlock v-for="n in e.CallbackConfig" :node="n" />
+            </template>
+          </BlockLayout>
         </template>
-      </BlockLayout>
-      <BlockLayout v-if="modifier.BehaviorFlagList" :source="modifier.BehaviorFlagList">
-        <span class="flow">Flags</span>
-        <template #content>
-          {{ modifier.BehaviorFlagList.join(', ') }}
+      </template>
+
+      <template v-if="modifier.OnAbilityPropertyChange || modifier.OnDynamicValueChange">
+        <h2>Watchers</h2>
+        <template v-if="modifier.OnAbilityPropertyChange" v-for="p in modifier.OnAbilityPropertyChange">
+          <BlockLayout :source="p">
+            <span class="flow">Watch <em>{{ p.Property }}</em> property</span>
+            <template #content>
+              <RangeChange v-for="r in p.Ranges" :range="r" />
+            </template>
+          </BlockLayout>
         </template>
-      </BlockLayout>
-      <BlockLayout v-if="modifier.EnterBattlePriority" :source="modifier.EnterBattlePriority">
-        <span class="flow">Enter Battle Priority</span>
-        <template #content>
-          {{ modifier.EnterBattlePriority }}
+        <template v-if="modifier.OnDynamicValueChange" v-for="p in modifier.OnDynamicValueChange">
+          <BlockLayout :source="p">
+            <span class="flow">Watch <em>{{ hashStore.translate(p.Key.Hash) ?? p.Key.Hash }}</em> dynamic value</span>
+            <template #content>
+              <RangeChange v-for="r in p.Ranges" :range="r" />
+            </template>
+          </BlockLayout>
         </template>
-      </BlockLayout>
-      <BlockLayout v-if="modifier.Count" :source="modifier.Count">
-        <span class="flow">Count</span>
-        <template #content>
-          {{ modifier.Count }}
-        </template>
-      </BlockLayout>
-      <BlockLayout v-if="modifier.LifeTime" :source="modifier.LifeTime">
-        <span class="flow">LifeTime</span>
-        <template #content>
-          {{ modifier.LifeTime }}
-        </template>
-      </BlockLayout>
-      <BlockLayout v-if="modifier.LifeStepMoment" :source="modifier.LifeStepMoment">
-        <span class="flow">LifeStepMoment</span>
-        <template #content>
-          {{ modifier.LifeStepMoment }}
-        </template>
-      </BlockLayout>
-      <BlockLayout v-if="modifier.Stacking" :source="modifier.Stacking">
-        <span class="flow">Stacking</span>
-        <template #content>
-          {{ modifier.Stacking }}
-        </template>
-      </BlockLayout>
-      <BlockLayout v-if="modifier.MaxLayer" :source="modifier.MaxLayer">
-        <span class="flow">MaxLayer</span>
-        <template #content>
-          {{ modifier.MaxLayer }}
-        </template>
-      </BlockLayout>
-      <BlockLayout v-if="modifier.LayerAddWhenStack" :source="modifier.LayerAddWhenStack">
-        <span class="flow">LayerAddWhenStack</span>
-        <template #content>
-          <EvaluateExpression :expression="modifier.LayerAddWhenStack" />
-        </template>
-      </BlockLayout>
-      <BlockLayout v-if="modifier.PerformTime" :source="modifier.PerformTime">
-        <span class="flow">PerformTime</span>
-        <template #content>
-          <EvaluateExpression :expression="modifier.PerformTime" />
-        </template>
-      </BlockLayout>
+      </template>
+
+      <h2>Context</h2>
       <DynamicValues :dynamicValues="modifier.DynamicValues" />
-
-      <BlockLayout v-if="modifier._CallbackList" :source="modifier._CallbackList">
-        <span class="flow">Events</span>
-        <template #content>
-          <template v-for="(e, key) in modifier._CallbackList">
-            <BlockLayout :source="e">
-              <span class="flow">{{ key }}</span>
-              <template #content>
-                <AnyBlock v-for="n in e.CallbackConfig" :node="n" />
-              </template>
-            </BlockLayout>
-          </template>
-        </template>
-      </BlockLayout>
-
-      <BlockLayout v-if="modifier.OnAbilityPropertyChange" :source="modifier.OnAbilityPropertyChange">
-        <span class="flow">Property Watchers</span>
-        <template #content>
-          <template v-for="p in modifier.OnAbilityPropertyChange">
-            <BlockLayout :source="p">
-              <span class="flow">Watch <em>{{ p.Property }}</em></span>
-              <template #content>
-                <RangeChange v-for="r in p.Ranges" :range="r" />
-              </template>
-            </BlockLayout>
-          </template>
-        </template>
-      </BlockLayout>
-
-      <BlockLayout v-if="modifier.OnDynamicValueChange" :source="modifier.OnDynamicValueChange">
-        <span class="flow">Dynamic Value Watchers</span>
-        <template #content>
-          <template v-for="p in modifier.OnDynamicValueChange">
-            <BlockLayout :source="p">
-              <span class="flow">Watch <em>{{ hashStore.translate(p.Key.Hash) ?? p.Key.Hash }}</em></span>
-              <template #content>
-                <RangeChange v-for="r in p.Ranges" :range="r" />
-              </template>
-            </BlockLayout>
-          </template>
-        </template>
-      </BlockLayout>
+      <ShowContext />
 
     </template>
     <span v-else class="minor">(Modifier {{ modifierId }} not found)</span>
-    
-    <h2>Context</h2>
-    <ShowContext />
 
   </section>
 </template>

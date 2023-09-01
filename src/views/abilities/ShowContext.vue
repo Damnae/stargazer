@@ -8,7 +8,7 @@
 
 <template>
   <BlockLayout :source="gamecoreContext">
-    <span class="flow">Context</span>
+    <span class="flow">Expression Context</span>
   </BlockLayout>
 </template>
 

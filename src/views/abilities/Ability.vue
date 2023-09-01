@@ -30,14 +30,14 @@
 
       <template v-if="ability">
         
-        <div v-if="ability.OnStart">
+        <template v-if="ability.OnStart">
           <h2>On Start</h2>
           <template v-for="node in ability.OnStart">
             <AnyBlock :node="node" />
           </template>
-        </div>
+        </template>
 
-        <div v-if="ability.Modifiers">
+        <template v-if="ability.Modifiers">
           <h2>Modifiers</h2>
           <ul>
             <li v-for="(_modifier, modifierName) in ability.Modifiers">
@@ -46,18 +46,14 @@
               </RouterLink>
             </li>
           </ul>
-        </div>
+        </template>
 
-        <div v-if="ability.DynamicValues">
-          <h2>Dynamic Values</h2>
-          <DynamicValues :dynamicValues="ability.DynamicValues" />
-        </div>
+        <h2>Context</h2>
+        <DynamicValues v-if="ability.DynamicValues" :dynamicValues="ability.DynamicValues" />
+        <ShowContext />
 
       </template>
       <span v-else class="minor">(Ability {{ abilityId }} not found)</span>
-    
-      <h2>Context</h2>
-      <ShowContext />
 
   </section>
 </template>
