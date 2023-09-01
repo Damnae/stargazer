@@ -133,10 +133,10 @@
           <td>Stacking</td>
           <td><em>{{ modifier.Stacking }}</em></td>
         </tr>
-        <td v-if="modifier.LifeTime">
+        <tr v-if="modifier.LifeTime">
           <td>Life Time</td>
           <td><em>{{ modifier.LifeTime }}</em></td>
-        </td>
+        </tr>
         <tr v-if="modifier.LifeStepMoment">
           <td>Life Step Moment</td>
           <td><em>{{ modifier.LifeStepMoment }}</em></td>
