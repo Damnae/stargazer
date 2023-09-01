@@ -25,7 +25,7 @@
 
 <template>
   <header>
-    <h1>{{ abilityId.replace(/_/g, " ") }}</h1>
+    <h1>{{ abilityId }}</h1>
   </header>
   <section :key="abilityId">
 

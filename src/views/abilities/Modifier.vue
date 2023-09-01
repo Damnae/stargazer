@@ -1,6 +1,6 @@
 <script setup lang="ts">
   import { inject, ref, watch, Ref, } from 'vue'
-  import { GamecoreContext } from '@/scripts/sources/gamecore';
+  import { GamecoreContext, evaluateTargetType } from '@/scripts/sources/gamecore';
   import { Modifier, AbilityContext, } from '@/scripts/sources/ability';
   import { Status, getStatuses } from '@/scripts/sources/status';
   import useHashStore from '@/scripts/hashstore';
@@ -77,7 +77,7 @@
 
 <template>
   <header>
-    <h1>{{ modifierId.replace(/_/g, " ") }}</h1>
+    <h1>{{ modifierId }}</h1>
   </header>
   <section :key="modifierId">
     
@@ -181,6 +181,42 @@
             </template>
           </BlockLayout>
         </template>
+      </template>
+
+      <template v-if="modifier.ModifierAffectedPreshowConfig">
+        <h2>Preview</h2>
+        <BlockLayout :source="modifier.ModifierAffectedPreshowConfig">
+          <span class="flow">
+            <template v-if="modifier.ModifierAffectedPreshowConfig.SkillTypes">
+              On <em>{{ evaluateTargetType(modifier.ModifierAffectedPreshowConfig.TargetType) }}</em>'s
+              <em >{{ modifier.ModifierAffectedPreshowConfig.SkillTypes.join(', ') }}</em>
+            </template>
+            <template v-else>
+              For <em>{{ evaluateTargetType(modifier.ModifierAffectedPreshowConfig.TargetType) }}</em>
+            </template>
+          </span>
+          <template #content>
+            <template v-if="modifier.ModifierAffectedPreshowConfig.Condition">
+              
+              <div class="subblock">
+                <span class="flow">If</span>
+                <AnyBlock :node="modifier.ModifierAffectedPreshowConfig.Condition" />
+                <span class="flow">Do</span>
+                <BlockLayout v-for="expression, key in modifier.ModifierAffectedPreshowConfig.ActionDelayPreshowConfig" :source="expression">
+                  Preview <em>{{ key }}</em> with value <em><EvaluateExpression :expression="expression" /></em>
+                </BlockLayout>
+              </div>
+            
+            </template>
+            <template v-else>
+              
+              <BlockLayout v-for="expression, key in modifier.ModifierAffectedPreshowConfig.ActionDelayPreshowConfig" :source="expression">
+                Preview <em>{{ key }}</em> with value <em><EvaluateExpression :expression="expression" /></em>
+              </BlockLayout>
+
+            </template>
+          </template>
+        </BlockLayout>
       </template>
 
       <h2>Context</h2>
