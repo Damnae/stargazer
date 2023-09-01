@@ -247,8 +247,6 @@ const contextTypeToPaths =
     ],
     Modifiers:
     [
-      //'Config/ConfigGlobalModifier/GlobalModifier.json',
-      //'Config/ConfigGlobalModifier/GlobalModifier_System.json',
       'Config/ConfigGlobalModifier/GlobalModifier_Common_Property.json',
       'Config/ConfigGlobalModifier/GlobalModifier_Common_Specific.json',
       'Config/ConfigGlobalModifier/GlobalModifier_Avatar.json',

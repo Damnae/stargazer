@@ -1,20 +1,27 @@
 <script setup lang="ts">
   import { GamecoreNode, 
-    GamecoreTargetType, evaluateTargetType, 
+    GamecoreTargetType,
   } from '@/scripts/sources/gamecore';
+  import useHashStore from '@/scripts/hashstore';
   import BlockLayout from '@/views/gamecore/BlockLayout.vue';
 
   const props = defineProps<{node:GamecoreNode}>()
   const node = props.node as unknown as 
   {
     TargetType?:GamecoreTargetType
+    DynamicKey:string
+    VariateType?:string
   }
+
+  if (node.DynamicKey)
+    useHashStore().register(node.DynamicKey, true)
 </script>
 
 <template>
-  <BlockLayout :source="node" :cosmetic="true">
-   
-    Create visual effect at <em>{{ evaluateTargetType(node.TargetType) }}</em>
+  <BlockLayout :source="node">
+
+    Set <em>{{ node.DynamicKey }}</em>
+    to <em>{{ node.VariateType }}</em>
 
   </BlockLayout>
 </template>

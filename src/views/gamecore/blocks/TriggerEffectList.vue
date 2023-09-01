@@ -14,7 +14,7 @@
 <template>
   <BlockLayout :source="node" :cosmetic="true">
    
-    Create visual effect at <em>{{ evaluateTargetType(node.TargetType) }}</em>
+    Create visual effects at <em>{{ evaluateTargetType(node.TargetType) }}</em>
 
   </BlockLayout>
 </template>

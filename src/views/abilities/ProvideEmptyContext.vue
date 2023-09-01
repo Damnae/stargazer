@@ -31,9 +31,16 @@
   provide('createModifierRoute', (modifierId:string) : object => { return { name: props.modifierRouteName ?? 'modifier', params:{ commitId: props.commitId, modifierId: modifierId, } }})
 </script>
 
-<template> 
+<template>
+  <div class="nocontext minor">(Context is missing)</div>
   <slot></slot>
 </template>
 
 <style scoped>
+  .nocontext
+  {
+    position:absolute;
+    top:.5rem;
+    left:.5rem;
+  }
 </style>
