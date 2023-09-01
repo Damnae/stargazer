@@ -106,7 +106,7 @@
       <h2>Properties</h2>
       <table class="block">
         <tr>
-          <th>Key</th>
+          <th>Property</th>
           <th>Value</th>
         </tr>
         <tr v-if="modifier.BehaviorFlagList">
@@ -117,25 +117,28 @@
           <td>Enter Battle Priority</td>
           <td><em>{{ modifier.EnterBattlePriority }}</em></td>
         </tr>
-        <tr v-if="modifier.Count">
+        <tr>
           <td>Count</td>
-          <td><em>{{ modifier.Count }}</em></td>
+          <td><em>{{ modifier.Count ?? 1 }}</em></td>
         </tr>
-        <tr v-if="modifier.LayerAddWhenStack">
-          <td>Layer Add When Stack</td>
-          <td><em><EvaluateExpression :expression="modifier.LayerAddWhenStack" /></em></td>
+        <tr>
+          <td>Add Layers On Stack</td>
+          <td>
+            <em v-if="modifier.LayerAddWhenStack"><EvaluateExpression :expression="modifier.LayerAddWhenStack" /></em>
+            <em v-else>0</em>
+          </td>
         </tr>
-        <tr v-if="modifier.MaxLayer">
+        <tr>
           <td>Max Layer</td>
-          <td><em>{{ modifier.MaxLayer }}</em></td>
+          <td><em>{{ modifier.MaxLayer ?? 1 }}</em></td>
         </tr>
         <tr>
           <td>Stacking</td>
           <td><em>{{ modifier.Stacking ?? 'Unique' }}</em></td>
         </tr>
-        <tr v-if="modifier.LifeTime">
+        <tr>
           <td>Life Time</td>
-          <td><em>{{ modifier.LifeTime }}</em></td>
+          <td><em>{{ modifier.LifeTime ?? -1 }}</em></td>
         </tr>
         <tr>
           <td>Life Step Moment</td>
@@ -186,8 +189,8 @@
         <BlockLayout :source="modifier.ModifierAffectedPreshowConfig">
           <span class="flow">
             <template v-if="modifier.ModifierAffectedPreshowConfig.SkillTypes">
-              On <em>{{ evaluateTargetType(modifier.ModifierAffectedPreshowConfig.TargetType) }}</em>'s
-              <em >{{ modifier.ModifierAffectedPreshowConfig.SkillTypes.join(', ') }}</em>
+              On <em>{{ modifier.ModifierAffectedPreshowConfig.SkillTypes.join(', ') }}</em>, 
+              for <em>{{ evaluateTargetType(modifier.ModifierAffectedPreshowConfig.TargetType) }}</em>
             </template>
             <template v-else>
               For <em>{{ evaluateTargetType(modifier.ModifierAffectedPreshowConfig.TargetType) }}</em>
