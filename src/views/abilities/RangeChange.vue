@@ -12,9 +12,10 @@
     <span class="flow">
       Range <em><EvaluateExpression :expression="range.Min" /></em>
       to <em><EvaluateExpression :expression="range.Max" /></em>
-      <template v-if="range.MaxInclusive">
-        (Inclusive)
-      </template>
+      <span class="minor">
+        <template v-if="range.MaxInclusive">(Inclusive)</template>
+        <template v-else>(Exclusive)</template>
+      </span>
     </span>
     <template #content>
       <BlockLayout v-if="range.OnEnterRange" :source="range.OnEnterRange">

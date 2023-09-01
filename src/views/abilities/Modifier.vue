@@ -165,7 +165,7 @@
         <h2>Watchers</h2>
         <template v-if="modifier.OnAbilityPropertyChange" v-for="p in modifier.OnAbilityPropertyChange">
           <BlockLayout :source="p">
-            <span class="flow">Watch <em>{{ p.Property }}</em> property</span>
+            <span class="flow">Watch property <em>{{ p.Property }}</em></span>
             <template #content>
               <RangeChange v-for="r in p.Ranges" :range="r" />
             </template>
@@ -173,7 +173,7 @@
         </template>
         <template v-if="modifier.OnDynamicValueChange" v-for="p in modifier.OnDynamicValueChange">
           <BlockLayout :source="p">
-            <span class="flow">Watch <em>{{ hashStore.translate(p.Key.Hash) ?? p.Key.Hash }}</em> dynamic value</span>
+            <span class="flow">Watch dynamic value <em>{{ hashStore.translate(p.Key.Hash) ?? p.Key.Hash }}</em></span>
             <template #content>
               <RangeChange v-for="r in p.Ranges" :range="r" />
             </template>

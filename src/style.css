@@ -38,8 +38,9 @@ h2
   font-variant: petite-caps;
   text-shadow: 1px 1px 1px #181818;
   background: linear-gradient(90deg, #181818 0%, #242424 10em);
+  border-top: .5em solid #181818;
   border-bottom: 4px solid #242424;
-  margin: 1em 0 .5em;
+  margin: .5em 0 .5em;
   padding-left: .5rem;
 }
 h2:first-child
@@ -54,13 +55,13 @@ h3
   background-color: #181818;
   display: flex;
   align-items: center;
-  text-decoration: underline;
+  font-weight: normal;
 }
 
 h3::after
 {  
   content: "";
-  background: linear-gradient(90deg, #181818 0%, #242424 2em);
+  background: linear-gradient(90deg, #181818 0%, #242424 10em);
   margin-left: 1rem;
   height: 4px;
   flex-grow: 1;
@@ -76,7 +77,7 @@ h3
 {
   z-index: 0;
   position:sticky;  
-  top: 2.1em;
+  top: 2.8em;
 }
 
 ul
