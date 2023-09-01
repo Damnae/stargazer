@@ -25,17 +25,20 @@
       
       <em>{{ node.ModifyFunction }} <EvaluateExpression :expression="node.Value" /></em>
       to
-      <template v-if="node.TargetType">
-        <em>{{ evaluateTargetType(node.TargetType) }}</em>'s
-      </template>
       <RouterLink v-if="node.ModifierName" :to="createModifierRoute(node.ModifierName)">
         <em>{{ node.ModifierName }}</em>'s
       </RouterLink>
+      <template v-else>
+        this modifier's
+      </template>
       <template v-if="node.ValueType">
         <em>{{ node.ValueType }}</em>
       </template>
       <template v-else>
         value(?)
+      </template>
+      <template v-if="node.TargetType">
+        on <em>{{ evaluateTargetType(node.TargetType) }}</em>
       </template>
 
     </template>

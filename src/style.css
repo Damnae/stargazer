@@ -22,6 +22,7 @@ body {
 
 h1
 {
+  font-weight: lighter;
   font-variant: petite-caps;
   padding: 0 .5rem;
   text-align: end;
@@ -33,6 +34,7 @@ nav h1
 }
 h2
 {
+  font-weight: lighter;
   font-variant: petite-caps;
   text-shadow: 1px 1px 1px #181818;
   background: linear-gradient(90deg, #181818 0%, #242424 10em);
@@ -75,6 +77,11 @@ h3
   z-index: 0;
   position:sticky;  
   top: 2.1em;
+}
+
+ul
+{
+  padding-left:1.5em;
 }
 
 a {

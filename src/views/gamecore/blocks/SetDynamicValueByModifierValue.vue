@@ -29,19 +29,21 @@
     
     Set <em>{{ node.DynamicKey }}</em>
 
-    to 
-    <template v-if="node.ReadTargetType">
-      <em>{{ evaluateTargetType(node.ReadTargetType) }}</em>'s
-    </template>
-    <em><EvaluateExpression :expression="node.Multiplier" /></em>x
+    to <em><EvaluateExpression :expression="node.Multiplier" /></em>x of
     <RouterLink v-if="node.ModifierName" :to="createModifierRoute(node.ModifierName)">
       <em>{{ node.ModifierName }}</em>'s
     </RouterLink>
+    <template v-else>
+      this modifier's
+    </template>
     <template v-if="node.ValueType">
       <em>{{ node.ValueType }}</em>
     </template>
     <template v-else>
       value(?)
+    </template>
+    <template v-if="node.ReadTargetType">
+      on <em>{{ evaluateTargetType(node.ReadTargetType) }}</em>
     </template>
 
 
