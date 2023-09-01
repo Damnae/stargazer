@@ -117,14 +117,6 @@
           <td>Enter Battle Priority</td>
           <td><em>{{ modifier.EnterBattlePriority }}</em></td>
         </tr>
-        <td v-if="modifier.LifeTime">
-          <td>Life Time</td>
-          <td><em>{{ modifier.LifeTime }}</em></td>
-        </td>
-        <tr v-if="modifier.LifeStepMoment">
-          <td>Life Step Moment</td>
-          <td><em>{{ modifier.LifeStepMoment }}</em></td>
-        </tr>
         <tr v-if="modifier.Count">
           <td>Count</td>
           <td><em>{{ modifier.Count }}</em></td>
@@ -140,6 +132,14 @@
         <tr v-if="modifier.Stacking">
           <td>Stacking</td>
           <td><em>{{ modifier.Stacking }}</em></td>
+        </tr>
+        <td v-if="modifier.LifeTime">
+          <td>Life Time</td>
+          <td><em>{{ modifier.LifeTime }}</em></td>
+        </td>
+        <tr v-if="modifier.LifeStepMoment">
+          <td>Life Step Moment</td>
+          <td><em>{{ modifier.LifeStepMoment }}</em></td>
         </tr>
         <tr>
           <td>Use Snapshot Entity</td>
@@ -184,6 +184,9 @@
       </template>
 
       <h2>Context</h2>
+      <BlockLayout :source="modifier">
+        <span class="flow">Modifier Data</span>
+      </BlockLayout>
       <DynamicValues :dynamicValues="modifier.DynamicValues" />
       <ShowContext />
 

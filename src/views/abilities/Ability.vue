@@ -1,10 +1,11 @@
 <script setup lang="ts">
   import { watch, inject, Ref, computed, } from 'vue'
   import { Ability, AbilityContext, } from '@/scripts/sources/ability';
+  import { GamecoreContext } from '@/scripts/sources/gamecore';
   import AnyBlock from '../gamecore/AnyBlock.vue';
   import DynamicValues from './DynamicValues.vue';
   import ShowContext from './ShowContext.vue';
-  import { GamecoreContext } from '@/scripts/sources/gamecore';
+  import BlockLayout from '../gamecore/BlockLayout.vue';
 
   const props = defineProps<{abilityId:string}>()
   const abilityContext = inject('abilityContext') as Ref<AbilityContext>
@@ -49,6 +50,9 @@
         </template>
 
         <h2>Context</h2>
+        <BlockLayout :source="ability">
+          <span class="flow">Ability Data</span>
+        </BlockLayout>
         <DynamicValues v-if="ability.DynamicValues" :dynamicValues="ability.DynamicValues" />
         <ShowContext />
 
