@@ -20,6 +20,58 @@ body {
   min-height: 100vh;
 }
 
+h1
+{
+  font-variant: petite-caps;
+  padding: 0 .5rem;
+  text-align: end;
+}
+h2
+{
+  font-variant: petite-caps;
+  text-shadow: 1px 1px 1px #181818;
+  background: linear-gradient(90deg, #181818 0%, #242424 10em);
+  border-bottom: 4px solid #242424;
+  margin: 1em 0 .5em;
+  padding-left: .5rem;
+}
+h2:first-child
+{
+  margin-top: 0;
+}
+h3
+{
+  font-variant: petite-caps;
+  padding: 0 .5rem;
+  margin: 1em 0 .5em;
+  background-color: #181818;
+  display: flex;
+  align-items: center;
+  text-decoration: underline;
+}
+
+h3::after
+{  
+  content: "";
+  background: linear-gradient(90deg, #181818 0%, #242424 2em);
+  margin-left: 1rem;
+  height: 4px;
+  flex-grow: 1;
+}
+
+h2
+{
+  z-index: 1;
+  position:sticky;
+  top:0;
+}
+h3
+{
+  z-index: 0;
+  position:sticky;  
+  top: 2.1em;
+}
+
 a {
   font-weight: 500;
   color: rgba(255, 255, 255, 0.87);

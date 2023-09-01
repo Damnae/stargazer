@@ -153,14 +153,12 @@
 
       <template v-if="modifier._CallbackList">
         <h2>Events</h2>
-        <template v-for="(e, key) in modifier._CallbackList">
-          <BlockLayout :source="e">
-            <span class="flow">{{ key }}</span>
-            <template #content>
-              <AnyBlock v-for="n in e.CallbackConfig" :node="n" />
-            </template>
-          </BlockLayout>
-        </template>
+        <div class="sticky-container">
+          <template v-for="(e, key) in modifier._CallbackList">
+            <h3>{{ key }}</h3>
+            <AnyBlock v-for="n in e.CallbackConfig" :node="n" />
+          </template>
+        </div>
       </template>
 
       <template v-if="modifier.OnAbilityPropertyChange || modifier.OnDynamicValueChange">
