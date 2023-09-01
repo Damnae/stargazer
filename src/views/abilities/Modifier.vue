@@ -129,17 +129,17 @@
           <td>Max Layer</td>
           <td><em>{{ modifier.MaxLayer }}</em></td>
         </tr>
-        <tr v-if="modifier.Stacking">
+        <tr>
           <td>Stacking</td>
-          <td><em>{{ modifier.Stacking }}</em></td>
+          <td><em>{{ modifier.Stacking ?? 'Unique' }}</em></td>
         </tr>
         <tr v-if="modifier.LifeTime">
           <td>Life Time</td>
           <td><em>{{ modifier.LifeTime }}</em></td>
         </tr>
-        <tr v-if="modifier.LifeStepMoment">
+        <tr>
           <td>Life Step Moment</td>
-          <td><em>{{ modifier.LifeStepMoment }}</em></td>
+          <td><em>{{ modifier.LifeStepMoment ?? 'ModifierPhase2End' }}</em></td>
         </tr>
         <tr>
           <td>Use Snapshot Entity</td>
