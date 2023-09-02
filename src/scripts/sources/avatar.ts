@@ -2,6 +2,7 @@ import { retrieveJson } from '../datasource';
 import translate, { Translatable, } from '../translate';
 import { GamecoreParam } from './gamecore';
 import { Creature } from './creature';
+import { cleanupFilename } from '../common';
 
 // Eidolons
 
@@ -128,6 +129,7 @@ export async function getAvatars(commitId:string) : Promise<AvatarConfig>
             avatar.SearchKeywords.push(avatar.AvatarName.Text.toLowerCase())
             avatar.SearchKeywords.push(avatar.DamageType.toLowerCase())
             avatar.SearchKeywords.push(avatar.AvatarBaseType.toLowerCase())
+            avatar.SearchKeywords.push(cleanupFilename(avatar.JsonPath).toLowerCase())
         }
 
         const traceRanks = await retrieveJson('ExcelOutput/AvatarSkillTreeConfig.json', commitId, false) as AvatarSkillTreeConfig

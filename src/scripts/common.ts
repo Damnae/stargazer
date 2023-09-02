@@ -62,6 +62,16 @@ export function cleanGamecoreName(value: string)
     return value;
 }
 
+export function cleanupFilename(path:string) : string
+{
+    if (path)
+    {
+        var filename = path.split('/').pop();
+        return filename?.substring(0, filename.lastIndexOf('.')) ?? ''
+    }
+    return ''
+}
+
 export function gamecoreToComponentName(value: string) 
 {
     var parts = value.split('.');

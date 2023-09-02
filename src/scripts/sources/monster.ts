@@ -1,3 +1,4 @@
+import { cleanupFilename } from '../common';
 import { retrieveJson } from '../datasource';
 import translate, { Translatable } from '../translate';
 import { Creature } from './creature';
@@ -95,6 +96,8 @@ export async function getMonsters(commitId:string) : Promise<MonsterConfig>
             
             monster.SearchKeywords = []
             monster.SearchKeywords.push(monster.MonsterName.Text.toLowerCase())
+            if (monster.MonsterTemplate)
+                monster.SearchKeywords.push(cleanupFilename(monster.MonsterTemplate.JsonConfig).toLowerCase())
         }
 
         config = monsterConfigCache[commitId] = monsters
