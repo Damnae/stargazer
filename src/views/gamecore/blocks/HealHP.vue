@@ -26,7 +26,7 @@
     
     for 
     <template v-if="node.HealPercentage">
-      <em><EvaluateExpression :expression="node.HealPercentage" /></em>% HP
+      <em><EvaluateExpression :expression="node.HealPercentage" /></em>× HP
     </template>
     <template v-if="node.ModifyValue">
       <template v-if="node.HealPercentage"> + </template>

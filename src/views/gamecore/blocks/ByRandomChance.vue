@@ -14,7 +14,7 @@
 
 <template>
   <BlockLayout :source="node">
-    <em><EvaluateExpression :expression="node.Chance" /></em>% chance
+    <em><EvaluateExpression :expression="node.Chance" /></em>× chance
   </BlockLayout>
 </template>
 

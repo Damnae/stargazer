@@ -20,7 +20,7 @@
     
     <em>{{ node.ModifyFunction }}</em> current skill action delay cost
     <template v-if="node.NormalizedValue">
-      to <em><EvaluateExpression :expression="node.NormalizedValue" /></em>%
+      to <em><EvaluateExpression :expression="node.NormalizedValue" /></em>×
     </template>
 
   </BlockLayout>

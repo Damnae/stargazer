@@ -56,7 +56,7 @@ import AnyBlock from '../AnyBlock.vue';
       to <em>{{ evaluateTargetType(node.TargetType) }}</em>
     </template>
     <template v-if="node.Chance">
-      with <em><EvaluateExpression :expression="node.Chance" /></em>% base chance
+      with <em><EvaluateExpression :expression="node.Chance" /></em>× base chance
     </template>
     <template v-if="node.MaxLayer">
       with up to <em><EvaluateExpression :expression="node.MaxLayer" /></em> stacks

@@ -26,7 +26,7 @@
     <template v-if="node.TargetType">
       <em>{{ evaluateTargetType(node.TargetType) }}</em>
     </template>
-    lose <em><EvaluateExpression :expression="node.Ratio" /></em>%
+    lose <em><EvaluateExpression :expression="node.Ratio" /></em>×
     HP by <em>{{ node.RatioType }}</em>
     
     <span v-if="node.Floor" class="minor">

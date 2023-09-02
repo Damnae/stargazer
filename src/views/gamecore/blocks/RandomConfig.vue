@@ -19,7 +19,7 @@
     <span class="flow">Random</span>
     <template #content>
       <template v-for="task, index in node.TaskList">
-        <span class="flow"><em><EvaluateExpression :expression="node.OddsList[index]" /></em>%</span>
+        <span class="flow"><em><EvaluateExpression :expression="node.OddsList[index]" /></em>×</span>
         <AnyBlock :node="task" />
       </template>
     </template>

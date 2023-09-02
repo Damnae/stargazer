@@ -31,7 +31,7 @@
     animation to 
 
     <template v-if="node.AnimStateName">
-      reach <em><EvaluateExpression :expression="node.NormalizedTimeEnd" /></em>%
+      reach <em><EvaluateExpression :expression="node.NormalizedTimeEnd" /></em>×
     </template>
     <template v-else>
       <!-- see Avatar_Himeko_Skill02_Phase02 -->

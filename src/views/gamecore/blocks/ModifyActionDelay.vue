@@ -23,7 +23,7 @@
     </template>
     action delay
     <template v-if="node.TargetType">
-      by <em><EvaluateExpression :expression="node.AddNormalizedValue" /></em>%
+      by <em><EvaluateExpression :expression="node.AddNormalizedValue" /></em>×
     </template>
 
   </BlockLayout>

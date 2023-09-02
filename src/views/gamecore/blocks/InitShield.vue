@@ -21,7 +21,7 @@
     
     Apply a
     <template v-if="node.ShieldPercentage">
-      <em><EvaluateExpression :expression="node.ShieldPercentage" /></em>%
+      <em><EvaluateExpression :expression="node.ShieldPercentage" /></em>×
     </template>
     <template v-if="node.ShieldValue">
       <template v-if="node.ShieldPercentage"> + </template>

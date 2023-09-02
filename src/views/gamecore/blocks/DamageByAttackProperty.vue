@@ -39,16 +39,16 @@
     </template>
 
     <template v-if="node.AttackProperty?.DamagePercentage">
-      <em><EvaluateExpression :expression="node.AttackProperty.DamagePercentage" /></em>%
+      <em><EvaluateExpression :expression="node.AttackProperty.DamagePercentage" /></em>×
       {{ node.AttackProperty.FormulaType ?? "ByAttack" }} damage
     </template>
     <template v-else-if="node.AttackProperty?.BreakDamagePercentage">
-      <em><EvaluateExpression :expression="node.AttackProperty.BreakDamagePercentage" /></em>%
+      <em><EvaluateExpression :expression="node.AttackProperty.BreakDamagePercentage" /></em>×
       {{ node.AttackProperty.FormulaType ?? "ByAttack" }} damage
     </template>
 
     <template v-if="node.AttackProperty?.ExtraDamagePercentage">
-      <em><EvaluateExpression :expression="node.AttackProperty.ExtraDamagePercentage" /></em>%
+      <em><EvaluateExpression :expression="node.AttackProperty.ExtraDamagePercentage" /></em>×
       {{ node.AttackProperty.ExtraFormulaType }} damage
     </template>
     <template v-if="node.AttackProperty?.DamageValue">
