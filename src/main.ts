@@ -102,7 +102,7 @@ const routes:Readonly<RouteRecordRaw[]> =
             props:{ subnav:toRouteProps({ objectId:'number', modifierId:false }), default:toRouteProps({ objectId: 'number' }) },
         },
         // Ability / Modifier (no context)
-        { path: '/ability-:modifierId/@:commitId', 
+        { path: '/ability-:abilityId/@:commitId', 
             name: 'ability', components: { default: AnyAbility, }, 
             props:{ default:toRouteProps({ }) },
         },
