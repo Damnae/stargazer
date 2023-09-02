@@ -30,7 +30,7 @@
         <template v-for="skill in monsterSkills" :key="skill.SkillID">
           <li>
             <div>
-              {{ skill.SkillTag.Text }} {{ skill.SkillTypeDesc.Text }}
+              {{ skill.SkillTypeDesc.Text }} - {{ skill.SkillTag.Text }} 
               <span class="minor" :title="skill.SkillName.Text">{{ skill.SkillName.Text }}</span> 
               <span class="minor">{{ skill.SkillTriggerKey }}</span> 
             </div>

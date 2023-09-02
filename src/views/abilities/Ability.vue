@@ -25,7 +25,7 @@
 
 <template>
   <header>
-    <h1>{{ abilityId }}</h1>
+    <h1><span class="pretitle">Ability:</span> {{ abilityId }}</h1>
   </header>
   <section :key="abilityId">
 

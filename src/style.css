@@ -27,6 +27,11 @@ h1
   padding: 0 .5rem;
   text-align: end;
 }
+h1 .pretitle
+{
+  font-size:.66em;
+  color:grey;
+}
 nav h1
 {
   padding: 0;
@@ -155,7 +160,7 @@ aside h1:first-child
   line-height:3rem;
   overflow:hidden;
   text-overflow: ellipsis;
-  word-break: break-word;
+  word-break: break-all;
 }
 main.panel
 {

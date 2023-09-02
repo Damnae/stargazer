@@ -84,7 +84,7 @@
 
 <template>
   <header>
-    <h1>{{ modifierId }}</h1>
+    <h1><span class="pretitle">Modifier:</span> {{ modifierId }}</h1>
   </header>
   <section :key="modifierId">
     
