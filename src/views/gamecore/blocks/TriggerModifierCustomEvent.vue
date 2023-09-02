@@ -13,6 +13,7 @@
     EventType?:string
     DynamicKey?:string
     Value?:DynamicExpression
+    MaxNumber?:DynamicExpression
   }
 </script>
 
@@ -20,6 +21,9 @@
   <BlockLayout :source="node">
     
     Trigger
+    <template v-if="node.MaxNumber">
+      up to <em><EvaluateExpression :expression="node.MaxNumber" /></em> of
+    </template>
     <template v-if="node.TargetType">
       <em>{{ evaluateTargetType(node.TargetType) }}</em>'s
     </template>

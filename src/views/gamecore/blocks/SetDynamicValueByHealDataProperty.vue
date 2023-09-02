@@ -26,7 +26,7 @@
     <template v-if="node.ReadTargetType">
       <em>{{ evaluateTargetType(node.ReadTargetType) }}</em>'s
     </template>
-    heal data property <em>{{ node.Property }}</em>
+    heal data property <em>{{ node.Property ?? "Result_HealAmount" }}</em>
   </BlockLayout>
 </template>
 

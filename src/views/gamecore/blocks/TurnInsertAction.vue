@@ -9,11 +9,12 @@
   const node = props.node as unknown as 
   {
     TargetType?:GamecoreTargetType
-    AbilityTarget?:GamecoreTargetType
-    AbilityName:string
-    AbortBehaviorFlags:string[]
-    InsertAbilityPriority:string
-    ShowInActionBar:boolean
+    PrepareAbilityName?:string
+    Priority?:number
+    SkillType?:string
+    PlayReadyCamera?:boolean
+    CanInsertUltraSkill?:boolean
+    SkillTypeWhenDelayed?:string
   }
 
   const createAbilityRoute = inject<(key:string) => object>('createAbilityRoute') as (key:string) => object
@@ -22,20 +23,15 @@
 <template>
   <BlockLayout :source="node">
    
-    Insert ability
-    <RouterLink :to="createAbilityRoute(node.AbilityName)">
-      <em>{{ node.AbilityName }}</em>
+    Insert extra turn action
+    <RouterLink v-if="node.PrepareAbilityName" :to="createAbilityRoute(node.PrepareAbilityName)">
+      with ability <em>{{ node.PrepareAbilityName }}</em>
     </RouterLink>
-
     <template v-if="node.TargetType">
-      for <em>{{ evaluateTargetType(node.TargetType) }}</em>
+      for <em>{{ evaluateTargetType(node.TargetType) }}</em>'s 
     </template>
-    <template v-if="node.AbilityTarget">
-      targeting <em>{{ evaluateTargetType(node.AbilityTarget) }}</em>
-    </template>
-
-    <template v-if="node.InsertAbilityPriority">
-      with priority <em>{{ node.InsertAbilityPriority }}</em>
+    <template v-if="!node.CanInsertUltraSkill">
+      <span class="minor">(Prevent ultimate use)</span>
     </template>
 
   </BlockLayout>

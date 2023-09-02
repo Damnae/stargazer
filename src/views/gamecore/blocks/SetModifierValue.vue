@@ -31,12 +31,7 @@
       <template v-else>
         this modifier's
       </template>
-      <template v-if="node.ValueType">
-        <em>{{ node.ValueType }}</em>
-      </template>
-      <template v-else>
-        value(?)
-      </template>
+      <em>{{ node.ValueType ?? 'Count' }}</em>
       <template v-if="node.TargetType">
         on <em>{{ evaluateTargetType(node.TargetType) }}</em>
       </template>
@@ -51,7 +46,8 @@
       <RouterLink v-if="node.ModifierName" :to="createModifierRoute(node.ModifierName)">
         <em>{{ node.ModifierName }}</em>
       </RouterLink>'s
-      value to <em><EvaluateExpression :expression="node.Value" /></em>
+      <em>{{ node.ValueType ?? 'Count' }}</em>
+      to <em><EvaluateExpression :expression="node.Value" /></em>
 
     </template>
   </BlockLayout>

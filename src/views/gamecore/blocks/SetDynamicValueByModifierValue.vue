@@ -36,12 +36,7 @@
     <template v-else>
       this modifier's
     </template>
-    <template v-if="node.ValueType">
-      <em>{{ node.ValueType }}</em>
-    </template>
-    <template v-else>
-      value(?)
-    </template>
+    <em>{{ node.ValueType ?? 'Count' }}</em>
     <template v-if="node.ReadTargetType">
       on <em>{{ evaluateTargetType(node.ReadTargetType) }}</em>
     </template>

@@ -10,9 +10,11 @@
   const node = props.node as unknown as 
   {
     TargetType?:GamecoreTargetType
-    AddValue:DynamicExpression
-    AddRatio:DynamicExpression
-    FixedAddMaxSPRatio:DynamicExpression
+    AddValue?:DynamicExpression
+    FixedAddValue?:DynamicExpression
+    AddRatio?:DynamicExpression
+    AddMaxSPRatio?:DynamicExpression
+    FixedAddMaxSPRatio?:DynamicExpression
   }
 </script>
 
@@ -22,11 +24,19 @@
     <template v-if="node.AddValue">
       Add <em><EvaluateExpression :expression="node.AddValue" /></em> flat energy
     </template>
+    <template v-if="node.FixedAddValue">
+      Add <em><EvaluateExpression :expression="node.FixedAddValue" /></em> flat energy
+      <span class="minor">(Ignores ER)</span>
+    </template>
     <template v-else-if="node.AddRatio">
       Add <em><EvaluateExpression :expression="node.AddRatio" /></em> of the skill energy bonus
     </template>
+    <template v-else-if="node.AddMaxSPRatio">
+      Add <em><EvaluateExpression :expression="node.AddMaxSPRatio" /></em>% energy
+    </template>
     <template v-else-if="node.FixedAddMaxSPRatio">
       Add <em><EvaluateExpression :expression="node.FixedAddMaxSPRatio" /></em>% energy
+      <span class="minor">(Ignores ER)</span>
     </template>
     <template v-else>
       Add energy

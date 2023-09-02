@@ -8,6 +8,7 @@
   import BlockLayout from '@/views/gamecore/BlockLayout.vue';
   import EvaluateExpression from '../EvaluateExpression.vue';
   import useHashStore from '@/scripts/hashstore';
+import AnyBlock from '../AnyBlock.vue';
 
   const props = defineProps<{node:GamecoreNode}>()
   const node = props.node as unknown as 
@@ -23,6 +24,9 @@
     {
       [key:string]:DynamicExpression
     }
+    SuccessTaskList?:GamecoreNode[]
+    FailTaskList?:GamecoreNode[]
+    ResistedTaskList?:GamecoreNode[]
   }
   
   if (node.DynamicValues)
@@ -66,10 +70,25 @@
       <span class="minor">(Tick immediately)</span>
     </template>
 
-    <template #content v-if="node.DynamicValues">
-      <BlockLayout v-for="expression, key in node.DynamicValues" :source="expression">
+    <template #content >
+      <BlockLayout v-if="node.DynamicValues" v-for="expression, key in node.DynamicValues" :source="expression">
         With <em :title="getHash(key.toString()).toString()">{{ key }}</em> set to <em><EvaluateExpression :expression="expression" /></em>
       </BlockLayout>
+
+      <div class="subblock">
+        <template v-if="node.SuccessTaskList">
+          <span class="flow">On Success</span>
+          <AnyBlock v-for="n in node.SuccessTaskList" :node="n" />
+        </template>
+        <template v-if="node.FailTaskList">
+          <span class="flow">On Failure</span>
+          <AnyBlock v-for="n in node.FailTaskList" :node="n" />
+        </template>
+        <template v-if="node.ResistedTaskList">
+          <span class="flow">On Resist</span>
+          <AnyBlock v-for="n in node.ResistedTaskList" :node="n" />
+        </template>
+      </div>
     </template>
   </BlockLayout>
 </template>
