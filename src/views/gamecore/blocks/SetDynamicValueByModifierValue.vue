@@ -29,7 +29,7 @@
     
     Set <em>{{ node.DynamicKey }}</em>
 
-    to <em><EvaluateExpression :expression="node.Multiplier" /></em>x of
+    to <em><EvaluateExpression :expression="node.Multiplier" /></em>× of
     <RouterLink v-if="node.ModifierName" :to="createModifierRoute(node.ModifierName)">
       <em>{{ node.ModifierName }}</em>'s
     </RouterLink>

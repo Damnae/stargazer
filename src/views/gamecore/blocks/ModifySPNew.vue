@@ -24,7 +24,7 @@
     <template v-if="node.AddValue">
       Add <em><EvaluateExpression :expression="node.AddValue" /></em> flat energy
     </template>
-    <template v-if="node.FixedAddValue">
+    <template v-else-if="node.FixedAddValue">
       Add <em><EvaluateExpression :expression="node.FixedAddValue" /></em> flat energy
       <span class="minor">(Ignores ER)</span>
     </template>
