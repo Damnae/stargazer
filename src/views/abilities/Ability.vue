@@ -31,6 +31,20 @@
 
       <template v-if="ability">
         
+        <template v-if="ability.OnAdd">
+          <h2>On Add</h2>
+          <template v-for="node in ability.OnAdd">
+            <AnyBlock :node="node" />
+          </template>
+        </template>
+
+        <template v-if="ability.OnRemove">
+          <h2>On Remove</h2>
+          <template v-for="node in ability.OnRemove">
+            <AnyBlock :node="node" />
+          </template>
+        </template>
+
         <template v-if="ability.OnStart">
           <h2>On Start</h2>
           <template v-for="node in ability.OnStart">

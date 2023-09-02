@@ -72,6 +72,7 @@ export interface GamecoreContext
     [abilityId:string]:DynamicValues
   }
   AbilityId?:string
+  ModifierId?:string
 }
 
 export interface GamecoreContextDynamicValues

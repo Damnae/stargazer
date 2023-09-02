@@ -15,6 +15,13 @@
   const abilityContext = inject('abilityContext') as Ref<AbilityContext>
   const gamecoreContext = inject('gamecoreContext') as Ref<GamecoreContext>
 
+  watch(props, () =>
+  {
+    if (gamecoreContext.value)
+      gamecoreContext.value.ModifierId = props.modifierId
+  }, 
+  { immediate: true, })
+
   const modifier = ref<Modifier>()
   watch([props, abilityContext, gamecoreContext], () =>
   {

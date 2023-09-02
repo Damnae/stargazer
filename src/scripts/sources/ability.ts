@@ -1,5 +1,5 @@
 import { retrieveJson } from '../datasource';
-import { GamecoreNode, GamecoreTargetType, DynamicExpression, DynamicValues, } from './gamecore';
+import { GamecoreContext, GamecoreNode, GamecoreTargetType, DynamicExpression, DynamicValues, } from './gamecore';
 
 // TODO look at StatusConfig
 
@@ -44,6 +44,12 @@ export interface ValueChangeWatcher
   Ranges:RangeWatcher[]
 }
 
+export interface TaskListTemplate
+{
+  Name:string
+  TaskList:GamecoreNode[]
+}
+
 export interface Modifier
 {
   BehaviorFlagList?:string[]
@@ -60,6 +66,7 @@ export interface Modifier
   ModifierAffectedPreshowConfig?: ModifierPreshowConfig
   OnAbilityPropertyChange?:PropertyChangeWatcher[]
   OnDynamicValueChange?:ValueChangeWatcher[]
+  TaskListTemplate?:TaskListTemplate[]
   _CallbackList?:
   {
     [eventName:string]: ModifierEventHandler
@@ -80,12 +87,15 @@ export interface Ability
     TargetType:string
     MaxTargetCount?:number
   }
+  OnAdd?: GamecoreNode[]
+  OnRemove?: GamecoreNode[]
   OnStart?: GamecoreNode[]
   DynamicValues?: DynamicValues
   Modifiers?:
   {
     [key:string]: Modifier
   }
+  TaskListTemplate?:TaskListTemplate[]
 }
 
 export interface AbilityConfig
@@ -105,6 +115,11 @@ export interface ModifierConfig
   }
 }
 
+export interface TaskListTemplateConfig
+{
+  TaskListTemplate: TaskListTemplate[]
+}
+
 export interface AbilityContext
 {
   Abilities: 
@@ -114,6 +129,10 @@ export interface AbilityContext
   Modifiers: 
   {
     [key:string]: Modifier
+  }
+  TaskListTemplates:
+  {
+    [key:string]: TaskListTemplate
   }
 }
 
@@ -149,6 +168,10 @@ const contextTypeToPaths =
       'Config/ConfigGlobalModifier/GlobalModifier_Avatar.json',
       //'Config/ConfigGlobalModifier/GlobalModifier_Avatar_AssistantTrigger.json',
     ],
+    TaskListTemplates:
+    [
+      'Config/ConfigGlobalTaskListTemplate/GlobalTaskListTemplate.json',
+    ],
   },
   Monster: 
   {
@@ -166,6 +189,10 @@ const contextTypeToPaths =
       'Config/ConfigGlobalModifier/GlobalModifier_Common_Specific.json',
       'Config/ConfigGlobalModifier/GlobalModifier_Monster.json',
     ],
+    TaskListTemplates:
+    [
+      'Config/ConfigGlobalTaskListTemplate/GlobalTaskListTemplate.json',
+    ],
   },
   Equipment: 
   {
@@ -181,6 +208,10 @@ const contextTypeToPaths =
       'Config/ConfigGlobalModifier/GlobalModifier_Common_Property.json',
       'Config/ConfigGlobalModifier/GlobalModifier_Common_Specific.json',
     ],
+    TaskListTemplates:
+    [
+      'Config/ConfigGlobalTaskListTemplate/GlobalTaskListTemplate.json',
+    ],
   },
   RelicSet: 
   {
@@ -195,6 +226,10 @@ const contextTypeToPaths =
       //'Config/ConfigGlobalModifier/GlobalModifier_System.json',
       'Config/ConfigGlobalModifier/GlobalModifier_Common_Property.json',
       'Config/ConfigGlobalModifier/GlobalModifier_Common_Specific.json',
+    ],
+    TaskListTemplates:
+    [
+      'Config/ConfigGlobalTaskListTemplate/GlobalTaskListTemplate.json',
     ],
   },
   BattleEvent: 
@@ -214,6 +249,10 @@ const contextTypeToPaths =
       'Config/ConfigGlobalModifier/GlobalModifier_Common_Property.json',
       'Config/ConfigGlobalModifier/GlobalModifier_Common_Specific.json',
     ],
+    TaskListTemplates:
+    [
+      'Config/ConfigGlobalTaskListTemplate/GlobalTaskListTemplate.json',
+    ],
   },
   Level: 
   {
@@ -229,6 +268,10 @@ const contextTypeToPaths =
       'Config/ConfigGlobalModifier/GlobalModifier_Common_Property.json',
       'Config/ConfigGlobalModifier/GlobalModifier_Common_Specific.json',
       'Config/ConfigGlobalModifier/GlobalModifier_Level.json',
+    ],
+    TaskListTemplates:
+    [
+      'Config/ConfigGlobalTaskListTemplate/GlobalTaskListTemplate.json',
     ],
   },
   All: 
@@ -253,6 +296,10 @@ const contextTypeToPaths =
       'Config/ConfigGlobalModifier/GlobalModifier_Monster.json',
       'Config/ConfigGlobalModifier/GlobalModifier_Level.json',
     ],
+    TaskListTemplates:
+    [
+      'Config/ConfigGlobalTaskListTemplate/GlobalTaskListTemplate.json',
+    ],
   },
 }
 
@@ -271,6 +318,7 @@ export async function getAbilityContext(commitId:string, type:AbilityContextType
     {
       Abilities: {},
       Modifiers: {},
+      TaskListTemplates: {},
     }
     const paths = contextTypeToPaths[type]
     for (const path of paths.Abilities)
@@ -289,10 +337,34 @@ export async function getAbilityContext(commitId:string, type:AbilityContextType
     for (const path of paths.Modifiers)
       mergeModifierConfig(context, await getModifiers(commitId, path) as ModifierConfig)
 
+    for (const path of paths.TaskListTemplates)
+      mergeTaskListTemplateConfig(context, await getTaskListTemplates(commitId, path) as TaskListTemplateConfig)
+
     result = container[type] = context
     console.log(`cached ${type} ability context for ${commitId}`)
   }
   return result
+}
+
+export function findTaskTemplate(templateName:string, gamecoreContext:GamecoreContext, abilityContext:AbilityContext) : TaskListTemplate | undefined
+{
+  let template:TaskListTemplate | undefined = abilityContext.TaskListTemplates[templateName]
+  if (!template && gamecoreContext.ModifierId)
+  {
+    const modifier = abilityContext.Modifiers[gamecoreContext.ModifierId]
+    template = modifier?.TaskListTemplate?.find(t => t.Name == templateName)
+  }
+  if (!template && gamecoreContext.AbilityId)
+  {
+    const ability = abilityContext.Abilities[gamecoreContext.AbilityId]
+    template = ability?.TaskListTemplate?.find(t => t.Name == templateName)
+    if (!template && gamecoreContext.ModifierId && ability.Modifiers)
+    {
+      const modifier = ability.Modifiers[gamecoreContext.ModifierId]
+      template = modifier?.TaskListTemplate?.find(t => t.Name == templateName)
+    }
+  }
+  return template
 }
 
 async function getAbilities(commitId:string, path:string) : Promise<AbilityConfig>
@@ -307,6 +379,12 @@ async function getModifiers(commitId:string, path:string) : Promise<ModifierConf
   return result
 }
 
+async function getTaskListTemplates(commitId:string, path:string) : Promise<TaskListTemplateConfig>
+{
+  const result = await retrieveJson(path, commitId, false) as TaskListTemplateConfig
+  return result
+}
+
 function mergeAbilityConfig(into:AbilityContext, from:AbilityConfig)
 {
   for (const ability of from.AbilityList)
@@ -318,4 +396,10 @@ function mergeAbilityConfig(into:AbilityContext, from:AbilityConfig)
 function mergeModifierConfig(into:AbilityContext, from:ModifierConfig)
 {
   Object.assign(into.Modifiers, from.ModifierMap)
+}
+
+function mergeTaskListTemplateConfig(into:AbilityContext, from:TaskListTemplateConfig)
+{
+  for (const template of from.TaskListTemplate)
+    into.TaskListTemplates[template.Name] = template
 }
