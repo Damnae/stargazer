@@ -1,0 +1,52 @@
+<script setup lang="ts">
+  import { ref, watch, inject, } from 'vue'
+  import { Character } from '@/scripts/sources/character'
+  import { AbilityContextType, getAbilityContext, } from '@/scripts/sources/ability';
+  import NavItem from '@/components/NavItem.vue'
+
+  const props = defineProps<{character:Character, abilityContextType:AbilityContextType}>()
+
+  const commitId = inject<string>('commitId') as string
+  const modifiers = ref<string[]>([])
+
+  watch(props, async () => 
+  {
+    const abilityContext = await getAbilityContext(commitId, props.abilityContextType)
+
+    const mods:string[] = []
+    if (props.character)
+    {
+      for (const skillEntry of props.character.SkillAbilityList)
+        for (const abilityName of skillEntry.AbilityList)
+        {
+          const ability = abilityContext.Abilities[abilityName]
+          if (ability?.Modifiers)
+            for (const modifierName of Object.keys(ability.Modifiers))
+              mods.push(modifierName)
+        }
+
+      for (const abilityName of props.character.AbilityList)
+      {
+        const ability = abilityContext.Abilities[abilityName]
+        if (ability?.Modifiers)
+          for (const modifierName of Object.keys(ability.Modifiers))
+            mods.push(modifierName)
+      }
+    }
+    mods.sort((a, b) => a > b ? 1 : -1)
+    modifiers.value = mods
+  }, 
+  { immediate:true })
+
+</script>
+
+<template>
+  <NavItem v-for="modifier in modifiers">
+    <span :title="modifier">
+      <slot :modifier="modifier" />
+    </span>
+  </NavItem>
+</template>
+
+<style scoped>
+</style>

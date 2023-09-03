@@ -12,10 +12,11 @@
     abilities.value = []
     if (props.character)
       for (const sa of props.character.SkillAbilityList)
-      {
         if (sa.Skill == props.skillTriggerKey)
+        {
           abilities.value = sa.AbilityList
-      }
+          break
+        }
     abilities.value.sort((a, b) => a > b ? 1 : -1)
   })
 </script>

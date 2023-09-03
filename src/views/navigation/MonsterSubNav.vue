@@ -1,16 +1,18 @@
 <script setup lang="ts">
   import { ref, watchEffect, } from 'vue'
-  import { getMonster, Monster, } from '@/scripts/sources/monster.ts';
+  import { getMonster, Monster as MS, } from '@/scripts/sources/monster.ts';
   import { getMonsterSkillsByIds, MonsterSkill, } from '@/scripts/sources/monsterskill';
   import { getCharacterByMonster, Character } from '@/scripts/sources/character';
+  import { AbilityContextType } from '@/scripts/sources/ability';
   import CharacterSkillAbilitiesNav from './CharacterSkillAbilitiesNav.vue';
   import CharacterOtherAbilitiesNav from './CharacterOtherAbilitiesNav.vue';
+  import CharacterModifiers from './CharacterModifiers.vue';
   import NavTree from '@/components/NavTree.vue'
   import NavItem from '@/components/NavItem.vue'
 
   const props = defineProps<{commitId:string, objectId:number}>()
 
-  const monster = ref<Monster>()
+  const monster = ref<MS>()
   const monsterSkills = ref<MonsterSkill[]>([])
   const character = ref<Character>()
 
@@ -29,6 +31,7 @@
     <h1>{{ monster.MonsterName.Text }}</h1>
     <span v-if="!character" class="minor">(Missing character data)</span>
     <NavTree>
+
       <NavItem>
         <NavTree :startsOpen="true">
           <template #header>Skills</template>
@@ -48,6 +51,7 @@
           </NavItem>
         </NavTree>
       </NavItem>
+
       <NavItem v-if="character">
         <CharacterOtherAbilitiesNav :character="character">
           <template #header>Other Abilities</template>
@@ -58,6 +62,18 @@
           </template>
         </CharacterOtherAbilitiesNav>
       </NavItem>
+
+      <NavItem v-if="character">
+        <NavTree>
+          <template #header>Modifiers</template>
+          <CharacterModifiers :character="character" :abilityContextType="AbilityContextType.Monster" v-slot="slotProps">
+            <RouterLink :to="{ name:'monsterModifier', params:{ commitId: commitId, objectId: objectId, modifierId: slotProps.modifier, }}">
+              {{ slotProps.modifier }}
+            </RouterLink>
+          </CharacterModifiers>
+        </NavTree>
+      </NavItem>
+
     </NavTree>
   </template>
 </template>

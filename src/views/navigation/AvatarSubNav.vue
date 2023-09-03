@@ -1,16 +1,18 @@
 <script setup lang="ts">
   import { ref, watchEffect, } from 'vue'
-  import { getAvatar, Avatar, } from '@/scripts/sources/avatar';
+  import { getAvatar, Avatar as AV, } from '@/scripts/sources/avatar';
   import { getAvatarSkillsByIds, AvatarSkill, } from '@/scripts/sources/avatarskill';
   import { getCharacterByAvatar, Character } from '@/scripts/sources/character';
+  import { AbilityContextType } from '@/scripts/sources/ability';
   import CharacterSkillAbilitiesNav from './CharacterSkillAbilitiesNav.vue';
   import CharacterOtherAbilitiesNav from './CharacterOtherAbilitiesNav.vue';
+  import CharacterModifiers from './CharacterModifiers.vue';
   import NavTree from '@/components/NavTree.vue'
   import NavItem from '@/components/NavItem.vue'
 
   const props = defineProps<{commitId:string, objectId:number}>()
 
-  const avatar = ref<Avatar>()
+  const avatar = ref<AV>()
   const avatarSkills = ref<AvatarSkill[]>([])
   const character = ref<Character>()
 
@@ -97,6 +99,17 @@
             </RouterLink>
           </template>
         </CharacterOtherAbilitiesNav>
+      </NavItem>
+
+      <NavItem v-if="character">
+        <NavTree>
+          <template #header>Modifiers</template>
+          <CharacterModifiers :character="character" :abilityContextType="AbilityContextType.Avatar" v-slot="slotProps">
+            <RouterLink :to="{ name:'avatarModifier', params:{ commitId: commitId, objectId: objectId, modifierId: slotProps.modifier, }}">
+              {{ slotProps.modifier }}
+            </RouterLink>
+          </CharacterModifiers>
+        </NavTree>
       </NavItem>
 
     </NavTree>
