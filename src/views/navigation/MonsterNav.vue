@@ -3,6 +3,8 @@
   import { RouterLink } from 'vue-router';
   import { Grouped2, } from '@/scripts/common';
   import { getMonsters, Monster, MonsterConfig, } from '@/scripts/sources/monster';
+  import NavTree from '@/components/NavTree.vue'
+  import NavItem from '@/components/NavItem.vue'
 
   const commitId = inject<string>('commitId') as string
   const search = inject<Ref<string>>('search') as Ref<string>
@@ -35,33 +37,34 @@
 </script>
 
 <template>
-  <ul>
+  <NavTree>
+    <template #header>Monsters</template>
     <template v-for="(monsterTemplate, monsterCampName) in monstersSearchResults">
-      <li>
+      <NavItem>
 
-        <div>{{ monsterCampName }}</div>
-        <ul>
+        <NavTree>
+          <template #header>{{ monsterCampName }}</template>
           <template v-for="(monsters, monsterTemplateName) in monsterTemplate">
-            <li>
+            <NavItem>
 
-              <div :title="monsterTemplateName.toString()">{{ monsterTemplateName }}</div>
-              <ul>
+              <NavTree>
+                <template #header :title="monsterTemplateName.toString()">{{ monsterTemplateName }}</template>
                 <template v-for="monster in monsters" :key="monster.MonsterID">
-                  <li>
+                  <NavItem>
                     <RouterLink :to="{ name:'monster', params:{ commitId: commitId, objectId: monster.MonsterID }}">
                       <span :title="monster.MonsterName.Text">{{ monster.MonsterName.Text }}</span>
                     </RouterLink>
-                  </li>
+                  </NavItem>
                 </template>
-              </ul>
+              </NavTree>
 
-            </li>
+            </NavItem>
           </template>
-        </ul>
+        </NavTree>
 
-      </li>
+      </NavItem>
     </template>
-  </ul>
+  </NavTree>
 </template>
 
 <style scoped>

@@ -1,6 +1,8 @@
 <script setup lang="ts">
   import { ref, watchEffect, } from 'vue'
   import { getRelicSet, RelicSet, } from '@/scripts/sources/relicset';
+  import NavTree from '@/components/NavTree.vue'
+  import NavItem from '@/components/NavItem.vue'
 
   const props = defineProps<{commitId:string, objectId:number}>()
 
@@ -14,27 +16,25 @@
 
 <template>
   <h1>{{ relicset.SetName.Text }}</h1>
-  <ul class="navtree">
-    <li v-if="relicset.Skills">
-      <div>Skills</div>
-      <ul>
+  <NavTree>
+    <NavItem v-if="relicset.Skills">
+      <NavTree>
+        <template #header>Skills</template>
         <template v-for="skill in relicset.Skills" :key="skill.RankID">
-          <li>
-            <div>
-              {{ skill.RequireNum }} Pieces
-            </div>
-            <ul v-if="skill.AbilityName">
-              <li>
+          <NavItem>
+            <NavTree v-if="skill.AbilityName">
+              <template #header>{{ skill.RequireNum }} Pieces</template>
+              <NavItem>
                 <RouterLink :to="{ name:'relicsetAbility', params:{ commitId: commitId, objectId: objectId, abilityId: skill.AbilityName, }}">
                   {{ skill.AbilityName }}
                 </RouterLink>
-              </li>
-            </ul>
-          </li>
+              </NavItem>
+            </NavTree>
+          </NavItem>
         </template>
-      </ul>
-    </li>
-  </ul>
+      </NavTree>
+    </NavItem>
+  </NavTree>
 </template>
 
 <style scoped>

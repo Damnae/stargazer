@@ -200,10 +200,25 @@ ul.navtree li
   overflow: hidden;
   white-space: nowrap;
 }
-ul.navtree li > div:after
+ul.navtree li > .navtree-header
 { 
-  content:' ⇲';
+  user-select: none;
+}
+ul.navtree li > .navtree-header::after
+{ 
   color:grey;
+}
+ul.navtree li > .navtree-closed::after
+{ 
+  content:' ⏵';
+}
+ul.navtree li > .navtree-open::after
+{ 
+  content:' ⏷';
+}
+ul.navtree li > .navtree-header:hover::after
+{ 
+  color:white;
 }
 ul.navtree li > div > span:nth-child(2)
 { 
@@ -225,6 +240,11 @@ ul.navtree a:hover,
 ul.navtree a.router-link-active
 { 
   background:rgb(42, 42, 42);
+}
+
+.mainnav > .navtree
+{
+  margin-bottom:0;
 }
 
 .major

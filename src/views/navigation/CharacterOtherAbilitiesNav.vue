@@ -1,18 +1,24 @@
 <script setup lang="ts">
   import { Character } from '@/scripts/sources/character';
+  import NavTree from '@/components/NavTree.vue'
+  import NavItem from '@/components/NavItem.vue'
+
   defineProps<{character:Character}>()
 </script>
 
 <template>
-  <ul>
+  <NavTree>
+    <template #header>
+      <slot name="header" />
+    </template>
     <template v-for="ability in character.AbilityList" :key="ability">
-      <li >
+      <NavItem>
         <span :title="ability">
           <slot :ability="ability" />
         </span>
-      </li>
+      </NavItem>
     </template>
-  </ul>
+  </NavTree>
 </template>
 
 <style scoped>

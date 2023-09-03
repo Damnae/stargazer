@@ -5,6 +5,8 @@
   import EquipmentNav from './EquipmentNav.vue'
   import RelicSetNav from './RelicSetNav.vue'
   import StatusNav from './StatusNav.vue'
+  import NavTree from '@/components/NavTree.vue'
+  import NavItem from '@/components/NavItem.vue'
 
   const search = ref<string>('')
   provide('search', search)
@@ -15,28 +17,13 @@
 
     <section class="mainnav">
       <input v-model.trim="search" placeholder="Search" />
-      <ul class="navtree">
-        <li>
-          <div>Avatars</div>
-          <AvatarNav />
-        </li>
-        <li>
-          <div>Monsters</div>
-          <MonsterNav />
-        </li>
-        <li>
-          <div>Light Cones</div>
-          <EquipmentNav />
-        </li>
-        <li>
-          <div>Relic Sets</div>
-          <RelicSetNav />
-        </li>
-        <li>
-          <div>Status Effects</div>
-          <StatusNav />
-        </li>
-      </ul>
+      <NavTree>
+        <NavItem> <AvatarNav />     </NavItem>
+        <NavItem> <MonsterNav />    </NavItem>
+        <NavItem> <EquipmentNav />  </NavItem>
+        <NavItem> <RelicSetNav />   </NavItem>
+        <NavItem> <StatusNav />     </NavItem>
+      </NavTree>
     </section>
 
     <hr />
@@ -61,10 +48,6 @@
     flex-direction: column;
     flex-grow: 0;
     flex-shrink: 0;
-  }
-  .mainnav > ul
-  {
-    margin-bottom:0;
   }
   .subnav
   {

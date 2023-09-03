@@ -2,6 +2,8 @@
   import { ref, computed, inject, Ref, } from 'vue'
   import { RouterLink } from 'vue-router';
   import { getStatuses, Status, StatusConfig, } from '@/scripts/sources/status';
+  import NavTree from '@/components/NavTree.vue'
+  import NavItem from '@/components/NavItem.vue'
 
   const commitId = inject<string>('commitId') as string
   const search = inject<Ref<string>>('search') as Ref<string>
@@ -18,15 +20,16 @@
 </script>
 
 <template>
-  <ul>
+  <NavTree>
+    <template #header>Status Effects</template>
     <template v-for="status in statusesSearchResults" :key="status.StatusID">
-      <li>
+      <NavItem>
         <RouterLink :to="{ name:'status', params:{ commitId: commitId, objectId: status.StatusID }}">
           <span :title="status.StatusName.Text">{{ status.StatusName.Text }}</span>
         </RouterLink>
-      </li>
+      </NavItem>
     </template>
-  </ul>
+  </NavTree>
 </template>
 
 <style scoped>

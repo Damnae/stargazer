@@ -2,6 +2,8 @@
   import { ref, computed, inject, Ref, } from 'vue'
   import { RouterLink } from 'vue-router';
   import { getRelicSets, RelicSet, RelicSetConfig, } from '@/scripts/sources/relicset';
+  import NavTree from '@/components/NavTree.vue'
+  import NavItem from '@/components/NavItem.vue'
 
   const commitId = inject<string>('commitId') as string
   const search = inject<Ref<string>>('search') as Ref<string>
@@ -18,15 +20,16 @@
 </script>
 
 <template>
-  <ul>
+  <NavTree>
+    <template #header>Relic Sets</template>
     <template v-for="relicset in relicsetsSearchResults" :key="relicset.SetID">
-      <li>
+      <NavItem>
         <RouterLink :to="{ name:'relicset', params:{ commitId: commitId, objectId: relicset.SetID }}">
           <span :title="relicset.SetName.Text">{{ relicset.SetName.Text }}</span>
         </RouterLink>
-      </li>
+      </NavItem>
     </template>
-  </ul>
+  </NavTree>
 </template>
 
 <style scoped>

@@ -5,6 +5,8 @@
   import { getCharacterByAvatar, Character } from '@/scripts/sources/character';
   import CharacterSkillAbilitiesNav from './CharacterSkillAbilitiesNav.vue';
   import CharacterOtherAbilitiesNav from './CharacterOtherAbilitiesNav.vue';
+  import NavTree from '@/components/NavTree.vue'
+  import NavItem from '@/components/NavItem.vue'
 
   const props = defineProps<{commitId:string, objectId:number}>()
 
@@ -24,84 +26,88 @@
   <template v-if="avatar">
     <h1>{{ avatar.AvatarName.Text }}</h1>
     <span v-if="!character" class="minor">(Missing character data)</span>
-    <ul class="navtree">
+    <NavTree>
       
-      <li>
-        <div>Skills</div>
-        <ul>
+      <NavItem>
+        <NavTree>
+          <template #header>Skills</template>
           <template v-for="skill in avatarSkills" :key="skill.SkillID">
-            <li>
-              <div>
-                {{ skill.SkillTypeDesc.Text }} - {{ skill.SkillTag.Text }} 
-                <span class="minor" :title="skill.SkillName.Text">{{ skill.SkillName.Text }}</span>
-                <span class="minor">{{ skill.SkillTriggerKey }}</span> 
-              </div>
-              <CharacterSkillAbilitiesNav v-if="character" :character="character" :skillTriggerKey="skill.SkillTriggerKey" v-slot="slotProps">
-                <RouterLink :to="{ name:'avatarAbility', params:{ commitId: commitId, objectId: objectId, abilityId: slotProps.ability }}">
-                  {{ slotProps.ability }}
-                </RouterLink>
+            <NavItem>
+              <CharacterSkillAbilitiesNav v-if="character" :character="character" :skillTriggerKey="skill.SkillTriggerKey">
+                <template #header>
+                  {{ skill.SkillTypeDesc.Text }} - {{ skill.SkillTag.Text }} 
+                  <span class="minor" :title="skill.SkillName.Text">{{ skill.SkillName.Text }}</span>
+                  <span class="minor">{{ skill.SkillTriggerKey }}</span> 
+                </template>
+                <template #default="slotProps">
+                  <RouterLink :to="{ name:'avatarAbility', params:{ commitId: commitId, objectId: objectId, abilityId: slotProps.ability }}">
+                    {{ slotProps.ability }}
+                  </RouterLink>
+                </template>
               </CharacterSkillAbilitiesNav>
-            </li>
+            </NavItem>
           </template>
-        </ul>
-      </li>
+        </NavTree>
+      </NavItem>
 
-      <li v-if="avatar.Traces.length > 0">
-        <div>Traces</div>
-        <ul>
+      <NavItem v-if="avatar.Traces.length > 0">
+        <NavTree>
+          <template #header>Traces</template>
           <template v-for="(trace, index) in avatar.Traces.filter(t => t.PointType === 3)" :key="trace.PointID">
-            <li>
-              <div>
-                A{{ (index + 1) * 2 }} 
-                <span class="minor">{{ trace.PointName }}</span>
-                <span class="minor">{{ trace.PointID }}</span>
-              </div>
-              <ul v-if="trace.AbilityName">
-                <li>
+            <NavItem>
+              <NavTree v-if="trace.AbilityName">
+                <template #header>
+                  A{{ (index + 1) * 2 }} 
+                  <span class="minor">{{ trace.PointName }}</span>
+                  <span class="minor">{{ trace.PointID }}</span>
+                </template>
+                <NavItem>
                   <RouterLink :to="{ name:'avatarAbility', params:{ commitId: commitId, objectId: objectId, abilityId: trace.AbilityName, }}">
                     {{ trace.AbilityName }}
                   </RouterLink>
-                </li>
-              </ul>
-            </li>
+                </NavItem>
+              </NavTree>
+            </NavItem>
           </template>
-        </ul>
-      </li>
+        </NavTree>
+      </NavItem>
 
-      <li v-if="avatar.Eidolons.length > 0">
-        <div>Eidolons</div>
-        <ul>
+      <NavItem v-if="avatar.Eidolons.length > 0">
+        <NavTree>
+          <template #header>Eidolons</template>
           <template v-for="eidolon in avatar.Eidolons" :key="eidolon.RankID">
-            <li>
-              <div>
-                E{{ eidolon.Rank }} 
-                <span class="minor">{{ eidolon.Name }}</span>
-                <span class="minor">{{ eidolon.RankID }}</span>
-              </div>
-              <ul v-if="eidolon.RankAbility.length > 0">
+            <NavItem>
+              <NavTree v-if="eidolon.RankAbility.length > 0">
+                <template #header>
+                  E{{ eidolon.Rank }} 
+                  <span class="minor">{{ eidolon.Name }}</span>
+                  <span class="minor">{{ eidolon.RankID }}</span>
+                </template>
                 <template v-for="ability in eidolon.RankAbility" :key="ability">
-                  <li>
+                  <NavItem>
                     <RouterLink :to="{ name:'avatarAbility', params:{ commitId: commitId, objectId: objectId, abilityId: ability, }}">
                       {{ ability }}
                     </RouterLink>
-                  </li>
+                  </NavItem>
                 </template>
-              </ul>
-            </li>
+              </NavTree>
+            </NavItem>
           </template>
-        </ul>
-      </li>
+        </NavTree>
+      </NavItem>
 
-      <li v-if="character">
-        <div>Other Abilities</div>
-        <CharacterOtherAbilitiesNav :character="character" v-slot="slotProps">
-          <RouterLink :to="{ name:'avatarAbility', params:{ commitId: commitId, objectId: objectId, abilityId: slotProps.ability, }}">
-            {{ slotProps.ability }}
-          </RouterLink>
+      <NavItem v-if="character">
+        <CharacterOtherAbilitiesNav :character="character">
+          <template #header>Other Abilities</template>
+          <template #default="slotProps">
+            <RouterLink :to="{ name:'avatarAbility', params:{ commitId: commitId, objectId: objectId, abilityId: slotProps.ability, }}">
+              {{ slotProps.ability }}
+            </RouterLink>
+          </template>
         </CharacterOtherAbilitiesNav>
-      </li>
+      </NavItem>
 
-    </ul>
+    </NavTree>
   </template>
 </template>
 

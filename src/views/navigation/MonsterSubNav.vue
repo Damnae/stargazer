@@ -5,6 +5,8 @@
   import { getCharacterByMonster, Character } from '@/scripts/sources/character';
   import CharacterSkillAbilitiesNav from './CharacterSkillAbilitiesNav.vue';
   import CharacterOtherAbilitiesNav from './CharacterOtherAbilitiesNav.vue';
+  import NavTree from '@/components/NavTree.vue'
+  import NavItem from '@/components/NavItem.vue'
 
   const props = defineProps<{commitId:string, objectId:number}>()
 
@@ -23,35 +25,40 @@
 <template>
   <h1>{{ monster.MonsterName.Text }}</h1>
   <span v-if="!character" class="minor">(Missing character data)</span>
-  <ul class="navtree">
-    <li>
-      <div>Skills</div>
-      <ul>
+  <NavTree>
+    <NavItem>
+      <NavTree>
+        <template #header>Skills</template>
         <template v-for="skill in monsterSkills" :key="skill.SkillID">
-          <li>
-            <div>
-              {{ skill.SkillTypeDesc.Text }} - {{ skill.SkillTag.Text }} 
-              <span class="minor" :title="skill.SkillName.Text">{{ skill.SkillName.Text }}</span> 
-              <span class="minor">{{ skill.SkillTriggerKey }}</span> 
-            </div>
-            <CharacterSkillAbilitiesNav v-if="character" :character="character" :skillTriggerKey="skill.SkillTriggerKey" v-slot="slotProps">
-              <RouterLink :to="{ name:'monsterAbility', params:{ commitId: commitId, objectId: objectId, abilityId: slotProps.ability }}">
-                {{ slotProps.ability }}
-              </RouterLink>
+          <NavItem>
+            <CharacterSkillAbilitiesNav v-if="character" :character="character" :skillTriggerKey="skill.SkillTriggerKey">
+              <template #header>
+                {{ skill.SkillTypeDesc.Text }} - {{ skill.SkillTag.Text }} 
+                <span class="minor" :title="skill.SkillName.Text">{{ skill.SkillName.Text }}</span> 
+                <span class="minor">{{ skill.SkillTriggerKey }}</span> 
+              </template>
+              <template #default="slotProps">
+                <RouterLink :to="{ name:'monsterAbility', params:{ commitId: commitId, objectId: objectId, abilityId: slotProps.ability }}">
+                  {{ slotProps.ability }}
+                </RouterLink>
+              </template>
             </CharacterSkillAbilitiesNav>
-          </li>
+          </NavItem>
         </template>
-      </ul>
-    </li>
-    <li v-if="character">
-      <div>Other Abilities</div>
-      <CharacterOtherAbilitiesNav :character="character" v-slot="slotProps">
+      </NavTree>
+    </NavItem>
+    <NavItem v-if="character">
+      <div></div>
+      <CharacterOtherAbilitiesNav :character="character">
+        <template #header>Other Abilities</template>
+        <template #default="slotProps">
         <RouterLink :to="{ name:'monsterAbility', params:{ commitId: commitId, objectId: objectId, abilityId: slotProps.ability, }}">
           {{ slotProps.ability }}
         </RouterLink>
+        </template>
       </CharacterOtherAbilitiesNav>
-    </li>
-  </ul>
+    </NavItem>
+  </NavTree>
 </template>
 
 <style scoped>

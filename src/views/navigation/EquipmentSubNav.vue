@@ -1,6 +1,8 @@
 <script setup lang="ts">
   import { ref, watchEffect, } from 'vue'
   import { getEquipment, Equipment, } from '@/scripts/sources/equipment';
+  import NavTree from '@/components/NavTree.vue'
+  import NavItem from '@/components/NavItem.vue'
 
   const props = defineProps<{commitId:string, objectId:number}>()
 
@@ -14,22 +16,22 @@
 
 <template>
   <h1>{{ equipment.EquipmentName.Text }}</h1>
-  <ul class="navtree">
-    <li v-if="equipment.Skill">
-      <div>
-        Skill
-        <span class="minor">{{ equipment.Skill.SkillName.Text }}</span>
-        <span class="minor">{{ equipment.Skill.SkillID }}</span>
-      </div>
-      <ul>
-          <li>
-            <RouterLink :to="{ name:'equipmentAbility', params:{ commitId: commitId, objectId: objectId, abilityId: equipment.Skill.AbilityName, }}">
-              {{ equipment.Skill.AbilityName }}
-            </RouterLink>
-          </li>
-      </ul>
-    </li>
-  </ul>
+  <NavTree>
+    <NavItem v-if="equipment.Skill">
+      <NavTree>
+        <template #header>
+          Skill
+          <span class="minor">{{ equipment.Skill.SkillName.Text }}</span>
+          <span class="minor">{{ equipment.Skill.SkillID }}</span>
+        </template>
+        <NavItem>
+          <RouterLink :to="{ name:'equipmentAbility', params:{ commitId: commitId, objectId: objectId, abilityId: equipment.Skill.AbilityName, }}">
+            {{ equipment.Skill.AbilityName }}
+          </RouterLink>
+        </NavItem>
+      </NavTree>
+    </NavItem>
+  </NavTree>
 </template>
 
 <style scoped>

@@ -3,6 +3,8 @@
   import { RouterLink } from 'vue-router';
   import { Grouped, } from '@/scripts/common.ts';
   import { getEquipments, Equipment, EquipmentConfig, } from '@/scripts/sources/equipment';
+  import NavTree from '@/components/NavTree.vue'
+  import NavItem from '@/components/NavItem.vue'
 
   const commitId = inject<string>('commitId') as string
   const search = inject<Ref<string>>('search') as Ref<string>
@@ -32,24 +34,25 @@
 </script>
 
 <template>
-  <ul>
+  <NavTree>
+    <template #header>Light Cones</template>
     <template v-for="(equipments, path) in equipmentsSearchResults" :key="path">
-      <li>
+      <NavItem>
         
-        <div>{{ path }}</div>
-        <ul>
+        <NavTree>
+          <template #header>{{ path }}</template>
           <template v-for="equipment in equipments" :key="equipment.EquipmentID">
-            <li>
+            <NavItem>
               <RouterLink :to="{ name:'equipment', params:{ commitId: commitId, objectId: equipment.EquipmentID }}">
                 <span :title="equipment.EquipmentName.Text">{{ equipment.EquipmentName.Text }}</span>
               </RouterLink>
-            </li>
+            </NavItem>
           </template>
-        </ul>
+        </NavTree>
 
-      </li>
+      </NavItem>
     </template>
-  </ul>
+  </NavTree>
 </template>
 
 <style scoped>

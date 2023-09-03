@@ -3,6 +3,8 @@
   import { RouterLink, } from 'vue-router';
   import { Grouped, } from '@/scripts/common';
   import { getAvatars, Avatar, AvatarConfig, } from '@/scripts/sources/avatar';
+  import NavTree from '@/components/NavTree.vue'
+  import NavItem from '@/components/NavItem.vue'
 
   const commitId = inject<string>('commitId') as string
   const search = inject<Ref<string>>('search') as Ref<string>
@@ -32,24 +34,25 @@
 </script>
 
 <template>
-  <ul>
+  <NavTree>
+    <template #header>Avatars</template>
     <template v-for="(avatars, damageType) in avatarsSearchResults" :key="damageType">
-      <li>
-        
-        <div>{{ damageType }}</div>
-        <ul>
+      <NavItem>
+
+        <NavTree>
+          <template #header>{{ damageType }}</template>
           <template v-for="avatar in avatars" :key="avatar.AvatarID">
-            <li>
+            <NavItem>
               <RouterLink :to="{ name:'avatar', params:{ commitId: commitId, objectId: avatar.AvatarID }}">
                 <span :title="avatar.AvatarName.Text">{{ avatar.AvatarName.Text }}</span>
               </RouterLink>
-            </li>
+            </NavItem>
           </template>
-        </ul>
+        </NavTree>
 
-      </li>
+      </NavItem>
     </template>
-  </ul>
+  </NavTree>
 </template>
 
 <style scoped>
