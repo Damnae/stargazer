@@ -34,21 +34,16 @@
 </script>
 
 <template>
-  <NavTree>
-    <template #header>Avatars</template>
-    <NavItem v-for="(avatars, damageType) in avatarsSearchResults" :key="damageType">
-
-      <NavTree>
-        <template #header>{{ damageType }}</template>
-        <NavItem v-for="avatar in avatars" :key="avatar.AvatarID">
-          <RouterLink :to="{ name:'avatar', params:{ commitId: commitId, objectId: avatar.AvatarID }}">
-            <span :title="avatar.AvatarName.Text">{{ avatar.AvatarName.Text }}</span>
-          </RouterLink>
-        </NavItem>
-      </NavTree>
-
-    </NavItem>
-  </NavTree>
+  <NavItem v-for="(avatars, damageType) in avatarsSearchResults" :key="damageType">
+    <NavTree>
+      <template #header>{{ damageType }}</template>
+      <NavItem v-for="avatar in avatars" :key="avatar.AvatarID">
+        <RouterLink :to="{ name:'avatar', params:{ commitId: commitId, objectId: avatar.AvatarID }}">
+          <span :title="avatar.AvatarName.Text">{{ avatar.AvatarName.Text }}</span>
+        </RouterLink>
+      </NavItem>
+    </NavTree>
+  </NavItem>
 </template>
 
 <style scoped>

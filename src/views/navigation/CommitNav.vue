@@ -20,11 +20,36 @@
     <section class="mainnav">
       <input v-model.trim="search" placeholder="Search" />
       <NavTree :forceOpen="forceNavigationOpen">
-        <NavItem> <AvatarNav />     </NavItem>
-        <NavItem> <MonsterNav />    </NavItem>
-        <NavItem> <EquipmentNav />  </NavItem>
-        <NavItem> <RelicSetNav />   </NavItem>
-        <NavItem> <StatusNav />     </NavItem>
+        <NavItem> 
+          <NavTree>
+            <template #header>Avatars</template>
+            <AvatarNav />  
+          </NavTree>   
+        </NavItem>
+        <NavItem> 
+          <NavTree>
+            <template #header>Monsters</template>
+            <MonsterNav />
+          </NavTree>
+        </NavItem>
+        <NavItem> 
+          <NavTree>
+            <template #header>Light Cones</template>
+            <EquipmentNav />
+          </NavTree>
+        </NavItem>
+        <NavItem> 
+          <NavTree>
+            <template #header>Relic Sets</template>
+            <RelicSetNav />  
+          </NavTree>
+        </NavItem>
+        <NavItem> 
+          <NavTree>
+            <template #header>Status Effects</template>
+            <StatusNav />
+          </NavTree>
+        </NavItem>
       </NavTree>
     </section>
 
