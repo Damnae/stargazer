@@ -83,6 +83,8 @@ export async function getEquipments(commitId:string) : Promise<EquipmentConfig>
 
             equipment.SearchKeywords = []
             equipment.SearchKeywords.push(equipment.EquipmentName.Text.toLowerCase())
+            if (equipment.Skill)
+                equipment.SearchKeywords.push(equipment.Skill.SkillName.Text.toLowerCase())
         }
 
         config = equipmentConfigCache[commitId] = equipments
