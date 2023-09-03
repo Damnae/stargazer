@@ -7,17 +7,15 @@
 </script>
 
 <template>
-  <NavTree>
+  <NavTree :startsOpen="true">
     <template #header>
       <slot name="header" />
     </template>
-    <template v-for="ability in character.AbilityList" :key="ability">
-      <NavItem>
-        <span :title="ability">
-          <slot :ability="ability" />
-        </span>
-      </NavItem>
-    </template>
+    <NavItem v-for="ability in character.AbilityList">
+      <span :title="ability">
+        <slot :ability="ability" />
+      </span>
+    </NavItem>
   </NavTree>
 </template>
 

@@ -6,7 +6,7 @@
 
   const props = defineProps<{commitId:string, objectId:number}>()
 
-  const relicset = ref<RelicSet>(await getRelicSet(props.commitId, props.objectId))
+  const relicset = ref<RelicSet>()
 
   watchEffect(async () => 
   {
@@ -15,26 +15,26 @@
 </script>
 
 <template>
-  <h1>{{ relicset.SetName.Text }}</h1>
-  <NavTree>
-    <NavItem v-if="relicset.Skills">
-      <NavTree>
-        <template #header>Skills</template>
-        <template v-for="skill in relicset.Skills" :key="skill.RankID">
-          <NavItem>
-            <NavTree v-if="skill.AbilityName">
+  <template v-if="relicset" :key="objectId">
+    <h1>{{ relicset.SetName.Text }}</h1>
+    <NavTree>
+      <NavItem v-if="relicset.Skills">
+        <NavTree :startsOpen="true">
+          <template #header>Skills</template>
+          <NavItem v-for="skill, rank in relicset.Skills" :key="rank">
+            <NavTree :startsOpen="true">
               <template #header>{{ skill.RequireNum }} Pieces</template>
-              <NavItem>
+              <NavItem v-if="skill.AbilityName">
                 <RouterLink :to="{ name:'relicsetAbility', params:{ commitId: commitId, objectId: objectId, abilityId: skill.AbilityName, }}">
                   {{ skill.AbilityName }}
                 </RouterLink>
               </NavItem>
             </NavTree>
           </NavItem>
-        </template>
-      </NavTree>
-    </NavItem>
-  </NavTree>
+        </NavTree>
+      </NavItem>
+    </NavTree>
+  </template>
 </template>
 
 <style scoped>

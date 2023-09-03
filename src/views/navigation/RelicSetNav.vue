@@ -22,13 +22,11 @@
 <template>
   <NavTree>
     <template #header>Relic Sets</template>
-    <template v-for="relicset in relicsetsSearchResults" :key="relicset.SetID">
-      <NavItem>
-        <RouterLink :to="{ name:'relicset', params:{ commitId: commitId, objectId: relicset.SetID }}">
-          <span :title="relicset.SetName.Text">{{ relicset.SetName.Text }}</span>
-        </RouterLink>
-      </NavItem>
-    </template>
+    <NavItem v-for="relicset in relicsetsSearchResults" :key="relicset.SetID">
+      <RouterLink :to="{ name:'relicset', params:{ commitId: commitId, objectId: relicset.SetID }}">
+        <span :title="relicset.SetName.Text">{{ relicset.SetName.Text }}</span>
+      </RouterLink>
+    </NavItem>
   </NavTree>
 </template>
 

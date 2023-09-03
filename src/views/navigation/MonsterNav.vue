@@ -39,31 +39,25 @@
 <template>
   <NavTree>
     <template #header>Monsters</template>
-    <template v-for="(monsterTemplate, monsterCampName) in monstersSearchResults">
-      <NavItem>
+    <NavItem v-for="(monsterTemplate, monsterCampName) in monstersSearchResults">
 
-        <NavTree>
-          <template #header>{{ monsterCampName }}</template>
-          <template v-for="(monsters, monsterTemplateName) in monsterTemplate">
-            <NavItem>
+      <NavTree :startsOpen="true">
+        <template #header>{{ monsterCampName }}</template>
+        <NavItem v-for="(monsters, monsterTemplateName) in monsterTemplate">
 
-              <NavTree>
-                <template #header :title="monsterTemplateName.toString()">{{ monsterTemplateName }}</template>
-                <template v-for="monster in monsters" :key="monster.MonsterID">
-                  <NavItem>
-                    <RouterLink :to="{ name:'monster', params:{ commitId: commitId, objectId: monster.MonsterID }}">
-                      <span :title="monster.MonsterName.Text">{{ monster.MonsterName.Text }}</span>
-                    </RouterLink>
-                  </NavItem>
-                </template>
-              </NavTree>
-
+          <NavTree>
+            <template #header :title="monsterTemplateName.toString()">{{ monsterTemplateName }}</template>
+            <NavItem v-for="monster in monsters" :key="monster.MonsterID">
+              <RouterLink :to="{ name:'monster', params:{ commitId: commitId, objectId: monster.MonsterID }}">
+                <span :title="monster.MonsterName.Text">{{ monster.MonsterName.Text }}</span>
+              </RouterLink>
             </NavItem>
-          </template>
-        </NavTree>
+          </NavTree>
 
-      </NavItem>
-    </template>
+        </NavItem>
+      </NavTree>
+
+    </NavItem>
   </NavTree>
 </template>
 

@@ -18,7 +18,10 @@
 <template>
   <BlockLayout :source="node">
     
-    <em>{{ node.ModifyFunction }}</em> current skill action delay cost
+    <em v-if="node.ModifyFunction">{{ node.ModifyFunction }}</em> 
+    <template v-else>Modifiy</template> 
+    
+    current skill action delay cost
     <template v-if="node.NormalizedValue">
       to <em><EvaluateExpression :expression="node.NormalizedValue" /></em>×
     </template>

@@ -2,9 +2,9 @@
 </script>
 
 <template>
-    <li>
-        <slot />
-    </li>
+  <li v-if="$slots.default">
+    <slot />
+  </li>
 </template>
 
 <style scoped>

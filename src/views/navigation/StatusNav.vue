@@ -22,13 +22,11 @@
 <template>
   <NavTree>
     <template #header>Status Effects</template>
-    <template v-for="status in statusesSearchResults" :key="status.StatusID">
-      <NavItem>
-        <RouterLink :to="{ name:'status', params:{ commitId: commitId, objectId: status.StatusID }}">
-          <span :title="status.StatusName.Text">{{ status.StatusName.Text }}</span>
-        </RouterLink>
-      </NavItem>
-    </template>
+    <NavItem v-for="status in statusesSearchResults" :key="status.StatusID">
+      <RouterLink :to="{ name:'status', params:{ commitId: commitId, objectId: status.StatusID }}">
+        <span :title="status.StatusName.Text">{{ status.StatusName.Text }}</span>
+      </RouterLink>
+    </NavItem>
   </NavTree>
 </template>
 

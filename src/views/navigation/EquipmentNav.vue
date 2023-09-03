@@ -36,22 +36,18 @@
 <template>
   <NavTree>
     <template #header>Light Cones</template>
-    <template v-for="(equipments, path) in equipmentsSearchResults" :key="path">
-      <NavItem>
-        
-        <NavTree>
-          <template #header>{{ path }}</template>
-          <template v-for="equipment in equipments" :key="equipment.EquipmentID">
-            <NavItem>
-              <RouterLink :to="{ name:'equipment', params:{ commitId: commitId, objectId: equipment.EquipmentID }}">
-                <span :title="equipment.EquipmentName.Text">{{ equipment.EquipmentName.Text }}</span>
-              </RouterLink>
-            </NavItem>
-          </template>
-        </NavTree>
+    <NavItem v-for="(equipments, path) in equipmentsSearchResults" :key="path">
+      
+      <NavTree>
+        <template #header>{{ path }}</template>
+        <NavItem v-for="equipment in equipments" :key="equipment.EquipmentID">
+          <RouterLink :to="{ name:'equipment', params:{ commitId: commitId, objectId: equipment.EquipmentID }}">
+            <span :title="equipment.EquipmentName.Text">{{ equipment.EquipmentName.Text }}</span>
+          </RouterLink>
+        </NavItem>
+      </NavTree>
 
-      </NavItem>
-    </template>
+    </NavItem>
   </NavTree>
 </template>
 

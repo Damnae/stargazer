@@ -28,15 +28,15 @@
       Add <em><EvaluateExpression :expression="node.FixedAddValue" /></em> flat energy
       <span class="minor">(Ignores ER)</span>
     </template>
-    <template v-else-if="node.AddRatio">
-      Add <em><EvaluateExpression :expression="node.AddRatio" /></em> of the skill energy bonus
-    </template>
     <template v-else-if="node.AddMaxSPRatio">
       Add <em><EvaluateExpression :expression="node.AddMaxSPRatio" /></em>× energy
     </template>
     <template v-else-if="node.FixedAddMaxSPRatio">
       Add <em><EvaluateExpression :expression="node.FixedAddMaxSPRatio" /></em>× energy
       <span class="minor">(Ignores ER)</span>
+    </template>
+    <template v-else-if="node.AddRatio">
+      Add <em><EvaluateExpression :expression="node.AddRatio" /></em>× of the skill energy bonus
     </template>
     <template v-else>
       Add energy

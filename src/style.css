@@ -203,6 +203,7 @@ ul.navtree li
 ul.navtree li > .navtree-header
 { 
   user-select: none;
+  cursor:pointer;
 }
 ul.navtree li > .navtree-header::after
 { 
@@ -215,6 +216,14 @@ ul.navtree li > .navtree-closed::after
 ul.navtree li > .navtree-open::after
 { 
   content:' ⏷';
+}
+ul.navtree li > .navtree-forcedopen
+{
+  cursor:initial;
+}
+ul.navtree li > .navtree-forcedopen::after
+{ 
+  content:'';
 }
 ul.navtree li > .navtree-header:hover::after
 { 

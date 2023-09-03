@@ -6,7 +6,7 @@
 
   const props = defineProps<{commitId:string, objectId:number}>()
 
-  const status = ref<Status>(await getStatus(props.commitId, props.objectId))
+  const status = ref<Status>()
 
   watchEffect(async () => 
   {
@@ -15,19 +15,21 @@
 </script>
 
 <template>
-  <h1>{{ status.StatusName.Text }}</h1>
-  <NavTree>
-    <NavItem v-if="status.ModifierName">
-      <NavTree>
-        <template #header>Modifier</template>
-        <NavItem>
-          <RouterLink :to="{ name:'statusModifier', params:{ commitId: commitId, objectId: objectId, modifierId: status.ModifierName, }}">
-            {{ status.ModifierName }}
-          </RouterLink>
-        </NavItem>
-      </NavTree>
-    </NavItem>
-  </NavTree>
+  <template v-if="status" :key="objectId">
+    <h1>{{ status.StatusName.Text }}</h1>
+    <NavTree>
+      <NavItem v-if="status.ModifierName">
+        <NavTree :startsOpen="true">
+          <template #header>Modifier</template>
+          <NavItem>
+            <RouterLink :to="{ name:'statusModifier', params:{ commitId: commitId, objectId: objectId, modifierId: status.ModifierName, }}">
+              {{ status.ModifierName }}
+            </RouterLink>
+          </NavItem>
+        </NavTree>
+      </NavItem>
+    </NavTree>
+  </template>
 </template>
 
 <style scoped>

@@ -21,17 +21,15 @@
 </script>
 
 <template>
-  <NavTree v-if="abilities.length > 0">
+  <NavTree :startsOpen="true">
     <template #header>
       <slot name="header" />
     </template>
-    <template v-for="ability in abilities" :key="ability">
-      <NavItem>
-        <span :title="ability">
-          <slot :ability="ability" />
-        </span>
-      </NavItem>
-    </template>
+    <NavItem v-for="ability in abilities">
+      <span :title="ability">
+        <slot :ability="ability" />
+      </span>
+    </NavItem>
   </NavTree>
 </template>
 

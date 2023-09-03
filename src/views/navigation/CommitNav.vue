@@ -1,5 +1,5 @@
 <script setup lang="ts">
-  import { ref, provide } from 'vue'
+  import { ref, provide, computed, } from 'vue'
   import AvatarNav from './AvatarNav.vue'
   import MonsterNav from './MonsterNav.vue'
   import EquipmentNav from './EquipmentNav.vue'
@@ -10,6 +10,8 @@
 
   const search = ref<string>('')
   provide('search', search)
+  
+  const forceNavigationOpen = computed(() => !!search.value)
 </script>
 
 <template>
@@ -17,7 +19,7 @@
 
     <section class="mainnav">
       <input v-model.trim="search" placeholder="Search" />
-      <NavTree>
+      <NavTree :forceOpen="forceNavigationOpen">
         <NavItem> <AvatarNav />     </NavItem>
         <NavItem> <MonsterNav />    </NavItem>
         <NavItem> <EquipmentNav />  </NavItem>
