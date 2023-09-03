@@ -196,11 +196,11 @@
         <BlockLayout :source="modifier.ModifierAffectedPreshowConfig">
           <span class="flow">
             <template v-if="modifier.ModifierAffectedPreshowConfig.SkillTypes">
-              On <em>{{ modifier.ModifierAffectedPreshowConfig.SkillTypes.join(', ') }}</em>, 
-              for <em>{{ evaluateTargetType(modifier.ModifierAffectedPreshowConfig.TargetType) }}</em>
+              While preparing <em>{{ modifier.ModifierAffectedPreshowConfig.SkillTypes.join(', ') }}</em>, 
+              on <em>{{ evaluateTargetType(modifier.ModifierAffectedPreshowConfig.TargetType) }}</em>
             </template>
             <template v-else>
-              For <em>{{ evaluateTargetType(modifier.ModifierAffectedPreshowConfig.TargetType) }}</em>
+              On <em>{{ evaluateTargetType(modifier.ModifierAffectedPreshowConfig.TargetType) }}</em>
             </template>
           </span>
           <template #content>
