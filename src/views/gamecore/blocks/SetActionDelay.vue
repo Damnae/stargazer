@@ -11,6 +11,7 @@
   {
     TargetType?:GamecoreTargetType
     Value?:DynamicExpression
+    NormalizedValue?:DynamicExpression
   }
 </script>
 
@@ -22,8 +23,11 @@
       <em>{{ evaluateTargetType(node.TargetType) }}</em>'s
     </template>
     action delay
-    <template v-if="node.TargetType">
+    <template v-if="node.Value">
       to <em><EvaluateExpression :expression="node.Value" /></em>
+    </template>
+    <template v-if="node.NormalizedValue">
+      to <em><EvaluateExpression :expression="node.NormalizedValue" /></em>×
     </template>
 
   </BlockLayout>

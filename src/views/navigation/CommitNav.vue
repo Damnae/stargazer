@@ -1,5 +1,6 @@
 <script setup lang="ts">
   import { ref, provide, computed, } from 'vue'
+  import { useRoute } from 'vue-router'
   import AvatarNav from './AvatarNav.vue'
   import MonsterNav from './MonsterNav.vue'
   import EquipmentNav from './EquipmentNav.vue'
@@ -12,6 +13,7 @@
   provide('search', search)
   
   const forceNavigationOpen = computed(() => !!search.value)
+  const mainNav = useRoute().meta.mainNav
 </script>
 
 <template>
@@ -21,31 +23,31 @@
       <input v-model.trim="search" placeholder="Search" />
       <NavTree :forceOpen="forceNavigationOpen">
         <NavItem> 
-          <NavTree>
+          <NavTree :startsOpen="mainNav == 'Avatar'">
             <template #header>Avatars</template>
             <AvatarNav />  
           </NavTree>   
         </NavItem>
         <NavItem> 
-          <NavTree>
+          <NavTree :startsOpen="mainNav == 'Monster'">
             <template #header>Monsters</template>
             <MonsterNav />
           </NavTree>
         </NavItem>
         <NavItem> 
-          <NavTree>
+          <NavTree :startsOpen="mainNav == 'Equipment'">
             <template #header>Light Cones</template>
             <EquipmentNav />
           </NavTree>
         </NavItem>
         <NavItem> 
-          <NavTree>
+          <NavTree :startsOpen="mainNav == 'RelicSet'">
             <template #header>Relic Sets</template>
             <RelicSetNav />  
           </NavTree>
         </NavItem>
         <NavItem> 
-          <NavTree>
+          <NavTree :startsOpen="mainNav == 'Status'">
             <template #header>Status Effects</template>
             <StatusNav />
           </NavTree>

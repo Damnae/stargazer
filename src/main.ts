@@ -39,76 +39,93 @@ const routes:Readonly<RouteRecordRaw[]> =
         // Avatars
         { path: '/avatar-:objectId/@:commitId', 
             name: 'avatar', components: { subnav: AvatarSubNav, }, 
-            props:{ subnav:toRouteProps({ commitId:'string', objectId:'number' }) }, 
+            props:{ subnav:toRouteProps({ commitId:'string', objectId:'number' }) },
+            meta: { mainNav: 'Avatar', }
         },
         { path: '/ability-:abilityId/from/avatar-:objectId/@:commitId', 
             name: 'avatarAbility', components: { subnav: AvatarSubNav, default: AvatarAbility, }, 
             props:{ subnav:toRouteProps({ objectId:'number', abilityId:false }), default:toRouteProps({ objectId: 'number' }) },
+            meta: { mainNav: 'Avatar', }
         },
         { path: '/modifier-:modifierId/from/avatar-:objectId/@:commitId', 
             name: 'avatarModifier', components: { subnav: AvatarSubNav, default: AvatarModifier, }, 
             props:{ subnav:toRouteProps({ objectId:'number', modifierId:false }), default:toRouteProps({ objectId: 'number' }) },
+            meta: { mainNav: 'Avatar', }
         },
         // Monsters
         { path: '/monster-:objectId/@:commitId', 
             name: 'monster', components: { subnav: MonsterSubNav, }, 
             props:{ subnav:toRouteProps({ objectId:'number' })},
+            meta: { mainNav: 'Monster', }
         },
         { path: '/ability-:abilityId/from/monster-:objectId/@:commitId', 
             name: 'monsterAbility', components: { subnav: MonsterSubNav, default: MonsterAbility, },
             props:{ subnav:toRouteProps({ objectId:'number', abilityId:false }), default:toRouteProps({ objectId: 'number' }) },
+            meta: { mainNav: 'Monster', }
         },
         { path: '/modifier-:modifierId/from/monster-:objectId/@:commitId', 
             name: 'monsterModifier', components: { subnav: MonsterSubNav, default: MonsterModifier, }, 
             props:{ subnav:toRouteProps({ objectId:'number', modifierId:false }), default:toRouteProps({ objectId: 'number' }) },
+            meta: { mainNav: 'Monster', }
         },
         // Light Cones
         { path: '/lightcone-:objectId/@:commitId', 
             name: 'equipment', components: { subnav: EquipmentSubNav, }, 
             props:{ subnav:toRouteProps({ objectId:'number' })},
+            meta: { mainNav: 'Equipment', }
         },
         { path: '/ability-:abilityId/from/lightcone-:objectId/@:commitId', 
             name: 'equipmentAbility', components: { subnav: EquipmentSubNav, default: EquipmentAbility, },
             props:{ subnav:toRouteProps({ objectId:'number', abilityId:false }), default:toRouteProps({ objectId: 'number' }) },
+            meta: { mainNav: 'Equipment', }
         },
         { path: '/modifier-:modifierId/from/lightcone-:objectId/@:commitId', 
             name: 'equipmentModifier', components: { subnav: EquipmentSubNav, default: EquipmentModifier, }, 
             props:{ subnav:toRouteProps({ objectId:'number', modifierId:false }), default:toRouteProps({ objectId: 'number' }) },
+            meta: { mainNav: 'Equipment', }
         },
         // Relic Sets
         { path: '/relicset-:objectId/@:commitId', 
             name: 'relicset', components: { subnav: RelicSetSubNav, }, 
             props:{ subnav:toRouteProps({ objectId:'number' })},
+            meta: { mainNav: 'RelicSet', }
         },
         { path: '/ability-:abilityId/from/relicset-:objectId/@:commitId', 
             name: 'relicsetAbility', components: { subnav: RelicSetSubNav, default: RelicSetAbility, },
             props:{ subnav:toRouteProps({ objectId:'number', abilityId:false }), default:toRouteProps({ objectId: 'number' }) },
+            meta: { mainNav: 'RelicSet', }
         },
         { path: '/modifier-:modifierId/from/relicset-:objectId/@:commitId', 
             name: 'relicsetModifier', components: { subnav: RelicSetSubNav, default: RelicSetModifier, }, 
             props:{ subnav:toRouteProps({ objectId:'number', modifierId:false }), default:toRouteProps({ objectId: 'number' }) },
+            meta: { mainNav: 'RelicSet', }
         },
         // Status
         { path: '/status-:objectId/@:commitId', 
             name: 'status', components: { subnav: StatusSubNav, }, 
             props:{ subnav:toRouteProps({ objectId:'number' })},
+            meta: { mainNav: 'Status', }
         },
         { path: '/ability-:abilityId/from/status-:objectId/@:commitId', 
             name: 'statusAbility', components: { subnav: StatusSubNav, default: StatusAbility, },
             props:{ subnav:toRouteProps({ objectId:'number', abilityId:false }), default:toRouteProps({ objectId: 'number' }) },
+            meta: { mainNav: 'Status', }
         },
         { path: '/modifier-:modifierId/from/status-:objectId/@:commitId', 
             name: 'statusModifier', components: { subnav: StatusSubNav, default: StatusModifier, }, 
             props:{ subnav:toRouteProps({ objectId:'number', modifierId:false }), default:toRouteProps({ objectId: 'number' }) },
+            meta: { mainNav: 'Status', }
         },
         // Ability / Modifier (no context)
         { path: '/ability-:abilityId/@:commitId', 
             name: 'ability', components: { default: AnyAbility, }, 
             props:{ default:toRouteProps({ }) },
+            meta: { mainNav: 'Ability', }
         },
         { path: '/modifier-:modifierId/@:commitId', 
             name: 'modifier', components: { default: AnyModifier, }, 
             props:{ default:toRouteProps({ }) },
+            meta: { mainNav: 'Modifier', }
         },
     ]},
 ]
