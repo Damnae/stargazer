@@ -1,5 +1,6 @@
 <script setup lang="ts">
   import { Ref, inject, ref, computed, useSlots, provide, } from 'vue';
+  import LoadingNav from '@/views/LoadingNav.vue';
 
   const slots = useSlots()
   const props = defineProps<{startsOpen?:boolean, forceOpen?:boolean}>()
@@ -24,7 +25,12 @@
     <slot name="header" />
   </div>
   <ul v-if="$slots.default && isOpen" class="navtree">
-    <slot />
+    <Suspense>
+      <slot />
+      <template #fallback>
+        <LoadingNav></LoadingNav>
+      </template>
+    </Suspense>
   </ul>
 </template>
 

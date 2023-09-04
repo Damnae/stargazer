@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import Loading from '@/views/Loading.vue';
+import LoadingTitle from '@/views/LoadingTitle.vue';
 import Footer from '@/views/Footer.vue'
 </script>
 
@@ -13,7 +13,7 @@ import Footer from '@/views/Footer.vue'
 
             <component :is="Component"></component>
             <template #fallback>
-              <Loading />
+              <LoadingTitle />
             </template>
 
           </Suspense>

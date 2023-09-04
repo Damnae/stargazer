@@ -1,6 +1,6 @@
 <script setup lang="ts">
   import { onErrorCaptured, provide, ref } from 'vue'
-  import Loading from '@/views/Loading.vue';
+  import LoadingTitle from '@/views/LoadingTitle.vue';
   import CommitNav from '@/views/navigation/CommitNav.vue'
 
   const props = defineProps<{commitId:string}>()
@@ -25,13 +25,13 @@
 
           <component :is="Component"></component>
           <template #fallback>
-            <Loading />
+            <LoadingTitle />
           </template>
 
         </Suspense>
       </template>
     </RouterView>
-    <Loading v-else :message="errorMessage" />
+    <LoadingTitle v-else :message="errorMessage" />
 
   </div>
 </template>
