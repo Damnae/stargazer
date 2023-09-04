@@ -35,7 +35,7 @@
     display: flex;
     flex-direction: column;
     gap: 1rem;  
-    max-width:40em;
+    max-width:40rem;
     padding: 0 1em 0 0;
     height: 40vh;
     overflow: scroll;
@@ -53,5 +53,16 @@
     flex-direction: row;
     justify-content: space-between;
     gap: 1rem;
+  }
+  .identity *:nth-child(2)
+  {
+    display:none;
+  }
+  @media (min-width:35rem) 
+  {
+    .identity *:nth-child(2)
+    {
+      display:inline;
+    }
   }
 </style>
