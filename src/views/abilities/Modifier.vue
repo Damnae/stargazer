@@ -1,49 +1,49 @@
 <script setup lang="ts">
   import { inject, ref, watch, Ref, } from 'vue'
-  import { GamecoreContext, evaluateTargetType } from '@/scripts/sources/gamecore';
-  import { Modifier, AbilityContext, } from '@/scripts/sources/ability';
-  import { Status, getStatuses } from '@/scripts/sources/status';
-  import useHashStore from '@/scripts/hashstore';
-  import EvaluateExpression from '../gamecore/EvaluateExpression.vue';
-  import BlockLayout from '../gamecore/BlockLayout.vue';
-  import AnyBlock from '../gamecore/AnyBlock.vue';
-  import DynamicValues from './DynamicValues.vue';
-  import RangeChange from './RangeChange.vue';
-  import ShowContext from './ShowContext.vue';
+  import { ExpressionContext, evaluateTargetType } from '@/sources/gamecore';
+  import { Modifier, TaskContext, } from '@/sources/ability';
+  import { Status, getStatuses } from '@/sources/status';
+  import useHashStore from '@/common/hashstore';
+  import EvaluateExpression from '@/gamecore/EvaluateExpression.vue';
+  import BlockLayout from '@/components/BlockLayout.vue';
+  import AnyTask from '@/gamecore/AnyTask.vue';
+  import DynamicValues from './components/DynamicValues.vue';
+  import RangeChange from './components/RangeChange.vue';
+  import ShowContext from './components/ShowContext.vue';
 
   const props = defineProps<{modifierId:string}>()
-  const abilityContext = inject('abilityContext') as Ref<AbilityContext>
-  const gamecoreContext = inject('gamecoreContext') as Ref<GamecoreContext>
+  const taskContext = inject('taskContext') as Ref<TaskContext>
+  const expressionContext = inject('expressionContext') as Ref<ExpressionContext>
 
   watch(props, () =>
   {
-    if (gamecoreContext.value)
-      gamecoreContext.value.ModifierId = props.modifierId
+    if (expressionContext.value)
+      expressionContext.value.ModifierId = props.modifierId
   }, 
   { immediate: true, })
 
   const modifier = ref<Modifier>()
-  watch([props, abilityContext, gamecoreContext], () =>
+  watch([props, taskContext, expressionContext], () =>
   {
-    const mod = abilityContext.value.Modifiers?.[props.modifierId]
+    const mod = taskContext.value.Modifiers?.[props.modifierId]
     if (mod)
     {  
-      if (gamecoreContext.value)
-        gamecoreContext.value.AbilityId = undefined
+      if (expressionContext.value)
+        expressionContext.value.AbilityId = undefined
       modifier.value = mod
       return 
     }
 
-    for (const ability of Object.values(abilityContext.value.Abilities))
+    for (const ability of Object.values(taskContext.value.Abilities))
     {
       const mod = ability.Modifiers?.[props.modifierId]
       if (mod)
       {
-        if (gamecoreContext.value)
+        if (expressionContext.value)
         {
-          gamecoreContext.value.AbilityId = ability.Name
+          expressionContext.value.AbilityId = ability.Name
           if (ability.DynamicValues)
-            gamecoreContext.value.AbilityDynamicValues[ability.Name] = ability.DynamicValues
+            expressionContext.value.AbilityDynamicValues[ability.Name] = ability.DynamicValues
         }
         modifier.value = mod
         return
@@ -166,7 +166,7 @@
         <div class="sticky-container">
           <template v-for="(e, key) in modifier._CallbackList">
             <h3>{{ key }}</h3>
-            <AnyBlock v-for="n in e.CallbackConfig" :node="n" />
+            <AnyTask v-for="n in e.CallbackConfig" :node="n" />
           </template>
         </div>
       </template>
@@ -208,7 +208,7 @@
               
               <div class="subblock">
                 <span class="flow">If</span>
-                <AnyBlock :node="modifier.ModifierAffectedPreshowConfig.Condition" />
+                <AnyTask :node="modifier.ModifierAffectedPreshowConfig.Condition" />
                 <span class="flow">Do</span>
                 <BlockLayout v-for="expression, key in modifier.ModifierAffectedPreshowConfig.ActionDelayPreshowConfig" :source="expression">
                   Preview <em>{{ key }}</em> with value <em><EvaluateExpression :expression="expression" /></em>

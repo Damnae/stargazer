@@ -1,6 +1,6 @@
 <script setup lang="ts">
   import { Ref, inject, ref, computed, useSlots, provide, } from 'vue';
-  import LoadingNav from '@/views/LoadingNav.vue';
+  import LoadingNav from '@/components/LoadingNav.vue';
 
   const slots = useSlots()
   const props = defineProps<{startsOpen?:boolean, forceOpen?:boolean}>()

@@ -1,9 +1,9 @@
 <script setup lang="ts">
   import { ref, watchEffect, } from 'vue'
-  import { getEquipment, Equipment, } from '@/scripts/sources/equipment';
+  import { getEquipment, Equipment, } from '@/sources/equipment';
   import NavTree from '@/components/NavTree.vue'
   import NavItem from '@/components/NavItem.vue'
-  import LoadingNav from '../LoadingNav.vue';
+  import LoadingNav from '@/components/LoadingNav.vue';
 
   const props = defineProps<{commitId:string, objectId:number}>()
 

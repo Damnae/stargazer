@@ -1,7 +1,7 @@
 <script setup lang="ts">
   import { ref, computed, inject, Ref, } from 'vue'
   import { RouterLink } from 'vue-router';
-  import { getStatuses, Status, StatusConfig, } from '@/scripts/sources/status';
+  import { getStatuses, Status, StatusConfig, } from '@/sources/status';
   import NavItem from '@/components/NavItem.vue'
 
   const commitId = inject<string>('commitId') as string

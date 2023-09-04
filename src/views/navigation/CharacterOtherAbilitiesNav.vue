@@ -1,5 +1,5 @@
 <script setup lang="ts">
-  import { Character } from '@/scripts/sources/character';
+  import { Character } from '@/sources/character';
   import NavTree from '@/components/NavTree.vue'
   import NavItem from '@/components/NavItem.vue'
 

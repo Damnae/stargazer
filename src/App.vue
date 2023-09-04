@@ -1,13 +1,20 @@
 <script setup lang="ts">
-import LoadingTitle from '@/views/LoadingTitle.vue';
-import Footer from '@/views/Footer.vue'
+  import { ref, onErrorCaptured, } from 'vue';
+  import LoadingTitle from '@/components/LoadingTitle.vue';
+  import Footer from '@/views/Footer.vue'
+
+  const errorMessage = ref('')
+  onErrorCaptured((error, _instance, info) => 
+  {
+    errorMessage.value = `❌ Error in ${info}, ${error}`
+  })
 </script>
 
 <template>
   <div class="main-layout">
     <div class="main-content-layout">
 
-      <RouterView v-slot="{ Component }">
+      <RouterView v-if="!errorMessage" v-slot="{ Component }">
         <template v-if="Component">
           <Suspense :timeout="100">
 
@@ -19,6 +26,7 @@ import Footer from '@/views/Footer.vue'
           </Suspense>
         </template>
       </RouterView>
+      <LoadingTitle v-else :message="errorMessage" />
 
     </div>
     <div class="main-footer-layout">

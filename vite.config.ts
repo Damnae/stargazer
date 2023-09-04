@@ -7,9 +7,9 @@ import path from 'path'
 // https://vitejs.dev/config/
 export default defineConfig(async ({ command, mode, ssrBuild }) => 
 {
-  const gamecoreFiles = await readdir(`${path.resolve(__dirname, 'src')}/views/gamecore/blocks/`)
-  const gamecorePaths = gamecoreFiles.map(f => `./src/views/gamecore/blocks/${f}`)
-  gamecorePaths.push('./src/views/gamecore/MissingBlock.vue')
+  const gamecoreFiles = await readdir(`${path.resolve(__dirname, 'src')}/gamecore/tasks/`)
+  const gamecorePaths = gamecoreFiles.map(f => `./src/gamecore/tasks/${f}`)
+  gamecorePaths.push('./src/gamecore/MissingTask.vue')
 
   console.log(gamecorePaths)
   return {
@@ -29,7 +29,7 @@ export default defineConfig(async ({ command, mode, ssrBuild }) =>
         output: 
         {
           // https://rollupjs.org/guide/en/#outputmanualchunks
-          manualChunks: { 'gamecore': gamecorePaths, },
+          manualChunks: { 'tasks': gamecorePaths, },
         },
       },
     },

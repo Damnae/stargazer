@@ -1,15 +1,15 @@
 <script setup lang="ts">
   import { ref, watchEffect, } from 'vue'
-  import { getMonster, type Monster, } from '@/scripts/sources/monster.ts';
-  import { getMonsterSkillsByIds, MonsterSkill, } from '@/scripts/sources/monsterskill';
-  import { getCharacterByMonster, Character } from '@/scripts/sources/character';
-  import { AbilityContextType } from '@/scripts/sources/ability';
+  import { getMonster, type Monster, } from '@/sources/monster.ts';
+  import { getMonsterSkillsByIds, MonsterSkill, } from '@/sources/monsterskill';
+  import { getCharacterByMonster, Character } from '@/sources/character';
+  import { TaskContextType } from '@/sources/ability';
   import CharacterSkillAbilitiesNav from './CharacterSkillAbilitiesNav.vue';
   import CharacterOtherAbilitiesNav from './CharacterOtherAbilitiesNav.vue';
   import CharacterModifiers from './CharacterModifiers.vue';
   import NavTree from '@/components/NavTree.vue'
   import NavItem from '@/components/NavItem.vue'
-  import LoadingNav from '../LoadingNav.vue';
+  import LoadingNav from '@/components/LoadingNav.vue';
 
   const props = defineProps<{commitId:string, objectId:number}>()
 
@@ -71,7 +71,7 @@
       <NavItem v-if="character">
         <NavTree>
           <template #header>Modifiers</template>
-          <CharacterModifiers :character="character" :abilityContextType="AbilityContextType.Monster" v-slot="slotProps">
+          <CharacterModifiers :character="character" :taskContextType="TaskContextType.Monster" v-slot="slotProps">
             <RouterLink :to="{ name:'monsterModifier', params:{ commitId: commitId, objectId: objectId, modifierId: slotProps.modifier, }}">
               {{ slotProps.modifier }}
             </RouterLink>

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-  import ProvideEmptyContext from './ProvideEmptyContext.vue';
+  import ProvideEmptyContext from './components/ProvideEmptyContext.vue';
   import Ability from './Ability.vue';
 
   defineProps<{commitId:string, abilityId:string}>()

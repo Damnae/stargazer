@@ -1,24 +1,24 @@
 <script setup lang="ts">
   import { watch, inject, Ref, computed, } from 'vue'
-  import { Ability, AbilityContext, } from '@/scripts/sources/ability';
-  import { GamecoreContext } from '@/scripts/sources/gamecore';
-  import AnyBlock from '../gamecore/AnyBlock.vue';
-  import DynamicValues from './DynamicValues.vue';
-  import ShowContext from './ShowContext.vue';
-  import BlockLayout from '../gamecore/BlockLayout.vue';
+  import { Ability, TaskContext, } from '@/sources/ability';
+  import { ExpressionContext } from '@/sources/gamecore';
+  import AnyTask from '@/gamecore/AnyTask.vue';
+  import DynamicValues from './components/DynamicValues.vue';
+  import ShowContext from './components/ShowContext.vue';
+  import BlockLayout from '@/components/BlockLayout.vue';
 
   const props = defineProps<{abilityId:string}>()
-  const abilityContext = inject('abilityContext') as Ref<AbilityContext>
-  const gamecoreContext = inject('gamecoreContext') as Ref<GamecoreContext>
+  const taskContext = inject('taskContext') as Ref<TaskContext>
+  const expressionContext = inject('expressionContext') as Ref<ExpressionContext>
 
-  watch([props, gamecoreContext], () =>
+  watch([props, expressionContext], () =>
   {
-    if (gamecoreContext.value)
-      gamecoreContext.value.AbilityId = props.abilityId
+    if (expressionContext.value)
+      expressionContext.value.AbilityId = props.abilityId
   }, 
   {immediate: true})
 
-  const ability = computed<Ability>(() => abilityContext.value.Abilities?.[props.abilityId])
+  const ability = computed<Ability>(() => taskContext.value.Abilities?.[props.abilityId])
   
   const createModifierRoute = inject<(key:string) => object>('createModifierRoute') as (key:string) => object
 </script>
@@ -34,21 +34,21 @@
         <template v-if="ability.OnAdd">
           <h2>On Add</h2>
           <template v-for="node in ability.OnAdd">
-            <AnyBlock :node="node" />
+            <AnyTask :node="node" />
           </template>
         </template>
 
         <template v-if="ability.OnRemove">
           <h2>On Remove</h2>
           <template v-for="node in ability.OnRemove">
-            <AnyBlock :node="node" />
+            <AnyTask :node="node" />
           </template>
         </template>
 
         <template v-if="ability.OnStart">
           <h2>On Start</h2>
           <template v-for="node in ability.OnStart">
-            <AnyBlock :node="node" />
+            <AnyTask :node="node" />
           </template>
         </template>
 

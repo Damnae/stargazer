@@ -1,7 +1,7 @@
 <script setup lang="ts">
   import { ref, computed, inject, Ref, } from 'vue'
   import { RouterLink } from 'vue-router';
-  import { getRelicSets, RelicSet, RelicSetConfig, } from '@/scripts/sources/relicset';
+  import { getRelicSets, RelicSet, RelicSetConfig, } from '@/sources/relicset';
   import NavItem from '@/components/NavItem.vue'
 
   const commitId = inject<string>('commitId') as string

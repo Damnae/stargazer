@@ -3,7 +3,7 @@ import './style.css'
 // Routes
 
 import { createRouter, createWebHashHistory, RouteRecordRaw } from 'vue-router'
-import { toRouteProps } from './scripts/common'
+import { toRouteProps } from './common/common'
 
 import Title from './views/Title.vue'
 import Commit from './views/Commit.vue'

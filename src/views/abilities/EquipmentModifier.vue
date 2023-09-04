@@ -1,5 +1,5 @@
 <script setup lang="ts">
-  import ProvideEquipmentContext from './ProvideEquipmentContext.vue';
+  import ProvideEquipmentContext from './components/ProvideEquipmentContext.vue';
   import Modifier from './Modifier.vue';
 
   defineProps<{commitId:string, objectId:number, modifierId:string}>()

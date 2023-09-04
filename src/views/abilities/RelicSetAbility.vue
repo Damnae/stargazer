@@ -1,5 +1,5 @@
 <script setup lang="ts">
-  import ProvideRelicSetContext from './ProvideRelicSetContext.vue';
+  import ProvideRelicSetContext from './components/ProvideRelicSetContext.vue';
   import Ability from './Ability.vue';
 
   defineProps<{commitId:string, objectId:number, abilityId:string}>()

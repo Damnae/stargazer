@@ -1,8 +1,8 @@
 <script setup lang="ts">
   import { ref, computed, inject, Ref, } from 'vue'
   import { RouterLink, } from 'vue-router';
-  import { Grouped, } from '@/scripts/common';
-  import { getAvatars, Avatar, AvatarConfig, } from '@/scripts/sources/avatar';
+  import { Grouped, } from '@/common/common';
+  import { getAvatars, Avatar, AvatarConfig, } from '@/sources/avatar';
   import NavTree from '@/components/NavTree.vue'
   import NavItem from '@/components/NavItem.vue'
 

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-  import ProvideRelicSetContext from './ProvideRelicSetContext.vue';
+  import ProvideRelicSetContext from './components/ProvideRelicSetContext.vue';
   import Modifier from './Modifier.vue';
 
   defineProps<{commitId:string, objectId:number, modifierId:string}>()

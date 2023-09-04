@@ -1,5 +1,5 @@
 <script setup lang="ts">
-  import ProvideMonsterContext from './ProvideMonsterContext.vue';
+  import ProvideMonsterContext from './components/ProvideMonsterContext.vue';
   import Ability from './Ability.vue';
 
   defineProps<{commitId:string, objectId:number, abilityId:string}>()

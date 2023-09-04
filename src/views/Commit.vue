@@ -1,6 +1,6 @@
 <script setup lang="ts">
   import { onErrorCaptured, provide, ref } from 'vue'
-  import LoadingTitle from '@/views/LoadingTitle.vue';
+  import LoadingTitle from '@/components/LoadingTitle.vue';
   import CommitNav from '@/views/navigation/CommitNav.vue'
 
   const props = defineProps<{commitId:string}>()

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-  import ProvideAvatarContext from './ProvideAvatarContext.vue';
+  import ProvideAvatarContext from './components/ProvideAvatarContext.vue';
   import Modifier from './Modifier.vue';
 
   defineProps<{commitId:string, objectId:number, modifierId:string}>()
