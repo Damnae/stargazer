@@ -9,6 +9,7 @@
   import CharacterModifiers from './CharacterModifiers.vue';
   import NavTree from '@/components/NavTree.vue'
   import NavItem from '@/components/NavItem.vue'
+  import LoadingNav from '../LoadingNav.vue';
 
   const props = defineProps<{commitId:string, objectId:number}>()
 
@@ -16,16 +17,22 @@
   const avatarSkills = ref<AvatarSkill[]>([])
   const character = ref<Character>()
 
+  const loading = ref(true)
   watchEffect(async () => 
   {
+    loading.value = true
     avatar.value = await getAvatar(props.commitId, props.objectId)
     avatarSkills.value = await getAvatarSkillsByIds(props.commitId, avatar.value.SkillList)
     character.value = await getCharacterByAvatar(props.commitId, avatar.value)
+    loading.value = false
   })
 </script>
 
 <template>
-  <template v-if="avatar" :key="objectId">
+  <template v-if="loading">
+    <LoadingNav />
+  </template>
+  <template v-else-if="avatar" :key="objectId">
     <h1>{{ avatar.AvatarName.Text }}</h1>
     <span v-if="!character" class="minor">(Missing character data)</span>
     <NavTree>

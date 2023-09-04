@@ -3,19 +3,26 @@
   import { getEquipment, Equipment, } from '@/scripts/sources/equipment';
   import NavTree from '@/components/NavTree.vue'
   import NavItem from '@/components/NavItem.vue'
+  import LoadingNav from '../LoadingNav.vue';
 
   const props = defineProps<{commitId:string, objectId:number}>()
 
   const equipment = ref<Equipment>()
 
+  const loading = ref(true)
   watchEffect(async () => 
   {
+    loading.value = true
     equipment.value = await getEquipment(props.commitId, props.objectId)
+    loading.value = false
   })
 </script>
 
 <template>
-  <template v-if="equipment" :key="objectId">
+  <template v-if="loading">
+    <LoadingNav />
+  </template>
+  <template v-else-if="equipment" :key="objectId">
     <h1>{{ equipment.EquipmentName.Text }}</h1>
     <NavTree>
       <NavItem v-if="equipment.Skill">

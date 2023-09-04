@@ -28,7 +28,7 @@
     <Suspense>
       <slot />
       <template #fallback>
-        <LoadingNav></LoadingNav>
+        <LoadingNav />
       </template>
     </Suspense>
   </ul>
