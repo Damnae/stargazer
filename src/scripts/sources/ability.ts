@@ -1,7 +1,6 @@
 import { retrieveJson } from '../datasource';
+import { MutexGroup } from '../mutex';
 import { GamecoreContext, GamecoreNode, GamecoreTargetType, DynamicExpression, DynamicValues, } from './gamecore';
-
-// TODO look at StatusConfig
 
 export interface ModifierEventHandler
 {
@@ -304,46 +303,50 @@ const contextTypeToPaths =
 }
 
 const abilityContextCache:{[commitId: string]: {[type: string]: AbilityContext}} = {}
+const abilityContextMutex = new MutexGroup()
 export async function getAbilityContext(commitId:string, type:AbilityContextType) : Promise<AbilityContext>
 {
-  let result 
-  let container = abilityContextCache[commitId]
-  if (container === undefined)
-    container = abilityContextCache[commitId] = {}
-  else result = container[type]
-
-  if (result == undefined)
+  return abilityContextMutex.runExclusive(type, async () => 
   {
-    const context:AbilityContext = 
+    let result 
+    let container = abilityContextCache[commitId]
+    if (container === undefined)
+      container = abilityContextCache[commitId] = {}
+    else result = container[type]
+  
+    if (result == undefined)
     {
-      Abilities: {},
-      Modifiers: {},
-      TaskListTemplates: {},
-    }
-    const paths = contextTypeToPaths[type]
-    for (const path of paths.Abilities)
-      if (path.endsWith('.json'))
-        mergeAbilityConfig(context, await getAbilities(commitId, path) as AbilityConfig)
-      else
+      const context:AbilityContext = 
       {
-        const response = await retrieveJson(`git/trees/${commitId}:${path}`, commitId, true)
-        const tree = response.tree
-        if (tree !== undefined)
-          for (const treePath of tree.map((t:any) => t.path))
-            if (treePath.endsWith('.json'))
-              mergeAbilityConfig(context, await getAbilities(commitId, `${path}/${treePath}`) as AbilityConfig)
+        Abilities: {},
+        Modifiers: {},
+        TaskListTemplates: {},
       }
-      
-    for (const path of paths.Modifiers)
-      mergeModifierConfig(context, await getModifiers(commitId, path) as ModifierConfig)
-
-    for (const path of paths.TaskListTemplates)
-      mergeTaskListTemplateConfig(context, await getTaskListTemplates(commitId, path) as TaskListTemplateConfig)
-
-    result = container[type] = context
-    console.log(`cached ${type} ability context for ${commitId}`)
-  }
-  return result
+      const paths = contextTypeToPaths[type]
+      for (const path of paths.Abilities)
+        if (path.endsWith('.json'))
+          mergeAbilityConfig(context, await getAbilities(commitId, path) as AbilityConfig)
+        else
+        {
+          const response = await retrieveJson(`git/trees/${commitId}:${path}`, commitId, true)
+          const tree = response.tree
+          if (tree !== undefined)
+            for (const treePath of tree.map((t:any) => t.path))
+              if (treePath.endsWith('.json'))
+                mergeAbilityConfig(context, await getAbilities(commitId, `${path}/${treePath}`) as AbilityConfig)
+        }
+        
+      for (const path of paths.Modifiers)
+        mergeModifierConfig(context, await getModifiers(commitId, path) as ModifierConfig)
+  
+      for (const path of paths.TaskListTemplates)
+        mergeTaskListTemplateConfig(context, await getTaskListTemplates(commitId, path) as TaskListTemplateConfig)
+  
+      result = container[type] = context
+      console.log(`cached ${type} ability context for ${commitId}`)
+    }
+    return result
+  })
 }
 
 export function findTaskTemplate(templateName:string, gamecoreContext:GamecoreContext, abilityContext:AbilityContext) : TaskListTemplate | undefined

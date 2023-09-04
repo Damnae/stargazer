@@ -1,4 +1,5 @@
 import { retrieveJson } from '../datasource';
+import { Mutex } from '../mutex';
 import translate from '../translate';
 import { CreatureSkill } from './skill';
 
@@ -34,29 +35,34 @@ const missingAvatarSkill:AvatarSkill =
 }
 
 const avatarSkillConfigCache:{[commitId: string]: AvatarSkillConfig} = {}
+const avatarSkillConfigMutex = new Mutex()
+
 export async function getAvatarSkills(commitId:string) : Promise<AvatarSkillConfig>
 {
-    let config = avatarSkillConfigCache[commitId]
-    if (config == undefined)
+    return avatarSkillConfigMutex.runExclusive(async () => 
     {
-        const results = await retrieveJson('ExcelOutput/AvatarSkillConfig.json', commitId, false) as AvatarSkillConfig
-        for (const skillKey in results)
+        let config = avatarSkillConfigCache[commitId]
+        if (config == undefined)
         {
-            const ranks = results[skillKey]        
-            for (const rankKey in ranks)
+            const results = await retrieveJson('ExcelOutput/AvatarSkillConfig.json', commitId, false) as AvatarSkillConfig
+            for (const skillKey in results)
             {
-                const skill = ranks[rankKey]
-                await translate(commitId, skill.SkillName)
-                await translate(commitId, skill.SkillTag)
-                await translate(commitId, skill.SkillTypeDesc)
-                await translate(commitId, skill.SkillDesc)
-                await translate(commitId, skill.SimpleSkillDesc)
+                const ranks = results[skillKey]        
+                for (const rankKey in ranks)
+                {
+                    const skill = ranks[rankKey]
+                    await translate(commitId, skill.SkillName)
+                    await translate(commitId, skill.SkillTag)
+                    await translate(commitId, skill.SkillTypeDesc)
+                    await translate(commitId, skill.SkillDesc)
+                    await translate(commitId, skill.SimpleSkillDesc)
+                }
             }
+            config = avatarSkillConfigCache[commitId] = results
+            console.log('cached avatar skill config for ' + commitId)
         }
-        config = avatarSkillConfigCache[commitId] = results
-        console.log('cached avatar skill config for ' + commitId)
-    }
-    return config
+        return config
+    })
 }
 
 export async function getAvatarSkill(commitId:string, avatarSkillId:number) : Promise<AvatarSkill>

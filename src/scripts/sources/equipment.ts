@@ -1,4 +1,5 @@
 import { retrieveJson } from '../datasource';
+import { Mutex } from '../mutex';
 import translate, { Translatable, translatePath, } from '../translate';
 import { GamecoreParam } from './gamecore';
 
@@ -55,42 +56,46 @@ export interface EquipmentConfig
 }
 
 const equipmentConfigCache:{[commitId: string]: EquipmentConfig} = {}
+const equipmentConfigMutex = new Mutex()
 export async function getEquipments(commitId:string) : Promise<EquipmentConfig>
 {
-    let config = equipmentConfigCache[commitId]
-    if (config == undefined)
+    return equipmentConfigMutex.runExclusive(async () => 
     {
-        const equipmentSkills = await retrieveJson('ExcelOutput/EquipmentSkillConfig.json', commitId, false) as EquipmentSkillConfig
-        for (const skillKey in equipmentSkills)
+        let config = equipmentConfigCache[commitId]
+        if (config == undefined)
         {
-            const ranks = equipmentSkills[skillKey]        
-            for (const rankKey in ranks)
+            const equipmentSkills = await retrieveJson('ExcelOutput/EquipmentSkillConfig.json', commitId, false) as EquipmentSkillConfig
+            for (const skillKey in equipmentSkills)
             {
-                const skill = ranks[rankKey]
-                await translate(commitId, skill.SkillName)
-                await translate(commitId, skill.SkillDesc)
+                const ranks = equipmentSkills[skillKey]        
+                for (const rankKey in ranks)
+                {
+                    const skill = ranks[rankKey]
+                    await translate(commitId, skill.SkillName)
+                    await translate(commitId, skill.SkillDesc)
+                }
             }
+    
+            const equipments = await retrieveJson('ExcelOutput/EquipmentConfig.json', commitId, false) as EquipmentConfig
+            for (const key in equipments)
+            {
+                const equipment = equipments[key]
+                await translate(commitId, equipment.EquipmentName)
+                //await translate(commitId, equipment.EquipmentDesc)
+                equipment.AvatarBaseType = await translatePath(commitId, equipment.AvatarBaseType)
+                equipment.Skill = equipmentSkills[equipment.SkillID]?.[1]
+    
+                equipment.SearchKeywords = []
+                equipment.SearchKeywords.push(equipment.EquipmentName.Text.toLowerCase())
+                if (equipment.Skill)
+                    equipment.SearchKeywords.push(equipment.Skill.SkillName.Text.toLowerCase())
+            }
+    
+            config = equipmentConfigCache[commitId] = equipments
+            console.log('cached equipment config for ' + commitId)
         }
-
-        const equipments = await retrieveJson('ExcelOutput/EquipmentConfig.json', commitId, false) as EquipmentConfig
-        for (const key in equipments)
-        {
-            const equipment = equipments[key]
-            await translate(commitId, equipment.EquipmentName)
-            //await translate(commitId, equipment.EquipmentDesc)
-            equipment.AvatarBaseType = await translatePath(commitId, equipment.AvatarBaseType)
-            equipment.Skill = equipmentSkills[equipment.SkillID]?.[1]
-
-            equipment.SearchKeywords = []
-            equipment.SearchKeywords.push(equipment.EquipmentName.Text.toLowerCase())
-            if (equipment.Skill)
-                equipment.SearchKeywords.push(equipment.Skill.SkillName.Text.toLowerCase())
-        }
-
-        config = equipmentConfigCache[commitId] = equipments
-        console.log('cached equipment config for ' + commitId)
-    }
-    return config
+        return config
+    })
 }
 
 export async function getEquipment(commitId:string, equipmentId:number) : Promise<Equipment>

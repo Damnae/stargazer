@@ -1,12 +1,13 @@
-import { openDB, DBSchema } from 'idb';
+import { openDB, DBSchema } from 'idb'
+import { MutexGroup } from './mutex'
 
-const repos = 'Dimbreath/StarRailData/';
-const apiBase = 'https://api.github.com/repos/' + repos;
-const jsonBase = 'https://raw.githubusercontent.com/' + repos;
+const repos = 'Dimbreath/StarRailData/'
+const apiBase = 'https://api.github.com/repos/' + repos
+const jsonBase = 'https://raw.githubusercontent.com/' + repos
 
-console.log(`apiBase: ${apiBase}\njsonBase: ${jsonBase}`);
+console.log(`apiBase: ${apiBase}\njsonBase: ${jsonBase}`)
 
-const configDBVersion = 1;
+const configDBVersion = 1
 interface ConfigDBv1 extends DBSchema 
 {
     files: {
@@ -23,7 +24,7 @@ const configDB = openDB<ConfigDBv1>('configDB', configDBVersion,
 {
     upgrade(db, oldVersion, newVersion, _transaction, _event) 
     {
-        console.log(`fileDB upgrading from ${oldVersion} to ${newVersion}`);
+        console.log(`fileDB upgrading from ${oldVersion} to ${newVersion}`)
         db.createObjectStore('files', { keyPath: ['hash', 'path'], })
     },
     blocked(currentVersion, blockedVersion, _event) 
@@ -40,6 +41,7 @@ const configDB = openDB<ConfigDBv1>('configDB', configDBVersion,
     },
 })
 
+const retrieveJsonMutex = new MutexGroup()
 export async function retrieveJson(request:string, commit:string, useApi:boolean) : Promise<any>
 {
     let url = useApi ? apiBase : jsonBase
@@ -47,24 +49,24 @@ export async function retrieveJson(request:string, commit:string, useApi:boolean
         url += `${commit}/`
     url += request
 
+    return await retrieveJsonMutex.runExclusive(url, async () =>
     {
         const existing = await (await configDB).get('files', IDBKeyRange.only([commit, request]));
         if (existing?.hash)
-            return JSON.parse(existing.content);
-    }
-
-    const cache = useApi ? 'force-cache' : 'default'
-    const result = await fetch(url, { headers: { 'Accept': 'application/json', }, cache })
-        .then(response => response.json())
-        .catch(error => console.log(`fileDB error: ${error}`))
+            return JSON.parse(existing.content)
     
-    if (result)
-    {
-        await (await configDB).put('files', { hash:commit, path:request, content:JSON.stringify(result) })
-        console.log(`fileDB stored ${request} @${commit}`)
-    }
-
-    return result
+        const cache = useApi ? 'force-cache' : 'default'
+        const result = await fetch(url, { headers: { 'Accept': 'application/json', }, cache })
+            .then(response => response.json())
+            .catch(error => console.log(`fileDB error: ${error}`))
+        
+        if (result)
+        {
+            await (await configDB).put('files', { hash:commit, path:request, content:JSON.stringify(result) })
+            console.log(`fileDB stored ${request} @${commit}`)
+        }
+        return result
+    })
 }
 
 export interface DataSourceCommit
@@ -80,8 +82,8 @@ export interface DataSourceCommit
     }
 }
 
-export function retrieveCommits() : Promise<DataSourceCommit[]>
+export async function retrieveCommits() : Promise<DataSourceCommit[]>
 {
     return fetch(apiBase + 'commits', { headers: { 'Accept': 'application/json', } })
-        .then(response => response.json());
+        .then(response => response.json())
 }

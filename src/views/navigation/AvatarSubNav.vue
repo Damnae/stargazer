@@ -1,9 +1,9 @@
 <script setup lang="ts">
   import { ref, watchEffect, } from 'vue'
-  import { getAvatar, Avatar as AV, } from '@/scripts/sources/avatar';
+  import { getAvatar, type Avatar, } from '@/scripts/sources/avatar';
+  import { AbilityContextType } from '@/scripts/sources/ability';
   import { getAvatarSkillsByIds, AvatarSkill, } from '@/scripts/sources/avatarskill';
   import { getCharacterByAvatar, Character } from '@/scripts/sources/character';
-  import { AbilityContextType } from '@/scripts/sources/ability';
   import CharacterSkillAbilitiesNav from './CharacterSkillAbilitiesNav.vue';
   import CharacterOtherAbilitiesNav from './CharacterOtherAbilitiesNav.vue';
   import CharacterModifiers from './CharacterModifiers.vue';
@@ -12,7 +12,7 @@
 
   const props = defineProps<{commitId:string, objectId:number}>()
 
-  const avatar = ref<AV>()
+  const avatar = ref<Avatar>()
   const avatarSkills = ref<AvatarSkill[]>([])
   const character = ref<Character>()
 

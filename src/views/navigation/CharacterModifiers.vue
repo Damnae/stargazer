@@ -1,7 +1,7 @@
 <script setup lang="ts">
   import { ref, watch, inject, } from 'vue'
   import { Character } from '@/scripts/sources/character'
-  import { AbilityContextType, getAbilityContext, } from '@/scripts/sources/ability';
+  import { Ability, AbilityContextType, getAbilityContext, } from '@/scripts/sources/ability';
   import NavItem from '@/components/NavItem.vue'
 
   const props = defineProps<{character:Character, abilityContextType:AbilityContextType}>()
@@ -18,26 +18,22 @@
     {
       for (const skillEntry of props.character.SkillAbilityList)
         for (const abilityName of skillEntry.AbilityList)
-        {
-          const ability = abilityContext.Abilities[abilityName]
-          if (ability?.Modifiers)
-            for (const modifierName of Object.keys(ability.Modifiers))
-              mods.push(modifierName)
-        }
+          addModifierNamesFromAbility(mods, abilityContext.Abilities[abilityName])
 
       for (const abilityName of props.character.AbilityList)
-      {
-        const ability = abilityContext.Abilities[abilityName]
-        if (ability?.Modifiers)
-          for (const modifierName of Object.keys(ability.Modifiers))
-            mods.push(modifierName)
-      }
+          addModifierNamesFromAbility(mods, abilityContext.Abilities[abilityName])
     }
     mods.sort((a, b) => a > b ? 1 : -1)
     modifiers.value = mods
   }, 
   { immediate:true })
 
+  function addModifierNamesFromAbility(modifiers:string[], ability?:Ability)
+  {
+    if (ability?.Modifiers)
+      for (const modifierName of Object.keys(ability.Modifiers))
+        modifiers.push(modifierName)
+  }
 </script>
 
 <template>

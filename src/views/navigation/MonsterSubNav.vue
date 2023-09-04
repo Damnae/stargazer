@@ -1,6 +1,6 @@
 <script setup lang="ts">
   import { ref, watchEffect, } from 'vue'
-  import { getMonster, Monster as MS, } from '@/scripts/sources/monster.ts';
+  import { getMonster, type Monster, } from '@/scripts/sources/monster.ts';
   import { getMonsterSkillsByIds, MonsterSkill, } from '@/scripts/sources/monsterskill';
   import { getCharacterByMonster, Character } from '@/scripts/sources/character';
   import { AbilityContextType } from '@/scripts/sources/ability';
@@ -12,17 +12,15 @@
 
   const props = defineProps<{commitId:string, objectId:number}>()
 
-  const monster = ref<MS>()
+  const monster = ref<Monster>()
   const monsterSkills = ref<MonsterSkill[]>([])
   const character = ref<Character>()
 
-  const ready = ref(false)
   watchEffect(async () => 
   {
     monster.value = await getMonster(props.commitId, props.objectId)
     monsterSkills.value = await getMonsterSkillsByIds(props.commitId, monster.value.SkillList)
     character.value = await getCharacterByMonster(props.commitId, monster.value)
-    ready.value = true
   })
 </script>
 

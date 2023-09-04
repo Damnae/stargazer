@@ -1,5 +1,6 @@
 import { cleanupFilename } from '../common';
 import { retrieveJson } from '../datasource';
+import { Mutex } from '../mutex';
 import translate, { Translatable } from '../translate';
 import { Creature } from './creature';
 import { DynamicValues } from './gamecore';
@@ -64,46 +65,50 @@ const missingMonsterTemplate:MonsterTemplate =
 }
 
 const monsterConfigCache:{[commitId: string]: MonsterConfig} = {}
+const monsterConfigMutex = new Mutex()
 export async function getMonsters(commitId:string) : Promise<MonsterConfig>
 {
-    let config = monsterConfigCache[commitId]
-    if (config == undefined)
+    return monsterConfigMutex.runExclusive(async () => 
     {
-        const camps = await retrieveJson('ExcelOutput/MonsterCamp.json', commitId, false)
-        for (const key in camps)
+        let config = monsterConfigCache[commitId]
+        if (config == undefined)
         {
-            const camp = camps[key] as MonsterCamp
-            await translate(commitId, camp.Name)
+            const camps = await retrieveJson('ExcelOutput/MonsterCamp.json', commitId, false)
+            for (const key in camps)
+            {
+                const camp = camps[key] as MonsterCamp
+                await translate(commitId, camp.Name)
+            }
+    
+            const templates = await retrieveJson('ExcelOutput/MonsterTemplateConfig.json', commitId, false)
+            for (const key in templates)
+            {
+                const template = templates[key] as MonsterTemplate
+                const parentTemplate = templates[template.TemplateGroupID] as MonsterTemplate
+                await translate(commitId, template.MonsterName)
+    
+                const monsterCampId = template.MonsterCampID ?? parentTemplate?.MonsterCampID
+                template.MonsterCamp = camps[monsterCampId] ?? missingMonsterCamp
+            }
+    
+            const monsters = await retrieveJson('ExcelOutput/MonsterConfig.json', commitId, false) as MonsterConfig
+            for (const key in monsters)
+            {
+                const monster = monsters[key]
+                await translate(commitId, monster.MonsterName)
+                monster.MonsterTemplate = templates[monster.MonsterTemplateID] ?? missingMonsterTemplate
+                
+                monster.SearchKeywords = []
+                monster.SearchKeywords.push(monster.MonsterName.Text.toLowerCase())
+                if (monster.MonsterTemplate)
+                    monster.SearchKeywords.push(cleanupFilename(monster.MonsterTemplate.JsonConfig).toLowerCase())
+            }
+    
+            config = monsterConfigCache[commitId] = monsters
+            console.log('cached monster config for ' + commitId)
         }
-
-        const templates = await retrieveJson('ExcelOutput/MonsterTemplateConfig.json', commitId, false)
-        for (const key in templates)
-        {
-            const template = templates[key] as MonsterTemplate
-            const parentTemplate = templates[template.TemplateGroupID] as MonsterTemplate
-            await translate(commitId, template.MonsterName)
-
-            const monsterCampId = template.MonsterCampID ?? parentTemplate?.MonsterCampID
-            template.MonsterCamp = camps[monsterCampId] ?? missingMonsterCamp
-        }
-
-        const monsters = await retrieveJson('ExcelOutput/MonsterConfig.json', commitId, false) as MonsterConfig
-        for (const key in monsters)
-        {
-            const monster = monsters[key]
-            await translate(commitId, monster.MonsterName)
-            monster.MonsterTemplate = templates[monster.MonsterTemplateID] ?? missingMonsterTemplate
-            
-            monster.SearchKeywords = []
-            monster.SearchKeywords.push(monster.MonsterName.Text.toLowerCase())
-            if (monster.MonsterTemplate)
-                monster.SearchKeywords.push(cleanupFilename(monster.MonsterTemplate.JsonConfig).toLowerCase())
-        }
-
-        config = monsterConfigCache[commitId] = monsters
-        console.log('cached monster config for ' + commitId)
-    }
-    return config
+        return config
+    })
 }
 
 export async function getMonster(commitId:string, avatarId:number) : Promise<Monster>

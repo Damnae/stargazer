@@ -1,4 +1,5 @@
 import { retrieveJson } from '../datasource';
+import { Mutex } from '../mutex';
 import translate from '../translate';
 import { CreatureSkill } from './skill';
 
@@ -27,25 +28,29 @@ const missingMonsterSkill:MonsterSkill =
 }
 
 const monsterSkillConfigCache:{[commitId: string]: MonsterSkillConfig} = {}
+const monsterSkillConfigMutex = new Mutex()
 export async function getMonsterSkills(commitId:string) : Promise<MonsterSkillConfig>
 {
-    let config = monsterSkillConfigCache[commitId]
-    if (config == undefined)
+    return monsterSkillConfigMutex.runExclusive(async () => 
     {
-        const results = await retrieveJson('ExcelOutput/MonsterSkillConfig.json', commitId, false) as MonsterSkillConfig
-        for (const skillKey in results)
+        let config = monsterSkillConfigCache[commitId]
+        if (config == undefined)
         {
-            const skill = results[skillKey]
-            await translate(commitId, skill.SkillName)
-            await translate(commitId, skill.SkillTag)
-            await translate(commitId, skill.SkillTypeDesc)
-            await translate(commitId, skill.SkillDesc)
-            await translate(commitId, skill.SimpleSkillDesc)
+            const results = await retrieveJson('ExcelOutput/MonsterSkillConfig.json', commitId, false) as MonsterSkillConfig
+            for (const skillKey in results)
+            {
+                const skill = results[skillKey]
+                await translate(commitId, skill.SkillName)
+                await translate(commitId, skill.SkillTag)
+                await translate(commitId, skill.SkillTypeDesc)
+                await translate(commitId, skill.SkillDesc)
+                await translate(commitId, skill.SimpleSkillDesc)
+            }
+            config = monsterSkillConfigCache[commitId] = results
+            console.log('cached monster skill config for ' + commitId)
         }
-        config = monsterSkillConfigCache[commitId] = results
-        console.log('cached monster skill config for ' + commitId)
-    }
-    return config
+        return config
+    })
 }
 
 export async function getMonsterSkill(commitId:string, monsterSkillId:number) : Promise<MonsterSkill>

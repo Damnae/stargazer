@@ -1,5 +1,6 @@
 import { cleanupMarkup } from '../common';
 import { retrieveJson } from '../datasource';
+import { Mutex } from '../mutex';
 import translate, { Translatable, } from '../translate';
 
 // Status
@@ -23,31 +24,36 @@ export interface StatusConfig
 }
 
 const statusConfigCache:{[commitId: string]: StatusConfig} = {}
+const statusConfigMutex = new Mutex()
+
 export async function getStatuses(commitId:string) : Promise<StatusConfig>
 {
-    let config = statusConfigCache[commitId]
-    if (config == undefined)
+    return statusConfigMutex.runExclusive(async () => 
     {
-        const statuses = await retrieveJson('ExcelOutput/StatusConfig.json', commitId, false) as StatusConfig
-        for (const key in statuses)
+        let config = statusConfigCache[commitId]
+        if (config == undefined)
         {
-            const status = statuses[key]
-            await translate(commitId, status.StatusName, text => text ? cleanupMarkup(text) : status.ModifierName)
-            await translate(commitId, status.StatusDesc, text => cleanupMarkup(text))
-            await translate(commitId, status.StatusEffect)
-
-            status.SearchKeywords = []
-            status.SearchKeywords.push(status.StatusName.Text.toLowerCase())
-            if (status.StatusName.Text != status.ModifierName)
-                status.SearchKeywords.push(status.ModifierName.toLowerCase())
-            if (status.StatusEffect.Text != status.StatusName.Text && status.StatusEffect.Text != status.StatusEffect.Hash.toString())
-                status.SearchKeywords.push(status.StatusEffect.Text.toLowerCase())
+            const statuses = await retrieveJson('ExcelOutput/StatusConfig.json', commitId, false) as StatusConfig
+            for (const key in statuses)
+            {
+                const status = statuses[key]
+                await translate(commitId, status.StatusName, text => text ? cleanupMarkup(text) : status.ModifierName)
+                await translate(commitId, status.StatusDesc, text => cleanupMarkup(text))
+                await translate(commitId, status.StatusEffect)
+    
+                status.SearchKeywords = []
+                status.SearchKeywords.push(status.StatusName.Text.toLowerCase())
+                if (status.StatusName.Text != status.ModifierName)
+                    status.SearchKeywords.push(status.ModifierName.toLowerCase())
+                if (status.StatusEffect.Text != status.StatusName.Text && status.StatusEffect.Text != status.StatusEffect.Hash.toString())
+                    status.SearchKeywords.push(status.StatusEffect.Text.toLowerCase())
+            }
+    
+            config = statusConfigCache[commitId] = statuses
+            console.log('cached status config for ' + commitId)
         }
-
-        config = statusConfigCache[commitId] = statuses
-        console.log('cached status config for ' + commitId)
-    }
-    return config
+        return config
+    })
 }
 
 export async function getStatus(commitId:string, statusId:number) : Promise<Status>

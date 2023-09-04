@@ -1,4 +1,5 @@
 import { retrieveJson } from '../datasource';
+import { Mutex } from '../mutex';
 import translate, { Translatable, } from '../translate';
 import { GamecoreParam } from './gamecore';
 
@@ -50,28 +51,32 @@ export interface RelicSetConfig
 }
 
 const relicsetConfigCache:{[commitId: string]: RelicSetConfig} = {}
+const relicsetConfigMutex = new Mutex()
 export async function getRelicSets(commitId:string) : Promise<RelicSetConfig>
 {
-    let config = relicsetConfigCache[commitId]
-    if (config == undefined)
+    return relicsetConfigMutex.runExclusive(async () => 
     {
-        const relicsetSkills = await retrieveJson('ExcelOutput/RelicSetSkillConfig.json', commitId, false) as RelicSetSkillConfig
-
-        const relicsets = await retrieveJson('ExcelOutput/RelicSetConfig.json', commitId, false) as RelicSetConfig
-        for (const key in relicsets)
+        let config = relicsetConfigCache[commitId]
+        if (config == undefined)
         {
-            const relicset = relicsets[key]
-            await translate(commitId, relicset.SetName)
-            relicset.Skills = relicsetSkills[relicset.SetID]
-
-            relicset.SearchKeywords = []
-            relicset.SearchKeywords.push(relicset.SetName.Text.toLowerCase())
+            const relicsetSkills = await retrieveJson('ExcelOutput/RelicSetSkillConfig.json', commitId, false) as RelicSetSkillConfig
+    
+            const relicsets = await retrieveJson('ExcelOutput/RelicSetConfig.json', commitId, false) as RelicSetConfig
+            for (const key in relicsets)
+            {
+                const relicset = relicsets[key]
+                await translate(commitId, relicset.SetName)
+                relicset.Skills = relicsetSkills[relicset.SetID]
+    
+                relicset.SearchKeywords = []
+                relicset.SearchKeywords.push(relicset.SetName.Text.toLowerCase())
+            }
+    
+            config = relicsetConfigCache[commitId] = relicsets
+            console.log('cached relic set config for ' + commitId)
         }
-
-        config = relicsetConfigCache[commitId] = relicsets
-        console.log('cached relic set config for ' + commitId)
-    }
-    return config
+        return config
+    })
 }
 
 export async function getRelicSet(commitId:string, relicsetId:number) : Promise<RelicSet>
