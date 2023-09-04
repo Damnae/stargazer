@@ -70,7 +70,6 @@
   }
   .mainnav
   {
-    height:20rem;
     display:flex;
     flex-direction: column;
     flex-grow: 0;

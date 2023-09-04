@@ -172,11 +172,30 @@ main.panel section
   overflow: auto scroll;
   scrollbar-width: thin;
 }
-@media (min-aspect-ratio: 4/3) 
+
+.mainnav
+{
+  height:10rem;
+}
+@media (min-width:70rem) 
 {
   nav.panel 
   {
     width:25rem;
+  }
+}
+@media (min-height:30rem) 
+{
+  .mainnav
+  {
+    height:15rem;
+  }
+}
+@media (min-height:45rem) 
+{
+  .mainnav
+  {
+    height:20rem;
   }
 }
 
