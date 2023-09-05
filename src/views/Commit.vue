@@ -16,7 +16,11 @@
 <template>
   <div class="commit-layout">
     <CommitNav>
-      <RouterView name="subnav" />
+      <RouterView name="subnav" v-slot="{ Component }">
+        <Transition name="fade">
+          <component :is="Component" />
+        </Transition>
+      </RouterView>
     </CommitNav>
 
     <RouterView v-if="!errorMessage" v-slot="{ Component }">

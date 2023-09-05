@@ -1,4 +1,5 @@
 import './style.css'
+import './transitions.css'
 
 // Routes
 

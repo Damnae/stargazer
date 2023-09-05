@@ -29,10 +29,10 @@
 </script>
 
 <template>
-  <template v-if="loading">
+  <div v-if="loading">
     <LoadingNav />
-  </template>
-  <template v-else-if="avatar" :key="objectId">
+  </div>
+  <div v-else-if="avatar" :key="objectId">
     <h1>{{ avatar.AvatarName.Text }}</h1>
     <span v-if="!character" class="minor">(Missing character data)</span>
     <NavTree>
@@ -120,7 +120,7 @@
       </NavItem>
 
     </NavTree>
-  </template>
+  </div>
 </template>
 
 <style scoped>

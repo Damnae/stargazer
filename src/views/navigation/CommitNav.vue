@@ -58,7 +58,7 @@
     <hr />
 
     <section class="subnav">
-      <slot />
+        <slot />
     </section>
 
   </nav>

@@ -19,10 +19,10 @@
 </script>
 
 <template>
-  <template v-if="loading">
+  <div v-if="loading">
     <LoadingNav />
-  </template>
-  <template v-else-if="relicset" :key="objectId">
+  </div>
+  <div v-else-if="relicset" :key="objectId">
     <h1>{{ relicset.SetName.Text }}</h1>
     <NavTree>
       <NavItem v-if="relicset.Skills">
@@ -41,7 +41,7 @@
         </NavTree>
       </NavItem>
     </NavTree>
-  </template>
+  </div>
 </template>
 
 <style scoped>

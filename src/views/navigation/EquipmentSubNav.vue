@@ -19,10 +19,10 @@
 </script>
 
 <template>
-  <template v-if="loading">
+  <div v-if="loading">
     <LoadingNav />
-  </template>
-  <template v-else-if="equipment" :key="objectId">
+  </div>
+  <div v-else-if="equipment" :key="objectId">
     <h1>{{ equipment.EquipmentName.Text }}</h1>
     <NavTree>
       <NavItem v-if="equipment.Skill">
@@ -40,7 +40,7 @@
         </NavTree>
       </NavItem>
     </NavTree>
-  </template>
+  </div>
 </template>
 
 <style scoped>
