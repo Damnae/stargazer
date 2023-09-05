@@ -85,6 +85,8 @@
   {
     display:flex;
     flex-direction: column;
+    flex-grow: 0;
+    flex-shrink: 0;
   }
   .mainnav
   {

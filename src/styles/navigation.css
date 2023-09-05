@@ -1,0 +1,70 @@
+ul.navtree
+{
+  overflow:auto;
+  scrollbar-width: thin;
+}
+ul.navtree, ul.navtree ul
+{
+  list-style: none;
+  padding: 0;
+}
+ul.navtree ul
+{
+  padding: 0 0 0 1rem;
+}
+ul.navtree li
+{ 
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+}
+ul.navtree li > .navtree-header
+{ 
+  user-select: none;
+  cursor:pointer;
+}
+ul.navtree li > .navtree-header::after
+{ 
+  color:grey;
+}
+ul.navtree li > .navtree-closed::after
+{ 
+  content:' ⏵';
+}
+ul.navtree li > .navtree-open::after
+{ 
+  content:' ⏷';
+}
+ul.navtree li > .navtree-forcedopen
+{
+  cursor:initial;
+}
+ul.navtree li > .navtree-forcedopen::after
+{ 
+  content:'';
+}
+ul.navtree li > .navtree-header:hover::after
+{ 
+  color:white;
+}
+ul.navtree li > div > span:nth-child(2)
+{ 
+  display:none;
+}
+ul.navtree li:hover > div > span:nth-child(1)
+{ 
+  display:none;
+}
+ul.navtree li:hover > div > span:nth-child(2)
+{ 
+  display:unset;
+}
+ul.navtree a
+{ 
+  display:block;
+}
+ul.navtree a:hover, 
+ul.navtree a.router-link-active
+{ 
+  background:rgb(42, 42, 42);
+}

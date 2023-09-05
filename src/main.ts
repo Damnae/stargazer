@@ -1,5 +1,7 @@
-import './style.css'
-import './transitions.css'
+import '@/styles/main.css'
+import '@/styles/navigation.css'
+import '@/styles/blocks.css'
+import '@/styles/transitions.css'
 
 // Routes
 

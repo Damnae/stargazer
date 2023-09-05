@@ -1,0 +1,84 @@
+.block .block,
+.subblock
+{
+  margin-left: .0em;
+  border-left: .2em solid rgba(32,32,64,.33);
+  padding-left: .8em;
+}
+.block-header
+{
+  cursor:alias;
+}
+.block-header:hover
+{
+  background: linear-gradient(90deg, rgba(32,32,32,1) 0%, rgba(32,32,32,0) 25em);
+  text-shadow: 1px 1px 1px #181818;
+}
+.block-source pre
+{
+  margin:.5em 1em .5em 0;
+  border: 1px solid grey;
+  padding:.5em;
+  background-color: black;
+}
+
+.block .flow,
+.block .block .block .block .flow,
+.block .block .block .block .block .block .block .flow
+{
+  display:block;
+  background: linear-gradient(90deg, rgba(32,32,64,1) 0%, rgba(32,32,64,0) 5em);
+  text-shadow: 1px 1px 1px #181818;
+  padding-left:.33em;
+}
+.block .block .flow,
+.block .block .block .block .block .flow,
+.block .block .block .block .block .block .block .block .flow
+{
+  background: linear-gradient(90deg, rgba(32,52,64,1) 0%, rgba(32,52,64,0) 5em);
+}
+.block .block .block .flow,
+.block .block .block .block .block .block .flow,
+.block .block .block .block .block .block .block .block .block .flow
+{
+  background: linear-gradient(90deg, rgba(52,32,64,1) 0%, rgba(52,32,64,0) 5em);
+}
+.block .block .block .block .block .block .block .block .block .block .flow
+{
+  /* too-deep-to-give-a-fuck color */
+  background: linear-gradient(90deg, rgba(64,64,64,1) 0%, rgba(64,64,64,0) 5em);
+}
+
+.block.inverted:before
+{
+  content: 'Not';
+  float: left;
+  padding-right: .25em;
+}
+
+.block .cosmetic
+{
+  color:rgb(96, 96, 96);
+}
+.block .notimplemented
+{
+  color:rgb(96, 64, 64);
+}
+.block em
+{
+  color:darkgoldenrod;
+  font-style: normal;
+}
+.block a em
+{
+  color:rgb(137, 169, 201);
+  font-style: normal;
+}
+.block a:hover em
+{
+  color:rgb(135, 183, 231);
+}
+.block .cosmetic em
+{
+  color:rgba(184, 135, 11, 0.33);
+}
