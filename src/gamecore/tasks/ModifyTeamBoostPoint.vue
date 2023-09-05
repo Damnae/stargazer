@@ -18,7 +18,7 @@
 <template>
   <BlockLayout :source="node">
     
-    <em>{{ node.ModifyFunction }} <EvaluateExpression :expression="node.ModifyValue" /></em> skill point
+    {{ node.ModifyFunction }} <em><EvaluateExpression :expression="node.ModifyValue" /></em> skill point
 
   </BlockLayout>
 </template>

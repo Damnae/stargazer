@@ -16,7 +16,7 @@
     <router-link v-if="commitId" :to="{ name:'home' }" class="commitId">
       {{ commitId }}
     </router-link>
-  </footer>  
+  </footer>
 </template>
 
 <style scoped>

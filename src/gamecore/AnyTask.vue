@@ -3,8 +3,8 @@
   import { GamecoreTask, } from '@/sources/gamecore';
   import { taskTypeToComponentName, } from '@/common/common';
 
-  const props = defineProps<{node:GamecoreTask}>()
-  const taskName = taskTypeToComponentName(props.node.$type)
+  const props = defineProps<{node:GamecoreTask, withComponentName?:string}>()
+  const taskName = props.withComponentName ?? taskTypeToComponentName(props.node.$type)
   const taskComponent = defineAsyncComponent({
     loader: async () => 
     {

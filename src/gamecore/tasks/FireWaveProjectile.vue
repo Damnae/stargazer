@@ -7,28 +7,33 @@
   const props = defineProps<{node:GamecoreTask}>()
   const node = props.node as unknown as 
   {
+    CasterTargetType?:GamecoreTargetType
     TargetType?:GamecoreTargetType
-    OnProjectileHit?:GamecoreTask[]
+    Count:number
+    OnProjectileHitClientOnly?:GamecoreTask[]
+    PerProjectileDamage?:GamecoreTask
     WaitProjectileFinish?:boolean
   }
-  const hasOnHit = node.OnProjectileHit && node.OnProjectileHit.length > 0
+  const hasOnHit = !!node.PerProjectileDamage || node.OnProjectileHitClientOnly && node.OnProjectileHitClientOnly.length > 0
 </script>
 
 <template>
   <BlockLayout :source="node" :cosmetic="!hasOnHit">
     <span :class="hasOnHit ? 'flow' : ''">
-      Fire projectile 
+      Fire <em>{{ node.Count }}</em>-hit wave projectile 
+      <template v-if="node.CasterTargetType">
+        from <em>{{ evaluateTargetType(node.CasterTargetType) }}</em>
+      </template>
       <template v-if="node.TargetType">
-        at {{ evaluateTargetType(node.TargetType) }}
+        to <em>{{ evaluateTargetType(node.TargetType) }}</em>
       </template>
     </span>
     <template #content>
 
       <div v-if="hasOnHit" class="subblock">
         <span class="flow">On Hit</span>
-        <template v-for="n in node.OnProjectileHit">
-          <AnyTask :node="n" />
-        </template>
+        <AnyTask v-if="node.PerProjectileDamage" :node="node.PerProjectileDamage" withComponentName="DamageByAttackProperty"/>
+        <AnyTask v-if="node.OnProjectileHitClientOnly" v-for="n in node.OnProjectileHitClientOnly" :node="n" />
       </div>
 
       <BlockLayout v-if="node.WaitProjectileFinish" :cosmetic="true">

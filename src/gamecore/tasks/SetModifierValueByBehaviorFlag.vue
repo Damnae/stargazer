@@ -1,5 +1,4 @@
 <script setup lang="ts">
-  import { inject } from 'vue';
   import { GamecoreTask, 
     GamecoreTargetType, evaluateTargetType, 
     DynamicExpression,
@@ -11,12 +10,11 @@
   const node = props.node as unknown as 
   {
     TargetType?:GamecoreTargetType
-    ModifierName:string
+    ModifierBehaviorFlags:string[]
     Value?:DynamicExpression
     ValueType?:string
     ModifyFunction:string
   }
-  const createModifierRoute = inject<(key:string) => object>('createModifierRoute') as (key:string) => object
 </script>
 
 <template>
@@ -24,13 +22,7 @@
     <template v-if="node.ModifyFunction">
       
       {{ node.ModifyFunction }} <em><EvaluateExpression :expression="node.Value" /></em>
-      to
-      <RouterLink v-if="node.ModifierName" :to="createModifierRoute(node.ModifierName)">
-        <em>{{ node.ModifierName }}</em>'s
-      </RouterLink>
-      <template v-else>
-        this modifier's
-      </template>
+      to modifiers with flag <em>{{ node.ModifierBehaviorFlags.join(', ') }}</em>'s
       <em>{{ node.ValueType ?? 'Count' }}</em>
       <template v-if="node.TargetType">
         on <em>{{ evaluateTargetType(node.TargetType) }}</em>
@@ -43,9 +35,7 @@
       <template v-if="node.TargetType">
         <em>{{ evaluateTargetType(node.TargetType) }}</em>'s
       </template>
-      <RouterLink v-if="node.ModifierName" :to="createModifierRoute(node.ModifierName)">
-        <em>{{ node.ModifierName }}</em>
-      </RouterLink>'s
+      modifiers with flag <em>{{ node.ModifierBehaviorFlags.join(', ') }}</em>'s
       <em>{{ node.ValueType ?? 'Count' }}</em>
       to <em><EvaluateExpression :expression="node.Value" /></em>
 
