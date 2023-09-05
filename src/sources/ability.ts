@@ -374,11 +374,12 @@ export function findTaskTemplate(templateName:string, expressionContext:Expressi
 async function getAbilities(commitId:string, path:string) : Promise<AbilityConfig>
 {
   const result = await retrieveJson(path, commitId, false) as AbilityConfig
-  for (const ability of result.AbilityList)
-    if (ability.Modifiers)
-      for (const [name, modifier] of Object.entries(ability.Modifiers))
-        modifier.Name = name
-  if (result.GlobalModifiers)
+  if (result?.AbilityList)
+    for (const ability of result.AbilityList)
+      if (ability.Modifiers)
+        for (const [name, modifier] of Object.entries(ability.Modifiers))
+          modifier.Name = name
+  if (result?.GlobalModifiers)
     for (const [name, modifier] of Object.entries(result.GlobalModifiers))
       modifier.Name = name
   return result
@@ -387,9 +388,9 @@ async function getAbilities(commitId:string, path:string) : Promise<AbilityConfi
 async function getModifiers(commitId:string, path:string) : Promise<ModifierConfig>
 {
   const result = await retrieveJson(path, commitId, false) as ModifierConfig
-  if (result.ModifierMap)
-  for (const [name, modifier] of Object.entries(result.ModifierMap))
-    modifier.Name = name
+  if (result?.ModifierMap)
+    for (const [name, modifier] of Object.entries(result.ModifierMap))
+      modifier.Name = name
   return result
 }
 
