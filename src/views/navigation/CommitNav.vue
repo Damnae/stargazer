@@ -1,11 +1,15 @@
 <script setup lang="ts">
   import { ref, provide, computed, } from 'vue'
   import { useRoute } from 'vue-router'
+  
   import AvatarNav from './AvatarNav.vue'
   import MonsterNav from './MonsterNav.vue'
   import EquipmentNav from './EquipmentNav.vue'
   import RelicSetNav from './RelicSetNav.vue'
   import StatusNav from './StatusNav.vue'
+  import AbilityNav from './AbilityNav.vue'
+  import ModifierNav from './ModifierNav.vue'
+
   import NavTree from '@/components/NavTree.vue'
   import NavItem from '@/components/NavItem.vue'
 
@@ -52,13 +56,25 @@
             <StatusNav />
           </NavTree>
         </NavItem>
+        <NavItem> 
+          <NavTree :startsOpen="mainNav == 'Ability'">
+            <template #header>Abilities</template>
+            <AbilityNav />
+          </NavTree>
+        </NavItem>
+        <NavItem>
+          <NavTree :startsOpen="mainNav == 'Modifier'">
+            <template #header>Modifiers</template>
+            <ModifierNav />
+          </NavTree>
+        </NavItem>
       </NavTree>
     </section>
 
     <hr />
 
     <section class="subnav">
-        <slot />
+      <slot />
     </section>
 
   </nav>

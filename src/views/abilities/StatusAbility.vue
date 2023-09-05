@@ -1,5 +1,5 @@
 <script setup lang="ts">
-  import ProvideEmptyContext from './components/ProvideEmptyContext.vue';
+  import ProvideNeutralContext from './components/ProvideNeutralContext.vue';
   import Ability from './Ability.vue';
 
   defineProps<{commitId:string, abilityId:string}>()
@@ -7,9 +7,9 @@
 
 <template> 
   <main class="panel">
-    <ProvideEmptyContext :commitId="commitId" abilityRouteName="statusAbility" modifierRouteName="statusModifier">
+    <ProvideNeutralContext :commitId="commitId" abilityRouteName="statusAbility" modifierRouteName="statusModifier">
       <Ability :abilityId="abilityId" />
-    </ProvideEmptyContext>
+    </ProvideNeutralContext>
   </main>
 </template>
 

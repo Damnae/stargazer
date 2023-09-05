@@ -32,7 +32,7 @@
 </script>
 
 <template>
-  <div class="nocontext minor">(Context is missing)</div>
+  <div class="nocontext minor">(No Context)</div>
   <slot></slot>
 </template>
 
