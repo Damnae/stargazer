@@ -189,7 +189,7 @@ nav.panel
 }
 .mainnav > .navtree
 {
-  margin-bottom:0;
+  margin:.5em 0 0 0;
 }
 @media (min-height:30rem) 
 {
