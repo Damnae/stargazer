@@ -31,6 +31,10 @@ import StatusSubNav from './views/navigation-sub/StatusSubNav.vue'
 import StatusAbility from './views/abilities/StatusAbility.vue'
 import StatusModifier from './views/abilities/StatusModifier.vue'
 
+import RogueBuffSubNav from './views/navigation-sub/RogueBuffSubNav.vue'
+import RogueBuffAbility from './views/abilities/RogueBuffAbility.vue'
+import RogueBuffModifier from './views/abilities/RogueBuffModifier.vue'
+
 import AnyAbility from './views/abilities/AnyAbility.vue'
 import AnyModifier from './views/abilities/AnyModifier.vue'
 
@@ -131,6 +135,25 @@ const routes:Readonly<RouteRecordRaw[]> =
                 name: 'statusModifier', components: { subnav: StatusSubNav, default: StatusModifier, }, 
                 props:{ subnav:toRouteProps({ objectId:'number', modifierId:false }), default:toRouteProps({ objectId: 'number' }) },
                 meta: { mainNav: 'Status', mainNavTab:'Global', }
+            },
+        ]},
+
+        // Rogue Buff (Blessings)
+        { path: '/su-blessing-:objectId/@:commitId', children: [
+            { path: '', 
+                name: 'rogueBuff', components: { subnav: RogueBuffSubNav, }, 
+                props:{ subnav:toRouteProps({ objectId:'number' })},
+                meta: { mainNav: 'RogueBuff', mainNavTab:'Simulated Universe', }
+            },
+            { path: '/ability-:abilityId/from/su-blessing-:objectId/@:commitId', 
+                name: 'rogueBuffAbility', components: { subnav: RogueBuffSubNav, default: RogueBuffAbility, },
+                props:{ subnav:toRouteProps({ objectId:'number', abilityId:false }), default:toRouteProps({ objectId: 'number' }) },
+                meta: { mainNav: 'RogueBuff', mainNavTab:'Simulated Universe', }
+            },
+            { path: '/modifier-:modifierId/from/su-blessing-:objectId/@:commitId', 
+                name: 'rogueBuffModifier', components: { subnav: RogueBuffSubNav, default: RogueBuffModifier, }, 
+                props:{ subnav:toRouteProps({ objectId:'number', modifierId:false }), default:toRouteProps({ objectId: 'number' }) },
+                meta: { mainNav: 'RogueBuff', mainNavTab:'Simulated Universe', }
             },
         ]},
 

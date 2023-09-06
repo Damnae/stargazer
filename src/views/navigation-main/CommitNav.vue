@@ -13,6 +13,7 @@
   import NavTabs from '@/components/NavTabs.vue'
   import NavTree from '@/components/NavTree.vue'
   import NavItem from '@/components/NavItem.vue'
+import RogueBuffNav from './RogueBuffNav.vue'
 
   const search = ref<string>('')
   provide('search', search)
@@ -24,9 +25,9 @@
   {
     Players: ['Avatar', 'Equipment', 'RelicSet'],
     Monsters: ['Monster'],
-    //'Simulated Universe': [],
     Global: ['Status', 'Ability', 'Modifier'],
-    All: ['Avatar', 'Monster', 'Equipment', 'RelicSet', 'Status', 'Ability', 'Modifier'],
+    'Simulated Universe': ['RogueBuff', 'RogueMiracle'],
+    All: ['Avatar', 'Monster', 'Equipment', 'RelicSet', 'Status', 'Ability', 'Modifier', 'RogueBuff', 'RogueMiracle'],
   }
 
   const startTab = useRoute().meta.mainNavTab as string ?? 'Players'
@@ -45,55 +46,69 @@
       <input v-model.trim="search" placeholder="Search" />
       <NavTabs :tabs="Object.keys(tabs)" v-model:selected="selectedTab" />
       <NavTree :forceOpen="forceNavigationOpen">
-        
-        <NavItem v-if="isVisible('Avatar')"> 
-          <NavTree :startsOpen="mainNav == 'Avatar'">
-            <template #header>Avatars</template>
-            <AvatarNav />  
-          </NavTree>   
-        </NavItem>
 
-        <NavItem v-if="isVisible('Monster')"> 
-          <NavTree :startsOpen="mainNav == 'Monster'">
-            <template #header>Monsters</template>
-            <MonsterNav />
-          </NavTree>
-        </NavItem>
+          <NavItem v-if="isVisible('Avatar')"> 
+            <NavTree :startsOpen="mainNav == 'Avatar'">
+              <template #header>Avatars</template>
+              <AvatarNav />  
+            </NavTree>   
+          </NavItem>
 
-        <NavItem v-if="isVisible('Equipment')"> 
-          <NavTree :startsOpen="mainNav == 'Equipment'">
-            <template #header>Light Cones</template>
-            <EquipmentNav />
-          </NavTree>
-        </NavItem>
+          <NavItem v-if="isVisible('Monster')"> 
+            <NavTree :startsOpen="mainNav == 'Monster'">
+              <template #header>Monsters</template>
+              <MonsterNav />
+            </NavTree>
+          </NavItem>
 
-        <NavItem v-if="isVisible('RelicSet')"> 
-          <NavTree :startsOpen="mainNav == 'RelicSet'">
-            <template #header>Relic Sets</template>
-            <RelicSetNav />  
-          </NavTree>
-        </NavItem>
+          <NavItem v-if="isVisible('Equipment')"> 
+            <NavTree :startsOpen="mainNav == 'Equipment'">
+              <template #header>Light Cones</template>
+              <EquipmentNav />
+            </NavTree>
+          </NavItem>
 
-        <NavItem v-if="isVisible('Status')"> 
-          <NavTree :startsOpen="mainNav == 'Status'">
-            <template #header>Status Effects</template>
-            <StatusNav />
-          </NavTree>
-        </NavItem>
+          <NavItem v-if="isVisible('RelicSet')"> 
+            <NavTree :startsOpen="mainNav == 'RelicSet'">
+              <template #header>Relic Sets</template>
+              <RelicSetNav />  
+            </NavTree>
+          </NavItem>
 
-        <NavItem v-if="isVisible('Ability')"> 
-          <NavTree :startsOpen="mainNav == 'Ability'">
-            <template #header>Abilities</template>
-            <AbilityNav />
-          </NavTree>
-        </NavItem>
+          <NavItem v-if="isVisible('Status')"> 
+            <NavTree :startsOpen="mainNav == 'Status'">
+              <template #header>Status Effects</template>
+              <StatusNav />
+            </NavTree>
+          </NavItem>
 
-        <NavItem v-if="isVisible('Modifier')">
-          <NavTree :startsOpen="mainNav == 'Modifier'">
-            <template #header>Modifiers</template>
-            <ModifierNav />
-          </NavTree>
-        </NavItem>
+          <NavItem v-if="isVisible('Ability')"> 
+            <NavTree :startsOpen="mainNav == 'Ability'">
+              <template #header>Abilities</template>
+              <AbilityNav />
+            </NavTree>
+          </NavItem>
+
+          <NavItem v-if="isVisible('Modifier')">
+            <NavTree :startsOpen="mainNav == 'Modifier'">
+              <template #header>Modifiers</template>
+              <ModifierNav />
+            </NavTree>
+          </NavItem>
+
+          <NavItem v-if="isVisible('RogueBuff')">
+            <NavTree :startsOpen="mainNav == 'RogueBuff'">
+              <template #header>Blessings</template>
+              <RogueBuffNav />
+            </NavTree>
+          </NavItem>
+
+          <NavItem v-if="isVisible('RogueMiracle')">
+            <NavTree :startsOpen="mainNav == 'RogueMiracle'">
+              <template #header>Curios</template>
+              <span class="minor">Soon™</span>
+            </NavTree>
+          </NavItem>
 
       </NavTree>
     </section>
