@@ -1,8 +1,26 @@
 <script setup lang="ts">
-  import { ref } from 'vue';
+  import { ref, } from 'vue';
   import { retrieveCommits, DataSourceCommit } from '@/common/datasource'
+  import useSettings from '@/common/settings';
+
+  const [settings, _sessionSettings] = useSettings()
 
   const commitEntries = ref<DataSourceCommit[]>(await retrieveCommits());
+  if (settings.useCustomRepo && commitEntries.value.length == 0)
+  {
+    settings.useCustomRepo = false
+    location.reload()
+  }
+
+  function toggleCustomRepo()
+  {
+    settings.useCustomRepo = settings.customRepo.length > 0 && !settings.useCustomRepo
+    location.reload()
+  }
+  function applyToken()
+  {
+    location.reload()
+  }
 </script>
 
 <template>
@@ -24,6 +42,10 @@
           </RouterLink>
         </li>
       </ul>
+      <div class="repos">
+        <input type="text" v-model.trim="settings.customRepo" placeholder="Repository" @keyup.enter="toggleCustomRepo()" />
+        <input type="password" v-model.trim="settings.token" placeholder="Token" @keyup.enter="applyToken()" />
+      </div>
     </template>
   </section>
 </template>
@@ -64,5 +86,32 @@
     {
       display:inline;
     }
+  }
+  .repos
+  {
+    display:flex;
+    flex-direction:row;
+    opacity:0;
+    gap: 1rem;
+    transition: opacity .2s ease-in;
+  }
+  .repos:hover
+  {
+    opacity:1;
+    transition: opacity 1.0s ease-in;
+  }
+
+  .repos input
+  {
+    flex-grow: 1;
+    border:none;
+    outline:none;
+    background:none;
+    color:grey;
+    cursor: default;
+  }
+  .repos input:first-child
+  {
+    text-align: right;
   }
 </style>

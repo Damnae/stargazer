@@ -1,6 +1,7 @@
 import { retrieveJson } from '@/common/datasource';
 import { MutexGroup } from '@/common/mutex';
 import { ExpressionContext, GamecoreTask, GamecoreTargetType, DynamicExpression, DynamicValues, } from './gamecore';
+import useSettings from '@/common/settings';
 
 export interface ModifierEventHandler
 {
@@ -330,6 +331,15 @@ const contextTypeToPaths =
     ],
   },
 }
+
+const [settings, _sessionSettings] = useSettings()
+if (settings.includeWhiteBox)
+  contextTypeToPaths.All.Abilities = contextTypeToPaths.All.Abilities.concat([
+    'Config/ConfigAbility/WhiteBox',
+    'Config/ConfigAbility/WhiteBox/Avatar',
+    'Config/ConfigAbility/WhiteBox/BattleEvent',
+    'Config/ConfigAbility/WhiteBox/Monster',
+  ])
 
 const taskContextCache:{[commitId: string]: {[type: string]: TaskContext}} = {}
 const taskContextMutex = new MutexGroup()

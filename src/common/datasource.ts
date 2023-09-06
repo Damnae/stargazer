@@ -1,18 +1,21 @@
 import { openDB, DBSchema } from 'idb'
 import { Mutex, MutexGroup } from './mutex'
+import useSettings from './settings'
 
-const repos = 'Dimbreath/StarRailData/'
-const apiBase = 'https://api.github.com/repos/' + repos
-const jsonBase = 'https://raw.githubusercontent.com/' + repos
+const [settings, _sessionSettings] = useSettings()
 
-console.log(`apiBase: ${apiBase}\njsonBase: ${jsonBase}`)
+const repository = settings.useCustomRepo ? settings.customRepo : 'Dimbreath/StarRailData/'
+const apiBase = 'https://api.github.com/repos/' + repository
+const jsonBase = 'https://raw.githubusercontent.com/' + repository
 
 const configDBVersion = 1
 interface ConfigDBv1 extends DBSchema 
 {
-    files: {
+    files: 
+    {
         key: string
-        value: {
+        value: 
+        {
             hash: string
             path: string
             content: string
@@ -44,22 +47,14 @@ const configDB = openDB<ConfigDBv1>('configDB', configDBVersion,
 const retrieveJsonMutex = new MutexGroup()
 export async function retrieveJson(request:string, commit:string, useApi:boolean) : Promise<any>
 {
-    let url = useApi ? apiBase : jsonBase
-    if (!useApi && commit != null)
-        url += `${commit}/`
-    url += request
-
-    return await retrieveJsonMutex.runExclusive(url, async () =>
+    const key = `${useApi}|${commit}|${request}`
+    return await retrieveJsonMutex.runExclusive(key, async () =>
     {
         const existing = await (await configDB).get('files', IDBKeyRange.only([commit, request]));
         if (existing?.hash)
             return JSON.parse(existing.content)
-    
-        const cache = useApi ? 'force-cache' : 'default'
-        const result = await fetch(url, { headers: { 'Accept': 'application/json', }, cache })
-            .then(response => response.json())
-            .catch(error => console.log(`fileDB error: ${error}`))
-        
+
+        const result = await fetchJson(request, commit, useApi)
         if (result)
         {
             await (await configDB).put('files', { hash:commit, path:request, content:JSON.stringify(result) })
@@ -67,6 +62,31 @@ export async function retrieveJson(request:string, commit:string, useApi:boolean
         }
         return result
     })
+}
+
+async function fetchJson(request:string, commit:string, useApi:boolean)
+{
+    if (useApi)
+    {
+        const url = `${apiBase}${request}`
+        return fetch(url, { headers: getHeaders(), cache: 'force-cache' })
+            .then(response => response.json())
+            .catch(error => console.log(`fileDB error: ${error}`))
+    }
+    else if (settings.token.length > 0)
+    {
+        const url = `${apiBase}contents/${request}?ref=${commit}`
+        return fetch(url, { headers: getHeaders('application/vnd.github.raw'), })
+            .then(response => response.json())
+            .catch(error => console.log(`fileDB error: ${error}`))
+    }
+    else
+    {
+        const url = commit ? `${jsonBase}${commit}/${request}` : `${jsonBase}${commit}/${request}`
+        return fetch(url, { headers: getHeaders(), })
+            .then(response => response.json())
+            .catch(error => console.log(`fileDB error: ${error}`))
+    }
 }
 
 export interface DataSourceCommit
@@ -90,11 +110,18 @@ export async function retrieveCommits() : Promise<DataSourceCommit[]>
     {
         if (commitsCache.length == 0)
         {
-            const commits = await fetch(apiBase + 'commits', { headers: { 'Accept': 'application/json', } })
-                .then(response => response.json()) 
+            try 
+            {
+                const commits = await fetch(apiBase + 'commits', { headers: getHeaders() })
+                    .then(response => response.json()) 
 
-            for (const c of commits)
-                commitsCache.push(c)
+                for (const c of commits)
+                    commitsCache.push(c)
+            }
+            catch (error)
+            {
+                console.error(error)
+            }
         }
         return commitsCache
     })
@@ -104,4 +131,12 @@ export async function getLatestCommitId()
 {
     const commits = await retrieveCommits()
     return commits[0]?.sha
+}
+
+function getHeaders(accept?:string)
+{
+    const headers:{[key:string]:string} = { 'Accept': accept ?? 'application/json', }
+    if (settings.token.length > 0)
+        headers['Authorization'] = `Bearer ${settings.token}`
+    return headers
 }
