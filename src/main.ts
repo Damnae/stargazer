@@ -11,23 +11,23 @@ import { toRouteProps } from './common/common'
 import Title from './views/Title.vue'
 import Commit from './views/Commit.vue'
 
-import AvatarSubNav from './views/navigation/AvatarSubNav.vue'
-import MonsterSubNav from './views/navigation/MonsterSubNav.vue'
+import AvatarSubNav from './views/navigation-sub/AvatarSubNav.vue'
+import MonsterSubNav from './views/navigation-sub/MonsterSubNav.vue'
 import AvatarAbility from './views/abilities/AvatarAbility.vue'
 
 import AvatarModifier from './views/abilities/AvatarModifier.vue'
 import MonsterAbility from './views/abilities/MonsterAbility.vue'
 import MonsterModifier from './views/abilities/MonsterModifier.vue'
 
-import EquipmentSubNav from './views/navigation/EquipmentSubNav.vue'
+import EquipmentSubNav from './views/navigation-sub/EquipmentSubNav.vue'
 import EquipmentAbility from './views/abilities/EquipmentAbility.vue'
 import EquipmentModifier from './views/abilities/EquipmentModifier.vue'
 
-import RelicSetSubNav from './views/navigation/RelicSetSubNav.vue'
+import RelicSetSubNav from './views/navigation-sub/RelicSetSubNav.vue'
 import RelicSetAbility from './views/abilities/RelicSetAbility.vue'
 import RelicSetModifier from './views/abilities/RelicSetModifier.vue'
 
-import StatusSubNav from './views/navigation/StatusSubNav.vue'
+import StatusSubNav from './views/navigation-sub/StatusSubNav.vue'
 import StatusAbility from './views/abilities/StatusAbility.vue'
 import StatusModifier from './views/abilities/StatusModifier.vue'
 

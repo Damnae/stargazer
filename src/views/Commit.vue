@@ -1,7 +1,7 @@
 <script setup lang="ts">
   import { onErrorCaptured, provide, ref } from 'vue'
   import LoadingTitle from '@/components/LoadingTitle.vue';
-  import CommitNav from '@/views/navigation/CommitNav.vue'
+  import CommitNav from '@/views/navigation-main/CommitNav.vue'
 
   const props = defineProps<{commitId:string}>()
   provide<string>('commitId', props.commitId)
