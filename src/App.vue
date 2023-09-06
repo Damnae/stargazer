@@ -36,8 +36,6 @@
 </template>
 
 <style scoped>
-
-
 .main-layout
 {
   display: flex;

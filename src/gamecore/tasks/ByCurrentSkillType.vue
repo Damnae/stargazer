@@ -13,7 +13,7 @@
 <template>
   <BlockLayout :source="node">
     
-    Current skill type is <em>{{ node.SkillType ?? 'Basic ATK' }}</em>
+    Current skill type is <em>{{ node.SkillType ?? 'Normal' }}</em>
 
   </BlockLayout>
 </template>
