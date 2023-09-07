@@ -10,7 +10,8 @@
   const node = props.node as unknown as 
   {
     DynamicKey:string
-    Value?:DynamicExpression
+    Min?:DynamicExpression
+    Max?:DynamicExpression
   }
 
   if (node.DynamicKey)
@@ -21,7 +22,8 @@
   <BlockLayout :source="node">
 
     Set <em>{{ node.DynamicKey }}</em>
-    to <em><EvaluateExpression :expression="node.Value" /></em>
+    to a random value between <em><EvaluateExpression :expression="node.Min" /></em> 
+    and <em><EvaluateExpression :expression="node.Max" /></em> 
 
   </BlockLayout>
 </template>

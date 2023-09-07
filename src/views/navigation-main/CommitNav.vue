@@ -23,11 +23,11 @@ import RogueBuffNav from './RogueBuffNav.vue'
 
   const tabs:{[key:string]: any} = 
   {
+    All: ['Avatar', 'Monster', 'Equipment', 'RelicSet', 'Status', 'Ability', 'Modifier', 'RogueBuff', 'RogueMiracle'],
     Players: ['Avatar', 'Equipment', 'RelicSet'],
     Monsters: ['Monster'],
     Global: ['Status', 'Ability', 'Modifier'],
     'Simulated Universe': ['RogueBuff', 'RogueMiracle'],
-    All: ['Avatar', 'Monster', 'Equipment', 'RelicSet', 'Status', 'Ability', 'Modifier', 'RogueBuff', 'RogueMiracle'],
   }
 
   const startTab = useRoute().meta.mainNavTab as string ?? 'Players'
