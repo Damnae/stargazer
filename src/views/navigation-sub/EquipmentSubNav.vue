@@ -1,5 +1,6 @@
 <script setup lang="ts">
   import { ref, watchEffect, } from 'vue'
+  import { cleanupMarkup, cleanupNumber } from '@/common/common';
   import { getEquipment, Equipment, } from '@/sources/equipment';
   import NavTree from '@/components/NavTree.vue'
   import NavItem from '@/components/NavItem.vue'
@@ -40,6 +41,13 @@
         </NavTree>
       </NavItem>
     </NavTree>
+    <p>
+      <h2>Effect</h2>
+      <div v-for="property in equipment.Skill.AbilityProperty">
+        {{ property.PropertyType }}: {{ cleanupNumber(property.Value?.Value) }}
+      </div>
+      <span class="minor">{{ cleanupMarkup(equipment.Skill.SkillDesc.Text) }}</span>
+    </p>
   </div>
 </template>
 

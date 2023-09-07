@@ -1,5 +1,6 @@
 <script setup lang="ts">
   import { ref, watchEffect, } from 'vue'
+  import { cleanupNumber } from '@/common/common';
   import { getRelicSet, RelicSet, } from '@/sources/relicset';
   import NavTree from '@/components/NavTree.vue'
   import NavItem from '@/components/NavItem.vue'
@@ -41,6 +42,13 @@
         </NavTree>
       </NavItem>
     </NavTree>
+    <p v-for="skill, pieces in relicset.Skills">
+      <h2>{{ pieces }} pieces</h2>
+      <div v-for="property in skill.PropertyList">
+        {{ property.NAOGDGBJNOJ }}: {{ cleanupNumber(property.MBOHKHKHFPD?.Value) }}
+      </div>
+      <span class="minor">{{ skill.SkillDesc }}</span>
+    </p>
   </div>
 </template>
 
