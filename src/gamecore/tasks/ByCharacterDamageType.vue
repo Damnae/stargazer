@@ -15,8 +15,7 @@
 <template>
   <BlockLayout :source="node">
 
-    <em>{{ evaluateTargetType(node.TargetType) }}</em>'s 
-    element is <em>{{ node.DamageType }}</em>
+    <em>{{ evaluateTargetType(node.TargetType) }}</em> took <em>{{ node.DamageType }}</em> damage
 
   </BlockLayout>
 </template>
