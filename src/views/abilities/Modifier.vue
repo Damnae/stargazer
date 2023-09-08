@@ -23,7 +23,7 @@
   { immediate: true, })
 
   const modifier = ref<Modifier>()
-  const modifierEventNames = computed(() => modifier.value ? Object.keys(modifier.value).filter(k => k.startsWith('On')) : [])
+  const modifierEventNames = computed(() => getEventNames(modifier.value))
   watch([props, taskContext, expressionContext], () =>
   {
     const mod = taskContext.value.Modifiers?.[props.modifierId]
@@ -78,6 +78,14 @@
     for (const [index, param] of status.ReadParamList.entries())
       description = description.replace(`#${index + 1}[i]`, param)
     return description
+  }
+
+  function getEventNames(modifier?:Modifier) : string[]
+  {
+    if (!modifier)
+      return []
+    return Object.keys(modifier)
+      .filter(k => k.startsWith('On') && k != 'OnAbilityPropertyChange' && k != 'OnDynamicValueChange')
   }
 
   const hashStore = useHashStore()
