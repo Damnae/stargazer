@@ -16,7 +16,21 @@
     loading.value = true
     equipment.value = await getEquipment(props.commitId, props.objectId)
     loading.value = false
+
+    equipment.value.Skill.ParamList
   })
+
+  function evaluateDescription(equipment:Equipment) : string
+  {
+    if (equipment.Skill)
+    {
+      let description = equipment.Skill.SkillDesc.Text
+      for (const [index, param] of equipment.Skill.ParamList.entries())
+        description = description.replace(`#${index + 1}[i]`, cleanupNumber(param.Value))
+      return cleanupMarkup(description)
+    }
+    return ''
+  }
 </script>
 
 <template>
@@ -46,7 +60,7 @@
       <div v-for="property in equipment.Skill.AbilityProperty">
         {{ property.PropertyType }}: {{ cleanupNumber(property.Value?.Value) }}
       </div>
-      <span class="minor">{{ cleanupMarkup(equipment.Skill.SkillDesc.Text) }}</span>
+      <span class="minor">{{ evaluateDescription(equipment) }}</span>
     </p>
   </div>
 </template>
