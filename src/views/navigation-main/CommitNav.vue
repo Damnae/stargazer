@@ -115,7 +115,7 @@ import RogueBuffNav from './RogueBuffNav.vue'
 
     <hr />
 
-    <section class="subnav">
+    <section class="subnav" mode="out-in">
       <slot />
     </section>
 
