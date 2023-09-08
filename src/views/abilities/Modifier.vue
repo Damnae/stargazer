@@ -1,6 +1,6 @@
 <script setup lang="ts">
-  import { inject, ref, watch, Ref, } from 'vue'
-  import { ExpressionContext, evaluateTargetType } from '@/sources/gamecore';
+  import { inject, ref, computed, watch, Ref, } from 'vue'
+  import { ExpressionContext, GamecoreTask, evaluateTargetType } from '@/sources/gamecore';
   import { Modifier, TaskContext, } from '@/sources/ability';
   import { Status, getStatuses } from '@/sources/status';
   import useHashStore from '@/common/hashstore';
@@ -23,6 +23,7 @@
   { immediate: true, })
 
   const modifier = ref<Modifier>()
+  const modifierEventNames = computed(() => modifier.value ? Object.keys(modifier.value).filter(k => k.startsWith('On')) : [])
   watch([props, taskContext, expressionContext], () =>
   {
     const mod = taskContext.value.Modifiers?.[props.modifierId]
@@ -160,6 +161,11 @@
           <td><em><EvaluateExpression :expression="modifier.PerformTime" /></em></td>
         </tr>
       </table>
+
+      <template v-for="name in modifierEventNames">
+        <h2>{{ name }}</h2>
+        <AnyTask v-for="n in ((modifier as any)[name] as GamecoreTask[])" :node="n" />
+      </template>
 
       <template v-if="modifier._CallbackList">
         <h2>Events</h2>
