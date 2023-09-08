@@ -145,6 +145,7 @@ export enum TaskContextType
   RelicSet = 'RelicSet',
   BattleEvent = 'BattleEvent',
   Level = 'Level',
+  Rogue = 'Rogue',
 }
 
 const contextTypeToPaths =
@@ -274,6 +275,26 @@ const contextTypeToPaths =
       'Config/ConfigGlobalTaskListTemplate/GlobalTaskListTemplate.json',
     ],
   },
+  Rogue: 
+  {
+    Abilities:
+    [
+      'Config/ConfigAbility/Common_Additional_Ability.json',
+      'Config/ConfigAbility/Level',
+    ],
+    Modifiers:
+    [
+      //'Config/ConfigGlobalModifier/GlobalModifier.json',
+      //'Config/ConfigGlobalModifier/GlobalModifier_System.json',
+      'Config/ConfigGlobalModifier/GlobalModifier_Common_Property.json',
+      'Config/ConfigGlobalModifier/GlobalModifier_Common_Specific.json',
+      'Config/ConfigAdventureModifier',
+    ],
+    TaskListTemplates:
+    [
+      'Config/ConfigGlobalTaskListTemplate/GlobalTaskListTemplate.json',
+    ],
+  },
   All: 
   {
     Abilities:
@@ -338,8 +359,18 @@ export async function getTaskContext(commitId:string, type:TaskContextType) : Pr
         }
         
       for (const path of paths.Modifiers)
-        mergeModifierConfig(context, await getModifiers(commitId, path) as ModifierConfig)
-  
+        if (path.endsWith('.json'))
+          mergeModifierConfig(context, await getModifiers(commitId, path) as ModifierConfig)
+        else
+        {
+          const response = await retrieveJson(`git/trees/${commitId}:${path}`, commitId, true)
+          const tree = response.tree
+          if (tree !== undefined)
+            for (const treePath of tree.map((t:any) => t.path))
+              if (treePath.endsWith('.json'))
+                mergeModifierConfig(context, await getModifiers(commitId, `${path}/${treePath}`) as ModifierConfig)
+        }
+
       for (const path of paths.TaskListTemplates)
         mergeTaskListTemplateConfig(context, await getTaskListTemplates(commitId, path) as TaskListTemplateConfig)
   

@@ -1,16 +1,15 @@
 <script setup lang="ts">
-  import ProvideNeutralContext from './components/ProvideNeutralContext.vue';
+  import ProvideRogueBuffContext from './components/ProvideRogueBuffContext.vue';
   import Modifier from './Modifier.vue';
 
-  defineProps<{commitId:string, modifierId:string}>()
+  defineProps<{commitId:string, objectId:number, modifierId:string}>()
 </script>
 
 <template> 
   <main class="panel">
-    <!-- TODO Proper context -->
-    <ProvideNeutralContext :commitId="commitId" abilityRouteName="rogueBuffAbility" modifierRouteName="rogueBuffModifier">
+    <ProvideRogueBuffContext :commitId="commitId" :objectId="objectId">
       <Modifier :modifierId="modifierId" />
-    </ProvideNeutralContext>
+    </ProvideRogueBuffContext>
   </main>
 </template>
 
