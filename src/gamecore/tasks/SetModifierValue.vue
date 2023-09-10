@@ -23,7 +23,13 @@
   <BlockLayout :source="node">
     <template v-if="node.ModifyFunction">
       
-      {{ node.ModifyFunction }} <em><EvaluateExpression :expression="node.Value" /></em>
+      {{ node.ModifyFunction }} 
+      <em v-if="node.Value">
+        <EvaluateExpression :expression="node.Value" />
+      </em>
+      <em v-else>
+        -1
+      </em>
       to
       <RouterLink v-if="node.ModifierName" :to="createModifierRoute(node.ModifierName)">
         <em>{{ node.ModifierName }}</em>'s
@@ -48,6 +54,7 @@
       </RouterLink>'s
       <em>{{ node.ValueType ?? 'Count' }}</em>
       to <em><EvaluateExpression :expression="node.Value" /></em>
+      
 
     </template>
   </BlockLayout>
