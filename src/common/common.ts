@@ -52,6 +52,7 @@ export function cleanupMarkup(value?:string) : string
     return value
         .replace(/(<([^>]+)>)/gi, "")
         .replace(/\\n/gi, " ")
+        .replace(/%/gi, "×")
 }
 
 export function cleanupTaskName(value: string) 
