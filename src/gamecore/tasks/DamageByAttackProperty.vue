@@ -75,6 +75,14 @@
     <template v-if="node.AttackProperty?.FinalFormulaType">
       using <em>{{ node.AttackProperty?.FinalFormulaType }}</em>
     </template>
+
+    <template #content>
+      <div class="subblock">
+        <template v-if="node.AttackProperty?.SPHitRatio">
+          Generate <em><EvaluateExpression :expression="node.AttackProperty.SPHitRatio" /></em>× of the skill's energy
+        </template>
+      </div>
+    </template>
   </BlockLayout>
 </template>
 

@@ -21,28 +21,28 @@
 <template>
   <BlockLayout :source="node">
 
-    <template v-if="node.AddValue">
-      Add <em><EvaluateExpression :expression="node.AddValue" /></em> flat energy
+    <template v-if="node.AddRatio">
+      Generate <em><EvaluateExpression :expression="node.AddRatio" /></em>× of the skill's energy
+    </template>
+    <template v-else-if="node.AddValue">
+      Generate <em><EvaluateExpression :expression="node.AddValue" /></em> flat energy
     </template>
     <template v-else-if="node.FixedAddValue">
-      Add <em><EvaluateExpression :expression="node.FixedAddValue" /></em> flat energy
+      Generate <em><EvaluateExpression :expression="node.FixedAddValue" /></em> flat energy
       <span class="minor">(Ignores ER)</span>
     </template>
     <template v-else-if="node.AddMaxSPRatio">
-      Add <em><EvaluateExpression :expression="node.AddMaxSPRatio" /></em>× energy
+      Generate <em><EvaluateExpression :expression="node.AddMaxSPRatio" /></em>× energy
     </template>
     <template v-else-if="node.FixedAddMaxSPRatio">
-      Add <em><EvaluateExpression :expression="node.FixedAddMaxSPRatio" /></em>× energy
+      Generate <em><EvaluateExpression :expression="node.FixedAddMaxSPRatio" /></em>× energy
       <span class="minor">(Ignores ER)</span>
     </template>
-    <template v-else-if="node.AddRatio">
-      Add <em><EvaluateExpression :expression="node.AddRatio" /></em>× of the skill energy bonus
-    </template>
     <template v-else>
-      Add energy
+      Generate energy
     </template>
 
-    to <em>{{ evaluateTargetType(node.TargetType) }}</em>
+    for <em>{{ evaluateTargetType(node.TargetType) }}</em>
 
   </BlockLayout>
 </template>
