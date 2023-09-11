@@ -79,7 +79,11 @@
     <template #content>
       <div class="subblock">
         <template v-if="node.AttackProperty?.SPHitRatio">
-          Generate <em><EvaluateExpression :expression="node.AttackProperty.SPHitRatio" /></em>× of the skill's energy
+          Generate 
+          <template v-if="node.AttackProperty?.HitSplitRatio">
+            <em><EvaluateExpression :expression="node.AttackProperty.HitSplitRatio" /></em> of 
+          </template>
+          <em><EvaluateExpression :expression="node.AttackProperty.SPHitRatio" /></em>× of the skill's energy
         </template>
       </div>
     </template>
