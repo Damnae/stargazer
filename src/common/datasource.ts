@@ -1,5 +1,5 @@
 import { openDB, DBSchema } from 'idb'
-import { MutexGroup } from './mutex'
+import { Mutex, MutexGroup } from './mutex'
 
 const repos = 'Dimbreath/StarRailData/'
 const apiBase = 'https://api.github.com/repos/' + repos
@@ -82,8 +82,20 @@ export interface DataSourceCommit
     }
 }
 
+const commitsCache:DataSourceCommit[] = []
+const commitsMutex = new Mutex()
 export async function retrieveCommits() : Promise<DataSourceCommit[]>
 {
-    return fetch(apiBase + 'commits', { headers: { 'Accept': 'application/json', } })
-        .then(response => response.json())
+    return commitsMutex.runExclusive(async () => 
+    {
+        if (commitsCache.length == 0)
+        {
+            const commits = await fetch(apiBase + 'commits', { headers: { 'Accept': 'application/json', } })
+                .then(response => response.json()) 
+
+            for (const c of commits)
+                commitsCache.push(c)
+        }
+        return commitsCache
+    })
 }

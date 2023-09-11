@@ -1,13 +1,22 @@
 <script setup lang="ts">
-  import { ref, watch } from 'vue';
+  import { computed, ref, watch, } from 'vue';
   import { useRoute } from 'vue-router'
+  import { retrieveCommits } from '@/common/datasource';
 
   const route = useRoute()
+
   const commitId = ref(route.params.commitId);
-  watch(
-    () => route.params.commitId,
-    async newId => commitId.value = newId 
-  )
+  const latestCommitId = ref('');
+  const isLatest = computed(() => commitId.value == latestCommitId.value)
+
+  watch(() => route.params.commitId, async newId => 
+  {
+    commitId.value = newId
+
+    const commits = await retrieveCommits()
+    latestCommitId.value = commits[0]?.sha ?? ''
+  })
+
 </script>
 
 <template>
@@ -16,6 +25,12 @@
     <router-link v-if="commitId" :to="{ name:'home' }" class="commitId">
       {{ commitId }}
     </router-link>
+    <span v-if="isLatest" class="minor">
+      (Latest)
+    </span>
+    <span v-else-if="commitId && latestCommitId" class="warning">
+      (Not Latest)
+    </span>
   </footer>
 </template>
 
@@ -30,5 +45,9 @@
   .commitId 
   {
     color:grey;
+  }
+  .warning 
+  {
+    color:orangered;
   }
 </style>

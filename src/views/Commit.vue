@@ -14,7 +14,7 @@
 </script>
 
 <template>
-  <div class="commit-layout">
+  <div class="commit-layout" :key="commitId">
     <CommitNav>
       <RouterView name="subnav" v-slot="{ Component }">
         <Transition name="fade">
