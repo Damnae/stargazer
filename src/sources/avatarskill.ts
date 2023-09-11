@@ -68,15 +68,9 @@ export async function getAvatarSkills(commitId:string) : Promise<AvatarSkillConf
 export async function getAvatarSkill(commitId:string, avatarSkillId:number) : Promise<AvatarSkill>
 {
     const ranks = (await getAvatarSkills(commitId))[avatarSkillId]
-    let skill = ranks[Object.keys(ranks).length * 2 / 3]
+    let skill = ranks[Object.keys(ranks).length * 2 / 3] ?? ranks[1]
     if (skill == null)
-    {
-        // TODO parse these from MazeSkill.json using RelatedAvatarSkill as ID
-        skill = structuredClone(missingAvatarSkill)
-        skill.SkillID = avatarSkillId
-        skill.SkillName.Text = avatarSkillId.toString()
-        skill.SkillTypeDesc.Text = 'Maze(?)'
-    }
+        return missingAvatarSkill
     return skill
 }
 
