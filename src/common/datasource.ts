@@ -99,3 +99,9 @@ export async function retrieveCommits() : Promise<DataSourceCommit[]>
         return commitsCache
     })
 }
+
+export async function getLatestCommitId()
+{
+    const commits = await retrieveCommits()
+    return commits[0]?.sha
+}

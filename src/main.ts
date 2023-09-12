@@ -168,8 +168,10 @@ const routes:Readonly<RouteRecordRaw[]> =
             props:{ default:toRouteProps({ }) },
             meta: { mainNav: 'Modifier', mainNavTab:'Global', }
         },
-        
     ]},
+
+    // Redirects
+    { path: '/:pathMatch(.*)*', name: 'notFound', redirect:'/', },
 ]
 
 const router = createRouter({ 

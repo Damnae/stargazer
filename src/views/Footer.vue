@@ -1,7 +1,7 @@
 <script setup lang="ts">
   import { computed, ref, watch, } from 'vue';
   import { useRoute } from 'vue-router'
-  import { retrieveCommits } from '@/common/datasource';
+  import { getLatestCommitId, } from '@/common/datasource';
 
   const route = useRoute()
 
@@ -12,9 +12,7 @@
   watch(() => route.params.commitId, async newId => 
   {
     commitId.value = newId
-
-    const commits = await retrieveCommits()
-    latestCommitId.value = commits[0]?.sha ?? ''
+    latestCommitId.value = await getLatestCommitId() ?? ''
   })
 
 </script>
