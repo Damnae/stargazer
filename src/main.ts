@@ -5,8 +5,8 @@ import '@/styles/transitions.css'
 
 // Routes
 
-import { createRouter, createWebHashHistory, RouteRecordRaw } from 'vue-router'
-import { toRouteProps } from './common/common'
+import { createRouter, createWebHashHistory, RouteRecordRaw, } from 'vue-router'
+import { toRouteProps, redirectToLatestCommit, } from './common/route'
 
 import Title from './views/Title.vue'
 import Commit from './views/Commit.vue'
@@ -171,7 +171,35 @@ const routes:Readonly<RouteRecordRaw[]> =
     ]},
 
     // Redirects
-    { path: '/:pathMatch(.*)*', name: 'notFound', redirect:'/', },
+
+    { path: '/avatar-:objectId', meta: { redirectName:'avatar' }, redirect: redirectToLatestCommit },
+    { path: '/ability-:abilityId/from/avatar-:objectId', meta: { redirectName:'avatarAbility' }, redirect: redirectToLatestCommit },
+    { path: '/modifier-:modifierId/from/avatar-:objectId', meta: { redirectName:'avatarModifier' }, redirect: redirectToLatestCommit },
+    
+    { path: '/lightcone-:objectId', meta: { redirectName:'equipment' }, redirect: redirectToLatestCommit },
+    { path: '/ability-:abilityId/from/lightcone-:objectId', meta: { redirectName:'equipmentAbility' }, redirect: redirectToLatestCommit },
+    { path: '/modifier-:modifierId/from/lightcone-:objectId', meta: { redirectName:'equipmentModifier' }, redirect: redirectToLatestCommit },
+
+    { path: '/relicset-:objectId', meta: { redirectName:'relicset' }, redirect: redirectToLatestCommit },
+    { path: '/ability-:abilityId/from/relicset-:objectId', meta: { redirectName:'relicsetAbility' }, redirect: redirectToLatestCommit },
+    { path: '/modifier-:modifierId/from/relicset-:objectId', meta: { redirectName:'relicsetModifier' }, redirect: redirectToLatestCommit },
+    
+    { path: '/monster-:objectId', meta: { redirectName:'monster' }, redirect: redirectToLatestCommit },
+    { path: '/ability-:abilityId/from/monster-:objectId', meta: { redirectName:'monsterAbility' }, redirect: redirectToLatestCommit },
+    { path: '/modifier-:modifierId/from/monster-:objectId', meta: { redirectName:'monsterModifier' }, redirect: redirectToLatestCommit },
+
+    { path: '/status-:objectId', meta: { redirectName:'status' }, redirect: redirectToLatestCommit },
+    { path: '/ability-:abilityId/from/status-:objectId', meta: { redirectName:'statusAbility' }, redirect: redirectToLatestCommit },
+    { path: '/modifier-:modifierId/from/status-:objectId', meta: { redirectName:'statusModifier' }, redirect: redirectToLatestCommit },
+
+    { path: '/su-blessing-:objectId', meta: { redirectName:'rogueBuff' }, redirect: redirectToLatestCommit },
+    { path: '/ability-:abilityId/from/su-blessing-:objectId', meta: { redirectName:'rogueBuffAbility' }, redirect: redirectToLatestCommit },
+    { path: '/modifier-:modifierId/from/su-blessing-:objectId', meta: { redirectName:'rogueBuffModifier' }, redirect: redirectToLatestCommit },
+
+    { path: '/ability-:abilityId', meta: { redirectName:'ability' }, redirect: redirectToLatestCommit },
+    { path: '/modifier-:modifierId', meta: { redirectName:'modifier' }, redirect: redirectToLatestCommit },
+
+    { path: '/:pathMatch(.*)*', redirect:'/', },
 ]
 
 const router = createRouter({ 
