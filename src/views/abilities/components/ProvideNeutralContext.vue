@@ -5,21 +5,21 @@
 
   const props = defineProps<{commitId:string, abilityRouteName?:string, modifierRouteName?:string}>()
   
-  const expressionContext = ref<ExpressionContext>(await getexpressionContext())
+  const expressionContext = ref<ExpressionContext>(await getExpressionContext())
   const taskContext = ref<TaskContext>(await getTaskContext(props.commitId, TaskContextType.All))
 
   watch(props, async () => 
   {
-    expressionContext.value = await getexpressionContext()
+    expressionContext.value = await getExpressionContext()
     taskContext.value = await getTaskContext(props.commitId, TaskContextType.All)
   })
 
-  async function getexpressionContext()
+  async function getExpressionContext()
   {
     const context:ExpressionContext = 
     {
       Params: {},
-      AbilityValues: {},
+      AbilityHashValues: {},
       AbilityDynamicValues: {},
     }
     return context

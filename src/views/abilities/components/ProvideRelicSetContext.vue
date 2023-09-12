@@ -6,26 +6,28 @@
 
   const props = defineProps<{commitId:string, objectId:number}>()
   
-  const expressionContext = ref<ExpressionContext>(await getexpressionContext())
+  const expressionContext = ref<ExpressionContext>(await getExpressionContext())
   const taskContext = ref<TaskContext>(await getTaskContext(props.commitId, TaskContextType.RelicSet))
   
   watch(props, async () => 
   {
-    expressionContext.value = await getexpressionContext()
+    expressionContext.value = await getExpressionContext()
     taskContext.value = await getTaskContext(props.commitId, TaskContextType.RelicSet)
   })
 
-  async function getexpressionContext()
+  async function getExpressionContext()
   {
     const relicSet = await getRelicSet(props.commitId, props.objectId)
     const context:ExpressionContext = 
     {
       Params: {},
-      AbilityValues: {},
+      AbilityHashValues: {},
       AbilityDynamicValues: {},
     }
+    
     for (const skill of Object.values(relicSet.Skills))
       context.Params[`${skill.SetID}_${skill.RequireNum}`] = skill.AbilityParamList
+
     return context
   }
   

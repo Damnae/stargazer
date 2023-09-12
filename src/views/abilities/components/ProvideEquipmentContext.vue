@@ -6,16 +6,16 @@
 
   const props = defineProps<{commitId:string, objectId:number}>()
   
-  const expressionContext = ref<ExpressionContext>(await getexpressionContext())
+  const expressionContext = ref<ExpressionContext>(await getExpressionContext())
   const taskContext = ref<TaskContext>(await getTaskContext(props.commitId, TaskContextType.Equipment))
 
   watch(props, async () => 
   {
-    expressionContext.value = await getexpressionContext()
+    expressionContext.value = await getExpressionContext()
     taskContext.value = await getTaskContext(props.commitId, TaskContextType.Equipment)
   })
 
-  async function getexpressionContext()
+  async function getExpressionContext()
   {
     const equipment = await getEquipment(props.commitId, props.objectId)
     const context:ExpressionContext = 
@@ -24,7 +24,7 @@
       {
         "": equipment.Skill.ParamList
       },
-      AbilityValues: {},
+      AbilityHashValues: {},
       AbilityDynamicValues: {},
     }
     return context

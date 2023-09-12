@@ -6,20 +6,20 @@
   import { getTaskContext, TaskContext, TaskContextType, } from '@/sources/ability';
   import { ExpressionContext, } from '@/sources/gamecore';
 
-  import { buildAbilityValues, } from './helper'
+  import { buildAbilityHashValues, } from './helper'
 
   const props = defineProps<{commitId:string, objectId:number}>()
   
-  const expressionContext = ref<ExpressionContext>(await getexpressionContext())
+  const expressionContext = ref<ExpressionContext>(await getExpressionContext())
   const taskContext = ref<TaskContext>(await getTaskContext(props.commitId, TaskContextType.Avatar))
 
   watch(props, async () => 
   {
-    expressionContext.value = await getexpressionContext()
+    expressionContext.value = await getExpressionContext()
     taskContext.value = await getTaskContext(props.commitId, TaskContextType.Avatar)
   })
 
-  async function getexpressionContext()
+  async function getExpressionContext()
   {
     const avatar = await getAvatar(props.commitId, props.objectId)
     const avatarSkills = await getAvatarSkillsByIds(props.commitId, avatar.SkillList)
@@ -28,15 +28,12 @@
     const context:ExpressionContext = 
     {
       Params: {},
-      AbilityValues: buildAbilityValues(character, avatarSkills),
+      AbilityHashValues: buildAbilityHashValues(character, avatarSkills),
       DynamicValues: character.DynamicValues,
       AbilityDynamicValues: {},
     }
 
-    // SkillMaze
-    // TODO
-
-    // Skill* and PassiveSKill*
+    // SkillMaze, Skill* and PassiveSKill*
     for (const skill of avatarSkills)
       if (skill.SkillTriggerKey)
         context.Params[skill.SkillTriggerKey] = skill.ParamList

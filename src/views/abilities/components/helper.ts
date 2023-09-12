@@ -2,7 +2,7 @@ import { Character } from "@/sources/character"
 import { HashValues } from "@/sources/gamecore"
 import { CreatureSkill } from "@/sources/skill"
 
-export function buildAbilityValues(character:Character, skills:CreatureSkill[]) : HashValues
+export function buildAbilityHashValues(character:Character, skills:CreatureSkill[]) : HashValues
 {
   const values:HashValues = {}
   for (const skillEntry of character.SkillAbilityList)

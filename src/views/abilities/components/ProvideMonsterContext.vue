@@ -5,20 +5,20 @@
   import { getCharacterByMonster, } from '@/sources/character';
   import { getTaskContext, TaskContext, TaskContextType, } from '@/sources/ability';
   import { ExpressionContext, } from '@/sources/gamecore';
-  import { buildAbilityValues } from './helper';
+  import { buildAbilityHashValues } from './helper';
 
   const props = defineProps<{commitId:string, objectId:number}>()
   
-  const expressionContext = ref<ExpressionContext>(await getexpressionContext())
+  const expressionContext = ref<ExpressionContext>(await getExpressionContext())
   const taskContext = ref<TaskContext>(await getTaskContext(props.commitId, TaskContextType.Monster))
 
   watch(props, async () => 
   {
-    expressionContext.value = await getexpressionContext()
+    expressionContext.value = await getExpressionContext()
     taskContext.value = await getTaskContext(props.commitId, TaskContextType.Monster)
   })
 
-  async function getexpressionContext()
+  async function getExpressionContext()
   {
     const monster = await getMonster(props.commitId, props.objectId)
     const monsterSkills = await getMonsterSkillsByIds(props.commitId, monster.SkillList)
@@ -27,7 +27,7 @@
     const context:ExpressionContext = 
     {
       Params: {},
-      AbilityValues: buildAbilityValues(character, monsterSkills),
+      AbilityHashValues: buildAbilityHashValues(character, monsterSkills),
       DynamicValues: character.DynamicValues,
       AbilityDynamicValues: {},
     }

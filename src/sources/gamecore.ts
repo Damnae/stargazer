@@ -51,21 +51,13 @@ export interface GamecoreTargetType extends GamecoreTask
 
 // Context
 
-export interface HashValues
-{
-  [abilityId:string]:
-  {
-    [hash:number]:number
-  }
-}
-
 export interface ExpressionContext
 {
   Params: 
   {
     [key:string]:GamecoreParam[]
   }
-  AbilityValues:HashValues
+  AbilityHashValues:HashValues
   DynamicValues?:DynamicValues
   AbilityDynamicValues: 
   {
@@ -75,13 +67,11 @@ export interface ExpressionContext
   ModifierId?:string
 }
 
-export interface ExpressionContextDynamicValues
+export interface HashValues
 {
-  [hash: number]: 
+  [abilityId:string]:
   {
-    Name?: string
-    Value: number
-    From: string
+    [hash:number]:number
   }
 }
 
@@ -140,7 +130,7 @@ export function evaluateDynamicExpression(expression?:DynamicExpression, context
               variable = explainDynamicValue(dynamicValue, context.Params) ?? variable
             else if (context.AbilityId)
             {
-              const value = context.AbilityValues[context.AbilityId]?.[hash]
+              const value = context.AbilityHashValues[context.AbilityId]?.[hash]
               if (value)
                 variable = cleanupNumber(value)
             }
