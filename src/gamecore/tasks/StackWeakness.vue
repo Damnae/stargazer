@@ -1,0 +1,38 @@
+<script setup lang="ts">
+  import { GamecoreTask, 
+    GamecoreTargetType, evaluateTargetType, 
+  } from '@/sources/gamecore';
+  import BlockLayout from '@/components/BlockLayout.vue';
+
+  const props = defineProps<{node:GamecoreTask}>()
+  const node = props.node as unknown as 
+  {
+    TargetType?:GamecoreTargetType
+    OPType:string
+    WeakList:string[]
+  }
+</script>
+
+<template>
+  <BlockLayout :source="node">
+
+    <template v-if="node.OPType">
+      Make
+      <template v-if="node.TargetType">
+        <em>{{ evaluateTargetType(node.TargetType) }}</em>
+      </template>
+      {{ node.OPType }} to <em>{{ node.WeakList.join(', ') }}</em>
+    </template>
+    <template v-else>
+      Reset 
+      <template v-if="node.TargetType">
+        <em>{{ evaluateTargetType(node.TargetType) }}</em>'s
+      </template>
+      weaknesses
+    </template>
+
+  </BlockLayout>
+</template>
+
+<style scoped>
+</style>

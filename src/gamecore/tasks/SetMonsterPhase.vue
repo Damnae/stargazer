@@ -8,20 +8,15 @@
   const node = props.node as unknown as 
   {
     TargetType?:GamecoreTargetType
-    UniqueEffectName:string
+    PhaseNum:number
   }
 </script>
 
 <template>
-  <BlockLayout :source="node" :cosmetic="true">
-   
-    Create visual effect 
-    <template v-if="node.UniqueEffectName">
-      <em>{{ node.UniqueEffectName }}</em>
-    </template>
-    <template v-if="node.TargetType">
-      at <em>{{ evaluateTargetType(node.TargetType) }}</em>
-    </template>
+  <BlockLayout :source="node">
+    
+    Change <em>{{ evaluateTargetType(node.TargetType) }}</em>'s phase
+    to <em>{{ node.PhaseNum }}</em>
 
   </BlockLayout>
 </template>

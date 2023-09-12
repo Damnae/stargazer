@@ -8,20 +8,18 @@
   const node = props.node as unknown as 
   {
     TargetType?:GamecoreTargetType
-    UniqueEffectName:string
+    TeamType:string
+    Type:string
   }
 </script>
 
 <template>
-  <BlockLayout :source="node" :cosmetic="true">
-   
-    Create visual effect 
-    <template v-if="node.UniqueEffectName">
-      <em>{{ node.UniqueEffectName }}</em>
-    </template>
+  <BlockLayout :source="node">
+
     <template v-if="node.TargetType">
-      at <em>{{ evaluateTargetType(node.TargetType) }}</em>
+      <em>{{ evaluateTargetType(node.TargetType) }}</em>
     </template>
+    is located <em>{{ node.Type }}</em> of <em>{{ node.TeamType }}</em>
 
   </BlockLayout>
 </template>

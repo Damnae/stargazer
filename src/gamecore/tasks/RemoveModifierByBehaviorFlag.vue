@@ -8,19 +8,16 @@
   const node = props.node as unknown as 
   {
     TargetType?:GamecoreTargetType
-    UniqueEffectName:string
+    ModifierBehaviorFlags:string[]
   }
 </script>
 
 <template>
-  <BlockLayout :source="node" :cosmetic="true">
-   
-    Create visual effect 
-    <template v-if="node.UniqueEffectName">
-      <em>{{ node.UniqueEffectName }}</em>
-    </template>
+  <BlockLayout :source="node">
+
+    Remove modifiers with flag <em>{{ node.ModifierBehaviorFlags.join(', ') }}</em>
     <template v-if="node.TargetType">
-      at <em>{{ evaluateTargetType(node.TargetType) }}</em>
+      from <em>{{ evaluateTargetType(node.TargetType) }}</em>
     </template>
 
   </BlockLayout>

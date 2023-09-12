@@ -7,21 +7,21 @@
   const props = defineProps<{node:GamecoreTask}>()
   const node = props.node as unknown as 
   {
-    TargetType?:GamecoreTargetType
-    UniqueEffectName:string
+    PerformerType:GamecoreTargetType
+    TargetType:string
   }
 </script>
 
 <template>
   <BlockLayout :source="node" :cosmetic="true">
    
-    Create visual effect 
-    <template v-if="node.UniqueEffectName">
-      <em>{{ node.UniqueEffectName }}</em>
+    <template v-if="node.PerformerType">
+      Have <em>{{ evaluateTargetType(node.PerformerType) }}</em> look
     </template>
-    <template v-if="node.TargetType">
-      at <em>{{ evaluateTargetType(node.TargetType) }}</em>
+    <template v-else>
+      Look
     </template>
+    at <em>{{ node.TargetType }}</em>
 
   </BlockLayout>
 </template>

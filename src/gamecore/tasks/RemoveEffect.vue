@@ -8,13 +8,20 @@
   const node = props.node as unknown as 
   {
     TargetType?:GamecoreTargetType
+    UniqueEffectName:string
   }
 </script>
 
 <template>
   <BlockLayout :source="node" :cosmetic="true">
    
-    Remove visual effect from <em>{{ evaluateTargetType(node.TargetType) }}</em>
+    Remove visual effect
+    <template v-if="node.UniqueEffectName">
+      <em>{{ node.UniqueEffectName }}</em>
+    </template>
+    <template v-if="node.TargetType">
+      from <em>{{ evaluateTargetType(node.TargetType) }}</em>
+    </template>
 
   </BlockLayout>
 </template>
