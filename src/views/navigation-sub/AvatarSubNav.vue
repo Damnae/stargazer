@@ -1,5 +1,6 @@
 <script setup lang="ts">
   import { ref, watchEffect, } from 'vue'
+  import { cleanupMarkup } from '@/common/common';
   import { getAvatar, type Avatar, } from '@/sources/avatar';
   import { TaskContextType } from '@/sources/ability';
   import { getAvatarSkillsByIds, AvatarSkill, } from '@/sources/avatarskill';
@@ -51,6 +52,12 @@
                 <RouterLink :to="{ name:'avatarAbility', params:{ commitId: commitId, objectId: objectId, abilityId: slotProps.ability }}">
                   {{ slotProps.ability }}
                 </RouterLink>
+              </template>
+              <template #footer>
+                {{ cleanupMarkup(skill.SimpleSkillDesc.Text) }}
+                <span v-if="skill.SPBase?.Value" class="oneline">
+                  (+{{ skill.SPBase.Value }} Energy)
+                </span>
               </template>
             </CharacterSkillAbilitiesNav>
           </NavItem>

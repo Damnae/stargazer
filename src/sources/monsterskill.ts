@@ -6,6 +6,7 @@ import { CreatureSkill } from './skill';
 export interface MonsterSkill extends CreatureSkill
 {
     PhaseList: string[]
+    SPHitBase?: { Value:number }
 }
 
 export interface MonsterSkillConfig

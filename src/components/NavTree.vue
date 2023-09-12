@@ -32,6 +32,9 @@
       </template>
     </Suspense>
   </ul>
+  <div v-if="$slots.footer && isOpen" class="navfooter">
+    <slot name="footer" />
+  </div>
 </template>
 
 <style scoped>

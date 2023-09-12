@@ -214,3 +214,7 @@ nav.panel
 {
   color:grey;
 }
+.oneline
+{
+  white-space: nowrap;
+}

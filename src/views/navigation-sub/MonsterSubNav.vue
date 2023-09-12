@@ -1,5 +1,6 @@
 <script setup lang="ts">
   import { ref, watchEffect, } from 'vue'
+  import { cleanupMarkup } from '@/common/common';
   import { getMonster, type Monster, } from '@/sources/monster.ts';
   import { getMonsterSkillsByIds, MonsterSkill, } from '@/sources/monsterskill';
   import { getCharacterByMonster, Character } from '@/sources/character';
@@ -51,6 +52,12 @@
                 <RouterLink :to="{ name:'monsterAbility', params:{ commitId: commitId, objectId: objectId, abilityId: slotProps.ability }}">
                   {{ slotProps.ability }}
                 </RouterLink>
+              </template>
+              <template #footer>
+                {{ cleanupMarkup(skill.SkillDesc.Text) }}
+                <span v-if="skill.SPHitBase?.Value" class="oneline">
+                  (+{{ skill.SPHitBase.Value }} Energy on hit)
+                </span>
               </template>
             </CharacterSkillAbilitiesNav>
           </NavItem>

@@ -6,7 +6,14 @@ import { CreatureSkill } from './skill';
 export interface AvatarSkill extends CreatureSkill
 {
     RatedSkillTreeID: [],
-    RatedRankID: []
+    RatedRankID: [],
+    SPBase?: { Value: number },
+    SPMultipleRatio?: { Value: number },
+    BPNeed?: { Value: number },
+    BPAdd?: { Value: number },
+    DelayRatio?: { Value: number },
+    SkillComboValueDelta?: { Value: number },
+    SkillNeed?: { Hash: number },
 }
 
 export interface AvatarSkillRanks

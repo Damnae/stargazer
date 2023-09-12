@@ -31,6 +31,9 @@
         <slot :ability="ability" />
       </span>
     </NavItem>
+    <template #footer>
+      <slot name="footer" />
+    </template>
   </NavTree>
 </template>
 
