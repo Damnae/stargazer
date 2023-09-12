@@ -24,6 +24,7 @@ export default defineConfig(async ({ command, mode, ssrBuild }) =>
     },
     build: 
     {
+      target: 'es2022',
       rollupOptions: 
       {
         output: 
