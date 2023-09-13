@@ -13,9 +13,22 @@ export interface Monster extends Creature
     MonsterName: Translatable
     SkillList: [ id: number]
     DynamicValues?: DynamicValues // Seem always empty
-    CustomValueTags: [ name: string]
-    AbilityNameList: [ name: string]
+    CustomValues: 
+    [
+        {
+            COJNNIIOEAK:string // Property
+            MBOHKHKHFPD:string // Value
+        }
+    ]
+    CustomValueTags: [ name: string ]
+    AbilityNameList: [ name: string ]
     OverrideAIPath: string
+    OverrideAISkillSequence?:
+    [
+        {
+            CKFOCMJDLGG: number // Value
+        }
+    ]
     SearchKeywords: string[]
 }
 
@@ -29,6 +42,12 @@ export interface MonsterTemplate
     MonsterName: Translatable
     JsonConfig: string
     AIPath: string
+    AISkillSequence?:
+    [
+        {
+            CKFOCMJDLGG: number // Value
+        }
+    ]
 }
 
 export interface MonsterCamp

@@ -17,7 +17,7 @@
         component.value = MonsterAI
         break;
       default: 
-        component.value = null
+        component.value = undefined
         break;
     }
   }, 
