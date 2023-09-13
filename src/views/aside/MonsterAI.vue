@@ -25,7 +25,7 @@
   {
     loading.value = true
     monster.value = await getMonster(commitId, objectId.value)
-    character.value = await getCharacterByMonster(commitId, monster.value)
+    character.value = monster.value ? await getCharacterByMonster(commitId, monster.value) : undefined
     characterAI.value = monster.value ? await getCharacterAIByMonster(commitId, monster.value) : undefined
     skillSequence.value = await getSkillSequence(monster.value)
     loading.value = false
