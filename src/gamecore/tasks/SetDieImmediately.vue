@@ -14,7 +14,12 @@
 <template>
   <BlockLayout :source="node">
     
-    Have <em>{{ evaluateTargetType(node.TargetType) }}</em> die immediately
+    <template v-if="node.TargetType">
+      Have <em>{{ evaluateTargetType(node.TargetType) }}</em> die immediately
+    </template>
+    <template v-else>
+      Die immediately
+    </template>
 
   </BlockLayout>
 </template>

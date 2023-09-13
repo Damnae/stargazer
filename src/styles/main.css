@@ -144,8 +144,7 @@ button:focus-visible {
   border-bottom: 1px solid #000;
   position: relative;
 }
-main.panel, 
-aside.panel 
+main.panel
 {
   flex-grow: 1;
   flex-shrink: 1;
@@ -160,15 +159,24 @@ aside h1:first-child
   text-overflow: ellipsis;
   word-break: break-all;
 }
-main.panel
+main.panel,
+aside.panel
 {
   display:flex;
   flex-direction: column;
 }
-main.panel section
+main.panel section,
+aside.panel section
 {
   overflow: auto scroll;
   scrollbar-width: thin;
+}
+
+aside.panel
+{
+  width:25rem;
+  flex-grow:0;
+  flex-shrink:0;
 }
 
 nav.panel 

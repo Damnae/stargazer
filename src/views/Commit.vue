@@ -2,6 +2,7 @@
   import { onErrorCaptured, provide, ref } from 'vue'
   import LoadingTitle from '@/components/LoadingTitle.vue';
   import CommitNav from '@/views/navigation-main/CommitNav.vue'
+  import CommitAside from '@/views/aside/CommitAside.vue';
 
   const props = defineProps<{commitId:string}>()
   provide<string>('commitId', props.commitId)
@@ -15,6 +16,7 @@
 
 <template>
   <div class="commit-layout" :key="commitId">
+    
     <CommitNav>
       <RouterView name="subnav" v-slot="{ Component }">
         <Transition name="fade">
@@ -36,6 +38,8 @@
       </template>
     </RouterView>
     <LoadingTitle v-else :message="errorMessage" />
+
+    <CommitAside />
 
   </div>
 </template>

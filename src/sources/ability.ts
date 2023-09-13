@@ -138,6 +138,7 @@ export interface TaskContext
 
 export enum TaskContextType
 {
+  Empty = 'Empty',
   All = 'All',
   Avatar = 'Avatar',
   Monster = 'Monster',
@@ -294,6 +295,12 @@ const contextTypeToPaths =
     [
       'Config/ConfigGlobalTaskListTemplate/GlobalTaskListTemplate.json',
     ],
+  },
+  Empty: 
+  {
+    Abilities: [],
+    Modifiers: [],
+    TaskListTemplates: [],
   },
   All: 
   {

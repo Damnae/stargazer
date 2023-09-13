@@ -111,7 +111,7 @@ export async function getMonsters(commitId:string) : Promise<MonsterConfig>
     })
 }
 
-export async function getMonster(commitId:string, avatarId:number) : Promise<Monster>
+export async function getMonster(commitId:string, monsterId:number) : Promise<Monster>
 {
-    return (await getMonsters(commitId))[avatarId]
+    return (await getMonsters(commitId))[monsterId]
 }

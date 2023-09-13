@@ -20,6 +20,8 @@
   border: 1px solid grey;
   padding:.5em;
   background-color: black;
+  overflow-x: auto;
+  scrollbar-width: thin;
 }
 
 .block .flow,
