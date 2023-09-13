@@ -43,7 +43,7 @@ import RogueBuffNav from './RogueBuffNav.vue'
   <nav class="panel">
 
     <section class="mainnav">
-      <input v-model.trim="search" placeholder="Search" />
+      <input type="search" v-model.trim="search" placeholder="Search" />
       <NavTabs :tabs="Object.keys(tabs)" v-model:selected="selectedTab" />
       <NavTree :forceOpen="forceNavigationOpen">
 
