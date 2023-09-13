@@ -20,7 +20,8 @@
         component.value = null
         break;
     }
-  }, { immediate:true })
+  }, 
+  { immediate:true })
 </script>
 
 <template>
