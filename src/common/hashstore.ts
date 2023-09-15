@@ -1,7 +1,8 @@
 import { reactive, } from 'vue'
 import { getHash } from './translate'
 
-const hashToName = reactive<{[key:number]:string}>({
+const defaultHashes:{[key:number]:string} = 
+{
   "2612209": "DebuffNumber",
   "2621308": "Hana",
   "14492765": "MyHPRatio",
@@ -2091,7 +2092,22 @@ const hashToName = reactive<{[key:number]:string}>({
   "-1887634840": "Enfim, só falta mais uma etapa no meu plano de treinamento. Vamos lá, pessoal, me ajudem a chegar finalizar!",
   "-1080326082": "Thì ra chú em còn có bản lĩnh này... Quả nhiên tôi vẫn chưa hiểu rõ em ấy.",
   "-1152877744": "Prueba del Siempreinvierno VI"
-})
+}
+
+const hashToName = reactive<{[key:number]:string}>({})
+{
+    const hashData = localStorage.getItem("hashes")
+    if (hashData) 
+    {
+        const loadedHashes = JSON.parse(hashData)
+        for (const name of loadedHashes)
+        {
+            const hash = getHash(name)
+            if (!(hash in defaultHashes))
+                hashToName[hash] = name
+        }
+    }
+}
 let dirty = false
 
 export default function useHashStore() 
@@ -2099,10 +2115,10 @@ export default function useHashStore()
   function register(name:string, autoCommit:boolean) : void
   {
     const hash = getHash(name)
-    if (hash in hashToName)
+    if (hash in hashToName || hash in defaultHashes)
       return;
 
-    //console.log(`registered ${hash} to ${name}`)
+    //console.log(`found hash ${hash} is ${name}`)
 
     hashToName[hash] = name
     dirty = true
@@ -2113,7 +2129,7 @@ export default function useHashStore()
 
   function translate(hash:number) : string | undefined
   {
-    return hashToName[hash]
+    return hashToName[hash] ?? defaultHashes[hash]
   }
 
   function commit()
@@ -2121,7 +2137,7 @@ export default function useHashStore()
     if (dirty)
     {
       dirty = false
-
+      localStorage.setItem("hashes", JSON.stringify(Object.values(hashToName)))
     }
   }
 
