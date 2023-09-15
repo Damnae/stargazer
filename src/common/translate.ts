@@ -41,7 +41,7 @@ export function getHash(key:string) : number
         break;
       hash2 = Math.imul((hash2 << 5) + hash2, 1) ^ key.charCodeAt(i + 1);
     }
-    return hash1 + Math.imul(hash2, 1566083941);
+    return Math.imul(hash1 + Math.imul(hash2, 1566083941), 1);
 }
 
 const pathInternalNameToHash:{[key:string]: number} = 
