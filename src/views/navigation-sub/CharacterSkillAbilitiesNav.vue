@@ -10,7 +10,7 @@
   watchEffect(() =>
   {
     abilities.value = []
-    if (props.character)
+    if (props.character?.SkillAbilityList)
       for (const sa of props.character.SkillAbilityList)
         if (sa.Skill == props.skillTriggerKey)
         {

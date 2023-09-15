@@ -16,9 +16,10 @@
     const mods:string[] = []
     if (props.character)
     {
-      for (const skillEntry of props.character.SkillAbilityList)
-        for (const abilityName of skillEntry.AbilityList)
-          addModifierNamesFromAbility(mods, taskContext.Abilities[abilityName])
+      if (props.character.SkillAbilityList)
+        for (const skillEntry of props.character.SkillAbilityList)
+          for (const abilityName of skillEntry.AbilityList)
+            addModifierNamesFromAbility(mods, taskContext.Abilities[abilityName])
 
       for (const abilityName of props.character.AbilityList)
           addModifierNamesFromAbility(mods, taskContext.Abilities[abilityName])

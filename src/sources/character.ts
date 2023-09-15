@@ -33,7 +33,7 @@ export interface Character
 {
     SkillList: CharacterSkill[]
     AbilityList: string[]
-    SkillAbilityList: 
+    SkillAbilityList?: 
     [
         {
             Skill: string
