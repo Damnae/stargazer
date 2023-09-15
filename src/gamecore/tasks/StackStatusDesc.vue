@@ -9,7 +9,7 @@
   const props = defineProps<{node:GamecoreTask}>()
   const node = props.node as unknown as 
   {
-    TextID:Translatable
+    TextID?:Translatable
   }
 
   const commitId = inject('commitId') as string
@@ -19,7 +19,7 @@
 <template>
   <BlockLayout :source="node" :cosmetic="true">
    
-    Change the status description to "{{ cleanupMarkup(node.TextID.Text) }}"
+    Change the status description to "{{ cleanupMarkup(node.TextID?.Text) }}"
 
   </BlockLayout>
 </template>
