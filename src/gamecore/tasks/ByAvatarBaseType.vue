@@ -1,4 +1,6 @@
 <script setup lang="ts">
+  import { inject } from 'vue';
+  import { translatePath } from '@/common/translate';
   import { GamecoreTask, 
     GamecoreTargetType, evaluateTargetType, 
   } from '@/sources/gamecore';
@@ -9,14 +11,21 @@
   {
     TargetType?:GamecoreTargetType
     BaseTypeList:string[]
+
+    TranslatedBaseTypeList:string[]
   }
+
+  const commitId = inject('commitId') as string
+  node.TranslatedBaseTypeList = []
+  for (const baseType of node.BaseTypeList)
+    node.TranslatedBaseTypeList.push(await translatePath(commitId, baseType))
 </script>
 
 <template>
   <BlockLayout :source="node">
     
     <em>{{ evaluateTargetType(node.TargetType) }}</em>
-    is on the <em>{{ node.BaseTypeList.join(', ') }}</em> path
+    is on the <em>{{ node.TranslatedBaseTypeList.join(', ') }}</em> path
 
   </BlockLayout>
 </template>
