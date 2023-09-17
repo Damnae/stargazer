@@ -14,7 +14,7 @@ export interface Status
     ModifierName: string
     StatusType: string
     CanDispel: boolean
-    ReadParamList: string[]
+    ReadParamList:string[]
     SearchKeywords:string[]
 }
 

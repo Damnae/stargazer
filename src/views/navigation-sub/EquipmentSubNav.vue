@@ -1,6 +1,7 @@
 <script setup lang="ts">
   import { ref, watchEffect, } from 'vue'
-  import { cleanupMarkup, cleanupNumber } from '@/common/common';
+  import { cleanupNumber } from '@/common/common';
+  import { evaluateDescription } from '@/sources/gamecore';
   import { getEquipment, Equipment, } from '@/sources/equipment';
   import NavTree from '@/components/NavTree.vue'
   import NavItem from '@/components/NavItem.vue'
@@ -19,18 +20,6 @@
 
     equipment.value.Skill.ParamList
   })
-
-  function evaluateDescription(equipment:Equipment) : string
-  {
-    if (equipment.Skill)
-    {
-      let description = equipment.Skill.SkillDesc.Text
-      for (const [index, param] of equipment.Skill.ParamList.entries())
-        description = description.replace(`#${index + 1}[i]`, cleanupNumber(param.Value))
-      return cleanupMarkup(description)
-    }
-    return ''
-  }
 </script>
 
 <template>
@@ -60,7 +49,7 @@
       <div v-for="property in equipment.Skill.AbilityProperty">
         {{ property.PropertyType }}: {{ cleanupNumber(property.Value?.Value) }}
       </div>
-      <span class="minor">{{ evaluateDescription(equipment) }}</span>
+      <span class="minor">{{ evaluateDescription(equipment.Skill?.SkillDesc.Text, equipment.Skill?.ParamList) }}</span>
     </p>
   </div>
 </template>

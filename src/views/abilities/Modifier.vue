@@ -1,6 +1,6 @@
 <script setup lang="ts">
   import { inject, ref, computed, watch, Ref, } from 'vue'
-  import { ExpressionContext, GamecoreTask, evaluateTargetType } from '@/sources/gamecore';
+  import { ExpressionContext, GamecoreTask, evaluateDescriptionString, evaluateTargetType } from '@/sources/gamecore';
   import { Modifier, TaskContext, } from '@/sources/ability';
   import { Status, getStatuses } from '@/sources/status';
   import useHashStore from '@/common/hashstore';
@@ -72,14 +72,6 @@
   }, 
   { immediate:true, })
 
-  function evaluateStatusDescription(status:Status) : string
-  {
-    let description = status.StatusDesc.Text
-    for (const [index, param] of status.ReadParamList.entries())
-      description = description.replace(`#${index + 1}[i]`, param)
-    return description
-  }
-
   function getEventNames(modifier?:Modifier) : string[]
   {
     if (!modifier)
@@ -114,7 +106,7 @@
             </em>
           </span>
           <template #content>
-            <span class="minor">{{ evaluateStatusDescription(status) }}</span>
+            <span class="minor">{{ evaluateDescriptionString(status.StatusDesc.Text, status.ReadParamList) }}</span>
           </template>
         </BlockLayout>
       </template>

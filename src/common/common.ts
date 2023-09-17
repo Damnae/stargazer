@@ -23,7 +23,6 @@ export function cleanupMarkup(value?:string) : string
     return value
         .replace(/(<([^>]+)>)/gi, "")
         .replace(/\\n/gi, " ")
-        .replace(/%/gi, "×")
 }
 
 export function cleanupTaskName(value: string) 
@@ -36,12 +35,11 @@ export function cleanupTaskName(value: string)
 
 export function cleanupFilename(path:string) : string
 {
-    if (path)
-    {
-        var filename = path.split('/').pop();
-        return filename?.substring(0, filename.lastIndexOf('.')) ?? ''
-    }
-    return ''
+    if (!path)
+        return ''
+
+    var filename = path.split('/').pop();
+    return filename?.substring(0, filename.lastIndexOf('.')) ?? ''
 }
 
 export function taskTypeToComponentName(value: string) 

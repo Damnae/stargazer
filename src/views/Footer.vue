@@ -14,7 +14,6 @@
     commitId.value = newId
     latestCommitId.value = await getLatestCommitId() ?? ''
   })
-
 </script>
 
 <template>

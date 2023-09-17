@@ -37,7 +37,8 @@ const missingAvatarSkill:AvatarSkill =
     SkillTriggerKey: '',
     RatedSkillTreeID: [],
     RatedRankID: [],
-    ParamList: [ { Value: 0, }],
+    ParamList: [],
+    SimpleParamList: [],
     ShowStanceList: []
 }
 

@@ -1,4 +1,4 @@
-import { cleanupNumber } from '@/common/common'
+import { cleanupMarkup, cleanupNumber, } from '@/common/common'
 import useHashStore from '@/common/hashstore'
 
 export interface DynamicValue
@@ -47,6 +47,7 @@ export interface GamecoreTargetType extends GamecoreTask
 {
   Alias?: string
   Targets?: GamecoreTargetType[]
+  TargetType?:string
 }
 
 // Context
@@ -88,7 +89,36 @@ export function evaluateTargetType(targetType?:GamecoreTargetType) : string
   if (targetType?.Targets)
     return targetType.Targets.map(t => evaluateTargetType(t)).join(', ')
 
+  if (targetType?.TargetType)
+    return targetType.TargetType
+
   return 'unknown'
+}
+
+export function evaluateDescription(description:string, params:GamecoreParam[]) : string
+{
+  if (!description)
+    return ''
+
+  description = description.replace(/%/gi, "×")
+  for (const [index, param] of params.entries())
+  {
+    const value = cleanupNumber(param.Value)
+    description = description
+      .replace(`#${index + 1}[i]`, value)
+      .replace(`#${index + 1}[f1]`, value)
+  }
+  return cleanupMarkup(description)
+}
+export function evaluateDescriptionString(description:string, params:string[]) : string
+{
+  if (!description)
+    return ''
+
+  description = description.replace(/%/gi, "×")
+  for (const [index, param] of params.entries())
+    description = description.replace(`#${index + 1}[i]`, param)
+  return cleanupMarkup(description)
 }
 
 export function evaluateDynamicExpression(expression?:DynamicExpression, context?:ExpressionContext) : string

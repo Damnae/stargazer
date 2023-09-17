@@ -20,6 +20,7 @@ export interface CreatureSkill
   SkillTriggerKey: string
   ShowStanceList?: GamecoreParam[]
   ParamList: GamecoreParam[]
+  SimpleParamList: GamecoreParam[]
 }
 
 // EquipmentSkillConfig.json    

@@ -24,7 +24,8 @@ const missingMonsterSkill:MonsterSkill =
     SimpleSkillDesc: { Hash: 750427067, Text: 'Unknown', },
     SkillTriggerKey: '',
     PhaseList: [],
-    ParamList: [{ Value: 0, }],
+    ParamList: [],
+    SimpleParamList: [],
     ShowStanceList: []
 }
 

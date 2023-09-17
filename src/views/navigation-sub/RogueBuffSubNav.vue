@@ -1,7 +1,7 @@
 <script setup lang="ts">
   import { ref, watchEffect, } from 'vue'
-  import { cleanupMarkup, cleanupNumber } from '@/common/common';
-  import { RogueBuff, RogueBuffRanks, getRogueBuff } from '@/sources/roguebuff';
+  import { evaluateDescription } from '@/sources/gamecore';
+  import { RogueBuffRanks, getRogueBuff } from '@/sources/roguebuff';
   import LoadingNav from '@/components/LoadingNav.vue';
   import NavTree from '@/components/NavTree.vue'
   import NavItem from '@/components/NavItem.vue'
@@ -25,18 +25,6 @@
   function getModifiers(rogueBuffRanks:RogueBuffRanks):string[]
   {
     return [...new Set(Object.values(rogueBuffRanks).map(r => r.MazeBuff.ModifierName))]
-  }
-
-  function evaluateDescription(rogueBuff:RogueBuff) : string
-  {
-    if (rogueBuff.MazeBuff)
-    {
-      let description = rogueBuff.MazeBuff.BuffDesc.Text
-      for (const [index, param] of rogueBuff.MazeBuff.ParamList.entries())
-        description = description.replace(`#${index + 1}[i]`, cleanupNumber(param.Value))
-      return cleanupMarkup(description)
-    }
-    return ''
   }
 </script>
 
@@ -75,7 +63,7 @@
 
     <p v-for="rank, index in Object.values(rogueBuff)" class="minor">
       <h2>Rank {{ index + 1 }}</h2>
-      {{ evaluateDescription(rank) }}
+      {{ evaluateDescription(rank.MazeBuff?.BuffDesc.Text, rank.MazeBuff?.ParamList) }}
     </p>
 
   </div>
