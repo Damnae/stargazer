@@ -118,7 +118,9 @@ export function evaluateDescriptionString(description:string, params:string[]) :
     return ''
 
   for (const [index, param] of params.entries())
-    description = description.replace(`#${index + 1}[i]`, param)
+    description = description
+      .replace(`#${index + 1}[i]`, param)
+      .replace(`#${index + 1}[f1]`, param)
   return cleanupMarkup(description)
 }
 
