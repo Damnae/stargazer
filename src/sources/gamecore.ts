@@ -100,11 +100,13 @@ export function evaluateDescription(description:string, params:GamecoreParam[]) 
   if (!description)
     return ''
 
-  description = description.replace(/%/gi, "×")
   for (const [index, param] of params.entries())
   {
     const value = cleanupNumber(param.Value)
+    const valuePercent = cleanupNumber(param.Value * 100) + '%'
     description = description
+      .replace(`#${index + 1}[i]%`, valuePercent)
+      .replace(`#${index + 1}[f1]%`, valuePercent)
       .replace(`#${index + 1}[i]`, value)
       .replace(`#${index + 1}[f1]`, value)
   }
@@ -115,7 +117,6 @@ export function evaluateDescriptionString(description:string, params:string[]) :
   if (!description)
     return ''
 
-  description = description.replace(/%/gi, "×")
   for (const [index, param] of params.entries())
     description = description.replace(`#${index + 1}[i]`, param)
   return cleanupMarkup(description)
