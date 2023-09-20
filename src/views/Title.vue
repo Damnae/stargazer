@@ -18,10 +18,6 @@
     settings.useCustomRepo = settings.customRepo.length > 0 && !settings.useCustomRepo
     location.reload()
   }
-  function applyToken()
-  {
-    location.reload()
-  }
 </script>
 
 <template>
@@ -45,10 +41,11 @@
           </RouterLink>
         </li>
       </ul>
-      <div class="repos">
-        <input type="text" v-model.trim="settings.customRepo" placeholder="Repository" @keyup.enter="toggleCustomRepo()" />
-        <input type="password" v-model.trim="settings.token" placeholder="Token" @keyup.enter="applyToken()" />
-      </div>
+      <form class="repos" @submit="toggleCustomRepo()">
+        <input type="text" v-model.trim="settings.customRepo" placeholder="Repository" />
+        <input type="password" v-model.trim="settings.token" placeholder="Token" />
+        <input type="submit" />
+      </form>
     </template>
   </section>
 </template>
@@ -94,7 +91,7 @@
   {
     display:flex;
     flex-direction:row;
-    opacity:0;
+    opacity:.25;
     gap: 1rem;
     transition: opacity .2s ease-in;
   }
