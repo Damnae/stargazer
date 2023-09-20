@@ -42,6 +42,34 @@ export function cleanupFilename(path:string) : string
     return filename?.substring(0, filename.lastIndexOf('.')) ?? ''
 }
 
+const agoDivisors = [60, 60, 24, 7, 365 / 7 / 12, 12];
+const agoNames = ['second', 'minute', 'hour', 'day', 'week', 'month', 'year'];
+
+export function toTimeAgo(date:Date|string) : string
+{
+    if (typeof(date) == 'string')
+        date = new Date(date)
+
+    const delta = (+date - +new Date())
+    const isAgo = delta < 0
+    const seconds = Math.abs(delta / 1000)
+
+    let time = seconds
+    let timeIndex = 0
+    while (timeIndex < agoDivisors.length && time > agoDivisors[timeIndex])
+    {
+        time /= agoDivisors[timeIndex]
+        timeIndex++
+    }
+
+    time = Math.floor(time)
+    let timeWord = agoNames[timeIndex]
+    if (time > 1)
+        timeWord += 's'
+
+    return isAgo ? `${time} ${timeWord} ago` : `in ${time} ${timeWord}`
+}
+
 export function taskTypeToComponentName(value: string) 
 {
     var parts = value.split('.');

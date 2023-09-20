@@ -1,4 +1,5 @@
 <script setup lang="ts">
+  import { toTimeAgo } from '@/common/common';
   import { ref, } from 'vue';
   import { retrieveCommits, DataSourceCommit } from '@/common/datasource'
   import useSettings from '@/common/settings';
@@ -32,11 +33,13 @@
         <li v-for="(commitEntry, index) in commitEntries">
           <RouterLink :to="{ name:'commit', params:{ commitId: commitEntry.sha }}">
             <div class="identity">
-              <span class="minor">{{ commitEntry.commit.committer.date.toLocaleString() }}</span>
+              <span class="minor">
+                {{ toTimeAgo(commitEntry.commit.committer.date) }}
+                <span v-if="index == 0" class="major">Latest</span>
+              </span>
               <span class="minor">({{ commitEntry.sha }})</span>
             </div>
             <div class="message">
-              <span v-if="index == 0" class="major">Latest</span>
               {{ commitEntry.commit.message }}
             </div>
           </RouterLink>
