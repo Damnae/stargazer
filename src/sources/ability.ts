@@ -450,19 +450,50 @@ async function getTaskListTemplates(commitId:string, path:string) : Promise<Task
 
 function mergeAbilityConfig(into:TaskContext, from:AbilityConfig)
 {
-  for (const ability of from.AbilityList)
-    into.Abilities[ability.Name] = ability
-  if (from.GlobalModifiers !== undefined)
-    Object.assign(into.Modifiers, from.GlobalModifiers)
+    for (const ability of from.AbilityList)
+    {
+        let nameIndex = 2
+        const originalName = ability.Name
+        while (ability.Name in into.Abilities)
+            ability.Name = `${originalName}#${nameIndex++}`
+
+        into.Abilities[ability.Name] = ability
+    }
+
+    if (from.GlobalModifiers !== undefined)
+        for (const modifier of Object.values(from.GlobalModifiers))
+        {
+            let nameIndex = 2
+            const originalName = modifier.Name
+            while (modifier.Name in into.Abilities)
+                modifier.Name = `${originalName}#${nameIndex++}`
+
+            into.Modifiers[modifier.Name] = modifier
+        }
 }
 
 function mergeModifierConfig(into:TaskContext, from:ModifierConfig)
 {
-  Object.assign(into.Modifiers, from.ModifierMap)
+    for (const modifier of Object.values(from.ModifierMap))
+    {
+        let nameIndex = 2
+        const originalName = modifier.Name
+        while (modifier.Name in into.Abilities)
+            modifier.Name = `${originalName}#${nameIndex++}`
+
+        into.Modifiers[modifier.Name] = modifier
+    }
 }
 
 function mergeTaskListTemplateConfig(into:TaskContext, from:TaskListTemplateConfig)
 {
-  for (const template of from.TaskListTemplate)
-    into.TaskListTemplates[template.Name] = template
+    for (const template of from.TaskListTemplate)
+    {
+        let nameIndex = 2
+        const originalName = template.Name
+        while (template.Name in into.Abilities)
+            template.Name = `${originalName}#${nameIndex++}`
+
+        into.TaskListTemplates[template.Name] = template
+    }
 }
