@@ -24,7 +24,7 @@ body
 
 h1
 {
-  font-weight: lighter;
+  font-weight: 100;
   font-variant: petite-caps;
   padding: 0 .5rem;
   text-align: end;
@@ -41,7 +41,7 @@ nav h1
 }
 h2
 {
-  font-weight: lighter;
+  font-weight: 100;
   font-variant: petite-caps;
   text-shadow: 1px 1px 1px #181818;
   background: linear-gradient(90deg, #181818 0%, #242424 10em);
@@ -62,7 +62,7 @@ h3
   background-color: #181818;
   display: flex;
   align-items: center;
-  font-weight: normal;
+  font-weight: 400;
 }
 
 h3::after
@@ -93,7 +93,7 @@ ul
 }
 
 a {
-  font-weight: 500;
+  font-weight: 400;
   color: rgba(255, 255, 255, 0.87);
   text-decoration: inherit;
 }
@@ -106,7 +106,7 @@ button {
   border: 1px solid transparent;
   padding: 0.6em 1.2em;
   font-size: 1em;
-  font-weight: 500;
+  font-weight: 400;
   font-family: inherit;
   background-color: #1a1a1a;
   cursor: pointer;
