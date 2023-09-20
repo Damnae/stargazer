@@ -1,6 +1,7 @@
 import { openDB, DBSchema } from 'idb'
 import { Mutex, MutexGroup } from './mutex'
 import useSettings from './settings'
+import { ref } from 'vue'
 
 const [settings, _sessionSettings] = useSettings()
 
@@ -70,23 +71,37 @@ async function fetchJson(request:string, commit:string, useApi:boolean)
     {
         const url = `${apiBase}${request}`
         return fetch(url, { headers: getHeaders(), cache: 'force-cache' })
-            .then(response => response.json())
+            .then(processResponse)
             .catch(error => console.log(`fileDB error: ${error}`))
     }
     else if (settings.token.length > 0)
     {
         const url = `${apiBase}contents/${request}?ref=${commit}`
         return fetch(url, { headers: getHeaders('application/vnd.github.raw'), })
-            .then(response => response.json())
+            .then(processResponse)
             .catch(error => console.log(`fileDB error: ${error}`))
     }
     else
     {
         const url = commit ? `${jsonBase}${commit}/${request}` : `${jsonBase}${commit}/${request}`
         return fetch(url, { headers: getHeaders(), })
-            .then(response => response.json())
+            .then(processResponse)
             .catch(error => console.log(`fileDB error: ${error}`))
     }
+}
+
+export const apiRemaining = ref(0)
+export const apiLimit = ref(0)
+
+async function processResponse(response:Response) : Promise<any>
+{
+    const remaining = response.headers.get('x-ratelimit-remaining')
+    if (remaining) apiRemaining.value = parseFloat(remaining)
+
+    const limit = response.headers.get('x-ratelimit-limit')
+    if (limit) apiLimit.value = parseFloat(limit)
+
+    return response.json()
 }
 
 export interface DataSourceCommit
@@ -113,7 +128,7 @@ export async function retrieveCommits() : Promise<DataSourceCommit[]>
             try 
             {
                 const commits = await fetch(apiBase + 'commits', { headers: getHeaders() })
-                    .then(response => response.json()) 
+                    .then(processResponse) 
 
                 for (const c of commits)
                     commitsCache.push(c)

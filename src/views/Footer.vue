@@ -1,9 +1,11 @@
 <script setup lang="ts">
   import { computed, ref, watch, } from 'vue';
   import { useRoute } from 'vue-router'
-  import { getLatestCommitId, } from '@/common/datasource';
+  import { getLatestCommitId, apiRemaining, apiLimit, } from '@/common/datasource';
+  import useSettings from '@/common/settings';
 
   const route = useRoute()
+  const [settings, _sessionSettings] = useSettings()
 
   const commitId = ref(route.params.commitId);
   const latestCommitId = ref('');
@@ -17,7 +19,10 @@
 </script>
 
 <template>
-  <footer>
+  <footer :class="[settings.useCustomRepo ? 'custom' : '']">
+    <span v-if="apiLimit > 0" class="minor">
+      API: {{ apiRemaining }} / {{ apiLimit }}
+    </span>
     <slot />
     <router-link v-if="commitId" :to="{ name:'home' }" class="commitId">
       {{ commitId }}
@@ -38,6 +43,11 @@
     flex-direction: row;
     place-content: center;
     gap: 1rem;
+    overflow: hidden;
+  }  
+  footer span
+  {
+    white-space: nowrap;
   }
   .commitId 
   {
@@ -46,5 +56,11 @@
   .warning 
   {
     color:orangered;
+  }
+  .custom
+  {
+    background:darkblue;
+    padding-bottom:.25rem;
+    border-bottom:.25rem dashed blue;
   }
 </style>
