@@ -44,7 +44,7 @@
       <form class="repos" @submit="toggleCustomRepo()">
         <input type="text" v-model.trim="settings.customRepo" placeholder="Repository" />
         <input type="password" v-model.trim="settings.token" placeholder="Token" />
-        <input type="submit" />
+        <input type="submit" value="Switch" />
       </form>
     </template>
   </section>
@@ -95,12 +95,12 @@
     gap: 1rem;
     transition: opacity .2s ease-in;
   }
-  .repos:hover
+  .repos:hover,
+  .repos:focus
   {
     opacity:1;
     transition: opacity 1.0s ease-in;
   }
-
   .repos input
   {
     flex-grow: 1;
@@ -109,9 +109,5 @@
     background:none;
     color:grey;
     cursor: default;
-  }
-  .repos input:first-child
-  {
-    text-align: right;
   }
 </style>

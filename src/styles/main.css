@@ -164,6 +164,7 @@ aside.panel
 {
   display:flex;
   flex-direction: column;
+  min-width:25rem;
 }
 main.panel section,
 aside.panel section
