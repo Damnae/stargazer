@@ -2,6 +2,7 @@ import { retrieveJson } from '@/common/datasource';
 import { Avatar } from './avatar';
 import { Monster } from './monster';
 import { DynamicValues } from './gamecore';
+import { BattleEvent } from './battleevent';
 
 export interface CharacterSkill
 {
@@ -47,13 +48,20 @@ export interface Character
     DynamicValues?: DynamicValues
 }
 
-export async function getCharacterByAvatar(commitId:string, avatar:Avatar) : Promise<Character>
+export async function getCharacterByAvatar(commitId:string, avatar:Avatar) : Promise<Character|undefined>
 {
     return getCharacter(commitId, avatar.JsonPath)
 }
-export async function getCharacterByMonster(commitId:string, monster:Monster) : Promise<Character>
+export async function getCharacterByMonster(commitId:string, monster:Monster) : Promise<Character|undefined>
 {
     return getCharacter(commitId, monster.MonsterTemplate.JsonConfig)
+}
+
+export async function getCharacterByBattleEvent(commitId:string, battleEvent:BattleEvent) : Promise<Character|undefined>
+{
+    if (!battleEvent.Data?.Config)
+        return undefined
+    return getCharacter(commitId, battleEvent.Data?.Config)
 }
 
 async function getCharacter(commitId:string, path:string) : Promise<Character>

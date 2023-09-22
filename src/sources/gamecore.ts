@@ -47,7 +47,9 @@ export interface GamecoreTargetType extends GamecoreTask
 {
   Alias?: string
   Targets?: GamecoreTargetType[]
+  Sequence?: GamecoreTargetType[]
   TargetType?:string
+  DynamicKey?:string
 }
 
 // Context
@@ -89,8 +91,14 @@ export function evaluateTargetType(targetType?:GamecoreTargetType) : string
   if (targetType?.Targets)
     return targetType.Targets.map(t => evaluateTargetType(t)).join(', ')
 
+  if (targetType?.Sequence)
+    return targetType.Sequence.map(t => evaluateTargetType(t)).join(', ')
+
   if (targetType?.TargetType)
     return targetType.TargetType
+
+  if (targetType?.DynamicKey)
+    return targetType.DynamicKey
 
   return 'unknown'
 }
@@ -247,8 +255,7 @@ function explainDynamicValue(value:DynamicValue, params:{[key:string]:GamecorePa
     const paramValue = cleanupNumber(paramList?.[getIndexFromDynamicValueType(value.ReadInfo.Type)]?.Value)
     if (!paramValue)
       console.log(`param not found: ${value.ReadInfo.Str}[${getIndexFromDynamicValueType(value.ReadInfo.Type)}]`)
-    
-    //paramValue ?? 
+
     return `${value.ReadInfo.Str}(${paramValue})` ??
           `${value.ReadInfo.Str}[${getIndexFromDynamicValueType(value.ReadInfo.Type)}]`
   }

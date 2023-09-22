@@ -29,7 +29,7 @@
     {
       Params: {},
       AbilityHashValues: buildAbilityHashValues(character, avatarSkills),
-      DynamicValues: character.DynamicValues,
+      DynamicValues: character?.DynamicValues,
       AbilityDynamicValues: {},
     }
 

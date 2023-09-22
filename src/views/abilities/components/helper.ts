@@ -2,10 +2,10 @@ import { Character } from "@/sources/character"
 import { HashValues } from "@/sources/gamecore"
 import { CreatureSkill } from "@/sources/skill"
 
-export function buildAbilityHashValues(character:Character, skills:CreatureSkill[]) : HashValues
+export function buildAbilityHashValues(character?:Character, skills?:CreatureSkill[]) : HashValues
 {
   const values:HashValues = {}
-  if (character.SkillAbilityList)
+  if (character?.SkillAbilityList && skills)
     for (const skillEntry of character.SkillAbilityList)
     {
       const skill = findSkill(skillEntry.Skill, skills)

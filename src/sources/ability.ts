@@ -244,6 +244,8 @@ const contextTypeToPaths =
       'Config/ConfigAbility/StageBattleEventAbility.json',
       'Config/ConfigAbility/BattleEvent',
       //'Config/ConfigAbility/BattleEvent/Camera',
+      'Config/ConfigAbility/Avatar',
+      'Config/ConfigAbility/Monster',
     ],
     Modifiers:
     [
@@ -334,12 +336,20 @@ const contextTypeToPaths =
 
 const [settings, _sessionSettings] = useSettings()
 if (settings.includeWhiteBox)
+{
+  contextTypeToPaths.BattleEvent.Abilities = contextTypeToPaths.BattleEvent.Abilities.concat([
+    'Config/ConfigAbility/WhiteBox',
+    'Config/ConfigAbility/WhiteBox/Avatar',
+    'Config/ConfigAbility/WhiteBox/BattleEvent',
+    'Config/ConfigAbility/WhiteBox/Monster',
+  ])
   contextTypeToPaths.All.Abilities = contextTypeToPaths.All.Abilities.concat([
     'Config/ConfigAbility/WhiteBox',
     'Config/ConfigAbility/WhiteBox/Avatar',
     'Config/ConfigAbility/WhiteBox/BattleEvent',
     'Config/ConfigAbility/WhiteBox/Monster',
   ])
+}
 
 const taskContextCache:{[commitId: string]: {[type: string]: TaskContext}} = {}
 const taskContextMutex = new MutexGroup()

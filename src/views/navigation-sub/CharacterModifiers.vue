@@ -21,8 +21,9 @@
           for (const abilityName of skillEntry.AbilityList)
             addModifierNamesFromAbility(mods, taskContext.Abilities[abilityName])
 
-      for (const abilityName of props.character.AbilityList)
-          addModifierNamesFromAbility(mods, taskContext.Abilities[abilityName])
+      if (props.character.AbilityList)
+        for (const abilityName of props.character.AbilityList)
+            addModifierNamesFromAbility(mods, taskContext.Abilities[abilityName])
     }
     mods.sort((a, b) => a > b ? 1 : -1)
     modifiers.value = mods

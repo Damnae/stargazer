@@ -28,7 +28,7 @@
     {
       Params: {},
       AbilityHashValues: buildAbilityHashValues(character, monsterSkills),
-      DynamicValues: character.DynamicValues,
+      DynamicValues: character?.DynamicValues,
       AbilityDynamicValues: {},
     }
 

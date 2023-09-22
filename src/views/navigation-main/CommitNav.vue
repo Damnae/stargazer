@@ -4,16 +4,17 @@
   
   import AvatarNav from './AvatarNav.vue'
   import MonsterNav from './MonsterNav.vue'
+  import BattleEventNav from './BattleEventNav.vue'
   import EquipmentNav from './EquipmentNav.vue'
   import RelicSetNav from './RelicSetNav.vue'
   import StatusNav from './StatusNav.vue'
   import AbilityNav from './AbilityNav.vue'
   import ModifierNav from './ModifierNav.vue'
+  import RogueBuffNav from './RogueBuffNav.vue'
 
   import NavTabs from '@/components/NavTabs.vue'
   import NavTree from '@/components/NavTree.vue'
   import NavItem from '@/components/NavItem.vue'
-import RogueBuffNav from './RogueBuffNav.vue'
 
   const search = ref<string>('')
   provide('search', search)
@@ -23,9 +24,9 @@ import RogueBuffNav from './RogueBuffNav.vue'
 
   const tabs:{[key:string]: any} = 
   {
-    All: ['Avatar', 'Monster', 'Equipment', 'RelicSet', 'Status', 'Ability', 'Modifier', 'RogueBuff', 'RogueMiracle'],
+    All: ['Avatar', 'Monster', 'BattleEvent', 'Equipment', 'RelicSet', 'Status', 'Ability', 'Modifier', 'RogueBuff', 'RogueMiracle'],
     Players: ['Avatar', 'Equipment', 'RelicSet'],
-    Monsters: ['Monster'],
+    NPC: ['Monster', 'BattleEvent'],
     Global: ['Status', 'Ability', 'Modifier'],
     'Simulated Universe': ['RogueBuff', 'RogueMiracle'],
   }
@@ -58,6 +59,13 @@ import RogueBuffNav from './RogueBuffNav.vue'
             <NavTree :startsOpen="mainNav == 'Monster'">
               <template #header>Monsters</template>
               <MonsterNav />
+            </NavTree>
+          </NavItem>
+
+          <NavItem v-if="isVisible('BattleEvent')"> 
+            <NavTree :startsOpen="mainNav == 'BattleEvent'">
+              <template #header>Battle Events</template>
+              <BattleEventNav />
             </NavTree>
           </NavItem>
 

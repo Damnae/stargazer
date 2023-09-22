@@ -4,7 +4,7 @@
   import NavTree from '@/components/NavTree.vue'
   import NavItem from '@/components/NavItem.vue'
 
-  const props = defineProps<{character:Character, skillTriggerKey:string}>()
+  const props = defineProps<{character?:Character, skillTriggerKey:string}>()
 
   const abilities = ref<string[]>([])
   watchEffect(() =>

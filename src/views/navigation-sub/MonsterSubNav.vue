@@ -42,7 +42,7 @@
         <NavTree :startsOpen="true">
           <template #header>Skills</template>
           <NavItem v-for="skill in monsterSkills" :key="skill.SkillID">
-            <CharacterSkillAbilitiesNav v-if="character" :character="character" :skillTriggerKey="skill.SkillTriggerKey">
+            <CharacterSkillAbilitiesNav :character="character" :skillTriggerKey="skill.SkillTriggerKey">
               <template #header>
                 {{ skill.SkillTypeDesc.Text }} - {{ skill.SkillTag.Text }} 
                 <span class="minor" :title="skill.SkillName.Text">{{ skill.SkillName.Text }}</span> 

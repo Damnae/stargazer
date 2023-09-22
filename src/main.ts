@@ -12,12 +12,16 @@ import Title from './views/Title.vue'
 import Commit from './views/Commit.vue'
 
 import AvatarSubNav from './views/navigation-sub/AvatarSubNav.vue'
-import MonsterSubNav from './views/navigation-sub/MonsterSubNav.vue'
 import AvatarAbility from './views/abilities/AvatarAbility.vue'
-
 import AvatarModifier from './views/abilities/AvatarModifier.vue'
+
+import MonsterSubNav from './views/navigation-sub/MonsterSubNav.vue'
 import MonsterAbility from './views/abilities/MonsterAbility.vue'
 import MonsterModifier from './views/abilities/MonsterModifier.vue'
+
+import BattleEventSubNav from './views/navigation-sub/BattleEventSubNav.vue'
+import BattleEventAbility from './views/abilities/BattleEventAbility.vue'
+import BattleEventModifier from './views/abilities/BattleEventModifier.vue'
 
 import EquipmentSubNav from './views/navigation-sub/EquipmentSubNav.vue'
 import EquipmentAbility from './views/abilities/EquipmentAbility.vue'
@@ -105,17 +109,36 @@ const routes:Readonly<RouteRecordRaw[]> =
             { path: '', 
                 name: 'monster', components: { subnav: MonsterSubNav, }, 
                 props:{ subnav:toRouteProps({ objectId:'number' })},
-                meta: { mainNav: 'Monster', mainNavTab:'Monsters', }
+                meta: { mainNav: 'Monster', mainNavTab:'NPC', }
             },
             { path: '/ability-:abilityId/from/monster-:objectId/@:commitId', 
                 name: 'monsterAbility', components: { subnav: MonsterSubNav, default: MonsterAbility, },
                 props:{ subnav:toRouteProps({ objectId:'number', abilityId:false }), default:toRouteProps({ objectId: 'number' }) },
-                meta: { mainNav: 'Monster', mainNavTab:'Monsters', }
+                meta: { mainNav: 'Monster', mainNavTab:'NPC', }
             },
             { path: '/modifier-:modifierId/from/monster-:objectId/@:commitId', 
                 name: 'monsterModifier', components: { subnav: MonsterSubNav, default: MonsterModifier, }, 
                 props:{ subnav:toRouteProps({ objectId:'number', modifierId:false }), default:toRouteProps({ objectId: 'number' }) },
-                meta: { mainNav: 'Monster', mainNavTab:'Monsters', }
+                meta: { mainNav: 'Monster', mainNavTab:'NPC', }
+            },
+        ]},
+
+        // Battle Events
+        { path: '/battleevent-:objectId/@:commitId', children: [
+            { path: '', 
+                name: 'battleEvent', components: { subnav: BattleEventSubNav, }, 
+                props:{ subnav:toRouteProps({ objectId:'number' })},
+                meta: { mainNav: 'BattleEvent', mainNavTab:'NPC', }
+            },
+            { path: '/ability-:abilityId/from/battleevent-:objectId/@:commitId', 
+                name: 'battleEventAbility', components: { subnav: BattleEventSubNav, default: BattleEventAbility, },
+                props:{ subnav:toRouteProps({ objectId:'number', abilityId:false }), default:toRouteProps({ objectId: 'number' }) },
+                meta: { mainNav: 'BattleEvent', mainNavTab:'NPC', }
+            },
+            { path: '/modifier-:modifierId/from/battleevent-:objectId/@:commitId', 
+                name: 'battleEventModifier', components: { subnav: BattleEventSubNav, default: BattleEventModifier, }, 
+                props:{ subnav:toRouteProps({ objectId:'number', modifierId:false }), default:toRouteProps({ objectId: 'number' }) },
+                meta: { mainNav: 'BattleEvent', mainNavTab:'NPC', }
             },
         ]},
         
@@ -187,6 +210,10 @@ const routes:Readonly<RouteRecordRaw[]> =
     { path: '/monster-:objectId', meta: { redirectName:'monster' }, redirect: redirectToLatestCommit },
     { path: '/ability-:abilityId/from/monster-:objectId', meta: { redirectName:'monsterAbility' }, redirect: redirectToLatestCommit },
     { path: '/modifier-:modifierId/from/monster-:objectId', meta: { redirectName:'monsterModifier' }, redirect: redirectToLatestCommit },
+    
+    { path: '/battleevent-:objectId', meta: { redirectName:'battleEvent' }, redirect: redirectToLatestCommit },
+    { path: '/ability-:abilityId/from/battleevent-:objectId', meta: { redirectName:'battleEventAbility' }, redirect: redirectToLatestCommit },
+    { path: '/modifier-:modifierId/from/battleevent-:objectId', meta: { redirectName:'battleEventModifier' }, redirect: redirectToLatestCommit },
 
     { path: '/status-:objectId', meta: { redirectName:'status' }, redirect: redirectToLatestCommit },
     { path: '/ability-:abilityId/from/status-:objectId', meta: { redirectName:'statusAbility' }, redirect: redirectToLatestCommit },

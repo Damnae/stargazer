@@ -9,6 +9,11 @@ import { GamecoreParam } from './gamecore';
 //      skill, no ranks
 //      SkillTriggerKey -> skill -> entry ability 
 
+// BattleEventSkillConfig.json  
+//      skill, no ranks
+//      SkillTriggerKey -> skill -> entry ability 
+//      Party-wide "ultimate" for some weekly bosses, etc.
+
 export interface CreatureSkill
 {    
   SkillID: number
@@ -44,24 +49,6 @@ export interface EquipmentSkill
         }
       }
     ]
-    ParamList: GamecoreParam[]
-}
-
-// BattleEventSkillConfig.json  
-//      skill, no ranks
-//      SkillTriggerKey -> skill -> entry ability 
-//      Party-wide "ultimate" for some weekly bosses, etc.
-
-export interface BattleEventSkill
-{
-    SkillID: number
-    SkillName: Translatable
-    SkillTag: Translatable
-    SkillTypeDesc: Translatable
-    SkillDesc: Translatable
-    SimpleSkillDesc: Translatable
-    SkillTriggerKey: string
-    PhaseList: string[]
     ParamList: GamecoreParam[]
 }
 
