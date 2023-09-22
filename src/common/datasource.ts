@@ -101,6 +101,9 @@ async function processResponse(response:Response) : Promise<any>
     const limit = response.headers.get('x-ratelimit-limit')
     if (limit) apiLimit.value = parseFloat(limit)
 
+    if (!response.ok)
+        throw new Error(`Response is not OK (${response.status})`);
+
     return response.json()
 }
 
