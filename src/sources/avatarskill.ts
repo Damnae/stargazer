@@ -5,6 +5,8 @@ import { CreatureSkill } from './skill';
 
 export interface AvatarSkill extends CreatureSkill
 {
+    Level: number
+    MaxLevel: number
     RatedSkillTreeID: [],
     RatedRankID: [],
     SPBase?: { Value: number },
@@ -27,7 +29,9 @@ export interface AvatarSkillConfig
 }
 
 const missingAvatarSkill:AvatarSkill = 
-{     
+{   
+    Level:1,
+    MaxLevel:1,
     SkillID: -1,
     SkillName: { Hash: 750427067, Text: 'Unknown', },
     SkillTag: { Hash: 750427067, Text: 'Unknown', },

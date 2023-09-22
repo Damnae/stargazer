@@ -17,6 +17,12 @@ export default async function translate(commitId:string, translatable?:Translata
     translatable.Text = text ?? translatable.Hash.toString()
 }
 
+export async function translateFromKey(commitId:string, key:string) : Promise<string | undefined>
+{
+    const hash = getHash(key)
+    return translateHash(commitId, hash)
+}
+
 const translationMap: {[key: string]: string} = {}
 export async function translateHash(commitId:string, hash:number) : Promise<string | undefined>
 {

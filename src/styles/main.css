@@ -123,6 +123,7 @@ button:focus-visible {
 .maintitle
 {
   margin: auto;
+  padding: 0 1rem;
 }
 .maintitle h1
 {

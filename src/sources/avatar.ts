@@ -1,5 +1,5 @@
 import { retrieveJson } from '@/common/datasource';
-import translate, { Translatable, } from '@/common/translate';
+import translate, { Translatable, translateFromKey, translatePath, } from '@/common/translate';
 import { GamecoreParam } from './gamecore';
 import { Creature } from './creature';
 import { cleanupFilename } from '@/common/common';
@@ -108,10 +108,12 @@ export async function getAvatars(commitId:string) : Promise<AvatarConfig>
         if (config == undefined)
         {
             const eidolons = await retrieveJson('ExcelOutput/AvatarRankConfig.json', commitId, false) as AvatarRankConfig
-            // No point translating any of these, it doesn't work
-            //await translate(commitId, eidolon.Trigger)
-            //eidolon.Name = await translateHash(commitId, getHash(eidolon.Name))
-            //eidolon.Desc = await translateHash(commitId, getHash(eidolon.Desc))
+            for (const key in eidolons)
+            {
+                const eidolon = eidolons[key]
+                eidolon.Name = await translateFromKey(commitId, eidolon.Name) ?? eidolon.Name
+                eidolon.Desc = await translateFromKey(commitId, eidolon.Desc) ?? eidolon.Desc
+            }
     
             const avatars = await retrieveJson('ExcelOutput/AvatarConfig.json', commitId, false) as AvatarConfig
             for (const key in avatars)
@@ -132,16 +134,18 @@ export async function getAvatars(commitId:string) : Promise<AvatarConfig>
                 avatar.SearchKeywords = []
                 avatar.SearchKeywords.push(avatar.AvatarName.Text.toLowerCase())
                 avatar.SearchKeywords.push(avatar.DamageType.toLowerCase())
-                avatar.SearchKeywords.push(avatar.AvatarBaseType.toLowerCase())
+                avatar.SearchKeywords.push((await translatePath(commitId, avatar.AvatarBaseType)).toLowerCase())
                 avatar.SearchKeywords.push(cleanupFilename(avatar.JsonPath).toLowerCase())
             }
     
             const traceRanks = await retrieveJson('ExcelOutput/AvatarSkillTreeConfig.json', commitId, false) as AvatarSkillTreeConfig
-            // Fields that look translatable are just not
             for (const key in traceRanks)
             {
                 const ranks = traceRanks[key]
                 const trace = ranks[Object.keys(ranks).length]
+                trace.PointName = await translateFromKey(commitId, trace.PointName) ?? trace.PointName
+                trace.PointDesc = await translateFromKey(commitId, trace.PointDesc) ?? trace.PointDesc
+
                 const avatar = avatars[trace.AvatarID]
                 avatar.Traces.push(trace)
             }
