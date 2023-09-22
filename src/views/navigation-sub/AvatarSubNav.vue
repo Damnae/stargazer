@@ -68,7 +68,7 @@
         <NavTree :startsOpen="true">
           <template #header>Traces</template>
           <NavItem v-for="(trace, index) in avatar.Traces.filter(t => t.PointType === 3)" :key="trace.PointID">
-            <NavTree :startsOpen="true">
+            <NavTree :startsOpen="trace.AbilityName.length > 0">
               <template #header>
                 A{{ (index + 1) * 2 }} 
                 <span class="minor">{{ trace.PointName }}</span>
@@ -79,6 +79,9 @@
                   {{ trace.AbilityName }}
                 </RouterLink>
               </NavItem>
+              <template #footer>
+                {{ evaluateDescription(trace.PointDesc, trace.ParamList) }}
+              </template>
             </NavTree>
           </NavItem>
         </NavTree>
@@ -88,7 +91,7 @@
         <NavTree :startsOpen="true">
           <template #header>Eidolons</template>
           <NavItem v-for="eidolon in avatar.Eidolons" :key="eidolon.RankID">
-            <NavTree :startsOpen="true">
+            <NavTree :startsOpen="eidolon.RankAbility.length > 0">
               <template #header>
                 E{{ eidolon.Rank }} 
                 <span class="minor">{{ eidolon.Name }}</span>
@@ -99,6 +102,9 @@
                   {{ ability }}
                 </RouterLink>
               </NavItem>
+              <template #footer>
+                {{ evaluateDescription(eidolon.Desc, eidolon.Param) }}
+              </template>
             </NavTree>
           </NavItem>
         </NavTree>
