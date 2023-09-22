@@ -12,7 +12,7 @@ export function cleanupNumber(value?:number) : string
 {
     if (value === undefined)
         return 'undefined'
-    return parseFloat(value.toFixed(4)).toString();
+    return parseFloat(value.toFixed(5)).toString();
 }
 
 export function cleanupMarkup(value?:string) : string
