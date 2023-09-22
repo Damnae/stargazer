@@ -1,6 +1,6 @@
 import { retrieveJson } from '@/common/datasource';
 import { Mutex } from '@/common/mutex';
-import translate, { Translatable, } from '@/common/translate';
+import translate, { Translatable, translateFromKey, } from '@/common/translate';
 import { GamecoreParam } from './gamecore';
 
 // Relic Set Skill
@@ -60,14 +60,23 @@ export async function getRelicSets(commitId:string) : Promise<RelicSetConfig>
         if (config == undefined)
         {
             const relicsetSkills = await retrieveJson('ExcelOutput/RelicSetSkillConfig.json', commitId, false) as RelicSetSkillConfig
-    
+            for (const skillKey in relicsetSkills)
+            {
+                const ranks = relicsetSkills[skillKey]        
+                for (const rankKey in ranks)
+                {
+                    const skill = ranks[rankKey]
+                    skill.SkillDesc = await translateFromKey(commitId, skill.SkillDesc) ?? skill.SkillDesc
+                }
+            }
+
             const relicsets = await retrieveJson('ExcelOutput/RelicSetConfig.json', commitId, false) as RelicSetConfig
             for (const key in relicsets)
             {
                 const relicset = relicsets[key]
                 await translate(commitId, relicset.SetName)
                 relicset.Skills = relicsetSkills[relicset.SetID]
-    
+
                 relicset.SearchKeywords = []
                 relicset.SearchKeywords.push(relicset.SetName.Text.toLowerCase())
             }

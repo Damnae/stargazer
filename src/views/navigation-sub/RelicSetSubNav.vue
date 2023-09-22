@@ -1,6 +1,7 @@
 <script setup lang="ts">
   import { ref, watchEffect, } from 'vue'
   import { cleanupNumber } from '@/common/common';
+  import { evaluateDescription } from '@/sources/gamecore';
   import { getRelicSet, RelicSet, } from '@/sources/relicset';
   import NavTree from '@/components/NavTree.vue'
   import NavItem from '@/components/NavItem.vue'
@@ -47,7 +48,7 @@
       <div v-for="property in skill.PropertyList">
         {{ property.NAOGDGBJNOJ }}: {{ cleanupNumber(property.MBOHKHKHFPD?.Value) }}
       </div>
-      <span class="minor">{{ skill.SkillDesc }}</span>
+      <span class="minor">{{ evaluateDescription(skill.SkillDesc, skill.AbilityParamList) }}</span>
     </p>
   </div>
 </template>
