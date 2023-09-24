@@ -1,8 +1,7 @@
 <script setup lang="ts">
-  import { GamecoreTask, 
-    GamecoreTargetType, evaluateTargetType, 
-  } from '@/sources/gamecore';
+  import { GamecoreTask, GamecoreTargetType, } from '@/sources/gamecore';
   import BlockLayout from '@/components/BlockLayout.vue';
+  import EvaluateTargetType from '../EvaluateTargetType.vue';
 
   const props = defineProps<{node:GamecoreTask}>()
   const node = props.node as unknown as 
@@ -17,7 +16,7 @@
 
     Remove modifiers with flag <em>{{ node.ModifierBehaviorFlags.join(', ') }}</em>
     <template v-if="node.TargetType">
-      from <em>{{ evaluateTargetType(node.TargetType) }}</em>
+      from <em><EvaluateTargetType :target="node.TargetType" /></em>
     </template>
 
   </BlockLayout>

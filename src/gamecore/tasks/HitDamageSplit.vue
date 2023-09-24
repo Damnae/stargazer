@@ -1,9 +1,7 @@
 <script setup lang="ts">
-  import { GamecoreTask,
-    GamecoreTargetType, evaluateTargetType, 
-    DynamicExpression,
-  } from '@/sources/gamecore';
+  import { GamecoreTask, GamecoreTargetType, DynamicExpression, } from '@/sources/gamecore';
   import BlockLayout from '@/components/BlockLayout.vue';
+  import EvaluateTargetType from '../EvaluateTargetType.vue';
   import EvaluateExpression from '../EvaluateExpression.vue';
 
   const props = defineProps<{node:GamecoreTask}>()
@@ -18,7 +16,7 @@
 <template>
   <BlockLayout :source="node">
     
-    Split damage taken with <em>{{ evaluateTargetType(node.SplitTarget) }}</em>;
+    Split damage taken with <em><EvaluateTargetType :target="node.SplitTarget" /></em>;
     take <em><EvaluateExpression :expression="node.SelfSplitRatio" /></em>×,
     they take <em><EvaluateExpression :expression="node.TargetSplitRatio" /></em>×
 

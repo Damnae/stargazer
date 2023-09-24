@@ -1,9 +1,7 @@
 <script setup lang="ts">
-  import { GamecoreTask, 
-    DynamicExpression,
-    GamecoreTargetType, evaluateTargetType, 
-  } from '@/sources/gamecore';
+  import { GamecoreTask, DynamicExpression, GamecoreTargetType, } from '@/sources/gamecore';
   import BlockLayout from '@/components/BlockLayout.vue';
+  import EvaluateTargetType from '../EvaluateTargetType.vue';
   import EvaluateExpression from '../EvaluateExpression.vue';
 
   const props = defineProps<{node:GamecoreTask}>()
@@ -20,7 +18,7 @@
   <BlockLayout :source="node">
     
     <template v-if="node.TargetType">
-      <em>{{ evaluateTargetType(node.TargetType) }}</em>'s
+      <em><EvaluateTargetType :target="node.TargetType" /></em>'s
     </template>
     <em>{{ node.Property }}</em> is 
     <template v-if="node.CompareType">

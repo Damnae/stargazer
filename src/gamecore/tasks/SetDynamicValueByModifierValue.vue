@@ -1,11 +1,9 @@
 <script setup lang="ts">
   import { inject } from 'vue';
-  import { GamecoreTask, 
-    GamecoreTargetType, evaluateTargetType, 
-    DynamicExpression,
-  } from '@/sources/gamecore';
+  import { GamecoreTask, GamecoreTargetType, DynamicExpression, } from '@/sources/gamecore';
   import useHashStore from '@/common/hashstore';
   import BlockLayout from '@/components/BlockLayout.vue';
+  import EvaluateTargetType from '../EvaluateTargetType.vue';
   import EvaluateExpression from '../EvaluateExpression.vue';
 
   const props = defineProps<{node:GamecoreTask}>()
@@ -38,7 +36,7 @@
     </template>
     <em>{{ node.ValueType ?? 'Count' }}</em>
     <template v-if="node.ReadTargetType">
-      on <em>{{ evaluateTargetType(node.ReadTargetType) }}</em>
+      on <em><EvaluateTargetType :target="node.ReadTargetType" /></em>
     </template>
 
 

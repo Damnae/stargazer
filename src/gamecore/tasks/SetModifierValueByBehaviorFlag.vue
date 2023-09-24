@@ -1,9 +1,7 @@
 <script setup lang="ts">
-  import { GamecoreTask, 
-    GamecoreTargetType, evaluateTargetType, 
-    DynamicExpression,
-  } from '@/sources/gamecore';
+  import { GamecoreTask, GamecoreTargetType, DynamicExpression, } from '@/sources/gamecore';
   import BlockLayout from '@/components/BlockLayout.vue';
+  import EvaluateTargetType from '../EvaluateTargetType.vue';
   import EvaluateExpression from '../EvaluateExpression.vue';
 
   const props = defineProps<{node:GamecoreTask}>()
@@ -25,7 +23,7 @@
       to modifiers with flag <em>{{ node.ModifierBehaviorFlags.join(', ') }}</em>'s
       <em>{{ node.ValueType ?? 'Count' }}</em>
       <template v-if="node.TargetType">
-        on <em>{{ evaluateTargetType(node.TargetType) }}</em>
+        on <em><EvaluateTargetType :target="node.TargetType" /></em>
       </template>
 
     </template>
@@ -33,7 +31,7 @@
 
       Set 
       <template v-if="node.TargetType">
-        <em>{{ evaluateTargetType(node.TargetType) }}</em>'s
+        <em><EvaluateTargetType :target="node.TargetType" /></em>'s
       </template>
       modifiers with flag <em>{{ node.ModifierBehaviorFlags.join(', ') }}</em>'s
       <em>{{ node.ValueType ?? 'Count' }}</em>

@@ -1,9 +1,8 @@
 <script setup lang="ts">
-  import { GamecoreTask, 
-    GamecoreTargetType, evaluateTargetType, 
-  } from '@/sources/gamecore';
+  import { GamecoreTask, GamecoreTargetType, } from '@/sources/gamecore';
   import useHashStore from '@/common/hashstore';
   import BlockLayout from '@/components/BlockLayout.vue';
+  import EvaluateTargetType from '../EvaluateTargetType.vue';
 
   const props = defineProps<{node:GamecoreTask}>()
   const node = props.node as unknown as 
@@ -24,7 +23,7 @@
 
     to 
     <template v-if="node.ReadTargetType">
-      <em>{{ evaluateTargetType(node.ReadTargetType) }}</em>'s
+      <em><EvaluateTargetType :target="node.ReadTargetType" /></em>'s
     </template>
     heal data property <em>{{ node.Property ?? "Result_HealAmount" }}</em>
   </BlockLayout>

@@ -1,9 +1,8 @@
 <script setup lang="ts">
   import { inject } from 'vue';
-  import { GamecoreTask, 
-    GamecoreTargetType, evaluateTargetType, 
-  } from '@/sources/gamecore';
+  import { GamecoreTask, GamecoreTargetType, } from '@/sources/gamecore';
   import BlockLayout from '@/components/BlockLayout.vue';
+  import EvaluateTargetType from '../EvaluateTargetType.vue';
 
   const props = defineProps<{node:GamecoreTask}>()
   const node = props.node as unknown as 
@@ -21,7 +20,7 @@
    
     Trigger 
     <template v-if="node.TargetType">
-      <em>{{ evaluateTargetType(node.TargetType) }}</em>'s 
+      <em><EvaluateTargetType :target="node.TargetType" /></em>'s 
     </template>
 
     ability
@@ -30,7 +29,7 @@
     </RouterLink>
 
     <template v-if="node.AbilityInherentTargetType">
-      targeting <em>{{ evaluateTargetType(node.AbilityInherentTargetType) }}</em>
+      targeting <em><EvaluateTargetType :target="node.AbilityInherentTargetType" /></em>
     </template>
 
   </BlockLayout>

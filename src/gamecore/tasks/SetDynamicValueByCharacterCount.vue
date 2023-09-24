@@ -1,10 +1,8 @@
 <script setup lang="ts">
-  import { GamecoreTask, 
-    GamecoreTargetType,
-evaluateTargetType,
-  } from '@/sources/gamecore';
+  import { GamecoreTask, GamecoreTargetType, } from '@/sources/gamecore';
   import useHashStore from '@/common/hashstore';
   import BlockLayout from '@/components/BlockLayout.vue';
+  import EvaluateTargetType from '../EvaluateTargetType.vue';
   import AnyTask from '../AnyTask.vue';
 
   const props = defineProps<{node:GamecoreTask}>()
@@ -25,7 +23,7 @@ evaluateTargetType,
     Set <em>{{ node.DynamicKey }}</em>
     to the character count 
     <template v-if="node.ReadTargetType">
-      in <em>{{ evaluateTargetType(node.ReadTargetType) }}</em>
+      in <em><EvaluateTargetType :target="node.ReadTargetType" /></em>
     </template>
     <template #content v-if="node.Predicate">
       <span class="flow">With condition</span>

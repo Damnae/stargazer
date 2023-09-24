@@ -11,6 +11,8 @@ export interface Monster extends Creature
     MonsterTemplateID: number
     MonsterTemplate: MonsterTemplate
     MonsterName: Translatable
+    MonsterIntroduction: Translatable
+    MonsterBattleIntroduction: Translatable
     SkillList: [ id: number]
     DynamicValues?: DynamicValues // Seem always empty
     CustomValues: 
@@ -115,6 +117,7 @@ export async function getMonsters(commitId:string) : Promise<MonsterConfig>
             {
                 const monster = monsters[key]
                 await translate(commitId, monster.MonsterName)
+                await translate(commitId, monster.MonsterIntroduction)
                 monster.MonsterTemplate = templates[monster.MonsterTemplateID] ?? missingMonsterTemplate
                 
                 monster.SearchKeywords = []

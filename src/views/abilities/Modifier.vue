@@ -1,11 +1,12 @@
 <script setup lang="ts">
   import { inject, ref, computed, watch, Ref, } from 'vue'
-  import { ExpressionContext, GamecoreTask, evaluateDescriptionString, evaluateTargetType } from '@/sources/gamecore';
+  import { ExpressionContext, GamecoreTask, evaluateDescriptionString, } from '@/sources/gamecore';
   import { Modifier, TaskContext, } from '@/sources/ability';
   import { Status, getStatuses } from '@/sources/status';
   import useHashStore from '@/common/hashstore';
-  import EvaluateExpression from '@/gamecore/EvaluateExpression.vue';
   import BlockLayout from '@/components/BlockLayout.vue';
+  import EvaluateTargetType from '@/gamecore/EvaluateTargetType.vue';
+  import EvaluateExpression from '@/gamecore/EvaluateExpression.vue';
   import AnyTask from '@/gamecore/AnyTask.vue';
   import DynamicValues from './components/DynamicValues.vue';
   import RangeChange from './components/RangeChange.vue';
@@ -203,10 +204,10 @@
           <span class="flow">
             <template v-if="modifier.ModifierAffectedPreshowConfig.SkillTypes">
               While preparing <em>{{ modifier.ModifierAffectedPreshowConfig.SkillTypes.join(', ') }}</em>, 
-              on <em>{{ evaluateTargetType(modifier.ModifierAffectedPreshowConfig.TargetType) }}</em>
+              on <em><EvaluateTargetType :target="modifier.ModifierAffectedPreshowConfig.TargetType" /></em>
             </template>
             <template v-else>
-              On <em>{{ evaluateTargetType(modifier.ModifierAffectedPreshowConfig.TargetType) }}</em>
+              On <em><EvaluateTargetType :target="modifier.ModifierAffectedPreshowConfig.TargetType" /></em>
             </template>
           </span>
           <template #content>

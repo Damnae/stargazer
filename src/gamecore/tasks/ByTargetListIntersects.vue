@@ -1,8 +1,7 @@
 <script setup lang="ts">
-  import { GamecoreTask, 
-    GamecoreTargetType, evaluateTargetType, 
-  } from '@/sources/gamecore';
+  import { GamecoreTask, GamecoreTargetType, } from '@/sources/gamecore';
   import BlockLayout from '@/components/BlockLayout.vue';
+  import EvaluateTargetType from '../EvaluateTargetType.vue';
 
   const props = defineProps<{node:GamecoreTask}>()
   const node = props.node as unknown as 
@@ -15,7 +14,9 @@
 <template>
   <BlockLayout :source="node">
     
-    <em>{{ evaluateTargetType(node.FirstTargetType) }}</em> and <em>{{ evaluateTargetType(node.SecondTargetType) }}</em> have at least a character in common
+    <em><EvaluateTargetType :target="node.FirstTargetType" /></em> 
+    and <em><EvaluateTargetType :target="node.SecondTargetType" /></em> 
+    have at least a character in common
 
   </BlockLayout>
 </template>

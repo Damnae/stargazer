@@ -1,7 +1,7 @@
 <script setup lang="ts">
-  import { GamecoreTask, GamecoreTargetType, evaluateTargetType, 
-  } from '@/sources/gamecore';
+  import { GamecoreTask, GamecoreTargetType, } from '@/sources/gamecore';
   import BlockLayout from '@/components/BlockLayout.vue';
+  import EvaluateTargetType from '../EvaluateTargetType.vue';
   import AnyTask from '@/gamecore/AnyTask.vue';
 
   const props = defineProps<{node:GamecoreTask}>()
@@ -19,7 +19,7 @@
     <span :class="hasOnHit ? 'flow' : ''">
       Fire projectile 
       <template v-if="node.TargetType">
-        at {{ evaluateTargetType(node.TargetType) }}
+        at <EvaluateTargetType :target="node.TargetType" />
       </template>
     </span>
     <template #content>

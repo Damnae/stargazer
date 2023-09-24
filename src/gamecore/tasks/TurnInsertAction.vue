@@ -1,9 +1,8 @@
 <script setup lang="ts">
   import { inject } from 'vue';
-  import { GamecoreTask, 
-    GamecoreTargetType, evaluateTargetType, 
-  } from '@/sources/gamecore';
+  import { GamecoreTask, GamecoreTargetType, } from '@/sources/gamecore';
   import BlockLayout from '@/components/BlockLayout.vue';
+  import EvaluateTargetType from '../EvaluateTargetType.vue';
 
   const props = defineProps<{node:GamecoreTask}>()
   const node = props.node as unknown as 
@@ -28,7 +27,7 @@
       with ability <em>{{ node.PrepareAbilityName }}</em>
     </RouterLink>
     <template v-if="node.TargetType">
-      for <em>{{ evaluateTargetType(node.TargetType) }}</em>'s 
+      for <em><EvaluateTargetType :target="node.TargetType" /></em>'s 
     </template>
     <template v-if="!node.CanInsertUltraSkill">
       <span class="minor">(Prevent ultimate use)</span>

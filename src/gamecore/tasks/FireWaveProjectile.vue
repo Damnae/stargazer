@@ -1,7 +1,7 @@
 <script setup lang="ts">
-  import { GamecoreTask, GamecoreTargetType, evaluateTargetType, 
-  } from '@/sources/gamecore';
+  import { GamecoreTask, GamecoreTargetType, } from '@/sources/gamecore';
   import BlockLayout from '@/components/BlockLayout.vue';
+  import EvaluateTargetType from '../EvaluateTargetType.vue';
   import AnyTask from '@/gamecore/AnyTask.vue';
 
   const props = defineProps<{node:GamecoreTask}>()
@@ -22,10 +22,10 @@
     <span :class="hasOnHit ? 'flow' : ''">
       Fire <em>{{ node.Count }}</em>-hit wave projectile 
       <template v-if="node.CasterTargetType">
-        from <em>{{ evaluateTargetType(node.CasterTargetType) }}</em>
+        from <em><EvaluateTargetType :target="node.CasterTargetType" /></em>
       </template>
       <template v-if="node.TargetType">
-        to <em>{{ evaluateTargetType(node.TargetType) }}</em>
+        to <em><EvaluateTargetType :target="node.TargetType" /></em>
       </template>
     </span>
     <template #content>

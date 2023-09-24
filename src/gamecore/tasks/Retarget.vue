@@ -1,11 +1,9 @@
 <script setup lang="ts">
-  import { GamecoreTask, 
-    GamecoreTargetType, evaluateTargetType, 
-    DynamicExpression, 
-  } from '@/sources/gamecore';
+  import { GamecoreTask, GamecoreTargetType, DynamicExpression, } from '@/sources/gamecore';
   import BlockLayout from '@/components/BlockLayout.vue';
-  import AnyTask from '@/gamecore/AnyTask.vue';
+  import EvaluateTargetType from '../EvaluateTargetType.vue';
   import EvaluateExpression from '../EvaluateExpression.vue';
+  import AnyTask from '@/gamecore/AnyTask.vue';
 
   const props = defineProps<{node:GamecoreTask}>()
   const node = props.node as unknown as 
@@ -30,7 +28,7 @@
       <template v-else>
         all in 
       </template>
-      {{ evaluateTargetType(node.TargetType) }}
+      <EvaluateTargetType :target="node.TargetType" />
       <span class="minor">
         <template v-if="node.IncludeLimbo">
           (Including Limbo) 

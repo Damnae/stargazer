@@ -1,8 +1,7 @@
 <script setup lang="ts">
-  import { GamecoreTask, 
-    GamecoreTargetType, evaluateTargetType, 
-  } from '@/sources/gamecore';
+  import { GamecoreTask, GamecoreTargetType, } from '@/sources/gamecore';
   import BlockLayout from '@/components/BlockLayout.vue';
+  import EvaluateTargetType from '../EvaluateTargetType.vue';
 
   const props = defineProps<{node:GamecoreTask}>()
   const node = props.node as unknown as 
@@ -15,7 +14,7 @@
 <template>
   <BlockLayout :source="node" :cosmetic="true">
     
-    Hide modifier visual effects on <em>{{ evaluateTargetType(node.TargetType) }}</em>
+    Hide modifier visual effects on <em><EvaluateTargetType :target="node.TargetType" /></em>
     <template v-if="node.EventType">
       for event <em>{{ node.EventType }}</em>
     </template>

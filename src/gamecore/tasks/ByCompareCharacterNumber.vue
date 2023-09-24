@@ -1,9 +1,7 @@
 <script setup lang="ts">
-  import { GamecoreTask, 
-    DynamicExpression,
-    GamecoreTargetType, evaluateTargetType, 
-  } from '@/sources/gamecore';
+  import { GamecoreTask, DynamicExpression, GamecoreTargetType, } from '@/sources/gamecore';
   import BlockLayout from '@/components/BlockLayout.vue';
+  import EvaluateTargetType from '../EvaluateTargetType.vue';
   import EvaluateExpression from '../EvaluateExpression.vue';
 
   const props = defineProps<{node:GamecoreTask}>()
@@ -18,7 +16,7 @@
 <template>
   <BlockLayout :source="node">
     
-    <em>{{ evaluateTargetType(node.TargetType) }}</em>
+    <em><EvaluateTargetType :target="node.TargetType" /></em>
     character count is
     <template v-if="node.CompareType">
       <em>{{ node.CompareType }}</em> to 

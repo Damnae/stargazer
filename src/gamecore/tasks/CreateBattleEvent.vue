@@ -2,12 +2,10 @@
   import { ref, inject } from 'vue';
   import { getHash } from '@/common/translate';
   import useHashStore from '@/common/hashstore';
-  import { GamecoreTask, 
-    GamecoreTargetType, evaluateTargetType, 
-    DynamicExpression,
-  } from '@/sources/gamecore';
+  import { GamecoreTask, GamecoreTargetType, DynamicExpression, } from '@/sources/gamecore';
   import { BattleEvent, getBattleEvent } from '@/sources/battleevent';
   import BlockLayout from '@/components/BlockLayout.vue';
+  import EvaluateTargetType from '../EvaluateTargetType.vue';
   import EvaluateExpression from '../EvaluateExpression.vue';
 
   const commitId = inject<string>('commitId') as string
@@ -45,7 +43,7 @@
 
     for team <em>{{ node.Team }}</em>
     <template v-if="node.PropertyFromTarget">
-      inheriting <em>{{ evaluateTargetType(node.PropertyFromTarget) }}</em>'s properties
+      inheriting <em><EvaluateTargetType :target="node.PropertyFromTarget" /></em>'s properties
     </template>
     
     <template #content >

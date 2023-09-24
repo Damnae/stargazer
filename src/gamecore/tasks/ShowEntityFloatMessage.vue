@@ -1,10 +1,9 @@
 <script setup lang="ts">
   import { inject, } from 'vue';
-  import { GamecoreTask,
-    GamecoreTargetType, evaluateTargetType, 
-  } from '@/sources/gamecore';
+  import { GamecoreTask, GamecoreTargetType, } from '@/sources/gamecore';
+  import translate, { Translatable } from '@/common/translate';
   import BlockLayout from '@/components/BlockLayout.vue';
-import translate, { Translatable } from '@/common/translate';
+  import EvaluateTargetType from '../EvaluateTargetType.vue';
 
   const props = defineProps<{node:GamecoreTask}>()
   const node = props.node as unknown as 
@@ -22,7 +21,7 @@ import translate, { Translatable } from '@/common/translate';
     
     Display "<em>{{ node.ContentID?.Text }}</em>"
     <template v-if="node.TargetType">
-      above <em>{{ evaluateTargetType(node.TargetType) }}</em>
+      above <em><EvaluateTargetType :target="node.TargetType" /></em>
     </template>
 
   </BlockLayout>

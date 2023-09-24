@@ -1,8 +1,7 @@
 <script setup lang="ts">
-  import { GamecoreTask, 
-    GamecoreTargetType, evaluateTargetType, 
-  } from '@/sources/gamecore';
+  import { GamecoreTask, GamecoreTargetType, } from '@/sources/gamecore';
   import BlockLayout from '@/components/BlockLayout.vue';
+  import EvaluateTargetType from '../EvaluateTargetType.vue';
 
   const props = defineProps<{node:GamecoreTask}>()
   const node = props.node as unknown as 
@@ -19,14 +18,14 @@
     <template v-if="node.OPType">
       Make
       <template v-if="node.TargetType">
-        <em>{{ evaluateTargetType(node.TargetType) }}</em>
+        <em><EvaluateTargetType :target="node.TargetType" /></em>
       </template>
       {{ node.OPType }} to <em>{{ node.WeakList.join(', ') }}</em>
     </template>
     <template v-else>
       Reset 
       <template v-if="node.TargetType">
-        <em>{{ evaluateTargetType(node.TargetType) }}</em>'s
+        <em><EvaluateTargetType :target="node.TargetType" /></em>'s
       </template>
       weaknesses
     </template>

@@ -1,7 +1,6 @@
 <script setup lang="ts">
-  import { GamecoreTask, 
-    GamecoreTargetType, evaluateTargetType, 
-  } from '@/sources/gamecore';
+  import { GamecoreTask, GamecoreTargetType, } from '@/sources/gamecore';
+  import EvaluateTargetType from '../EvaluateTargetType.vue';
   import BlockLayout from '@/components/BlockLayout.vue';
 
   const props = defineProps<{node:GamecoreTask}>()
@@ -15,7 +14,8 @@
 <template>
   <BlockLayout :source="node">
     
-    <em>{{ evaluateTargetType(node.TargetType) }}</em> is <em>{{ evaluateTargetType(node.CompareType) }}</em>
+    <em><EvaluateTargetType :target="node.TargetType" /></em> 
+    is <em><EvaluateTargetType :target="node.CompareType" /></em>
 
   </BlockLayout>
 </template>

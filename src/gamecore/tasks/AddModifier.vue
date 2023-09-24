@@ -1,13 +1,11 @@
 <script setup lang="ts">
   import { inject } from 'vue';
   import { getHash } from '@/common/translate';
-  import { GamecoreTask, 
-    GamecoreTargetType, evaluateTargetType, 
-    DynamicExpression, 
-  } from '@/sources/gamecore';
+  import useHashStore from '@/common/hashstore';
+  import { GamecoreTask, GamecoreTargetType, DynamicExpression, } from '@/sources/gamecore';
   import BlockLayout from '@/components/BlockLayout.vue';
   import EvaluateExpression from '../EvaluateExpression.vue';
-  import useHashStore from '@/common/hashstore';
+  import EvaluateTargetType from '../EvaluateTargetType.vue';
   import AnyTask from '../AnyTask.vue';
 
   const props = defineProps<{node:GamecoreTask}>()
@@ -53,7 +51,7 @@
     </RouterLink>
 
     <template v-if="node.TargetType">
-      to <em>{{ evaluateTargetType(node.TargetType) }}</em>
+      to <em><EvaluateTargetType :target="node.TargetType" /></em>
     </template>
     <template v-if="node.Chance">
       with <em><EvaluateExpression :expression="node.Chance" /></em>× base chance
