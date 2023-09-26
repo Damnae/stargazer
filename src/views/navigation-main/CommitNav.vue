@@ -1,5 +1,5 @@
 <script setup lang="ts">
-  import { ref, provide, computed, } from 'vue'
+  import { ref, inject, provide, computed, } from 'vue'
   import { useRoute } from 'vue-router'
   
   import AvatarNav from './AvatarNav.vue'
@@ -16,6 +16,8 @@
   import NavTree from '@/components/NavTree.vue'
   import NavItem from '@/components/NavItem.vue'
 
+  const commitId = inject<string>('commitId') as string
+
   const search = ref<string>('')
   provide('search', search)
   
@@ -24,7 +26,7 @@
 
   const tabs:{[key:string]: any} = 
   {
-    All: ['Avatar', 'Monster', 'BattleEvent', 'Equipment', 'RelicSet', 'Status', 'Ability', 'Modifier', 'RogueBuff', 'RogueMiracle'],
+    All: ['Avatar', 'Monster', 'BattleEvent', 'Equipment', 'RelicSet', 'Status', 'Ability', 'Modifier', 'RogueBuff', 'RogueMiracle', 'Misc'],
     Players: ['Avatar', 'Equipment', 'RelicSet'],
     NPC: ['Monster', 'BattleEvent'],
     Global: ['Status', 'Ability', 'Modifier'],
@@ -115,6 +117,15 @@
             <NavTree :startsOpen="mainNav == 'RogueMiracle'">
               <template #header>Curios</template>
               <span class="minor">Soon™</span>
+            </NavTree>
+          </NavItem>
+          
+          <NavItem v-if="isVisible('Misc')">
+            <NavTree :startsOpen="mainNav == 'Misc'">
+              <template #header>Misc</template>
+              <RouterLink :to="{ name:'targetAliases', params:{ commitId: commitId }}">
+                Target Aliases
+              </RouterLink>
             </NavTree>
           </NavItem>
 

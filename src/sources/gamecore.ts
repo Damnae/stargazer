@@ -50,6 +50,7 @@ export interface GamecoreTargetType extends GamecoreTask
   Sequence?: GamecoreTargetType[]
   TargetType?:string
   DynamicKey?:string
+  Index?:number
 }
 
 // Context
@@ -99,6 +100,9 @@ export function evaluateTargetType(targetType?:GamecoreTargetType) : string
 
   if (targetType?.DynamicKey)
     return targetType.DynamicKey
+
+  if (targetType?.Index)
+    return `Param Target #${targetType.Index}`
 
   return 'unknown'
 }

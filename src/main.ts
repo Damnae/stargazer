@@ -42,6 +42,9 @@ import RogueBuffModifier from './views/abilities/RogueBuffModifier.vue'
 import AnyAbility from './views/abilities/AnyAbility.vue'
 import AnyModifier from './views/abilities/AnyModifier.vue'
 
+import TargetAlias from './views/pages/TargetAlias.vue'
+import TargetAliases from './views/pages/TargetAliases.vue'
+
 const routes:Readonly<RouteRecordRaw[]> = 
 [
     { path: '/', name: 'home', component: Title },
@@ -191,6 +194,18 @@ const routes:Readonly<RouteRecordRaw[]> =
             props:{ default:toRouteProps({ }) },
             meta: { mainNav: 'Modifier', mainNavTab:'Global', }
         },
+
+        // Misc Pages
+        { path: '/targetalias-:aliasId/@:commitId', 
+            name: 'targetAlias', components: { default: TargetAlias, }, 
+            props:{ default:toRouteProps({ }) },
+            meta: { mainNav: 'Misc', mainNavTab:'All', }
+        },        
+        { path: '/targetaliases/@:commitId', 
+            name: 'targetAliases', components: { default: TargetAliases, }, 
+            props:{ default:toRouteProps({ }) },
+            meta: { mainNav: 'Misc', mainNavTab:'All', }
+        },
     ]},
 
     // Redirects
@@ -225,6 +240,9 @@ const routes:Readonly<RouteRecordRaw[]> =
 
     { path: '/ability-:abilityId', meta: { redirectName:'ability' }, redirect: redirectToLatestCommit },
     { path: '/modifier-:modifierId', meta: { redirectName:'modifier' }, redirect: redirectToLatestCommit },
+    
+    { path: '/targetalias-:aliasId', meta: { redirectName:'targetAlias' }, redirect: redirectToLatestCommit },
+    { path: '/targetaliases', meta: { redirectName:'targetAliases' }, redirect: redirectToLatestCommit },
 
     { path: '/:pathMatch(.*)*', redirect:'/', },
 ]

@@ -2,24 +2,24 @@
   import { GamecoreTask, 
   } from '@/sources/gamecore';
   import BlockLayout from '@/components/BlockLayout.vue';
-  import AnyTask from '@/gamecore/AnyTask.vue';
 
   const props = defineProps<{node:GamecoreTask}>()
   const node = props.node as unknown as 
   {
-    ComposeType:string
-    SelectorList:GamecoreTask[]
+    Name:string
   }
-
-  const selectors = node.SelectorList;
 </script>
 
 <template>
   <BlockLayout :source="node">
-    <span class="flow">Compose Selector <em>{{ node.ComposeType ?? 'ByAnd' }}</em></span>
-    <template #content>
-      <AnyTask v-for="n in selectors" :node="n" />
-    </template>
+
+  <template v-if="node.Name">
+    Fetch partner <em>{{ node.Name }}</em>
+  </template>
+  <template v-else>
+    Fetch partners
+  </template>
+
   </BlockLayout>
 </template>
 

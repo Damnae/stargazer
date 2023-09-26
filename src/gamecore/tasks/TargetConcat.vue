@@ -7,18 +7,17 @@
   const props = defineProps<{node:GamecoreTask}>()
   const node = props.node as unknown as 
   {
-    ComposeType:string
-    SelectorList:GamecoreTask[]
+    Targets:GamecoreTask[]
   }
 
-  const selectors = node.SelectorList;
+  const targets = node.Targets;
 </script>
 
 <template>
   <BlockLayout :source="node">
-    <span class="flow">Compose Selector <em>{{ node.ComposeType ?? 'ByAnd' }}</em></span>
+    <span class="flow">Concatenate Targets</span>
     <template #content>
-      <AnyTask v-for="n in selectors" :node="n" />
+      <AnyTask v-for="n in targets" :node="n" />
     </template>
   </BlockLayout>
 </template>

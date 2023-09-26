@@ -2,24 +2,21 @@
   import { GamecoreTask, 
   } from '@/sources/gamecore';
   import BlockLayout from '@/components/BlockLayout.vue';
-  import AnyTask from '@/gamecore/AnyTask.vue';
 
   const props = defineProps<{node:GamecoreTask}>()
   const node = props.node as unknown as 
   {
-    ComposeType:string
-    SelectorList:GamecoreTask[]
+    PropertyType:string
+    HighestFirst?:boolean
   }
-
-  const selectors = node.SelectorList;
 </script>
 
 <template>
   <BlockLayout :source="node">
-    <span class="flow">Compose Selector <em>{{ node.ComposeType ?? 'ByAnd' }}</em></span>
-    <template #content>
-      <AnyTask v-for="n in selectors" :node="n" />
-    </template>
+
+    Sort by <em>{{ node.PropertyType }}</em>
+    <span class="minor">({{ node.HighestFirst ? 'Highest' : 'Lowest' }} first)</span>
+
   </BlockLayout>
 </template>
 
