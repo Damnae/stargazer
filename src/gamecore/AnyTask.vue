@@ -20,11 +20,12 @@
   const inversibleNode = props.node as unknown as 
   {
     Inverse:boolean
+    InverseResultFlag:boolean
   }
 </script>
 
 <template>
-  <component :is="taskComponent" :node="node" :class="inversibleNode.Inverse ? 'inverted' : ''" />
+  <component :is="taskComponent" :node="node" :class="inversibleNode.Inverse || inversibleNode.InverseResultFlag ? 'inverted' : ''" />
 </template>
 
 <style scoped>
