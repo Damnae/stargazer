@@ -58,14 +58,6 @@
   padding-right: .25em;
 }
 
-.block .cosmetic
-{
-  color:rgb(96, 96, 96);
-}
-.block .notimplemented
-{
-  color:rgb(96, 64, 64);
-}
 .block em
 {
   color:darkgoldenrod;
@@ -80,7 +72,13 @@
 {
   color:rgb(135, 183, 231);
 }
-.block .cosmetic em
+
+.block .cosmetic
 {
-  color:rgba(184, 135, 11, 0.33);
+  opacity:.25;
+}
+.block .notimplemented
+{
+  color:lightcoral;
+  opacity:.25;
 }
