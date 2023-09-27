@@ -3,6 +3,8 @@ import { getHash } from './translate'
 
 const defaultHashes:{[key:number]:string} = 
 {
+  "1776456860": "floor",
+  "-1226284721": "int",
   "2612209": "DebuffNumber",
   "2621308": "Hana",
   "14492765": "MyHPRatio",
