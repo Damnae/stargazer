@@ -209,7 +209,8 @@ export function evaluateDynamicExpression(expression?:DynamicExpression, context
           break;
         case 8: // Call
           var right = stack.pop();
-          stack.push(`Call(${bytes.charCodeAt(++i)}, ${right}`);
+          var left = stack.pop();
+          stack.push(`${left}(${right}, ${bytes.charCodeAt(++i)})`);
           break;
         case 9: // Return
           var result = stack.pop();
