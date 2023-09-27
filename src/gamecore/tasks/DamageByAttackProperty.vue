@@ -59,7 +59,7 @@
     <template v-if="node.AttackProperty?.DamageTypeFromAttacker">
       as the attacker's element
     </template>
-    <template v-else-if="node.AttackProperty?.DamageType">
+    <template v-else>
       as <em>{{ node.AttackProperty?.DamageType ?? 'Physical' }}</em>
     </template>
     <template v-if="node.AttackProperty?.AttackType">
