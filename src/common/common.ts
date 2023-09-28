@@ -42,8 +42,9 @@ export function cleanupFilename(path:string) : string
     return filename?.substring(0, filename.lastIndexOf('.')) ?? ''
 }
 
-const agoDivisors = [60, 60, 24, 7, 365 / 7 / 12, 12];
-const agoNames = ['second', 'minute', 'hour', 'day', 'week', 'month', 'year'];
+const agoNames = ['second', 'minute', 'hour', 'day', 'month', 'year']
+const agoDivisors = [60, 60, 24, 365 / 12, 12]
+const agoThreshold = [1, 1, 2, 2, 1]
 
 export function toTimeAgo(date:Date|string) : string
 {
@@ -56,7 +57,7 @@ export function toTimeAgo(date:Date|string) : string
 
     let time = seconds
     let timeIndex = 0
-    while (timeIndex < agoDivisors.length && time > agoDivisors[timeIndex])
+    while (timeIndex < agoDivisors.length && time > agoDivisors[timeIndex] * agoThreshold[timeIndex])
     {
         time /= agoDivisors[timeIndex]
         timeIndex++
