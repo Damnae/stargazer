@@ -15,8 +15,8 @@ export interface RelicSetSkill
     PropertyList: 
     [
         {
-            NAOGDGBJNOJ: string // PropertyType
-            MBOHKHKHFPD: // Value
+            LMIJMPOCMMG: string // PropertyType
+            MOJJBFBKBNC: // Value
             {
                 Value: number
             }
