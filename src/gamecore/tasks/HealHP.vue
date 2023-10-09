@@ -31,9 +31,7 @@
       <em><EvaluateExpression :expression="node.ModifyValue" /></em> HP
     </template>
 
-    <template v-if="node.FormulaType">
-      based on <em>{{ node.FormulaType ?? 'ATK' }}</em>
-    </template>
+    by <em>{{ node.FormulaType ?? 'HealByHealerAttack' }}</em>
   </BlockLayout>
 </template>
 

@@ -172,7 +172,7 @@
         <h2>Events</h2>
         <div class="sticky-container">
           <template v-for="(e, key) in modifier._CallbackList">
-            <h3>{{ key }}</h3>
+            <h3>{{ e.Event ?? key }}</h3>
             <AnyTask v-for="n in e.CallbackConfig" :node="n" />
           </template>
         </div>

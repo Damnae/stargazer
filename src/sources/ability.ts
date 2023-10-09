@@ -5,6 +5,7 @@ import useSettings from '@/common/settings';
 
 export interface ModifierEventHandler
 {
+  Event?:string
   CallbackConfig: GamecoreTask[]
 }
 
