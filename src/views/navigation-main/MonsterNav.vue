@@ -1,7 +1,7 @@
 <script setup lang="ts">
   import { ref, computed, inject, Ref, } from 'vue'
   import { RouterLink } from 'vue-router';
-  import { Grouped2, } from '@/common/common';
+  import { Grouped, } from '@/common/common';
   import { getMonsters, Monster, MonsterConfig, } from '@/sources/monster';
   import NavTree from '@/components/NavTree.vue'
   import NavItem from '@/components/NavItem.vue'
@@ -10,7 +10,7 @@
   const search = inject<Ref<string>>('search') as Ref<string>
 
   const monsters = ref<MonsterConfig>(await getMonsters(commitId))
-  const monstersSearchResults = computed(() => allMonstersByTemplateByCamp())
+  const monstersSearchResults = computed(() => allMonstersByTemplate())
 
   function allMonsters() : Monster[]
   {
@@ -19,38 +19,28 @@
       .sort((a, b) => a.MonsterName.Text > b.MonsterName.Text ? 1 : -1)
   }
 
-  function allMonstersByTemplateByCamp() : Grouped2<Monster>
+  function allMonstersByTemplate() : Grouped<Monster>
   {
     return allMonsters()
-      .reduce((monsterCamps:Grouped2<Monster>, monster:Monster) => 
+      .reduce((monsterNames:Grouped<Monster>, monster:Monster) => 
       {
-        const campKey = monster.MonsterTemplate.MonsterCamp.Name.Text;
-        const templateKey = monster.MonsterTemplate.MonsterName.Text;
-        const monsterTemplates = (monsterCamps[campKey] || {});
-        const monsters = (monsterTemplates[templateKey] || []);
+        const key = monster.MonsterTemplate.MonsterName.Text;
+        const monsters = (monsterNames[key] || []);
         monsters.push(monster);
-        monsterTemplates[templateKey] = monsters;
-        monsterCamps[campKey] = monsterTemplates;
-        return monsterCamps;
+        monsterNames[key] = monsters;
+        return monsterNames;
       }, {})
   }
 </script>
 
 <template>
-  <NavItem v-for="(monsterTemplate, monsterCampName) in monstersSearchResults">
-    <NavTree :startsOpen="true">
-      <template #header>{{ monsterCampName }}</template>
-      <NavItem v-for="(monsters, monsterTemplateName) in monsterTemplate">
-
-        <NavTree>
-          <template #header :title="monsterTemplateName.toString()">{{ monsterTemplateName }}</template>
-          <NavItem v-for="monster in monsters" :key="monster.MonsterID">
-            <RouterLink :to="{ name:'monster', params:{ commitId: commitId, objectId: monster.MonsterID }}">
-              <span :title="monster.MonsterName.Text">{{ monster.MonsterName.Text }}</span>
-            </RouterLink>
-          </NavItem>
-        </NavTree>
-
+  <NavItem v-for="(monsters, monsterTemplateName) in monstersSearchResults">
+    <NavTree>
+      <template #header :title="monsterTemplateName.toString()">{{ monsterTemplateName }}</template>
+      <NavItem v-for="monster in monsters" :key="monster.MonsterID">
+        <RouterLink :to="{ name:'monster', params:{ commitId: commitId, objectId: monster.MonsterID }}">
+          <span :title="monster.MonsterName.Text">{{ monster.MonsterName.Text }}</span>
+        </RouterLink>
       </NavItem>
     </NavTree>
   </NavItem>
