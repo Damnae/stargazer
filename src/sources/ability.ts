@@ -242,6 +242,8 @@ const contextTypeToPaths =
     [
       'Config/ConfigAbility/Common_Additional_Ability.json',
       'Config/ConfigAbility/BattleEventAbility.json',
+      'Config/ConfigAbility/BattleEventAbility_2.json',
+      'Config/ConfigAbility/BattleEventAbility_SilverWolfEvent.json',
       'Config/ConfigAbility/StageBattleEventAbility.json',
       'Config/ConfigAbility/BattleEvent',
       //'Config/ConfigAbility/BattleEvent/Camera',
@@ -316,6 +318,8 @@ const contextTypeToPaths =
       'Config/ConfigAbility/EquipmemtAbility.json',
       'Config/ConfigAbility/RelicAbility.json',
       'Config/ConfigAbility/BattleEventAbility.json',
+      'Config/ConfigAbility/BattleEventAbility_2.json',
+      'Config/ConfigAbility/BattleEventAbility_SilverWolfEvent.json',
       'Config/ConfigAbility/StageBattleEventAbility.json',
       'Config/ConfigAbility/BattleEvent',
       'Config/ConfigAbility/Level',
