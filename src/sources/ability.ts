@@ -465,6 +465,9 @@ async function getTaskListTemplates(commitId:string, path:string) : Promise<Task
 
 function mergeAbilityConfig(into:TaskContext, from:AbilityConfig)
 {
+    if (!from)
+      return;
+
     for (const ability of from.AbilityList)
     {
         let nameIndex = 2
@@ -489,6 +492,9 @@ function mergeAbilityConfig(into:TaskContext, from:AbilityConfig)
 
 function mergeModifierConfig(into:TaskContext, from:ModifierConfig)
 {
+    if (!from)
+      return;
+    
     for (const modifier of Object.values(from.ModifierMap))
     {
         let nameIndex = 2
@@ -502,6 +508,9 @@ function mergeModifierConfig(into:TaskContext, from:ModifierConfig)
 
 function mergeTaskListTemplateConfig(into:TaskContext, from:TaskListTemplateConfig)
 {
+    if (!from)
+      return;
+    
     for (const template of from.TaskListTemplate)
     {
         let nameIndex = 2
