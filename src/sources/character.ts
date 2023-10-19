@@ -4,29 +4,33 @@ import { Monster } from './monster';
 import { DynamicValues } from './gamecore';
 import { BattleEvent } from './battleevent';
 
+export interface CharacterSkillAIWeightData
+{
+    SkillBasicPower?:
+    {
+        Value: number
+    }
+    Groups:
+    [
+        {
+            GroupName:string
+            Weight?:
+            {
+                Value: number
+            }
+        }
+    ]
+}
+
 export interface CharacterSkill
 {
     Name: string
     SkillType: string
     EntryAbility: string
     PrepareAbility?: string
-    ComplexSkillAI?:
-    {
-        SkillBasicPower?:
-        {
-            Value: number
-        }
-        Groups:
-        [
-            {
-                GroupName:string
-                Weight?:
-                {
-                    Value: number
-                }
-            }
-        ]
-    }
+    ComplexSkillAIPreCheck?:CharacterSkillAIWeightData
+    ComplexSkillAI?:CharacterSkillAIWeightData
+
     ChildSkillList?: string[] // used by Phys MC's ult
 }
 
@@ -46,6 +50,13 @@ export interface Character
         [key: string]: number
     }
     DynamicValues?: DynamicValues
+    AITagList?:
+    {
+        Values: 
+        {
+            [hash: number]: {}
+        }
+    }
 }
 
 export async function getCharacterByAvatar(commitId:string, avatar:Avatar) : Promise<Character|undefined>

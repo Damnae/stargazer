@@ -1,10 +1,25 @@
 import { reactive, } from 'vue'
 import { getHash } from './translate'
 
+//console.log(`"${getHash('BPHealingSkill')}": "BPHealingSkill",`)
+
 const defaultHashes:{[key:number]:string} = 
 {
+  // Expression functions
   "1776456860": "floor",
   "-1226284721": "int",
+  // AI Tags
+  "-833189093": "BPHealingSkill",
+  "-1649595214": "BPSkillForFree",
+  "-1351158859": "AlwaysNeedBP",
+  "-447313187": "BPSkillPriority",
+  "762466": "DamageCarry",
+  "-1570322415": "DamageNeedAttack",
+  "1646294870": "DamageNeedDef",
+  "1692650493": "DamageNeedHP",
+  "-2136914891": "DamageIncreaseTypeBP", 
+  "-731068780": "AggroNeed",
+  //
   "2612209": "DebuffNumber",
   "2621308": "Hana",
   "14492765": "MyHPRatio",

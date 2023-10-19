@@ -2,6 +2,7 @@
   import { shallowRef, watch } from 'vue';
   import { useRoute } from 'vue-router';
   
+  import AvatarAI from './AvatarAI.vue';
   import MonsterAI from './MonsterAI.vue';
 
   const component = shallowRef()
@@ -11,6 +12,9 @@
   {
     switch (route.name)
     {
+      case 'avatar':
+        component.value = AvatarAI
+        break;
       case 'monster':
       case 'monsterAbility':
       case 'monsterModifier':
