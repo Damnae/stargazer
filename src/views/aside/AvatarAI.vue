@@ -59,9 +59,9 @@ import { cleanupNumber } from '@/common/common';
                 {{ cleanupNumber(weightGroup.Weight?.Value ?? 1) }}
               </li>
             </ul>
-            <span class="minor" v-if="skill.ComplexSkillAIPreCheck?.SkillBasicPower">
+            <div class="minor" v-if="skill.ComplexSkillAIPreCheck?.SkillBasicPower">
               Power: {{ cleanupNumber(skill.ComplexSkillAIPreCheck?.SkillBasicPower.Value) }}
-            </span>
+            </div>
           </template>
 
           <template v-if="skill.ComplexSkillAI">
@@ -72,10 +72,14 @@ import { cleanupNumber } from '@/common/common';
                 {{ cleanupNumber(weightGroup.Weight?.Value ?? 1) }}
               </li>
             </ul>
-            <span class="minor" v-if="skill.ComplexSkillAI?.SkillBasicPower">
+            <div class="minor" v-if="skill.ComplexSkillAI?.SkillBasicPower">
               Power: {{ cleanupNumber(skill.ComplexSkillAI?.SkillBasicPower.Value) }}
-            </span>
+            </div>
           </template>
+
+          <div class="minor" v-if="skill.AIUltraSkillPriority">
+            Priority: {{ skill.AIUltraSkillPriority }}
+          </div>
 
         </template>
       </template>

@@ -30,6 +30,7 @@ export interface CharacterSkill
     PrepareAbility?: string
     ComplexSkillAIPreCheck?:CharacterSkillAIWeightData
     ComplexSkillAI?:CharacterSkillAIWeightData
+    AIUltraSkillPriority:string,
 
     ChildSkillList?: string[] // used by Phys MC's ult
 }
