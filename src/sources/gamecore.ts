@@ -133,6 +133,52 @@ export function evaluateDescriptionString(description:string, params:string[]) :
   return cleanupMarkup(description)
 }
 
+enum ExpressionOpCode
+{
+  Constant,
+  Variable,
+  Add,
+  Subtract,
+  Multiply,
+  Divide,
+  Modulo,
+  Negative,
+  Not,
+  Call,
+  Return,
+}
+
+const opCodeMaps:{[version:number]:{[opCodeValue:number]:ExpressionOpCode}} = 
+{
+  9:
+  {
+    0: ExpressionOpCode.Constant,
+    1: ExpressionOpCode.Variable,
+    2: ExpressionOpCode.Add,
+    3: ExpressionOpCode.Subtract,
+    4: ExpressionOpCode.Multiply,
+    5: ExpressionOpCode.Divide,
+    6: ExpressionOpCode.Negative,
+    7: ExpressionOpCode.Not,
+    8: ExpressionOpCode.Call,
+    9: ExpressionOpCode.Return,
+  },
+  10:
+  {
+    0: ExpressionOpCode.Constant,
+    1: ExpressionOpCode.Variable,
+    2: ExpressionOpCode.Add,
+    3: ExpressionOpCode.Subtract,
+    4: ExpressionOpCode.Multiply,
+    5: ExpressionOpCode.Divide,
+    6: ExpressionOpCode.Modulo,
+    7: ExpressionOpCode.Negative,
+    8: ExpressionOpCode.Not,
+    9: ExpressionOpCode.Call,
+    10: ExpressionOpCode.Return,
+  },
+}
+
 export function evaluateDynamicExpression(expression?:DynamicExpression, context?:ExpressionContext) : string
 {
   if (!expression)
@@ -143,26 +189,36 @@ export function evaluateDynamicExpression(expression?:DynamicExpression, context
 
   if (expression.PostfixExpr)
   {
-    const postFixExpr = expression.PostfixExpr;
-    const opCodes = postFixExpr.OpCodes;
-    const constants = postFixExpr.FixedValues;
-    const variables = postFixExpr.DynamicHashes;
+    const postFixExpr = expression.PostfixExpr
+    const opCodes = postFixExpr.OpCodes
+    const constants = postFixExpr.FixedValues
+    const variables = postFixExpr.DynamicHashes
 
-    const stack:string[] = [];
-    let formula = undefined;
-
+    const stack:string[] = []
     const hashStore = useHashStore()
 
-    var bytes = atob(opCodes);
+    var bytes = atob(opCodes)
+    const version = bytes.charCodeAt(bytes.length - 1)
+    const opCodeMap = opCodeMaps[version]
+
+    if (opCodeMap == undefined)
+    {
+      console.log('expression last opcode: ' + version)
+      return 'NYI'
+    }
+
+    let formula = ''
     for (var i = 0; i < bytes.length; i++)
     {
-      var opCode = bytes.charCodeAt(i);
+      const opCodeValue = bytes.charCodeAt(i)
+      const opCode = opCodeMap[opCodeValue]
+
       switch (opCode)
       {
-        case 0: // Constant
-          stack.push(cleanupNumber(constants?.[bytes.charCodeAt(++i)]?.Value));
-          break;
-        case 1: // Variable
+        case ExpressionOpCode.Constant:
+          stack.push(cleanupNumber(constants?.[bytes.charCodeAt(++i)]?.Value))
+          break
+        case ExpressionOpCode.Variable:
           const hash = variables?.[bytes.charCodeAt(++i)]
           let variable = hashStore.translate(hash) ?? `Var[${hash}]`
           if (context)
@@ -178,52 +234,55 @@ export function evaluateDynamicExpression(expression?:DynamicExpression, context
             }
           }
           stack.push(variable);
-          break;
-        case 2: // Add
-          var right = stack.pop();
-          var left = stack.pop();
-          stack.push(`(${left}) + (${right})`);
-          break;
-        case 3: // Subtract
-          var right = stack.pop();
-          var left = stack.pop();
-          stack.push(`(${left}) - (${right})`);
-          break;
-        case 4: // Multiply
-          var right = stack.pop();
-          var left = stack.pop();
-          stack.push(`(${left}) * (${right})`);
-          break;
-        case 5: // Divide
-          var right = stack.pop();
-          var left = stack.pop();
-          stack.push(`(${left}) / (${right})`);
-          break;
-        case 6: // Negative
-          var right = stack.pop();
-          stack.push(`-(${right})`);
-          break;
-        case 7: // Not
-          var right = stack.pop();
-          stack.push(`!(${right})`);
-          break;
-        case 8: // Call
-          var right = stack.pop();
-          var left = stack.pop();
-          stack.push(`${left}(${right}, ${bytes.charCodeAt(++i)})`);
-          break;
-        case 9: // Return
-        case 10: // Return?
-          var result = stack.pop();
-          formula = result ?? 'empty';
-          break;
+          break
+        case ExpressionOpCode.Add:
+          var right = stack.pop()
+          var left = stack.pop()
+          stack.push(`(${left}) + (${right})`)
+          break
+        case ExpressionOpCode.Subtract:
+          var right = stack.pop()
+          var left = stack.pop()
+          stack.push(`(${left}) - (${right})`)
+          break
+        case ExpressionOpCode.Multiply:
+          var right = stack.pop()
+          var left = stack.pop()
+          stack.push(`(${left}) * (${right})`)
+          break
+        case ExpressionOpCode.Divide:
+          var right = stack.pop()
+          var left = stack.pop()
+          stack.push(`(${left}) / (${right})`)
+          break
+        case ExpressionOpCode.Modulo:
+          var right = stack.pop()
+          var left = stack.pop()
+          stack.push(`(${left}) % (${right})`)
+          break
+        case ExpressionOpCode.Negative:
+          var right = stack.pop()
+          stack.push(`-(${right})`)
+          break
+        case ExpressionOpCode.Not:
+          var right = stack.pop()
+          stack.push(`!(${right})`)
+          break
+        case ExpressionOpCode.Call:
+          var right = stack.pop()
+          var left = stack.pop()
+          stack.push(`${left}(${right}, ${bytes.charCodeAt(++i)})`)
+          break
+        case ExpressionOpCode.Return:
+          var result = stack.pop()
+          formula = result ?? 'empty'
+          break
         default:
-          console.log('expression opcode not implemented: ' + opCode);
+          console.log('expression opcode not implemented: ' + opCode)
       }
     }
 
-    formula = formula ?? stack.pop() ?? 'empty';
-    return formula;
+    return formula
   }
 
   return 'unknown'
