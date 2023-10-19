@@ -93,7 +93,7 @@ export function evaluateTargetType(targetType?:GamecoreTargetType) : string
     return targetType.Targets.map(t => evaluateTargetType(t)).join(', ')
 
   if (targetType?.Sequence)
-    return targetType.Sequence.map(t => evaluateTargetType(t)).join(', ')
+    return targetType.Sequence.map(t => evaluateTargetType(t)).join(' > ')
 
   if (targetType?.TargetType)
     return targetType.TargetType
@@ -149,7 +149,7 @@ export function evaluateDynamicExpression(expression?:DynamicExpression, context
     const variables = postFixExpr.DynamicHashes;
 
     const stack:string[] = [];
-    let formula = '';
+    let formula = undefined;
 
     const hashStore = useHashStore()
 
@@ -213,12 +213,16 @@ export function evaluateDynamicExpression(expression?:DynamicExpression, context
           stack.push(`${left}(${right}, ${bytes.charCodeAt(++i)})`);
           break;
         case 9: // Return
+        case 10: // Return?
           var result = stack.pop();
           formula = result ?? 'empty';
           break;
+        default:
+          console.log('expression opcode not implemented: ' + opCode);
       }
     }
 
+    formula = formula ?? stack.pop() ?? 'empty';
     return formula;
   }
 
