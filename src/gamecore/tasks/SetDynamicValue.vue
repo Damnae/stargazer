@@ -10,6 +10,7 @@
   const node = props.node as unknown as 
   {
     DynamicKey:string
+    ContextScope:string
     Value?:DynamicExpression
   }
 
@@ -20,7 +21,7 @@
 <template>
   <BlockLayout :source="node">
 
-    Set <em>{{ node.DynamicKey }}</em>
+    Set <em v-if="node.ContextScope">{{ node.ContextScope }}.</em><em>{{ node.DynamicKey }}</em>
     to <em><EvaluateExpression :expression="node.Value" /></em>
 
   </BlockLayout>

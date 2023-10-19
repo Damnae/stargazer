@@ -11,6 +11,7 @@
   {
     TargetType?:GamecoreTargetType
     DynamicKey:string
+    ContextScope:string
     ResetValue?:DynamicExpression
   }
 </script>
@@ -18,7 +19,7 @@
 <template>
   <BlockLayout :source="node">
 
-    Define <em>{{ node.DynamicKey }}</em>
+    Define <em v-if="node.ContextScope">{{ node.ContextScope }}.</em><em>{{ node.DynamicKey }}</em>
     to <em><EvaluateExpression :expression="node.ResetValue" /></em>
 
   </BlockLayout>

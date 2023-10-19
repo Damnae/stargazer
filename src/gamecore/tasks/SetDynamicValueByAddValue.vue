@@ -10,6 +10,7 @@
   {
     TargetType?:GamecoreTargetType
     Key:string
+    ContextScope:string
     AddValue:DynamicExpression
     Min:DynamicExpression
     Max:DynamicExpression
@@ -28,7 +29,7 @@
     <template v-if="node.TargetType">
       <em><EvaluateTargetType :target="node.TargetType" /></em>'s
     </template>
-    <em>{{ node.Key }}</em>,
+    <em v-if="node.ContextScope">{{ node.ContextScope }}.</em><em>{{ node.Key }}</em>,
     clamp between <em><EvaluateExpression :expression="node.Min" /></em>
     and <em><EvaluateExpression :expression="node.Max" /></em>
 

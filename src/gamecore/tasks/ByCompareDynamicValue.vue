@@ -10,6 +10,7 @@
   {
     TargetType?:GamecoreTargetType
     DynamicKey:string
+    ContextScope:string
     CompareType:string
     CompareValue:DynamicExpression
   }
@@ -24,7 +25,7 @@
     <template v-if="node.TargetType">
       <em><EvaluateTargetType :target="node.TargetType" /></em>'s
     </template>
-    <em>{{ node.DynamicKey }}</em> is
+    <em v-if="node.ContextScope">{{ node.ContextScope }}.</em><em>{{ node.DynamicKey }}</em> is
     <em>{{ node.CompareType }}</em> to
     <em><EvaluateExpression :expression="node.CompareValue" /></em>
 
