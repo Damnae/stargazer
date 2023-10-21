@@ -6,7 +6,8 @@
   import { Character, getCharacterByAvatar } from '@/sources/character';
 
   import LoadingNav from '@/components/LoadingNav.vue';
-import { cleanupNumber } from '@/common/common';
+  import ProvideEmptyContext from '@/views/abilities/components/ProvideEmptyContext.vue';
+  import AIWeights from './components/AIWeights.vue';
 
   const commitId = inject<string>('commitId') as string
   
@@ -47,42 +48,28 @@ import { cleanupNumber } from '@/common/common';
         {{ Object.keys(character.AITagList.Values).map(hash => hashStore.translate(parseInt(hash)) ?? hash).join(', ') }}
       </template>
 
-      <template v-for="skill in character.SkillList">
-        <template v-if="skill.ComplexSkillAIPreCheck || skill.ComplexSkillAI">
-          <h2>{{ skill.Name }}</h2>
+      <ProvideEmptyContext :commitId="commitId">
+        <template v-for="skill in character.SkillList">
+          <template v-if="skill.ComplexSkillAIPreCheck || skill.ComplexSkillAI">
+            <h2>{{ skill.Name }}</h2>
 
-          <template v-if="skill.ComplexSkillAIPreCheck">
-            <h3>Precheck Weights</h3>
-            <ul>
-              <li v-for="weightGroup in skill.ComplexSkillAIPreCheck?.Groups">
-                {{ weightGroup.GroupName }} 
-                {{ cleanupNumber(weightGroup.Weight?.Value ?? 1) }}
-              </li>
-            </ul>
-            <div class="minor" v-if="skill.ComplexSkillAIPreCheck?.SkillBasicPower">
-              Power: {{ cleanupNumber(skill.ComplexSkillAIPreCheck?.SkillBasicPower.Value) }}
+            <template v-if="skill.ComplexSkillAIPreCheck">
+              <h3>Precheck Weights</h3>
+              <AIWeights :weightData="skill.ComplexSkillAIPreCheck" />
+            </template>
+
+            <template v-if="skill.ComplexSkillAI">
+              <h3>Weights</h3>
+              <AIWeights :weightData="skill.ComplexSkillAI" />
+            </template>
+
+            <div class="minor" v-if="skill.AIUltraSkillPriority">
+              Priority: {{ skill.AIUltraSkillPriority }}
             </div>
+
           </template>
-
-          <template v-if="skill.ComplexSkillAI">
-            <h3>Weights</h3>
-            <ul>
-              <li v-for="weightGroup in skill.ComplexSkillAI?.Groups">
-                {{ weightGroup.GroupName }} 
-                {{ cleanupNumber(weightGroup.Weight?.Value ?? 1) }}
-              </li>
-            </ul>
-            <div class="minor" v-if="skill.ComplexSkillAI?.SkillBasicPower">
-              Power: {{ cleanupNumber(skill.ComplexSkillAI?.SkillBasicPower.Value) }}
-            </div>
-          </template>
-
-          <div class="minor" v-if="skill.AIUltraSkillPriority">
-            Priority: {{ skill.AIUltraSkillPriority }}
-          </div>
-
         </template>
-      </template>
+      </ProvideEmptyContext>
 
     </section>
   </template>

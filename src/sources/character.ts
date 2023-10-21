@@ -4,22 +4,22 @@ import { Monster } from './monster';
 import { DynamicValues } from './gamecore';
 import { BattleEvent } from './battleevent';
 
+export interface CharacterSkillAIWeightGroup
+{
+    GroupName:string
+    Weight?:
+    {
+        Value: number
+    }
+}
+
 export interface CharacterSkillAIWeightData
 {
     SkillBasicPower?:
     {
         Value: number
     }
-    Groups:
-    [
-        {
-            GroupName:string
-            Weight?:
-            {
-                Value: number
-            }
-        }
-    ]
+    Groups:CharacterSkillAIWeightGroup[]
 }
 
 export interface CharacterSkill
