@@ -18,7 +18,7 @@
 
 <template>
   <BlockLayout :source="node">
-    <span class="flow">Do <EvaluateExpression :expression="node.MaxLoopCount" /> times</span>
+    <span class="flow">Do <em><EvaluateExpression :expression="node.MaxLoopCount" /></em> times</span>
     <template #content>
       <template v-if="tasks && tasks.length > 0">
         <template v-for="n in tasks">
