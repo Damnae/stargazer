@@ -14,7 +14,7 @@
 <template>
   <BlockLayout :source="node">
 
-    <em><EvaluateTargetType :target="node.TargetType" /></em> took <em>{{ node.DamageType }}</em> damage
+    <em><EvaluateTargetType :target="node.TargetType" /></em>'s element is <em>{{ node.DamageType }}</em>
 
   </BlockLayout>
 </template>
