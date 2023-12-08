@@ -107,6 +107,7 @@ export interface AbilityConfig
   {
     [key:string]: Modifier
   }
+  GlobalTemplates?:TaskListTemplateConfig
 }
 
 export interface ModifierConfig
@@ -487,6 +488,17 @@ function mergeAbilityConfig(into:TaskContext, from:AbilityConfig)
                 modifier.Name = `${originalName}#${nameIndex++}`
 
             into.Modifiers[modifier.Name] = modifier
+        }
+
+    if (from.GlobalTemplates !== undefined)
+        for (const taskTemplate of Object.values(from.GlobalTemplates))
+        {
+            let nameIndex = 2
+            const originalName = taskTemplate.Name
+            while (taskTemplate.Name in into.TaskListTemplates)
+              taskTemplate.Name = `${originalName}#${nameIndex++}`
+
+            into.TaskListTemplates[taskTemplate.Name] = taskTemplate
         }
 }
 
