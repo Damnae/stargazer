@@ -14,7 +14,7 @@
   {
     return Object.values(relicsets.value)
       .filter(v => v.SearchKeywords.some(k => k.includes(search.value.toLowerCase())))
-      .sort((a, b) => a.SetName.Text > b.SetName.Text ? 1 : -1)
+      .sort((a, b) => a.SetID > b.SetID ? 1 : -1)
   }
 </script>
 

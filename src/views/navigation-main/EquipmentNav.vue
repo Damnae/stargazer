@@ -16,7 +16,7 @@
   {
     return Object.values(equipments.value)
       .filter(v => v.SearchKeywords.some(k => k.includes(search.value.toLowerCase())))
-      .sort((a, b) => a.EquipmentName.Text > b.EquipmentName.Text ? 1 : -1)
+      .sort((a, b) => a.EquipmentID > b.EquipmentID ? 1 : -1)
   }
 
   function allEquipmentsByPath() : Grouped<Equipment>
