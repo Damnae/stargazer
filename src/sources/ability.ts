@@ -98,6 +98,8 @@ export interface Ability
     [key:string]: Modifier
   }
   TaskListTemplate?:TaskListTemplate[]
+  
+  SearchKeywords: string[]
 }
 
 export interface AbilityConfig
@@ -440,12 +442,21 @@ async function getAbilities(commitId:string, path:string) : Promise<AbilityConfi
   const result = await retrieveJson(path, commitId, false) as AbilityConfig
   if (result?.AbilityList)
     for (const ability of result.AbilityList)
+    {
+      ability.SearchKeywords = []
+      ability.SearchKeywords.push(ability.Name.toLowerCase())
+
       if (ability.Modifiers)
         for (const [name, modifier] of Object.entries(ability.Modifiers))
+        {
           modifier.Name = name
+          ability.SearchKeywords.push(name.toLowerCase())
+        }
+    }
   if (result?.GlobalModifiers)
     for (const [name, modifier] of Object.entries(result.GlobalModifiers))
       modifier.Name = name
+
   return result
 }
 
