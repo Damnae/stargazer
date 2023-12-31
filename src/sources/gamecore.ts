@@ -276,12 +276,13 @@ export function evaluateDynamicExpression(expression?:DynamicExpression, context
         case ExpressionOpCode.Return:
           var result = stack.pop()
           formula = result ?? 'empty'
+          if (stack.length > 0)
+            console.log('expression stack not empty: ' + stack.length)
           break
         default:
           console.log('expression opcode not implemented: ' + opCode)
       }
     }
-
     return formula
   }
 
