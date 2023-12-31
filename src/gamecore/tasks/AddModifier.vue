@@ -14,6 +14,7 @@
     TargetType?:GamecoreTargetType
     ModifierName:string
     Chance?:DynamicExpression
+    Count?:DynamicExpression
     LayerAddWhenStack?:DynamicExpression
     MaxLayer?:DynamicExpression
     LifeTime?:DynamicExpression
@@ -44,6 +45,9 @@
     Apply 
     <template v-if="node.LayerAddWhenStack">
       <em><EvaluateExpression :expression="node.LayerAddWhenStack" /></em> stacks of
+    </template>
+    <template v-else-if="node.Count">
+      <em><EvaluateExpression :expression="node.Count" /></em> stacks of
     </template>
     modifier
     <RouterLink v-if="node.ModifierName" :to="createModifierRoute(node.ModifierName)">
