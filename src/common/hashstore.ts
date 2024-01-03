@@ -11,6 +11,7 @@ const defaultHashes:{[key:number]:string} =
   // AI Tags
   "-2126289379": "TotalPowerWeight",
   "-1599294167": "NoNeedCharge",
+  "-2007610612": "DamageNeedNoCrit",
   "-833189093": "BPHealingSkill",
   "-1649595214": "BPSkillForFree",
   "-1351158859": "AlwaysNeedBP",
