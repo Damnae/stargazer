@@ -9,7 +9,7 @@
   const node = props.node as unknown as 
   {
     TargetType:GamecoreTargetType
-    BehaviorFlagFilter:string[]
+    BehaviorFlagFilter?:string[]
     MaxNumber?:DynamicExpression
     TaskList?:GamecoreTask[]
   }
@@ -28,7 +28,9 @@
         all modifiers on 
       </template>
       <EvaluateTargetType :target="node.TargetType" />
-      with <em>{{ node.BehaviorFlagFilter.join(', ') }}</em>
+      <template v-if="node.BehaviorFlagFilter">
+        with <em>{{ node.BehaviorFlagFilter.join(', ') }}</em>
+      </template>
     </span>
     <template #content>
       <div class="subblock">
