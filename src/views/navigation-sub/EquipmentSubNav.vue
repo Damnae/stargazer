@@ -17,8 +17,6 @@
     loading.value = true
     equipment.value = await getEquipment(props.commitId, props.objectId)
     loading.value = false
-
-    equipment.value.Skill.ParamList
   })
 </script>
 
