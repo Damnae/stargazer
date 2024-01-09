@@ -10,6 +10,7 @@
   {
     TargetType:GamecoreTargetType
     BehaviorFlagFilter?:string[]
+    StatusTypeMask:string
     MaxNumber?:DynamicExpression
     TaskList?:GamecoreTask[]
   }
@@ -22,14 +23,14 @@
     <span class="flow">
       For 
       <template v-if="node.MaxNumber">
-        up to <EvaluateExpression :expression="node.MaxNumber" /> modifiers on 
+        up to <em><EvaluateExpression :expression="node.MaxNumber" /></em> <em>{{ node.StatusTypeMask }}</em> modifiers on 
       </template>
       <template v-else>
-        all modifiers on 
+        all <em>{{ node.StatusTypeMask }}</em> modifiers on 
       </template>
       <EvaluateTargetType :target="node.TargetType" />
       <template v-if="node.BehaviorFlagFilter">
-        with <em>{{ node.BehaviorFlagFilter.join(', ') }}</em>
+        with flag <em>{{ node.BehaviorFlagFilter.join(', ') }}</em>
       </template>
     </span>
     <template #content>
