@@ -8,7 +8,7 @@
 
 <template>
   <BlockLayout :source="node">
-    <span class="notimplemented">{{ cleanupTaskName(node.$type) }}</span>
+    <span class="notimplemented">{{ cleanupTaskName(node?.$type ?? "No Task") }}</span>
   </BlockLayout>
 </template>
 

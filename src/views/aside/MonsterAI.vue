@@ -85,7 +85,7 @@
           <div v-for="axis in decision.ConsiderAxisList">
             <AnyTask :node="axis" />
           </div>
-          <AnyTask :node="decision.RootTask" />
+          <AnyTask v-if="decision.RootTask != undefined" :node="decision.RootTask" />
         </div>
 
         <template v-if="skillSequence.length > 0">

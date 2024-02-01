@@ -4,7 +4,7 @@
   import { taskTypeToComponentName, } from '@/common/common';
 
   const props = defineProps<{node:GamecoreTask, withComponentName?:string}>()
-  const taskName = props.withComponentName ?? taskTypeToComponentName(props.node.$type)
+  const taskName = props.withComponentName ?? taskTypeToComponentName(props.node?.$type ?? 'MissingTask')
   const taskComponent = defineAsyncComponent({
     loader: async () => 
     {
@@ -25,7 +25,7 @@
 </script>
 
 <template>
-  <component :is="taskComponent" :node="node" :class="inversibleNode.Inverse || inversibleNode.InverseResultFlag ? 'inverted' : ''" />
+  <component :is="taskComponent" :node="node" :class="inversibleNode?.Inverse || inversibleNode?.InverseResultFlag ? 'inverted' : ''" />
 </template>
 
 <style scoped>

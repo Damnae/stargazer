@@ -15,7 +15,7 @@ export interface AIDecision
     DecisionName:string
     ScoreEvaluatorType:string
     ConsiderAxisList:GamecoreTask[]
-    RootTask:GamecoreTask
+    RootTask?:GamecoreTask
 }
 
 export interface CharacterAI
