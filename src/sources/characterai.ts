@@ -9,20 +9,11 @@ export interface AIVariable
     Name:string
 }
 
-export interface AIDecision
-{
-    $type:string
-    DecisionName:string
-    ScoreEvaluatorType:string
-    ConsiderAxisList:GamecoreTask[]
-    RootTask?:GamecoreTask
-}
-
 export interface CharacterAI
 {
     AIName: string
     VariableList: AIVariable[]
-    DecisionList: AIDecision[]
+    DecisionList: GamecoreTask[]
 }
 
 export async function getCharacterAIByMonster(commitId:string, monster:Monster) : Promise<CharacterAI>

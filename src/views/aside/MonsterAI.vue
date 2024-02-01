@@ -81,11 +81,7 @@
       
         <h2>Decisions</h2>
         <div v-for="decision in characterAI.DecisionList">
-          <h3>{{ decision.DecisionName }}</h3>
-          <div v-for="axis in decision.ConsiderAxisList">
-            <AnyTask :node="axis" />
-          </div>
-          <AnyTask v-if="decision.RootTask != undefined" :node="decision.RootTask" />
+          <AnyTask :node="decision" />
         </div>
 
         <template v-if="skillSequence.length > 0">
