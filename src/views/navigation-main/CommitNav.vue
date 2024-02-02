@@ -10,6 +10,7 @@
   import StatusNav from './StatusNav.vue'
   import AbilityNav from './AbilityNav.vue'
   import ModifierNav from './ModifierNav.vue'
+  import TaskTemplateNav from './TaskTemplateNav.vue'
   import RogueBuffNav from './RogueBuffNav.vue'
 
   import NavTabs from '@/components/NavTabs.vue'
@@ -29,7 +30,7 @@
     All: ['Avatar', 'Monster', 'BattleEvent', 'Equipment', 'RelicSet', 'Status', 'Ability', 'Modifier', 'RogueBuff', 'RogueMiracle', 'Misc'],
     Players: ['Avatar', 'Equipment', 'RelicSet'],
     NPC: ['Monster', 'BattleEvent'],
-    Global: ['Status', 'Ability', 'Modifier'],
+    Global: ['Status', 'Ability', 'Modifier', 'TaskTemplate'],
     'Simulated Universe': ['RogueBuff', 'RogueMiracle'],
   }
 
@@ -103,6 +104,13 @@
             <NavTree :startsOpen="mainNav == 'Modifier'">
               <template #header>Modifiers</template>
               <ModifierNav />
+            </NavTree>
+          </NavItem>
+
+          <NavItem v-if="isVisible('TaskTemplate')">
+            <NavTree :startsOpen="mainNav == 'TaskTemplate'">
+              <template #header>Task Templates</template>
+              <TaskTemplateNav />
             </NavTree>
           </NavItem>
 

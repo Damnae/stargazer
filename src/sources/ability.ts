@@ -152,6 +152,7 @@ export enum TaskContextType
   BattleEvent = 'BattleEvent',
   Level = 'Level',
   Rogue = 'Rogue',
+  TaskTemplate = 'TaskTemplate',
 }
 
 const contextTypeToPaths =
@@ -305,6 +306,15 @@ const contextTypeToPaths =
       'Config/ConfigGlobalTaskListTemplate/GlobalTaskListTemplate.json',
     ],
   },
+  TaskTemplate: 
+  {
+    Abilities: [],
+    Modifiers: [],
+    TaskListTemplates:
+    [
+      'Config/ConfigGlobalTaskListTemplate/GlobalTaskListTemplate.json',
+    ],
+  },
   Empty: 
   {
     Abilities: [],
@@ -357,6 +367,12 @@ if (settings.includeWhiteBox)
     'Config/ConfigAbility/WhiteBox/BattleEvent',
     'Config/ConfigAbility/WhiteBox/Monster',
   ])
+  contextTypeToPaths.All.TaskListTemplates = contextTypeToPaths.All.TaskListTemplates.concat([
+    'Config/ConfigGlobalTaskListTemplate',
+  ])
+  contextTypeToPaths.TaskTemplate.TaskListTemplates = contextTypeToPaths.TaskTemplate.TaskListTemplates.concat([
+    'Config/ConfigGlobalTaskListTemplate',
+  ])
 }
 
 const taskContextCache:{[commitId: string]: {[type: string]: TaskContext}} = {}
@@ -407,7 +423,17 @@ export async function getTaskContext(commitId:string, type:TaskContextType) : Pr
         }
 
       for (const path of paths.TaskListTemplates)
+      if (path.endsWith('.json'))
         mergeTaskListTemplateConfig(context, await getTaskListTemplates(commitId, path) as TaskListTemplateConfig)
+      else
+      {
+        const response = await retrieveJson(`git/trees/${commitId}:${path}`, commitId, true)
+        const tree = response.tree
+        if (tree !== undefined)
+          for (const treePath of tree.map((t:any) => t.path))
+            if (treePath.endsWith('.json'))
+              mergeTaskListTemplateConfig(context, await getTaskListTemplates(commitId, `${path}/${treePath}`) as TaskListTemplateConfig)
+      }
   
       result = container[type] = context
       console.log(`cached ${type} ability context for ${commitId}`)
@@ -480,15 +506,16 @@ function mergeAbilityConfig(into:TaskContext, from:AbilityConfig)
     if (!from)
       return;
 
-    for (const ability of from.AbilityList)
-    {
-        let nameIndex = 2
-        const originalName = ability.Name
-        while (ability.Name in into.Abilities)
-            ability.Name = `${originalName}#${nameIndex++}`
+    if (from.AbilityList !== undefined)
+      for (const ability of from.AbilityList)
+      {
+          let nameIndex = 2
+          const originalName = ability.Name
+          while (ability.Name in into.Abilities)
+              ability.Name = `${originalName}#${nameIndex++}`
 
-        into.Abilities[ability.Name] = ability
-    }
+          into.Abilities[ability.Name] = ability
+      }
 
     if (from.GlobalModifiers !== undefined)
         for (const modifier of Object.values(from.GlobalModifiers))
@@ -515,7 +542,7 @@ function mergeAbilityConfig(into:TaskContext, from:AbilityConfig)
 
 function mergeModifierConfig(into:TaskContext, from:ModifierConfig)
 {
-    if (!from)
+    if (!from?.ModifierMap)
       return;
     
     for (const modifier of Object.values(from.ModifierMap))
@@ -531,7 +558,7 @@ function mergeModifierConfig(into:TaskContext, from:ModifierConfig)
 
 function mergeTaskListTemplateConfig(into:TaskContext, from:TaskListTemplateConfig)
 {
-    if (!from)
+    if (!from?.TaskListTemplate)
       return;
     
     for (const template of from.TaskListTemplate)
