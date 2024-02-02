@@ -250,7 +250,7 @@ const routes:Readonly<RouteRecordRaw[]> =
     { path: '/ability-:abilityId', meta: { redirectName:'ability' }, redirect: redirectToLatestCommit },
     { path: '/modifier-:modifierId', meta: { redirectName:'modifier' }, redirect: redirectToLatestCommit },
     
-    { path: '/tasktemplate-:tasktemplateId', meta: { redirectName:'tasktemplate' }, redirect: redirectToLatestCommit },
+    { path: '/tasktemplate-:taskTemplateId', meta: { redirectName:'tasktemplate' }, redirect: redirectToLatestCommit },
     
     { path: '/targetalias-:aliasId', meta: { redirectName:'targetAlias' }, redirect: redirectToLatestCommit },
     { path: '/targetaliases', meta: { redirectName:'targetAliases' }, redirect: redirectToLatestCommit },
