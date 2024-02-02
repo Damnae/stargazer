@@ -1,4 +1,4 @@
-import { cleanupMarkup, cleanupNumber, } from '@/common/common'
+import { cleanupMarkup, cleanupNumber, cleanupTaskName, } from '@/common/common'
 import useHashStore from '@/common/hashstore'
 
 export interface DynamicValue
@@ -103,6 +103,9 @@ export function evaluateTargetType(targetType?:GamecoreTargetType) : string
 
   if (targetType?.Index)
     return `Param Target #${targetType.Index}`
+
+  if (targetType?.$type)
+    return cleanupTaskName(targetType.$type)
 
   return 'unknown'
 }
