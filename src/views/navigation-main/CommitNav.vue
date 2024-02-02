@@ -27,7 +27,7 @@
 
   const tabs:{[key:string]: any} = 
   {
-    All: ['Avatar', 'Monster', 'BattleEvent', 'Equipment', 'RelicSet', 'Status', 'Ability', 'Modifier', 'RogueBuff', 'RogueMiracle', 'Misc'],
+    All: ['Avatar', 'Monster', 'BattleEvent', 'Equipment', 'RelicSet', 'Status', 'Ability', 'Modifier', 'RogueBuff', 'RogueMiracle', 'TaskTemplate', 'Misc'],
     Players: ['Avatar', 'Equipment', 'RelicSet'],
     NPC: ['Monster', 'BattleEvent'],
     Global: ['Status', 'Ability', 'Modifier', 'TaskTemplate'],
