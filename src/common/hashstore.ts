@@ -7,6 +7,8 @@ const defaultHashes:{[key:number]:string} =
 {
   // Expression functions
   "1776456860": "floor",
+  "-514975797": "ceil",
+  "1554761690": "round",
   "-1226284721": "int",
   // AI Tags
   "-2126289379": "TotalPowerWeight",
