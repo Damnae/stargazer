@@ -1,7 +1,8 @@
 import { reactive, } from 'vue'
 import { getHash } from './translate'
 
-//console.log(`"${getHash('BPHealingSkill')}": "BPHealingSkill",`)
+console.log(`"${getHash('min')}": "min",`)
+console.log(`"${getHash('max')}": "max",`)
 
 const defaultHashes:{[key:number]:string} = 
 {
@@ -10,6 +11,10 @@ const defaultHashes:{[key:number]:string} =
   "-514975797": "ceil",
   "1554761690": "round",
   "-1226284721": "int",
+  "-1355705909": "clamp",
+  "1502598836": "pow",
+  "339799074": "min",
+  "696029444": "max",
   // AI Tags
   "-2126289379": "TotalPowerWeight",
   "-1599294167": "NoNeedCharge",

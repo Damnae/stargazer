@@ -287,7 +287,7 @@ export function evaluateDynamicExpression(expression?:DynamicExpression|number, 
               var param0 = stack.pop()
               var param1 = stack.pop()
               var param2 = stack.pop()
-              stack.push(`clamp(${param2}, ${param1}, ${param0})`)
+              stack.push(`${param2}(${param1}, ${param0})`)
               break;
             default:
               stack.push(`UnknownCall${call}(${stack.join(', ')})`)
