@@ -280,7 +280,12 @@ export function evaluateDynamicExpression(expression?:DynamicExpression, context
           var result = stack.pop()
           formula = result ?? 'empty'
           if (stack.length > 0)
-            console.log('expression stack not empty: ' + stack.length)
+          {
+            formula = '⚠ ' + formula + ' ⚠'
+            console.log(formula
+              + '\nexpression stack not empty: ' + stack.length + ' left'
+              + '\n' + bytes.split ('').map(c => ('0' + c.charCodeAt(0).toString(16)).slice(-2)).join(' '))
+          }
           break
         default:
           console.log('expression opcode not implemented: ' + opCode)
