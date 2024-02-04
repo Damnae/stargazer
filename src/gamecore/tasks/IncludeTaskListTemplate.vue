@@ -1,15 +1,20 @@
 <script setup lang="ts">
   import { Ref, inject, watch, ref } from 'vue';
-  import { ExpressionContext, GamecoreTask, 
-  } from '@/sources/gamecore';
+  import useHashStore from '@/common/hashstore';
+  import { DynamicExpression, ExpressionContext, GamecoreTask, } from '@/sources/gamecore';
   import BlockLayout from '@/components/BlockLayout.vue';
   import { TaskContext, TaskListTemplate, findTaskTemplate, } from '@/sources/ability';
+  import EvaluateExpression from '../EvaluateExpression.vue';
   import AnyTask from '../AnyTask.vue';
 
   const props = defineProps<{node:GamecoreTask}>()
   const node = props.node as unknown as 
   {
     Name:string
+    DynamicValues:
+    {
+      [key:string]: DynamicExpression
+    }
   }
 
   const expressionContext = inject('expressionContext') as Ref<ExpressionContext>
@@ -21,6 +26,14 @@
     taskTemplate.value = findTaskTemplate(node.Name, expressionContext.value, taskContext.value)
   },
   { immediate:true })
+
+  if (node.DynamicValues)
+  {
+    const hashStore = useHashStore()
+    for (const key of Object.keys(node.DynamicValues))
+      hashStore.register(key, false)
+    hashStore.commit()
+  }
 </script>
 
 <template>
@@ -29,13 +42,22 @@
       Include task list template 
       <em>{{ node.Name }}</em>
     </span>
-    <template #content v-if="taskTemplate">
-      <AnyTask v-for="task in taskTemplate.TaskList" :node="task" />
-    </template>
-    <template #content v-else>
-      <div class="subblock">
-        Not found
-      </div>
+    <template #content>
+
+      <template v-if="node.DynamicValues != undefined" v-for="dynamicValue, dynamicValueName in node.DynamicValues">
+        <BlockLayout :source="dynamicValue">
+          With <em>{{ dynamicValueName }}</em> set to <em><EvaluateExpression :expression="dynamicValue" /></em>
+        </BlockLayout>
+      </template>
+
+      <template v-if="taskTemplate">
+        <AnyTask v-for="task in taskTemplate.TaskList" :node="task" />
+      </template>
+      <template v-else>
+        <div class="subblock">
+          Not found
+        </div>
+      </template>
     </template>
   </BlockLayout>
 </template>

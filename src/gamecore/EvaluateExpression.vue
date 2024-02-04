@@ -4,7 +4,7 @@
     DynamicExpression, evaluateDynamicExpression,
   } from '@/sources/gamecore';
 
-  defineProps<{expression?:DynamicExpression}>()
+  defineProps<{expression?:DynamicExpression|number}>()
   const expressionContext = inject('expressionContext') as Ref<ExpressionContext>
 </script>
 
