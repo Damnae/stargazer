@@ -1,8 +1,7 @@
 import { reactive, } from 'vue'
 import { getHash } from './translate'
 
-console.log(`"${getHash('min')}": "min",`)
-console.log(`"${getHash('max')}": "max",`)
+//console.log(`"${getHash('min')}": "min",`)
 
 const defaultHashes:{[key:number]:string} = 
 {
