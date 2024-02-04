@@ -275,23 +275,12 @@ export function evaluateDynamicExpression(expression?:DynamicExpression|number, 
           stack.push(`!(${right})`)
           break
         case ExpressionOpCode.Call:
-          var call = bytes.charCodeAt(++i)
-          switch (call)
-          {
-            case 1:
-              var param0 = stack.pop()
-              var param1 = stack.pop()
-              stack.push(`${param1}(${param0})`)
-              break;
-            case 2:
-              var param0 = stack.pop()
-              var param1 = stack.pop()
-              var param2 = stack.pop()
-              stack.push(`${param2}(${param1}, ${param0})`)
-              break;
-            default:
-              stack.push(`UnknownCall${call}(${stack.join(', ')})`)
-          }
+          const paramCount = bytes.charCodeAt(++i)
+          const params:string[] = []
+          for (var j = 0; j < paramCount; j++)
+            params.push(stack.pop() ?? 'missing')
+          const callName = stack.pop();
+          stack.push(`${callName}(${params.reverse().join(', ')})`)
           break
         case ExpressionOpCode.Return:
           var result = stack.pop()
