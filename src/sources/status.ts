@@ -33,7 +33,10 @@ export async function getStatuses(commitId:string) : Promise<StatusConfig>
         let config = statusConfigCache[commitId]
         if (config == undefined)
         {
-            const statuses = await retrieveJson('ExcelOutput/StatusConfig.json', commitId, false) as StatusConfig
+            const statuses = {
+                ...await retrieveJson('ExcelOutput/StatusConfig.json', commitId, false) as StatusConfig,
+                ...await retrieveJson('ExcelOutput/AvatarStatusConfig.json', commitId, false) as StatusConfig,
+            }
             for (const key in statuses)
             {
                 const status = statuses[key]
