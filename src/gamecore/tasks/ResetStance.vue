@@ -9,6 +9,7 @@
   {
     TargetType?:GamecoreTargetType
     ConstantValue?:DynamicExpression
+    AddValue?:DynamicExpression
     ForbidWhenEmpty?:boolean
     SkipLockTeamStance?:boolean
   }
@@ -17,13 +18,16 @@
 <template>
   <BlockLayout :source="node">
     
-    Restore 
+    Reset 
     <template v-if="node.TargetType">
       <em><EvaluateTargetType :target="node.TargetType" /></em>'s
     </template>
-    stance
+    toughness,
     <template v-if="node.ConstantValue">
-      by <em><EvaluateExpression :expression="node.ConstantValue" /></em>
+      set to <em><EvaluateExpression :expression="node.ConstantValue" /></em>
+    </template>
+    <template v-if="node.AddValue">
+      add <em><EvaluateExpression :expression="node.AddValue" /></em>
     </template>
     <span v-if="node.ForbidWhenEmpty === true" class="minor">
       (Unless it's 0)
