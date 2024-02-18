@@ -134,6 +134,9 @@
               <RouterLink :to="{ name:'targetAliases', params:{ commitId: commitId }}">
                 Target Aliases
               </RouterLink>
+              <RouterLink :to="{ name:'relicRecommends', params:{ commitId: commitId }}">
+                Relic Recommendations
+              </RouterLink>
             </NavTree>
           </NavItem>
 

@@ -46,6 +46,7 @@ import AnyTaskTemplate from './views/abilities/AnyTaskTemplate.vue'
 
 import TargetAlias from './views/pages/TargetAlias.vue'
 import TargetAliases from './views/pages/TargetAliases.vue'
+import RelicRecommends from './views/pages/RelicRecommends.vue'
 
 const routes:Readonly<RouteRecordRaw[]> = 
 [
@@ -209,9 +210,14 @@ const routes:Readonly<RouteRecordRaw[]> =
             name: 'targetAlias', components: { default: TargetAlias, }, 
             props:{ default:toRouteProps({ }) },
             meta: { mainNav: 'Misc', mainNavTab:'All', }
-        },        
+        },
         { path: '/targetaliases/@:commitId', 
             name: 'targetAliases', components: { default: TargetAliases, }, 
+            props:{ default:toRouteProps({ }) },
+            meta: { mainNav: 'Misc', mainNavTab:'All', }
+        },
+        { path: '/recommendedrelics/@:commitId', 
+            name: 'relicRecommends', components: { default: RelicRecommends, }, 
             props:{ default:toRouteProps({ }) },
             meta: { mainNav: 'Misc', mainNavTab:'All', }
         },
@@ -254,6 +260,7 @@ const routes:Readonly<RouteRecordRaw[]> =
     
     { path: '/targetalias-:aliasId', meta: { redirectName:'targetAlias' }, redirect: redirectToLatestCommit },
     { path: '/targetaliases', meta: { redirectName:'targetAliases' }, redirect: redirectToLatestCommit },
+    { path: '/recommendedrelics', meta: { redirectName:'relicRecommends' }, redirect: redirectToLatestCommit },
 
     { path: '/:pathMatch(.*)*', redirect:'/', },
 ]
