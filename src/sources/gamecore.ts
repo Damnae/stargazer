@@ -363,6 +363,7 @@ const dynamicValueTypeToIndex:{[key:string]: number} =
   SkillRelic: 5,
   BattleEvent: 6,
   StageBattleEvent: 7,
+  FloorCustomData: 8,
 }
 
 function getIndexFromDynamicValueType(value:string | number) : number
