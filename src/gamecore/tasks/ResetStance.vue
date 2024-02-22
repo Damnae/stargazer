@@ -22,9 +22,9 @@
     <template v-if="node.TargetType">
       <em><EvaluateTargetType :target="node.TargetType" /></em>'s
     </template>
-    toughness,
+    toughness
     <template v-if="node.ConstantValue">
-      set to <em><EvaluateExpression :expression="node.ConstantValue" /></em>
+      to <em><EvaluateExpression :expression="node.ConstantValue" /></em>
     </template>
     <template v-if="node.AddValue">
       add <em><EvaluateExpression :expression="node.AddValue" /></em>

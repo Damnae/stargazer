@@ -1,5 +1,4 @@
 <script setup lang="ts">
-  import { cleanupFilename } from '@/common/common';
   import { GamecoreTask, GamecoreTargetType, } from '@/sources/gamecore';
   import BlockLayout from '@/components/BlockLayout.vue';
   import EvaluateTargetType from '../EvaluateTargetType.vue';
@@ -7,25 +6,22 @@
   const props = defineProps<{node:GamecoreTask}>()
   const node = props.node as unknown as 
   {
+    AttackerType?:GamecoreTargetType
     TargetType?:GamecoreTargetType
-    EffectPath?:string
-    UniqueEffectName?:string
   }
 </script>
 
 <template>
-  <BlockLayout :source="node" :cosmetic="true">
+  <BlockLayout :source="node">
    
-    Remove visual effect
-    <template v-if="node.EffectPath">
-      <em>{{ cleanupFilename(node.EffectPath) }}</em>
-    </template>
-    <template v-if="node.UniqueEffectName">
-      named <em>{{ node.UniqueEffectName }}</em>
-    </template>
     <template v-if="node.TargetType">
-      from <em><EvaluateTargetType :target="node.TargetType" /></em>
+      <em><EvaluateTargetType :target="node.TargetType" /></em>
     </template>
+    is weak to
+    <template v-if="node.AttackerType">
+      <em><EvaluateTargetType :target="node.AttackerType" /></em>'s
+    </template>
+    element
 
   </BlockLayout>
 </template>

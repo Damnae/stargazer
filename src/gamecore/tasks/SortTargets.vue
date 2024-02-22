@@ -30,11 +30,10 @@
       <EvaluateTargetType :target="node.TargetType" />
     </span>
     <template #content>
-      <div class="subblock">        
-        <template v-if="node.SortConfig">
-          <span class="flow">Sorted by </span>
-          <AnyTask :node="node.SortConfig" />
-        </template>
+      <template v-if="node.SortConfig">
+        <AnyTask :node="node.SortConfig" />
+      </template>
+      <div class="subblock">
         <template v-if="tasks && tasks.length > 0">
           <span class="flow">Do</span>
           <template v-for="n in tasks">

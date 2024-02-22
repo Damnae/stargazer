@@ -16,15 +16,16 @@
 <template>
   <BlockLayout :source="node">
     
-    Add a weakness based on team elements 
+    Add 
+    <template v-if="node.AddWeakCountMax">
+      up to <em><EvaluateExpression :expression="node.AddWeakCountMax" /></em>
+    </template>
+    weakness based on team elements 
     <template v-if="node.TargetType">
-      to <em><EvaluateTargetType :target="node.TargetType" /></em>,
+      to <em><EvaluateTargetType :target="node.TargetType" /></em>
     </template>
     <template v-if="node.ResistanceDeltaValue">
       modifying corresponding RES by <em><EvaluateExpression :expression="node.ResistanceDeltaValue" /></em>
-    </template>    
-    <template v-if="node.AddWeakCountMax">
-      with a max of <em><EvaluateExpression :expression="node.AddWeakCountMax" /></em> weaknesses
     </template>
 
   </BlockLayout>

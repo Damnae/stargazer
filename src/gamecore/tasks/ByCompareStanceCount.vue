@@ -1,5 +1,5 @@
 <script setup lang="ts">
-  import { GamecoreTask, GamecoreTargetType, DynamicExpression, } from '@/sources/gamecore';
+  import { GamecoreTask, DynamicExpression, GamecoreTargetType, } from '@/sources/gamecore';
   import BlockLayout from '@/components/BlockLayout.vue';
   import EvaluateExpression from '../EvaluateExpression.vue';
 
@@ -7,18 +7,20 @@
   const node = props.node as unknown as 
   {
     TargetType?:GamecoreTargetType
-    DynamicKey:string
-    ContextScope:string
-    ResetValue?:DynamicExpression
+    CompareType:string
+    CompareValue:DynamicExpression
   }
 </script>
 
 <template>
   <BlockLayout :source="node">
-
-    Define <em v-if="node.ContextScope">{{ node.ContextScope }}.</em><em>{{ node.DynamicKey }}</em>
-    <template v-if="node.ResetValue">
-      to <em><EvaluateExpression :expression="node.ResetValue" /></em>
+    
+    Toughness count is
+    <template v-if="node.CompareType">
+      <em>{{ node.CompareType }}</em> to
+    </template>
+    <template v-if="node.CompareValue">
+      <em><EvaluateExpression :expression="node.CompareValue" /></em>
     </template>
 
   </BlockLayout>

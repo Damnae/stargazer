@@ -27,7 +27,7 @@
       with ability <em>{{ node.PrepareAbilityName }}</em>
     </RouterLink>
     <template v-if="node.TargetType">
-      for <em><EvaluateTargetType :target="node.TargetType" /></em>'s 
+      for <em><EvaluateTargetType :target="node.TargetType" /></em>
     </template>
     <template v-if="!node.CanInsertUltraSkill">
       <span class="minor">(Prevent ultimate use)</span>

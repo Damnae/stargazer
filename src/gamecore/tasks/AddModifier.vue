@@ -69,7 +69,7 @@
       </template>
     </template>
     <template v-if="node.LifeStepImmediately">
-      <span class="minor">(Tick immediately)</span>
+      &nbsp;<span class="minor">(Tick immediately)</span>
     </template>
 
     <template #content >

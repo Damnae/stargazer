@@ -8,18 +8,23 @@
   const node = props.node as unknown as 
   {
     TargetType?:GamecoreTargetType
+    SetValue?:DynamicExpression
     AddValue?:DynamicExpression
     FixedAddValue?:DynamicExpression
     AddRatio?:DynamicExpression
     AddMaxSPRatio?:DynamicExpression
     FixedAddMaxSPRatio?:DynamicExpression
+    IgnoreBlock?:boolean
   }
 </script>
 
 <template>
   <BlockLayout :source="node">
 
-    <template v-if="node.AddRatio">
+    <template v-if="node.SetValue">
+      Set energy to <em><EvaluateExpression :expression="node.SetValue" /></em>
+    </template>
+    <template v-else-if="node.AddRatio">
       Generate <em><EvaluateExpression :expression="node.AddRatio" /></em>× of the skill's energy
     </template>
     <template v-else-if="node.AddValue">
@@ -41,6 +46,10 @@
     </template>
 
     for <em><EvaluateTargetType :target="node.TargetType" /></em>
+
+    <template v-if="node.IgnoreBlock === true">
+      &nbsp;<span class="minor">(Ignores block)</span>
+    </template>
 
   </BlockLayout>
 </template>

@@ -2,8 +2,7 @@
   import { inject } from 'vue';
   import { cleanupMarkup } from '@/common/common';
   import translate, { Translatable } from '@/common/translate';
-  import { GamecoreTask, 
-  } from '@/sources/gamecore';
+  import { GamecoreTask, } from '@/sources/gamecore';
   import BlockLayout from '@/components/BlockLayout.vue';
 
   const props = defineProps<{node:GamecoreTask}>()
