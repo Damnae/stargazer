@@ -15,7 +15,7 @@
   <BlockLayout :source="node">
 
     <em><EvaluateTargetType :target="node.ServantType" /></em> 
-    is summonned by 
+    is summoned by 
     <em><EvaluateTargetType :target="node.SummonerType" /></em>
 
   </BlockLayout>
