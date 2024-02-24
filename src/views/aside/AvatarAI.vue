@@ -6,7 +6,7 @@
   import { Character, getCharacterByAvatar } from '@/sources/character';
 
   import LoadingNav from '@/components/LoadingNav.vue';
-  import ProvideEmptyContext from '@/views/abilities/components/ProvideEmptyContext.vue';
+  import ProvideAvatarContext from '@/views/abilities/components/ProvideAvatarContext.vue';
   import AIWeights from './components/AIWeights.vue';
 
   const commitId = inject<string>('commitId') as string
@@ -48,7 +48,7 @@
         {{ Object.keys(character.AITagList.Values).map(hash => hashStore.translate(parseInt(hash)) ?? hash).join(', ') }}
       </template>
 
-      <ProvideEmptyContext :commitId="commitId">
+      <ProvideAvatarContext :commitId="commitId" :objectId="objectId">
         <template v-for="skill in character.SkillList">
           <template v-if="skill.ComplexSkillAIPreCheck || skill.ComplexSkillAI">
             <h2>{{ skill.Name }}</h2>
@@ -69,7 +69,7 @@
 
           </template>
         </template>
-      </ProvideEmptyContext>
+      </ProvideAvatarContext>
 
     </section>
   </template>

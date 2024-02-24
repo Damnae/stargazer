@@ -14,11 +14,12 @@ import AnyTask from '@/gamecore/AnyTask.vue';
 <template>
   {{ weightGroup.GroupName }} 
   {{ cleanupNumber(weightGroup.Weight?.Value ?? 1) }}
-
-  <!-- <div class="minor">{{ aiFactorGroup.CombineOperator ?? "Add" }}</div> -->
+  <span class="minor">{{ aiFactorGroup.CombineOperator ?? "Add" }}</span>
+  
   <template v-for="factor in aiFactorGroup.Factors">
     <div class="minor">{{ factor.CombineOperator ?? "Add" }}</div>
     <AnyTask :node="factor.Source" />
     <AnyTask :node="factor.Mapper" />
+    <AnyTask v-if="factor.PostProcess" :node="factor.PostProcess" />
   </template>
 </template>

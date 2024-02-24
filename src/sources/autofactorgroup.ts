@@ -7,6 +7,7 @@ export interface AIFactor
     CombineOperator: string
     Source: GamecoreTask
     Mapper: GamecoreTask
+    PostProcess?: GamecoreTask
 }
 
 export interface AIFactorGroup

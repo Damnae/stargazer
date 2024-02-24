@@ -1,7 +1,5 @@
 <script setup lang="ts">
-  import { GamecoreTask, 
-    DynamicExpression, 
-  } from '@/sources/gamecore';
+  import { GamecoreTask, DynamicExpression, } from '@/sources/gamecore';
   import useHashStore from '@/common/hashstore';
   import BlockLayout from '@/components/BlockLayout.vue';
   import EvaluateExpression from '../EvaluateExpression.vue';
