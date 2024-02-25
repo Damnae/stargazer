@@ -12,7 +12,7 @@
 <template>
   <BlockLayout :source="node">
 
-    Global data <em>{{ node.DataType }}</em>
+    Get <em>{{ node.DataType }}</em>
 
   </BlockLayout>
 </template>

@@ -13,7 +13,7 @@
 <template>
   <BlockLayout :source="node">
 
-    Fail if the value is not <em>{{ node.CompareType }}</em> <em>{{ node.CompareValue?.Value }}</em>
+    Fail if the value is not <em>{{ node.CompareType }}</em> to <em>{{ node.CompareValue?.Value }}</em>
 
   </BlockLayout>
 </template>
