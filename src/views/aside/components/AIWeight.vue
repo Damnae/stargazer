@@ -3,7 +3,8 @@
   import { cleanupNumber } from '@/common/common';
   import { CharacterSkillAIWeightGroup } from '@/sources/character';
   import { AIFactorGroup, getAIFactorGroup } from '@/sources/autofactorgroup';
-import AnyTask from '@/gamecore/AnyTask.vue';
+  import AnyTask from '@/gamecore/AnyTask.vue';
+  import FoldableLayout from '@/components/FoldableLayout.vue';
 
   const props = defineProps<{weightGroup:CharacterSkillAIWeightGroup}>()
   const commitId = inject<string>('commitId') as string
@@ -12,14 +13,17 @@ import AnyTask from '@/gamecore/AnyTask.vue';
 </script>
 
 <template>
-  {{ weightGroup.GroupName }} 
-  {{ cleanupNumber(weightGroup.Weight?.Value ?? 1) }}
-  <span class="minor">{{ aiFactorGroup.CombineOperator ?? "Add" }}</span>
-  
-  <template v-for="factor in aiFactorGroup.Factors">
-    <div class="minor">{{ factor.CombineOperator ?? "Add" }}</div>
-    <AnyTask :node="factor.Source" />
-    <AnyTask :node="factor.Mapper" />
-    <AnyTask v-if="factor.PostProcess" :node="factor.PostProcess" />
-  </template>
+  <FoldableLayout>
+    {{ weightGroup.GroupName }} 
+    {{ cleanupNumber(weightGroup.Weight?.Value ?? 1) }}
+    <span class="minor">{{ aiFactorGroup.CombineOperator ?? "Add" }}</span>
+    <template #content>
+      <template v-for="factor in aiFactorGroup.Factors">
+        <div class="minor">{{ factor.CombineOperator ?? "Add" }}</div>
+        <AnyTask :node="factor.Source" />
+        <AnyTask :node="factor.Mapper" />
+        <AnyTask v-if="factor.PostProcess" :node="factor.PostProcess" />
+      </template>
+    </template>
+  </FoldableLayout>
 </template>
