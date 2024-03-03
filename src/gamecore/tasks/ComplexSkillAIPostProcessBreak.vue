@@ -15,7 +15,7 @@
 <template>
   <BlockLayout :source="node">
 
-    Break if the value is <em>{{ node.CompareType }}</em> to <em>{{ node.CompareValue?.Value }}</em>
+    Break if the value is <em>{{ node.CompareType }}</em> to <em>{{ node.CompareValue?.Value ?? "0" }}</em>
     <template v-if="node.IsOverrideFinalScore">
       and override the score to <em>{{ node.FinalScore?.Value ?? "0" }}</em>
     </template>

@@ -13,6 +13,7 @@
   {
     TargetType?:GamecoreTargetType
     ModifierName:string
+    StackingFlag?:string
     Chance?:DynamicExpression
     Count?:DynamicExpression
     LayerAddWhenStack?:DynamicExpression
@@ -65,8 +66,9 @@
     </template>
     <template v-if="node.LifeTime">
       for <em><EvaluateExpression :expression="node.LifeTime" /></em> turns
-      <template v-if="!node.LifeStepImmediately">
-      </template>
+    </template>
+    <template v-if="node.StackingFlag">
+      stacking by <em>{{ node.StackingFlag }}</em>
     </template>
     <template v-if="node.LifeStepImmediately">
       &nbsp;<span class="minor">(Tick immediately)</span>
