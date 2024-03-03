@@ -18,8 +18,8 @@ export interface Monster extends Creature
     CustomValues: 
     [
         {
-            COJNNIIOEAK:string // Property
-            MBOHKHKHFPD:string // Value
+            Property:string
+            Value:string
         }
     ]
     CustomValueTags: [ name: string ]
@@ -28,7 +28,7 @@ export interface Monster extends Creature
     OverrideAISkillSequence?:
     [
         {
-            CKFOCMJDLGG: number // Value
+            Value:number
         }
     ]
     SearchKeywords: string[]
@@ -47,7 +47,7 @@ export interface MonsterTemplate
     AISkillSequence?:
     [
         {
-            CKFOCMJDLGG: number // Value
+            Value:number
         }
     ]
 }
@@ -108,6 +108,16 @@ export async function getMonsters(commitId:string) : Promise<MonsterConfig>
                 const parentTemplate = templates[template.TemplateGroupID] as MonsterTemplate
                 await translate(commitId, template.MonsterName)
     
+                if (template.AISkillSequence?.length)
+                {
+                    const valueKey = Object.keys(template.AISkillSequence[0])[0] as string
+                    for (const propKey in template.AISkillSequence)
+                    {
+                        const property = template.AISkillSequence[propKey]
+                        property.Value = (property as any as {[key:string]:number})[valueKey]
+                    }
+                }
+
                 const monsterCampId = template.MonsterCampID ?? parentTemplate?.MonsterCampID
                 template.MonsterCamp = camps[monsterCampId] ?? missingMonsterCamp
             }
@@ -120,6 +130,29 @@ export async function getMonsters(commitId:string) : Promise<MonsterConfig>
                 await translate(commitId, monster.MonsterIntroduction)
                 monster.MonsterTemplate = templates[monster.MonsterTemplateID] ?? missingMonsterTemplate
                 
+                if (monster.CustomValues?.length)
+                {
+                    const keys = Object.keys(monster.CustomValues[0])
+                    const propertyKey = keys[0] as string
+                    const valueKey = keys[1] as string
+                    for (const propKey in monster.CustomValues)
+                    {
+                        const property = monster.CustomValues[propKey]
+                        property.Property = (property as any as {[key:string]:string})[propertyKey]
+                        property.Value = (property as any as {[key:string]:string})[valueKey]
+                    }
+                }
+
+                if (monster.OverrideAISkillSequence?.length)
+                {
+                    const valueKey = Object.keys(monster.OverrideAISkillSequence[0])[0] as string
+                    for (const propKey in monster.OverrideAISkillSequence)
+                    {
+                        const property = monster.OverrideAISkillSequence[propKey]
+                        property.Value = (property as any as {[key:string]:number})[valueKey]
+                    }
+                }
+
                 monster.SearchKeywords = []
                 monster.SearchKeywords.push(monster.MonsterName.Text.toLowerCase())
                 if (monster.MonsterTemplate)

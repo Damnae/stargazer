@@ -46,7 +46,7 @@
     <p v-for="skill, pieces in relicset.Skills">
       <h2>{{ pieces }} pieces</h2>
       <div v-for="property in skill.PropertyList">
-        {{ property.LMIJMPOCMMG }}: {{ cleanupNumber(property.MOJJBFBKBNC?.Value) }}
+        {{ property.PropertyType }}: {{ cleanupNumber(property.Value?.Value) }}
       </div>
       <span class="minor">{{ evaluateDescription(skill.SkillDesc, skill.AbilityParamList) }}</span>
     </p>

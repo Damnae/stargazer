@@ -39,7 +39,7 @@
     const skillIds = getSkillSequenceIds(monster)
     if (!skillIds)
       return []
-    return getMonsterSkillsByIds(commitId, skillIds.map(s => s.CKFOCMJDLGG))
+    return getMonsterSkillsByIds(commitId, skillIds.map(s => s.Value))
   }
   
   function getSkillSequenceIds(monster?:Monster)
@@ -69,7 +69,7 @@
         <h2>Variables</h2>
         <div>
           <div v-if="monster" v-for="variable in monster.CustomValues">
-            {{ variable.COJNNIIOEAK }} = {{ variable.MBOHKHKHFPD }}
+            {{ variable.Property }} = {{ variable.Value }}
           </div>
           <div v-if="character" v-for="name, value in character.CustomValues">
             {{ value }} = {{ name }}

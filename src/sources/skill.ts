@@ -32,46 +32,6 @@ export interface CreatureSkill
 //      skill, with ranks (lightcones)
 //      AbilityName -> ability
 
-export interface EquipmentSkill
-{
-    SkillID: number
-    SkillName: Translatable
-    SkillDesc: Translatable
-    Level: number // Ligthcone refinement
-    AbilityName: string
-    AbilityProperty: 
-    [
-      {
-        PropertyType: string
-        Value: 
-        {
-          Value: number
-        }
-      }
-    ]
-    ParamList: GamecoreParam[]
-}
-
 // RelicSetSkillConfig.json     
 //      NOT skill, ParamList is called AbilityParamList
 //      AbilityName -> ability
-
-export interface RelicSetSkill
-{
-    SetID: number
-    RequireNum: number
-    SkillDesc: string
-    PropertyList: 
-    [
-      {
-        FGBOJAIOFIJ: string // PropertyType
-        LGKGOMNMBAH: // Value
-        {
-          Value: number
-        }
-      }
-    ],
-    AbilityName: string
-    AbilityParamList: GamecoreParam[]
-}
-

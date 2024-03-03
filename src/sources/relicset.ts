@@ -15,8 +15,8 @@ export interface RelicSetSkill
     PropertyList: 
     [
         {
-            LMIJMPOCMMG: string // PropertyType
-            MOJJBFBKBNC: // Value
+            PropertyType: string
+            Value: 
             {
                 Value: number
             }
@@ -67,6 +67,20 @@ export async function getRelicSets(commitId:string) : Promise<RelicSetConfig>
                 {
                     const skill = ranks[rankKey]
                     skill.SkillDesc = await translateFromKey(commitId, skill.SkillDesc) ?? skill.SkillDesc
+
+                    if (skill.PropertyList?.length)
+                    {
+                        const entries = Object.entries(skill.PropertyList[0])
+                        const propertyTypeKey = entries.find(o => typeof(o[1]) == 'string')?.[0] as string
+                        const valueKey = entries.find(o => typeof(o[1]) == 'object')?.[0] as string
+
+                        for (const propKey in skill.PropertyList)
+                        {
+                            const property = skill.PropertyList[propKey]
+                            property.PropertyType = (property as any as {[key:string]:string})[propertyTypeKey]
+                            property.Value = (property as any as {[key:string]:{ Value: number }})[valueKey]
+                        }
+                    }
                 }
             }
 
