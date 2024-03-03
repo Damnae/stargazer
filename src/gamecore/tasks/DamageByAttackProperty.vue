@@ -22,6 +22,7 @@
       StanceValue?:DynamicExpression
       SPHitRatio?:DynamicExpression
       AttackType?:string
+      DamageTag?:string
       FinalFormulaType?:string
     }
     CanTriggerLastKill:boolean
@@ -65,6 +66,10 @@
     <template v-if="node.AttackProperty?.AttackType">
       / <em>{{ node.AttackProperty?.AttackType }}</em>
     </template>
+    <template v-if="node.AttackProperty?.DamageTag">
+      with tag <em>{{ node.AttackProperty?.DamageTag }}</em>
+    </template>
+    
 
     <template v-if="node.TargetType">
       to <em><EvaluateTargetType :target="node.TargetType" /></em>
