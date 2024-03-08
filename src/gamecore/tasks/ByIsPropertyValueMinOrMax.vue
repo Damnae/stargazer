@@ -7,20 +7,19 @@
   const node = props.node as unknown as 
   {
     TargetType?:GamecoreTargetType
-    WeakType:
-    {
-      DamageType:string
-    }
+    CompareTargetType?:GamecoreTargetType
+    MinOrMax:string
+    PropertyType:string
   }
 </script>
 
 <template>
   <BlockLayout :source="node">
     
-    <template v-if="node.TargetType">
-      <em><EvaluateTargetType :target="node.TargetType" /></em>
-    </template>
-    is weak to <em>{{ node.WeakType.DamageType }}</em>
+    <em><EvaluateTargetType :target="node.TargetType" /></em>
+    has <em>{{ node.MinOrMax }}</em> 
+    property <em>{{ node.PropertyType }}</em> 
+    in <em><EvaluateTargetType :target="node.CompareTargetType" /></em>
 
   </BlockLayout>
 </template>

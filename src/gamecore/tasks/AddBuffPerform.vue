@@ -2,7 +2,7 @@
   import { GamecoreTask, GamecoreTargetType, } from '@/sources/gamecore';
   import BlockLayout from '@/components/BlockLayout.vue';
   import AnyTask from '@/gamecore/AnyTask.vue';
-import EvaluateTargetType from '../EvaluateTargetType.vue';
+  import EvaluateTargetType from '../EvaluateTargetType.vue';
 
   const props = defineProps<{node:GamecoreTask}>()
   const node = props.node as unknown as 

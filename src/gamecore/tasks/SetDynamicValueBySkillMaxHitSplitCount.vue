@@ -1,26 +1,28 @@
 <script setup lang="ts">
   import { GamecoreTask, GamecoreTargetType, } from '@/sources/gamecore';
+  import useHashStore from '@/common/hashstore';
   import BlockLayout from '@/components/BlockLayout.vue';
   import EvaluateTargetType from '../EvaluateTargetType.vue';
 
   const props = defineProps<{node:GamecoreTask}>()
   const node = props.node as unknown as 
   {
-    TargetType?:GamecoreTargetType
-    WeakType:
-    {
-      DamageType:string
-    }
+    ReadTargetType:GamecoreTargetType
+    DynamicKey:string
   }
-</script>
+
+  if (node.DynamicKey)
+    useHashStore().register(node.DynamicKey, true)
+ </script>
 
 <template>
   <BlockLayout :source="node">
-    
-    <template v-if="node.TargetType">
-      <em><EvaluateTargetType :target="node.TargetType" /></em>
+
+    Set <em>{{ node.DynamicKey }}</em> to
+    <template v-if="node.ReadTargetType">
+      <em><EvaluateTargetType :target="node.ReadTargetType" /></em>'s
     </template>
-    is weak to <em>{{ node.WeakType.DamageType }}</em>
+    skill hit count
 
   </BlockLayout>
 </template>

@@ -16,14 +16,14 @@
   <BlockLayout :source="node">
 
     <template v-if="node.WeakList">
-      Make
+      Clear
       <template v-if="node.TargetType">
         <em><EvaluateTargetType :target="node.TargetType" /></em>
       </template>
       {{ node.OPType ?? "Override" }} to <em>{{ node.WeakList.join(', ') }}</em>
     </template>
     <template v-else>
-      Reset 
+      Clear 
       <template v-if="node.TargetType">
         <em><EvaluateTargetType :target="node.TargetType" /></em>'s
       </template>

@@ -7,26 +7,28 @@
   const props = defineProps<{node:GamecoreTask}>()
   const node = props.node as unknown as 
   {
-    ReadTargetType?:GamecoreTargetType
-    DynamicKey:string
-    ContextScope:string
+    FromTargetType?:GamecoreTargetType
+    FromDynamicKey:string
+    ToDynamicKey:string
+    Property:string
   }
 
-  if (node.DynamicKey)
-    useHashStore().register(node.DynamicKey, true)
+  if (node.FromDynamicKey)
+    useHashStore().register(node.FromDynamicKey, true)
+  if (node.ToDynamicKey)
+    useHashStore().register(node.ToDynamicKey, true)
 </script>
 
 <template>
   <BlockLayout :source="node">
 
-    Set <em v-if="node.ContextScope">{{ node.ContextScope }}.</em><em>{{ node.DynamicKey }}</em>
-
+    Set <em>{{ node.ToDynamicKey }}</em>
     to 
-    <template v-if="node.ReadTargetType">
-      <em><EvaluateTargetType :target="node.ReadTargetType" /></em>'s
+    <template v-if="node.FromTargetType">
+      <em><EvaluateTargetType :target="node.FromTargetType" /></em>'s
     </template>
-    attack damage
-    
+    <em>{{ node.FromDynamicKey }}</em>
+
   </BlockLayout>
 </template>
 

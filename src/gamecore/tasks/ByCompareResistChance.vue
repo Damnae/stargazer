@@ -8,6 +8,7 @@
   const node = props.node as unknown as 
   {
     TargetType:GamecoreTargetType
+    BehaviorFlagList:string[]
     CompareType:string
     CompareValue:DynamicExpression
   }
@@ -16,14 +17,18 @@
 <template>
   <BlockLayout :source="node">
     
-    <em><EvaluateTargetType :target="node.TargetType" /></em> has
+    <em><EvaluateTargetType :target="node.TargetType" /></em>'s 
+    chance to resist
+    <template v-if="node.BehaviorFlagList">
+      <em>{{ node.BehaviorFlagList.join(', ') }}</em>
+    </template>
+    is
     <template v-if="node.CompareType">
       <em>{{ node.CompareType }}</em> to
     </template>
     <template v-if="node.CompareValue">
       <em><EvaluateExpression :expression="node.CompareValue" /></em>
-    </template>
-    enemies alive
+    </template>×
 
   </BlockLayout>
 </template>
