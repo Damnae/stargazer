@@ -19,7 +19,7 @@
     <template v-if="node.TargetType">
       <em><EvaluateTargetType :target="node.TargetType" /></em>'s
     </template>
-    energy ratio is
+    special energy ratio is
     <template v-if="node.CompareType">
       <em>{{ node.CompareType }}</em> to 
     </template>
