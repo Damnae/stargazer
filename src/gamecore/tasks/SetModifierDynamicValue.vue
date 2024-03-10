@@ -53,8 +53,11 @@
         <em><EvaluateTargetType :target="node.TargetType" /></em>'s
       </template>
       <RouterLink v-if="node.ModifierName" :to="createModifierRoute(node.ModifierName)">
-        <em>{{ node.ModifierName }}</em>
-      </RouterLink>'s
+        <em>{{ node.ModifierName }}</em>'s
+      </RouterLink>
+      <template v-else>
+        this modifier's
+      </template>
       <em>{{ node.DynamicKey }}</em>
       to <em><EvaluateExpression :expression="node.NewValue" /></em>
 
