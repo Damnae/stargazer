@@ -1,4 +1,4 @@
-import { retrieveJson } from '@/common/datasource';
+import { retrieveJson, retrieveTree } from '@/common/datasource';
 import { MutexGroup } from '@/common/mutex';
 import { ExpressionContext, GamecoreTask, GamecoreTargetType, DynamicExpression, DynamicValues, } from './gamecore';
 import useSettings from '@/common/settings';
@@ -401,9 +401,8 @@ export async function getTaskContext(commitId:string, type:TaskContextType) : Pr
           mergeAbilityConfig(context, await getAbilities(commitId, path) as AbilityConfig)
         else
         {
-          const response = await retrieveJson(`git/trees/${commitId}:${path}`, commitId, true)
-          const tree = response.tree
-          if (tree !== undefined)
+          const tree = await retrieveTree(path, commitId)
+          if (tree)
             for (const treePath of tree.map((t:any) => t.path))
               if (treePath.endsWith('.json'))
                 mergeAbilityConfig(context, await getAbilities(commitId, `${path}/${treePath}`) as AbilityConfig)
@@ -414,9 +413,8 @@ export async function getTaskContext(commitId:string, type:TaskContextType) : Pr
           mergeModifierConfig(context, await getModifiers(commitId, path) as ModifierConfig)
         else
         {
-          const response = await retrieveJson(`git/trees/${commitId}:${path}`, commitId, true)
-          const tree = response.tree
-          if (tree !== undefined)
+          const tree = await retrieveTree(path, commitId)
+          if (tree)
             for (const treePath of tree.map((t:any) => t.path))
               if (treePath.endsWith('.json'))
                 mergeModifierConfig(context, await getModifiers(commitId, `${path}/${treePath}`) as ModifierConfig)
@@ -427,9 +425,8 @@ export async function getTaskContext(commitId:string, type:TaskContextType) : Pr
         mergeTaskListTemplateConfig(context, await getTaskListTemplates(commitId, path) as TaskListTemplateConfig)
       else
       {
-        const response = await retrieveJson(`git/trees/${commitId}:${path}`, commitId, true)
-        const tree = response.tree
-        if (tree !== undefined)
+        const tree = await retrieveTree(path, commitId)
+        if (tree)
           for (const treePath of tree.map((t:any) => t.path))
             if (treePath.endsWith('.json'))
               mergeTaskListTemplateConfig(context, await getTaskListTemplates(commitId, `${path}/${treePath}`) as TaskListTemplateConfig)

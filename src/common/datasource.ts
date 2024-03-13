@@ -65,6 +65,19 @@ export async function retrieveJson(request:string, commit:string, useApi:boolean
     })
 }
 
+export async function retrieveTree(path:string, commit:string) : Promise<any>
+{
+    const request = `git/trees/${commit}:${path}`
+    const response = await retrieveJson(request, commit, true)
+    const tree = response?.tree
+    if (!tree)
+    {
+        console.log('no tree response for ' + request)
+        return
+    }
+    return tree
+}
+
 async function fetchJson(request:string, commit:string, useApi:boolean)
 {
     if (useApi)
