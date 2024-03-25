@@ -8,6 +8,7 @@
   {
     AITagKey:string
     IsTarget:boolean
+    OneMinusAITag?:boolean
     DefaultAITagValue:
     {
       Value:number
@@ -23,7 +24,13 @@
 
     {{ node.IsTarget === false ? "Source" : "Target" }}'s combat power 
     <template v-if="node.AITagKey">
-      by AI tag <em>{{ node.AITagKey }}</em>
+      by AI tag 
+      <em>
+        <template v-if="node.OneMinusAITag">
+          1 -
+        </template>
+        {{ node.AITagKey }}
+      </em>
     </template>
     <template v-if="node.DefaultAITagValue?.Value">
       with default <em>{{ node.DefaultAITagValue.Value }}</em>

@@ -7,6 +7,7 @@
   const node = props.node as unknown as 
   {
     Evaluator:GamecoreTask
+    Retarget?:string
     TeamTypeMask:string
   }
 </script>
@@ -14,7 +15,13 @@
 <template>
   <BlockLayout :source="node">
 
-    <span class="flow">Retarget in <em>{{ node.TeamTypeMask }}</em></span>
+    <span class="flow">
+      Retarget
+      <template v-if="node.Retarget">
+        <em>{{ node.Retarget }}</em>
+      </template>
+      in <em>{{ node.TeamTypeMask }}</em>
+    </span>
     <template #content>
       <AnyTask :node="node.Evaluator" />
     </template>
