@@ -27,9 +27,11 @@
       by AI tag 
       <em>
         <template v-if="node.OneMinusAITag">
-          1 -
+          1&nbsp;-&nbsp;{{ node.AITagKey }}
         </template>
-        {{ node.AITagKey }}
+        <template v-else>
+          {{ node.AITagKey }}
+        </template>
       </em>
     </template>
     <template v-if="node.DefaultAITagValue?.Value">
