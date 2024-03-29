@@ -20,6 +20,7 @@
     MaxLayer?:DynamicExpression
     LifeTime?:DynamicExpression
     LifeStepImmediately?:boolean
+    InheritCaster?:string
     DynamicValues?:
     {
       [key:string]:DynamicExpression
@@ -55,6 +56,10 @@
       <em>{{ node.ModifierName }}</em>
     </RouterLink>
 
+    <template v-if="node.InheritCaster">
+      with <em>{{ node.InheritCaster }}</em> as the caster
+    </template>
+
     <template v-if="node.TargetType">
       to <em><EvaluateTargetType :target="node.TargetType" /></em>
     </template>
@@ -74,7 +79,7 @@
       &nbsp;<span class="minor">(Tick immediately)</span>
     </template>
 
-    <template #content >
+    <template #content>
       <BlockLayout v-if="node.DynamicValues" v-for="expression, key in node.DynamicValues" :source="expression">
         With <em :title="getHash(key.toString()).toString()">{{ key }}</em> set to <em><EvaluateExpression :expression="expression" /></em>
       </BlockLayout>

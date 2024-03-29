@@ -73,6 +73,20 @@ export interface Modifier
   {
     [eventName:string]: ModifierEventHandler
   }
+  AdditionConfig?:
+  {
+    SubModifierList?:
+    [
+      {
+        Name:string
+        TargetType:GamecoreTargetType
+        DynamicValues:
+        {
+          [key:string]:DynamicExpression
+        }
+      }
+    ]
+  }
   UIConfig?: 
   {
     UIEffectPath:string

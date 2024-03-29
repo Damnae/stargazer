@@ -30,7 +30,7 @@
   <section :key="abilityId">
 
       <template v-if="ability">
-        
+
         <template v-if="ability.OnAdd">
           <h2>On Add</h2>
           <template v-for="node in ability.OnAdd">

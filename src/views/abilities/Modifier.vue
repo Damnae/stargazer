@@ -1,5 +1,6 @@
 <script setup lang="ts">
   import { inject, ref, computed, watch, Ref, } from 'vue'
+  import { getHash } from '@/common/translate';
   import { ExpressionContext, GamecoreTask, evaluateDescriptionString, } from '@/sources/gamecore';
   import { Modifier, TaskContext, } from '@/sources/ability';
   import { Status, getStatuses } from '@/sources/status';
@@ -82,6 +83,7 @@
   }
 
   const hashStore = useHashStore()
+  const createModifierRoute = inject<(key:string) => object>('createModifierRoute') as (key:string) => object
 </script>
 
 <template>
@@ -162,6 +164,26 @@
           <td><em><EvaluateExpression :expression="modifier.PerformTime" /></em></td>
         </tr>
       </table>
+
+      <template v-if="modifier.AdditionConfig?.SubModifierList">
+        <h2>Sub Modifiers</h2>
+        <template v-for="subModifier in modifier.AdditionConfig.SubModifierList">
+          <BlockLayout :source="subModifier">
+            <span class="flow">
+              Apply sub modifier
+              <RouterLink v-if="subModifier.Name" :to="createModifierRoute(subModifier.Name)">
+                <em>{{ subModifier.Name }}</em>
+              </RouterLink>
+              to <em><EvaluateTargetType :target="subModifier.TargetType" /></em>
+            </span>
+            <template #content>
+              <BlockLayout v-for="expression, key in subModifier.DynamicValues" :source="expression">
+                With <em :title="getHash(key.toString()).toString()">{{ key }}</em> set to <em><EvaluateExpression :expression="expression" /></em>
+              </BlockLayout>
+            </template>
+          </BlockLayout>
+        </template>
+      </template>
 
       <template v-for="name in modifierEventNames">
         <h2>{{ name }}</h2>
