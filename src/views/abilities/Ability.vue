@@ -31,6 +31,15 @@
 
       <template v-if="ability">
 
+        <template v-if="ability.TargetInfo">
+          <BlockLayout :source="ability.TargetInfo">
+            Target: <em>{{ ability.TargetInfo.TargetType }}</em>
+            <span class="minor" v-if="ability.TargetInfo.MaxTargetCount">
+                (Max {{ ability.TargetInfo.MaxTargetCount }} targets)
+            </span>
+          </BlockLayout>
+        </template>
+
         <template v-if="ability.OnAdd">
           <h2>On Add</h2>
           <template v-for="node in ability.OnAdd">
