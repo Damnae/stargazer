@@ -73,8 +73,26 @@ export interface Modifier
   {
     [eventName:string]: ModifierEventHandler
   }
+  _PriorityList?:
+  [
+    {
+      PriorityName:string
+      Key:string
+    }
+  ]
   AdditionConfig?:
   {
+    FilterMask?:string
+    DependencyOnAdd?:
+    {
+      DependentModifier:string
+      CasterFilter?:GamecoreTargetType
+    }
+    DependencyOnRemove?:
+    {
+      DependentModifier:string
+      CasterFilter?:GamecoreTargetType
+    }
     SubModifierList?:
     [
       {

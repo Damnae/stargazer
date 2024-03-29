@@ -163,11 +163,43 @@
           <td>Perform Time</td>
           <td><em><EvaluateExpression :expression="modifier.PerformTime" /></em></td>
         </tr>
+        <tr v-if="modifier.AdditionConfig?.FilterMask">
+          <td>Addition Filter Mask</td>
+          <td><em>{{ modifier.AdditionConfig.FilterMask }}</em></td>
+        </tr>
+        <tr v-if="modifier._PriorityList" v-for="priority in modifier._PriorityList">
+          <td>{{ priority.PriorityName }}</td>
+          <td><em>{{ priority.Key }}</em></td>
+        </tr>
       </table>
+
+      <template v-if="modifier.AdditionConfig?.DependencyOnAdd || modifier.AdditionConfig?.DependencyOnRemove">
+        <h2>Dependencies</h2>
+
+        <BlockLayout v-if="modifier.AdditionConfig?.DependencyOnAdd" :source="modifier.AdditionConfig?.DependencyOnAdd">
+          On Add 
+          <RouterLink v-if="modifier.AdditionConfig.DependencyOnAdd.DependentModifier" :to="createModifierRoute(modifier.AdditionConfig.DependencyOnAdd.DependentModifier)">
+            <em>{{ modifier.AdditionConfig.DependencyOnAdd.DependentModifier }}</em>
+          </RouterLink>
+          <template v-if="modifier.AdditionConfig.DependencyOnAdd.CasterFilter">
+            on <em><EvaluateTargetType :target="modifier.AdditionConfig.DependencyOnAdd.CasterFilter" /></em>
+          </template>
+        </BlockLayout>
+        <BlockLayout v-if="modifier.AdditionConfig?.DependencyOnRemove" :source="modifier.AdditionConfig?.DependencyOnRemove">
+          On Remove 
+          <RouterLink v-if="modifier.AdditionConfig.DependencyOnRemove.DependentModifier" :to="createModifierRoute(modifier.AdditionConfig.DependencyOnRemove.DependentModifier)">
+            <em>{{ modifier.AdditionConfig.DependencyOnRemove.DependentModifier }}</em>
+          </RouterLink>
+          <template v-if="modifier.AdditionConfig.DependencyOnRemove.CasterFilter">
+            on <em><EvaluateTargetType :target="modifier.AdditionConfig.DependencyOnRemove.CasterFilter" /></em>
+          </template>
+        </BlockLayout>
+      </template>
 
       <template v-if="modifier.AdditionConfig?.SubModifierList">
         <h2>Sub Modifiers</h2>
-        <template v-for="subModifier in modifier.AdditionConfig.SubModifierList">
+
+        <template v-if="modifier.AdditionConfig?.SubModifierList" v-for="subModifier in modifier.AdditionConfig.SubModifierList">
           <BlockLayout :source="subModifier">
             <span class="flow">
               Apply sub modifier
