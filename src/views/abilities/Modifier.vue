@@ -221,6 +221,9 @@
                 <em>{{ subModifier.Name }}</em>
               </RouterLink>
               to <em><EvaluateTargetType :target="subModifier.TargetType" /></em>
+              <template v-if="subModifier.IsHaloStatus">
+                &nbsp;<span class="minor">(Halo)</span>
+              </template>
             </span>
             <template #content>
               <BlockLayout v-for="expression, key in subModifier.DynamicValues" :source="expression">

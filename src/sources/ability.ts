@@ -98,6 +98,7 @@ export interface Modifier
       {
         Name:string
         TargetType:GamecoreTargetType
+        IsHaloStatus?:boolean
         DynamicValues:
         {
           [key:string]:DynamicExpression

@@ -9,6 +9,7 @@
   {
     FromTargetType?:GamecoreTargetType
     FromDynamicKey:string
+    ToTargetType?:GamecoreTargetType
     ToDynamicKey:string
     Property:string
     ContextScope:string
@@ -24,12 +25,16 @@
 <template>
   <BlockLayout :source="node">
 
-    Set <em v-if="node.ContextScope">{{ node.ContextScope }}.</em><em>{{ node.ToDynamicKey }}</em>
-    to 
+    Copy 
     <template v-if="node.FromTargetType">
       <em><EvaluateTargetType :target="node.FromTargetType" /></em>'s
     </template>
     <em v-if="node.TargetContextScope">{{ node.TargetContextScope }}.</em><em>{{ node.FromDynamicKey }}</em>
+    to 
+    <template v-if="node.ToTargetType">
+      <em><EvaluateTargetType :target="node.ToTargetType" /></em>'s
+    </template>
+    <em v-if="node.ContextScope">{{ node.ContextScope }}.</em><em>{{ node.ToDynamicKey }}</em>
 
   </BlockLayout>
 </template>
