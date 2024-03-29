@@ -6,20 +6,20 @@
   const props = defineProps<{node:GamecoreTask}>()
   const node = props.node as unknown as 
   {
-    WaitTime:number|DynamicExpression
+    WaitFrameCount:number|DynamicExpression
   }
 </script>
 
 <template>
   <BlockLayout :source="node" :cosmetic="true">
     Wait for 
-    <template v-if="typeof(node.WaitTime) == 'number'">
-      <em>{{ node.WaitTime }}</em> 
+    <template v-if="typeof(node.WaitFrameCount) == 'number'">
+      <em>{{ node.WaitFrameCount }}</em> 
     </template>
     <template v-else>
-      <em><EvaluateExpression :expression="node.WaitTime" /></em> 
+      <em><EvaluateExpression :expression="node.WaitFrameCount" /></em> 
     </template>
-    seconds
+    frames
   </BlockLayout>
 </template>
 

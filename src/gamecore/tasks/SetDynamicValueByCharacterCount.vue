@@ -11,6 +11,7 @@
     ReadTargetType?:GamecoreTargetType
     DynamicKey:string
     Predicate?:GamecoreTask
+    AliveOnly?:boolean
   }
 
   if (node.DynamicKey)
@@ -21,7 +22,7 @@
   <BlockLayout :source="node">
 
     Set <em>{{ node.DynamicKey }}</em>
-    to the character count 
+    to the {{ node.AliveOnly ? 'alive' : '' }} character count 
     <template v-if="node.ReadTargetType">
       in <em><EvaluateTargetType :target="node.ReadTargetType" /></em>
     </template>

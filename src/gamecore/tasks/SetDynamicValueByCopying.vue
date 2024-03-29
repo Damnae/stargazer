@@ -11,6 +11,8 @@
     FromDynamicKey:string
     ToDynamicKey:string
     Property:string
+    ContextScope:string
+    TargetContextScope:string
   }
 
   if (node.FromDynamicKey)
@@ -22,12 +24,12 @@
 <template>
   <BlockLayout :source="node">
 
-    Set <em>{{ node.ToDynamicKey }}</em>
+    Set <em v-if="node.ContextScope">{{ node.ContextScope }}.</em><em>{{ node.ToDynamicKey }}</em>
     to 
     <template v-if="node.FromTargetType">
       <em><EvaluateTargetType :target="node.FromTargetType" /></em>'s
     </template>
-    <em>{{ node.FromDynamicKey }}</em>
+    <em v-if="node.TargetContextScope">{{ node.TargetContextScope }}.</em><em>{{ node.FromDynamicKey }}</em>
 
   </BlockLayout>
 </template>

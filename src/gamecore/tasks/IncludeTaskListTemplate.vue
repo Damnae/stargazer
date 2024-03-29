@@ -1,16 +1,18 @@
 <script setup lang="ts">
   import { Ref, inject, watch, ref } from 'vue';
   import useHashStore from '@/common/hashstore';
-  import { DynamicExpression, ExpressionContext, GamecoreTask, } from '@/sources/gamecore';
+  import { DynamicExpression, ExpressionContext, GamecoreTargetType, GamecoreTask, } from '@/sources/gamecore';
   import BlockLayout from '@/components/BlockLayout.vue';
   import { TaskContext, TaskListTemplate, findTaskTemplate, } from '@/sources/ability';
   import EvaluateExpression from '../EvaluateExpression.vue';
   import AnyTask from '../AnyTask.vue';
+  import EvaluateTargetType from '../EvaluateTargetType.vue';
 
   const props = defineProps<{node:GamecoreTask}>()
   const node = props.node as unknown as 
   {
     Name:string
+    ParamTarget:GamecoreTargetType
     DynamicValues:
     {
       [key:string]: DynamicExpression
@@ -41,6 +43,9 @@
     <span class="flow">
       Include task list template 
       <em>{{ node.Name }}</em>
+      <template v-if="node.ParamTarget">
+        with target <em><EvaluateTargetType :target="node.ParamTarget" /></em>
+      </template>
     </span>
     <template #content>
 

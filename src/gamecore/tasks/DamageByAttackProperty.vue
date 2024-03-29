@@ -10,7 +10,9 @@
     TargetType?:GamecoreTargetType
     AttackProperty:
     {
-      DamageType?:string
+      DamageType?:string | {
+        DamageType:string
+      },
       DamageTypeFromAttacker?:boolean
       HitSplitRatio?:DynamicExpression
       DamagePercentage?:DynamicExpression
@@ -60,9 +62,13 @@
     <template v-if="node.AttackProperty?.DamageTypeFromAttacker">
       as the attacker's element
     </template>
+    <template v-else-if="typeof(node.AttackProperty?.DamageType) == 'object'">
+      as <em>{{ node.AttackProperty?.DamageType?.DamageType }}</em>
+    </template>
     <template v-else>
       as <em>{{ node.AttackProperty?.DamageType ?? 'Physical' }}</em>
     </template>
+
     <template v-if="node.AttackProperty?.AttackType">
       / <em>{{ node.AttackProperty?.AttackType }}</em>
     </template>
