@@ -33,6 +33,7 @@
     {  
       if (expressionContext.value)
         expressionContext.value.AbilityId = undefined
+      processModifier(mod)
       modifier.value = mod
       return 
     }
@@ -48,6 +49,7 @@
           if (ability.DynamicValues)
             expressionContext.value.AbilityDynamicValues[ability.Name] = ability.DynamicValues
         }
+        processModifier(mod)
         modifier.value = mod
         return
       }
@@ -73,6 +75,18 @@
     }
   }, 
   { immediate:true, })
+
+  function processModifier(modifier:Modifier)
+  {
+    if (!modifier.AdditionConfig?.SubModifierList)
+      return
+
+    const hashStore = useHashStore()
+    for (const entry of modifier.AdditionConfig?.SubModifierList)
+      for (const name in entry.DynamicValues)
+        hashStore.register(name, false)
+    hashStore.commit()
+  }
 
   function getEventNames(modifier?:Modifier) : string[]
   {
