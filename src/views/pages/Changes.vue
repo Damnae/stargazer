@@ -12,11 +12,21 @@
   const tabsWithContext = ['Abilities', 'Modifiers']
   const selectedTab = ref('Abilities')
 
-  const contextTypes:string[] = ['All', 'Avatar', 'Monster', 'Equipment', 'RelicSet', 'BattleEvent', 'Rogue']
-  const selectedContextType = ref('Avatar')
+  const contextTypes:{[key:string]: TaskContextType} = 
+  {
+    'All': TaskContextType.All, 
+    'Common': TaskContextType.DiffCommon, 
+    'Avatars': TaskContextType.DiffAvatar, 
+    'Monsters': TaskContextType.DiffMonster, 
+    'Light Cones': TaskContextType.DiffEquipment, 
+    'Relic Sets': TaskContextType.DiffRelicSet, 
+    'Battle Events': TaskContextType.DiffBattleEvent, 
+    'Level': TaskContextType.DiffLevel,
+  }
+  const selectedContextType = ref('Avatars')
 
-  provide('createAbilityRoute', (abilityId:string, from:boolean) : object => { return { name: 'ability', params:{ commitId: from ? props.fromCommitId : props.commitId, abilityId: abilityId, } }})
-  provide('createModifierRoute', (modifierId:string, from:boolean) : object => { return { name: 'modifier', params:{ commitId: from ? props.fromCommitId : props.commitId, modifierId: modifierId, } }})
+  provide('createAbilityRoute', (abilityId:string, isPrevious:boolean) : object => { return { name: 'ability', params:{ commitId: isPrevious ? props.fromCommitId : props.commitId, abilityId: abilityId, } }})
+  provide('createModifierRoute', (modifierId:string, isPrevious:boolean) : object => { return { name: 'modifier', params:{ commitId: isPrevious ? props.fromCommitId : props.commitId, modifierId: modifierId, } }})
 </script>
 
 <template>
@@ -26,15 +36,15 @@
     </header>
     <div class="filters">
       <NavTabs :tabs="tabs" v-model:selected="selectedTab" />
-      <NavTabs :tabs="contextTypes" v-model:selected="selectedContextType" v-if="tabsWithContext.includes(selectedTab)" />
+      <NavTabs :tabs="Object.keys(contextTypes)" v-model:selected="selectedContextType" v-if="tabsWithContext.includes(selectedTab)" />
     </div>
     <section>
       <Abilities v-if="selectedTab == 'Abilities'" 
         :fromCommitId="fromCommitId" :commitId="commitId"
-        :contextType="selectedContextType as TaskContextType" />
+        :contextType="contextTypes[selectedContextType]" />
       <Modifiers v-if="selectedTab == 'Modifiers'" 
         :fromCommitId="fromCommitId" :commitId="commitId"
-        :contextType="selectedContextType as TaskContextType"  />
+        :contextType="contextTypes[selectedContextType]"  />
       <Statuses v-if="selectedTab == 'Statuses'" 
         :fromCommitId="fromCommitId" :commitId="commitId" />
     </section>

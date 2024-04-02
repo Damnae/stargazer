@@ -31,12 +31,12 @@
 
   <h3>{{ addedAbilities.length }} Added</h3>
   <template v-for="ability in addedAbilities">
-    <AbilityItem :ability="ability" />
+    <AbilityItem :ability="ability" :isPrevious="false" />
   </template>
 
   <h3>{{ removedAbilities.length }} Removed</h3>
   <template v-for="ability in removedAbilities">
-    <AbilityItem :ability="ability" />
+    <AbilityItem :ability="ability" :isPrevious="true" />
   </template>
 
 </template>

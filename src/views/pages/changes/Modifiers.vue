@@ -31,12 +31,12 @@
 
   <h3>{{ addedModifiers.length }} Added</h3>
   <template v-for="modifier in addedModifiers">
-    <ModifierItem :modifier="modifier" />
+    <ModifierItem :modifier="modifier" :isPrevious="false" />
   </template>
 
   <h3>{{ removedModifiers.length }} Removed</h3>
   <template v-for="modifier in removedModifiers">
-    <ModifierItem :modifier="modifier" />
+    <ModifierItem :modifier="modifier" :isPrevious="true" />
   </template>
 
 </template>

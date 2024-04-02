@@ -177,7 +177,8 @@ export interface TaskContext
 export enum TaskContextType
 {
   Empty = 'Empty',
-  All = 'All',
+
+  // Minimal context to display data from these contexts
   Avatar = 'Avatar',
   Monster = 'Monster',
   Equipment = 'Equipment',
@@ -185,11 +186,38 @@ export enum TaskContextType
   BattleEvent = 'BattleEvent',
   Level = 'Level',
   Rogue = 'Rogue',
+
+  // All task templates ONLY
   TaskTemplate = 'TaskTemplate',
+
+  // Used for changes page and combined into All
+  // These should NOT overlap
+  DiffCommon = 'DiffCommon',
+  DiffAvatar = 'DiffAvatar',
+  DiffMonster = 'DiffMonster',
+  DiffEquipment = 'DiffEquipment',
+  DiffRelicSet = 'DiffRelicSet',
+  DiffBattleEvent = 'DiffBattleEvent',
+  DiffLevel = 'DiffLevel',
+  
+  All = 'All', 
 }
 
-const contextTypeToPaths =
+interface ContextPathEntry
 {
+  Abilities: string[]
+  Modifiers: string[]
+  TaskListTemplates: string[]
+}
+
+const contextTypeToPaths:{[key:string]:ContextPathEntry} =
+{
+  Empty: 
+  {
+    Abilities: [],
+    Modifiers: [],
+    TaskListTemplates: [],
+  },
   Avatar: 
   {
     Abilities:
@@ -344,67 +372,147 @@ const contextTypeToPaths =
     Modifiers: [],
     TaskListTemplates:
     [
-      'Config/ConfigGlobalTaskListTemplate/GlobalTaskListTemplate.json',
+      'Config/ConfigGlobalTaskListTemplate',
     ],
   },
-  Empty: 
+  DiffCommon:
   {
-    Abilities: [],
+    Abilities: 
+    [
+      'Config/ConfigAbility/Common_Additional_Ability.json',
+    ],
+    Modifiers: 
+    [
+      'Config/ConfigGlobalModifier/GlobalModifier.json',
+      'Config/ConfigGlobalModifier/GlobalModifier_Common_Property.json',
+      'Config/ConfigGlobalModifier/GlobalModifier_Common_Specific.json',
+      'Config/ConfigGlobalModifier/GlobalModifier_System.json',
+      'Config/ConfigGlobalModifier/GlobalModifier_WhiteBox_Common.json',
+    ],
+    TaskListTemplates: 
+    [
+      'Config/ConfigGlobalTaskListTemplate/GlobalTaskListTemplate.json',
+      'Config/ConfigGlobalTaskListTemplate/GlobalTaskListTemplate_GM.json',
+      'Config/ConfigGlobalTaskListTemplate/GlobalTaskListTemplate_InfiniteWave.json',
+      'Config/ConfigGlobalTaskListTemplate/GlobalTaskListTemplate_WaveMonsterPerform.json',
+      'Config/ConfigGlobalTaskListTemplate/GlobalTaskListTemplate_WhiteBox.json',
+    ],
+  },
+  DiffAvatar:
+  {
+    Abilities:
+    [
+      'Config/ConfigAbility/Avatar',
+      'Config/ConfigAbility/Avatar/Assistant',
+      'Config/ConfigAbility/WhiteBox/Avatar',
+    ],
+    Modifiers: 
+    [
+      'Config/ConfigGlobalModifier/GlobalModifier_Avatar.json',
+      'Config/ConfigGlobalModifier/GlobalModifier_Avatar_AssistantTrigger.json',
+      'Config/ConfigGlobalModifier/GlobalModifier_WhiteBox_Avatar.json',
+    ],
+    TaskListTemplates: [],
+  },
+  DiffMonster:
+  {
+    Abilities: 
+    [
+      'Config/ConfigAbility/Monster',
+      'Config/ConfigAbility/WhiteBox/Monster',
+    ],
+    Modifiers: 
+    [
+      'Config/ConfigGlobalModifier/GlobalModifier_Monster.json',
+      'Config/ConfigGlobalModifier/GlobalModifier_WhiteBox_Monster.json',
+    ],
+    TaskListTemplates: [],
+  },
+  DiffEquipment:
+  {
+    Abilities: 
+    [
+      'Config/ConfigAbility/EquipmemtAbility.json',
+    ],
     Modifiers: [],
+    TaskListTemplates: [],
+  },
+  DiffRelicSet:
+  {
+    Abilities:
+    [
+      'Config/ConfigAbility/RelicAbility.json',
+    ],
+    Modifiers: [],
+    TaskListTemplates: [],
+  },
+  DiffBattleEvent:
+  {
+    Abilities: 
+    [
+      'Config/ConfigAbility/BattleEventAbility.json',
+      'Config/ConfigAbility/BattleEventAbility_2.json',
+      'Config/ConfigAbility/BattleEventAbility_BoxingGym.json',
+      'Config/ConfigAbility/BattleEventAbility_NewBoxingClub.json',
+      'Config/ConfigAbility/BattleEventAbility_SilverWolfEvent.json',
+      'Config/ConfigAbility/StageBattleEventAbility.json',
+      'Config/ConfigAbility/WhiteBox/W_BattleEventAbility_SummonAndScoringTest.json',
+      'Config/ConfigAbility/WhiteBox/W_BattleEventAbility_SummonAndScoringTest_2.json',
+      'Config/ConfigAbility/WhiteBox/W_BattleEventAbility_SummonAndScoringTest_3.json',
+      'Config/ConfigAbility/WhiteBox/W_BattleEventAbility_v1.6_Ability.json',
+      'Config/ConfigAbility/WhiteBox/BattleEvent',
+    ],
+    Modifiers: [],
+    TaskListTemplates: [],
+  },
+  DiffLevel:
+  {
+    Abilities: 
+    [
+      'Config/ConfigAbility/Level',
+      'Config/ConfigAbility/TrialPlayerPassiveAbility.json',
+    ],
+    Modifiers: 
+    [
+      'Config/ConfigAbility/GlobalModifier_Level.json',
+      'Config/ConfigAbility/GlobalModifier_WhiteBox_Level.json',
+      'Config/ConfigAbility/GlobalModifier_WhiteBox_LevelRogueV2.json',
+    ],
     TaskListTemplates: [],
   },
   All: 
   {
-    Abilities:
-    [
-      'Config/ConfigAbility/Common_Additional_Ability.json',
-      'Config/ConfigAbility/Avatar',
-      'Config/ConfigAbility/Monster',
-      'Config/ConfigAbility/EquipmemtAbility.json',
-      'Config/ConfigAbility/RelicAbility.json',
-      'Config/ConfigAbility/BattleEventAbility.json',
-      'Config/ConfigAbility/BattleEventAbility_2.json',
-      'Config/ConfigAbility/BattleEventAbility_SilverWolfEvent.json',
-      'Config/ConfigAbility/StageBattleEventAbility.json',
-      'Config/ConfigAbility/BattleEvent',
-      'Config/ConfigAbility/Level',
-    ],
-    Modifiers:
-    [
-      'Config/ConfigGlobalModifier/GlobalModifier_Common_Property.json',
-      'Config/ConfigGlobalModifier/GlobalModifier_Common_Specific.json',
-      'Config/ConfigGlobalModifier/GlobalModifier_Avatar.json',
-      'Config/ConfigGlobalModifier/GlobalModifier_Monster.json',
-      'Config/ConfigGlobalModifier/GlobalModifier_Level.json',
-    ],
-    TaskListTemplates:
-    [
-      'Config/ConfigGlobalTaskListTemplate/GlobalTaskListTemplate.json',
-    ],
+    Abilities:[],
+    Modifiers:[],
+    TaskListTemplates:[],
   },
 }
 
 const [settings, _sessionSettings] = useSettings()
-if (settings.includeWhiteBox)
+if (!settings.includeWhiteBox)
 {
-  contextTypeToPaths.BattleEvent.Abilities = contextTypeToPaths.BattleEvent.Abilities.concat([
-    'Config/ConfigAbility/WhiteBox',
-    'Config/ConfigAbility/WhiteBox/Avatar',
-    'Config/ConfigAbility/WhiteBox/BattleEvent',
-    'Config/ConfigAbility/WhiteBox/Monster',
-  ])
-  contextTypeToPaths.All.Abilities = contextTypeToPaths.All.Abilities.concat([
-    'Config/ConfigAbility/WhiteBox',
-    'Config/ConfigAbility/WhiteBox/Avatar',
-    'Config/ConfigAbility/WhiteBox/BattleEvent',
-    'Config/ConfigAbility/WhiteBox/Monster',
-  ])
-  contextTypeToPaths.All.TaskListTemplates = contextTypeToPaths.All.TaskListTemplates.concat([
-    'Config/ConfigGlobalTaskListTemplate',
-  ])
-  contextTypeToPaths.TaskTemplate.TaskListTemplates = contextTypeToPaths.TaskTemplate.TaskListTemplates.concat([
-    'Config/ConfigGlobalTaskListTemplate',
-  ])
+  for (const contextPathKey in contextTypeToPaths)
+  {
+    const contextPaths = contextTypeToPaths[contextPathKey]
+    contextPaths.Abilities = contextPaths.Abilities.filter(p => !p.includes('WhiteBox'))
+    contextPaths.Modifiers = contextPaths.Modifiers.filter(p => !p.includes('WhiteBox'))
+    contextPaths.TaskListTemplates = contextPaths.TaskListTemplates.filter(p => !p.includes('WhiteBox'))
+  }
+}
+
+// Include all Diff* in All
+{
+  const allContextPath = contextTypeToPaths[TaskContextType.All]
+  for (const contextPathKey in contextTypeToPaths)
+  {
+    if (!contextPathKey.includes('Diff'))
+      continue
+
+    const contextPaths = contextTypeToPaths[contextPathKey]
+    allContextPath.Abilities = allContextPath.Abilities.concat(contextPaths.Abilities)
+    allContextPath.Modifiers = allContextPath.Modifiers.concat(contextPaths.Modifiers)
+    allContextPath.TaskListTemplates = allContextPath.TaskListTemplates.concat(contextPaths.TaskListTemplates)
+  }
 }
 
 const taskContextCache:{[commitId: string]: {[type: string]: TaskContext}} = {}
@@ -428,6 +536,7 @@ export async function getTaskContext(commitId:string, type:TaskContextType) : Pr
         TaskListTemplates: {},
       }
       const paths = contextTypeToPaths[type]
+
       for (const path of paths.Abilities)
         if (path.endsWith('.json'))
           mergeAbilityConfig(context, await getAbilities(commitId, path) as AbilityConfig)
@@ -453,16 +562,16 @@ export async function getTaskContext(commitId:string, type:TaskContextType) : Pr
         }
 
       for (const path of paths.TaskListTemplates)
-      if (path.endsWith('.json'))
-        mergeTaskListTemplateConfig(context, await getTaskListTemplates(commitId, path) as TaskListTemplateConfig)
-      else
-      {
-        const tree = await retrieveTree(path, commitId)
-        if (tree)
-          for (const treePath of tree.map((t:any) => t.path))
-            if (pathIsDataJson(treePath))
-              mergeTaskListTemplateConfig(context, await getTaskListTemplates(commitId, `${path}/${treePath}`) as TaskListTemplateConfig)
-      }
+        if (path.endsWith('.json'))
+          mergeTaskListTemplateConfig(context, await getTaskListTemplates(commitId, path) as TaskListTemplateConfig)
+        else
+        {
+          const tree = await retrieveTree(path, commitId)
+          if (tree)
+            for (const treePath of tree.map((t:any) => t.path))
+              if (pathIsDataJson(treePath))
+                mergeTaskListTemplateConfig(context, await getTaskListTemplates(commitId, `${path}/${treePath}`) as TaskListTemplateConfig)
+        }
   
       result = container[type] = context
       console.log(`cached ${type} ability context for ${commitId}`)

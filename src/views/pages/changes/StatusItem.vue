@@ -2,7 +2,7 @@
   import { inject, } from 'vue';
   import { Status } from '@/sources/status';
 
-  defineProps<{status:Status}>()
+  defineProps<{status:Status, isPrevious:boolean}>()
   //const createAbilityRoute = inject<(key:string, from:boolean) => object>('createAbilityRoute') as (key:string, from:boolean) => object
   const createModifierRoute = inject<(key:string, from:boolean) => object>('createModifierRoute') as (key:string, from:boolean) => object
 </script>
@@ -11,7 +11,7 @@
 
   <div class="block">
     <template v-if="status.ModifierName">
-      <RouterLink :to="createModifierRoute(status.ModifierName, false)">
+      <RouterLink :to="createModifierRoute(status.ModifierName, isPrevious)">
         <em>{{ status.StatusName.Text }}</em>
       </RouterLink>
       &nbsp;<span class="minor">

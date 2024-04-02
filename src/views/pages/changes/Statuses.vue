@@ -31,12 +31,12 @@
 
   <h3>{{ addedStatuses.length }} Added</h3>
   <template v-for="status in addedStatuses">
-    <StatusItem :status="status" />
+    <StatusItem :status="status" :isPrevious="false" />
   </template>
 
   <h3>{{ removedStatuses.length }} Removed</h3>
   <template v-for="status in removedStatuses">
-    <StatusItem :status="status" />
+    <StatusItem :status="status" :isPrevious="true" />
   </template>
 
 </template>
