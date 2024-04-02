@@ -47,6 +47,7 @@ import AnyTaskTemplate from './views/abilities/AnyTaskTemplate.vue'
 import TargetAlias from './views/pages/TargetAlias.vue'
 import TargetAliases from './views/pages/TargetAliases.vue'
 import RelicRecommends from './views/pages/RelicRecommends.vue'
+import Changes from './views/pages/Changes.vue'
 
 const routes:Readonly<RouteRecordRaw[]> = 
 [
@@ -218,6 +219,11 @@ const routes:Readonly<RouteRecordRaw[]> =
         },
         { path: '/recommendedrelics/@:commitId', 
             name: 'relicRecommends', components: { default: RelicRecommends, }, 
+            props:{ default:toRouteProps({ }) },
+            meta: { mainNav: 'Misc', mainNavTab:'All', }
+        },
+        { path: '/changes/from-@:fromCommitId/@:commitId', 
+            name: 'changes', components: { default: Changes, }, 
             props:{ default:toRouteProps({ }) },
             meta: { mainNav: 'Misc', mainNavTab:'All', }
         },

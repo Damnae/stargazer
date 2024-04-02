@@ -131,6 +131,12 @@ export interface DataSourceCommit
         }
         message: string
     }
+    parents:
+    [
+        {
+            sha:string
+        }
+    ]
 }
 
 const commitsCache:DataSourceCommit[] = []

@@ -26,14 +26,16 @@
     <template v-if="commitEntries">
       <p>Pick a version:</p>
       <ul>
-        <li v-for="(commitEntry, index) in commitEntries">
-          <RouterLink :to="{ name:'commit', params:{ commitId: commitEntry.sha }}">
+        <li class="commit" v-for="(commitEntry, index) in commitEntries">
+          <RouterLink class="commitChanges" v-if=" commitEntry.parents?.[0]" :to="{ name:'changes', params:{ fromCommitId: commitEntry.parents[0].sha, commitId: commitEntry.sha }}" title="See changes">
+            ⮃
+          </RouterLink>
+          <RouterLink class="commitInfo" :to="{ name:'commit', params:{ commitId: commitEntry.sha }}">
             <div class="identity">
               <span class="minor">
                 {{ toTimeAgo(commitEntry.commit.committer.date) }}
                 <span v-if="index == 0" class="major">Latest</span>
               </span>
-              <span class="minor">({{ commitEntry.sha }})</span>
             </div>
             <div class="message">
               {{ commitEntry.commit.message }}
@@ -56,7 +58,7 @@
     list-style: none;
     display: flex;
     flex-direction: column;
-    gap: 1rem;  
+    gap: 1rem;
     max-width:40rem;
     padding: 0 1em 0 0;
     height: 40vh;
@@ -69,6 +71,22 @@
   li:not(:first-child) {
     opacity: .5;
   }
+
+  .commit
+  {
+    display:flex;
+    flex-direction:row;
+    gap: .5rem;
+  }
+  .commitInfo
+  {
+    flex-grow:1;
+  }
+  .commitChanges
+  {
+    text-align:center;
+  }
+
   .identity
   {
     display: flex;

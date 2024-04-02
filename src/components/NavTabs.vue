@@ -17,6 +17,7 @@
     display:flex;
     flex-direction: row;
     justify-content: center;
+    font-size: smaller;
     gap: .5em;
   }
   .tab
@@ -24,8 +25,7 @@
     border:none;
     outline:none;
     background:none;
-    height: 1em;
-    font-size: smaller;
+    height: 1.3em;
     padding: 0;
   }
 
