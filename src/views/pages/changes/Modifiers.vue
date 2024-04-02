@@ -1,6 +1,7 @@
 <script setup lang="ts">
   import { computed, ref, watch, } from 'vue';
   import { TaskContext, TaskContextType, getTaskContext } from '@/sources/ability';
+  import ModifierItem from './ModifierItem.vue';
 
   const props = defineProps<{fromCommitId:string, commitId:string, contextType:TaskContextType}>()
 
@@ -15,31 +16,28 @@
   })
 
   const addedModifiers = computed(() => Object.values(taskContext.value.Modifiers)
-      .filter(v => taskContextFrom.value.Modifiers[v.Name] == undefined)
-      .sort((a, b) => a.Name > b.Name ? 1 : -1))
+    .filter(v => taskContextFrom.value.Modifiers[v.Name] == undefined)
+    .sort((a, b) => a.Name > b.Name ? 1 : -1))
 
-  function createModifierRoute(modifierId:string) 
-  { 
-    return { name: 'modifier', params: { commitId: props.commitId, modifierId: modifierId, }}
-  }
+  const removedModifiers = computed(() => Object.values(taskContextFrom.value.Modifiers)
+    .filter(v => taskContext.value.Modifiers[v.Name] == undefined)
+    .sort((a, b) => a.Name > b.Name ? 1 : -1))
+
 </script>
 
 <template>
 
-  <h2>
-    <span class="minor">{{ Object.keys(taskContext.Modifiers).length - Object.keys(taskContextFrom.Modifiers).length }}</span>
-    Modifiers
-  </h2>
-  <div class="block" v-for="addedModifier in addedModifiers">
-    <RouterLink v-if="addedModifier.Name" :to="createModifierRoute(addedModifier.Name)">
-      <em>{{ addedModifier.Name }}</em>
-    </RouterLink>
-    <template v-if="addedModifier.BehaviorFlagList">
-      &nbsp;<span class="minor">
-        {{ addedModifier.BehaviorFlagList.join(', ') }}
-      </span>
-    </template>
-  </div>
+  <h2>Modifiers</h2>
+
+  <h3>{{ addedModifiers.length }} Added</h3>
+  <template v-for="modifier in addedModifiers">
+    <ModifierItem :modifier="modifier" />
+  </template>
+
+  <h3>{{ removedModifiers.length }} Removed</h3>
+  <template v-for="modifier in removedModifiers">
+    <ModifierItem :modifier="modifier" />
+  </template>
 
 </template>
 

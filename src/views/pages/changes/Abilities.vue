@@ -1,6 +1,7 @@
 <script setup lang="ts">
   import { computed, ref, watch, } from 'vue';
   import { TaskContext, TaskContextType, getTaskContext } from '@/sources/ability';
+  import AbilityItem from './AbilityItem.vue';
 
   const props = defineProps<{fromCommitId:string, commitId:string, contextType:TaskContextType}>()
 
@@ -15,41 +16,28 @@
   })
 
   const addedAbilities = computed(() => Object.values(taskContext.value.Abilities)
-      .filter(v => taskContextFrom.value.Abilities[v.Name] == undefined)
-      .sort((a, b) => a.Name > b.Name ? 1 : -1))
+    .filter(v => taskContextFrom.value.Abilities[v.Name] == undefined)
+    .sort((a, b) => a.Name > b.Name ? 1 : -1))
 
-  function createAbilityRoute(abilityId:string)
-  { 
-    return { name: 'ability', params: { commitId: props.commitId, abilityId: abilityId, }}
-  }
-  
-  function createModifierRoute(modifierId:string)
-  { 
-    return { name: 'modifier', params: { commitId: props.commitId, modifierId: modifierId, }}
-  }
+  const removedAbilities = computed(() => Object.values(taskContextFrom.value.Abilities)
+    .filter(v => taskContext.value.Abilities[v.Name] == undefined)
+    .sort((a, b) => a.Name > b.Name ? 1 : -1))
+
 </script>
 
 <template>
 
-  <h2>
-    <span class="minor">{{ Object.keys(taskContext.Abilities).length - Object.keys(taskContextFrom.Abilities).length }}</span>
-    Abilities
-  </h2>
-  <div class="block" v-for="addedAbility in addedAbilities">
-    <RouterLink v-if="addedAbility.Name" :to="createAbilityRoute(addedAbility.Name)">
-      <em>{{ addedAbility.Name }}</em>
-    </RouterLink>
-    <div class="block" v-for="modifier in addedAbility.Modifiers">
-      <RouterLink v-if="modifier.Name" :to="createModifierRoute(modifier.Name)">
-        <em>{{ modifier.Name }}</em>
-      </RouterLink>
-      <template v-if="modifier.BehaviorFlagList">
-        &nbsp;<span class="minor">
-          {{ modifier.BehaviorFlagList.join(', ') }}
-        </span>
-      </template>
-    </div>
-  </div>
+  <h2>Abilities</h2>
+
+  <h3>{{ addedAbilities.length }} Added</h3>
+  <template v-for="ability in addedAbilities">
+    <AbilityItem :ability="ability" />
+  </template>
+
+  <h3>{{ removedAbilities.length }} Removed</h3>
+  <template v-for="ability in removedAbilities">
+    <AbilityItem :ability="ability" />
+  </template>
 
 </template>
 
