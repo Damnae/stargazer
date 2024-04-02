@@ -332,7 +332,6 @@ const contextTypeToPaths =
       //'Config/ConfigGlobalModifier/GlobalModifier_System.json',
       'Config/ConfigGlobalModifier/GlobalModifier_Common_Property.json',
       'Config/ConfigGlobalModifier/GlobalModifier_Common_Specific.json',
-      'Config/ConfigAdventureModifier',
     ],
     TaskListTemplates:
     [
@@ -437,7 +436,7 @@ export async function getTaskContext(commitId:string, type:TaskContextType) : Pr
           const tree = await retrieveTree(path, commitId)
           if (tree)
             for (const treePath of tree.map((t:any) => t.path))
-              if (treePath.endsWith('.json'))
+              if (pathIsDataJson(treePath))
                 mergeAbilityConfig(context, await getAbilities(commitId, `${path}/${treePath}`) as AbilityConfig)
         }
         
@@ -449,7 +448,7 @@ export async function getTaskContext(commitId:string, type:TaskContextType) : Pr
           const tree = await retrieveTree(path, commitId)
           if (tree)
             for (const treePath of tree.map((t:any) => t.path))
-              if (treePath.endsWith('.json'))
+              if (pathIsDataJson(treePath))
                 mergeModifierConfig(context, await getModifiers(commitId, `${path}/${treePath}`) as ModifierConfig)
         }
 
@@ -461,7 +460,7 @@ export async function getTaskContext(commitId:string, type:TaskContextType) : Pr
         const tree = await retrieveTree(path, commitId)
         if (tree)
           for (const treePath of tree.map((t:any) => t.path))
-            if (treePath.endsWith('.json'))
+            if (pathIsDataJson(treePath))
               mergeTaskListTemplateConfig(context, await getTaskListTemplates(commitId, `${path}/${treePath}`) as TaskListTemplateConfig)
       }
   
@@ -470,6 +469,11 @@ export async function getTaskContext(commitId:string, type:TaskContextType) : Pr
     }
     return result
   })
+}
+
+function pathIsDataJson(path:string) : boolean
+{
+  return !path.endsWith('.layout.json') && path.endsWith('.json')
 }
 
 export function findTaskTemplate(templateName:string, expressionContext:ExpressionContext, taskContext:TaskContext) : TaskListTemplate | undefined
