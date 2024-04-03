@@ -12,13 +12,14 @@
   if (settings.useCustomRepo && commitEntries.value.length == 0)
   {
     settings.useCustomRepo = false
-    location.reload()
+    router.go(0)
   }
 
   function toggleCustomRepo()
   {
     settings.useCustomRepo = settings.customRepo.length > 0 && !settings.useCustomRepo
-    location.reload()
+    commitEntries.value = []
+    router.go(0)
   }
 
   function handleDrag(event:DragEventInit, startCommitId:string, startRank:number)
