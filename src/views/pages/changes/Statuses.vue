@@ -2,18 +2,20 @@
   import { computed, ref, watch, } from 'vue';
   import { StatusConfig, getStatuses } from '@/sources/status';
   import StatusItem from './StatusItem.vue';
+  import LoadingArea from '@/components/LoadingArea.vue';
 
   const props = defineProps<{fromCommitId:string, commitId:string}>()
-  
-  const statusesFrom = ref<StatusConfig>(await getStatuses(props.fromCommitId))
-  const statuses = ref<StatusConfig>(await getStatuses(props.commitId))
+
+  const loading = ref(true)
+  const statusesFrom = ref<StatusConfig>({})
+  const statuses = ref<StatusConfig>({})
   watch(props, async () => 
   {
-    const from = await getStatuses(props.fromCommitId)
-    const to = await getStatuses(props.commitId)
-    statusesFrom.value = from
-    statuses.value = to
-  })
+    loading.value = true
+    statusesFrom.value = await getStatuses(props.fromCommitId)
+    statuses.value = await getStatuses(props.commitId)
+    loading.value = false
+  }, { immediate:true })
 
   const addedStatuses = computed(() => Object.values(statuses.value)
     .filter(v => statusesFrom.value[v.StatusID] == undefined)
@@ -29,15 +31,17 @@
 
   <h2>Statuses</h2>
 
-  <h3>{{ addedStatuses.length }} Added</h3>
-  <template v-for="status in addedStatuses">
-    <StatusItem :status="status" :isPrevious="false" />
-  </template>
+  <LoadingArea :loading="loading">
+    <h3>{{ addedStatuses.length }} Added</h3>
+    <template v-for="status in addedStatuses">
+      <StatusItem :status="status" :isPrevious="false" />
+    </template>
 
-  <h3>{{ removedStatuses.length }} Removed</h3>
-  <template v-for="status in removedStatuses">
-    <StatusItem :status="status" :isPrevious="true" />
-  </template>
+    <h3>{{ removedStatuses.length }} Removed</h3>
+    <template v-for="status in removedStatuses">
+      <StatusItem :status="status" :isPrevious="true" />
+    </template>
+  </LoadingArea>
 
 </template>
 

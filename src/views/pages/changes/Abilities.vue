@@ -2,18 +2,20 @@
   import { computed, ref, watch, } from 'vue';
   import { TaskContext, TaskContextType, getTaskContext } from '@/sources/ability';
   import AbilityItem from './AbilityItem.vue';
+  import LoadingArea from '@/components/LoadingArea.vue';
 
   const props = defineProps<{fromCommitId:string, commitId:string, contextType:TaskContextType}>()
 
-  const taskContextFrom = ref<TaskContext>(await getTaskContext(props.fromCommitId, props.contextType))
-  const taskContext = ref<TaskContext>(await getTaskContext(props.commitId, props.contextType))
+  const loading = ref(true)
+  const taskContextFrom = ref<TaskContext>(await getTaskContext(props.fromCommitId, TaskContextType.Empty))
+  const taskContext = ref<TaskContext>(await getTaskContext(props.commitId, TaskContextType.Empty))
   watch(props, async () => 
   {
-    const from = await getTaskContext(props.fromCommitId, props.contextType)
-    const to = await getTaskContext(props.commitId, props.contextType)
-    taskContextFrom.value = from
-    taskContext.value = to
-  })
+    loading.value = true
+    taskContextFrom.value = await getTaskContext(props.fromCommitId, props.contextType)
+    taskContext.value = await getTaskContext(props.commitId, props.contextType)
+    loading.value = false
+  }, { immediate:true })
 
   const addedAbilities = computed(() => Object.values(taskContext.value.Abilities)
     .filter(v => taskContextFrom.value.Abilities[v.Name] == undefined)
@@ -29,15 +31,17 @@
 
   <h2>Abilities</h2>
 
-  <h3>{{ addedAbilities.length }} Added</h3>
-  <template v-for="ability in addedAbilities">
-    <AbilityItem :ability="ability" :isPrevious="false" />
-  </template>
+  <LoadingArea :loading="loading">
+    <h3>{{ addedAbilities.length }} Added</h3>
+    <template v-for="ability in addedAbilities">
+      <AbilityItem :ability="ability" :isPrevious="false" />
+    </template>
 
-  <h3>{{ removedAbilities.length }} Removed</h3>
-  <template v-for="ability in removedAbilities">
-    <AbilityItem :ability="ability" :isPrevious="true" />
-  </template>
+    <h3>{{ removedAbilities.length }} Removed</h3>
+    <template v-for="ability in removedAbilities">
+      <AbilityItem :ability="ability" :isPrevious="true" />
+    </template>
+  </LoadingArea>
 
 </template>
 

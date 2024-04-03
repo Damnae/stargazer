@@ -2,18 +2,20 @@
   import { computed, ref, watch, } from 'vue';
   import { TaskContext, TaskContextType, getTaskContext } from '@/sources/ability';
   import ModifierItem from './ModifierItem.vue';
+  import LoadingArea from '@/components/LoadingArea.vue';
 
   const props = defineProps<{fromCommitId:string, commitId:string, contextType:TaskContextType}>()
 
-  const taskContextFrom = ref<TaskContext>(await getTaskContext(props.fromCommitId, props.contextType))
-  const taskContext = ref<TaskContext>(await getTaskContext(props.commitId, props.contextType))
+  const loading = ref(true)
+  const taskContextFrom = ref<TaskContext>(await getTaskContext(props.fromCommitId, TaskContextType.Empty))
+  const taskContext = ref<TaskContext>(await getTaskContext(props.commitId, TaskContextType.Empty))
   watch(props, async () => 
   {
-    const from = await getTaskContext(props.fromCommitId, props.contextType)
-    const to = await getTaskContext(props.commitId, props.contextType)
-    taskContextFrom.value = from
-    taskContext.value = to
-  })
+    loading.value = true
+    taskContextFrom.value = await getTaskContext(props.fromCommitId, props.contextType)
+    taskContext.value = await getTaskContext(props.commitId, props.contextType)
+    loading.value = false
+  }, { immediate:true })
 
   const addedModifiers = computed(() => Object.values(taskContext.value.Modifiers)
     .filter(v => taskContextFrom.value.Modifiers[v.Name] == undefined)
@@ -29,15 +31,17 @@
 
   <h2>Modifiers</h2>
 
-  <h3>{{ addedModifiers.length }} Added</h3>
-  <template v-for="modifier in addedModifiers">
-    <ModifierItem :modifier="modifier" :isPrevious="false" />
-  </template>
+  <LoadingArea :loading="loading">
+    <h3>{{ addedModifiers.length }} Added</h3>
+    <template v-for="modifier in addedModifiers">
+      <ModifierItem :modifier="modifier" :isPrevious="false" />
+    </template>
 
-  <h3>{{ removedModifiers.length }} Removed</h3>
-  <template v-for="modifier in removedModifiers">
-    <ModifierItem :modifier="modifier" :isPrevious="true" />
-  </template>
+    <h3>{{ removedModifiers.length }} Removed</h3>
+    <template v-for="modifier in removedModifiers">
+      <ModifierItem :modifier="modifier" :isPrevious="true" />
+    </template>
+  </LoadingArea>
 
 </template>
 
