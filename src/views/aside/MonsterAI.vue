@@ -6,8 +6,8 @@
   import { CharacterAI, getCharacterAIByMonster } from '@/sources/characterai';
   import { MonsterSkill, getMonsterSkillsByIds } from '@/sources/monsterskill';
 
+  import LoadingArea from '@/components/LoadingArea.vue';
   import ProvideMonsterContext from '@/views/abilities/components/ProvideMonsterContext.vue';
-  import LoadingNav from '@/components/LoadingNav.vue';
   import AnyTask from '@/gamecore/AnyTask.vue';
 
   const commitId = inject<string>('commitId') as string
@@ -53,48 +53,47 @@
 </script>
 
 <template>
-  <div v-if="loading">
-    <LoadingNav />
-  </div>
-  <template v-else-if="characterAI">
-    <header>
-      <h1>
-        <span class="pretitle">AI:</span>
-        {{ characterAI.AIName }}
-      </h1>
-    </header>
-    <section>
-      <ProvideMonsterContext :commitId="commitId" :objectId="objectId">
+  <LoadingArea :loading="loading">
+    <template v-if="characterAI">
+      <header>
+        <h1>
+          <span class="pretitle">AI:</span>
+          {{ characterAI.AIName }}
+        </h1>
+      </header>
+      <section>
+        <ProvideMonsterContext :commitId="commitId" :objectId="objectId">
 
-        <h2>Variables</h2>
-        <div>
-          <div v-if="monster" v-for="variable in monster.CustomValues">
-            {{ variable.Property }} = {{ variable.Value }}
+          <h2>Variables</h2>
+          <div>
+            <div v-if="monster" v-for="variable in monster.CustomValues">
+              {{ variable.Property }} = {{ variable.Value }}
+            </div>
+            <div v-if="character" v-for="name, value in character.CustomValues">
+              {{ value }} = {{ name }}
+            </div>
+            <div v-for="variable in characterAI.VariableList">
+              {{ variable.Name }} = {{ variable.Value }}
+            </div>
           </div>
-          <div v-if="character" v-for="name, value in character.CustomValues">
-            {{ value }} = {{ name }}
+        
+          <h2>Decisions</h2>
+          <div v-for="decision in characterAI.DecisionList">
+            <AnyTask :node="decision" />
           </div>
-          <div v-for="variable in characterAI.VariableList">
-            {{ variable.Name }} = {{ variable.Value }}
-          </div>
-        </div>
-      
-        <h2>Decisions</h2>
-        <div v-for="decision in characterAI.DecisionList">
-          <AnyTask :node="decision" />
-        </div>
 
-        <template v-if="skillSequence.length > 0">
-          <h2>Skill Sequence</h2>
-          <ul>
-            <li v-for="skill in skillSequence">
-              {{ skill.SkillTriggerKey }}
-              <span class="minor">{{ skill.SkillName.Text }}</span>
-            </li>
-          </ul>
-        </template>
+          <template v-if="skillSequence.length > 0">
+            <h2>Skill Sequence</h2>
+            <ul>
+              <li v-for="skill in skillSequence">
+                {{ skill.SkillTriggerKey }}
+                <span class="minor">{{ skill.SkillName.Text }}</span>
+              </li>
+            </ul>
+          </template>
 
-      </ProvideMonsterContext>
-    </section>
-  </template>
+        </ProvideMonsterContext>
+      </section>
+    </template>
+  </LoadingArea>
 </template>

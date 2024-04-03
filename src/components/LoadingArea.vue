@@ -1,6 +1,5 @@
 <script setup lang="ts">
-import LoadingNav from './LoadingNav.vue';
-
+  import LoadingNav from './LoadingNav.vue';
   defineProps<{loading:boolean}>()
 </script>
 
