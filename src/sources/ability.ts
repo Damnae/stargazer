@@ -474,9 +474,9 @@ const contextTypeToPaths:{[key:string]:ContextPathEntry} =
     ],
     Modifiers: 
     [
-      'Config/ConfigAbility/GlobalModifier_Level.json',
-      'Config/ConfigAbility/GlobalModifier_WhiteBox_Level.json',
-      'Config/ConfigAbility/GlobalModifier_WhiteBox_LevelRogueV2.json',
+      'Config/ConfigGlobalModifier/GlobalModifier_Level.json',
+      'Config/ConfigGlobalModifier/GlobalModifier_WhiteBox_Level.json',
+      'Config/ConfigGlobalModifier/GlobalModifier_WhiteBox_LevelRogueV2.json',
     ],
     TaskListTemplates: [],
   },

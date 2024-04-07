@@ -95,21 +95,21 @@ async function fetchJson(request:string, commit:string, useApi:boolean)
         const url = `${apiBase}${request}`
         return fetch(url, { headers: getHeaders(), cache: 'force-cache' })
             .then(processResponse)
-            .catch(error => console.log(`fileDB error: ${error}`))
+            .catch(error => console.warn(`fileDB error: ${error} for ${request} (api)`))
     }
     else if (settings.token.length > 0)
     {
         const url = `${apiBase}contents/${request}?ref=${commit}`
         return fetch(url, { headers: getHeaders('application/vnd.github.raw'), })
             .then(processResponse)
-            .catch(error => console.log(`fileDB error: ${error}`))
+            .catch(error => console.warn(`fileDB error: ${error} for ${request} (file+token)`))
     }
     else
     {
         const url = commit ? `${jsonBase}${commit}/${request}` : `${jsonBase}${commit}/${request}`
         return fetch(url, { headers: getHeaders(), })
             .then(processResponse)
-            .catch(error => console.log(`fileDB error: ${error}`))
+            .catch(error => console.warn(`fileDB error: ${error} for ${request} (file)`))
     }
 }
 
