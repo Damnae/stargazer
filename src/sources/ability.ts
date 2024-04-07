@@ -160,6 +160,7 @@ export interface TaskListTemplateConfig
 
 export interface TaskContext
 {
+  Type:TaskContextType
   Abilities: 
   {
     [key:string]: Ability
@@ -531,6 +532,7 @@ export async function getTaskContext(commitId:string, type:TaskContextType) : Pr
     {
       const context:TaskContext = 
       {
+        Type:type,
         Abilities: {},
         Modifiers: {},
         TaskListTemplates: {},
@@ -542,7 +544,7 @@ export async function getTaskContext(commitId:string, type:TaskContextType) : Pr
           mergeAbilityConfig(context, await getAbilities(commitId, path) as AbilityConfig)
         else
         {
-          const tree = await retrieveTree(path, commitId)
+          const tree = await retrieveTree(path, commitId, false)
           for (const treePath of tree.map(t => t.path))
             if (pathIsDataJson(treePath))
               mergeAbilityConfig(context, await getAbilities(commitId, `${path}/${treePath}`) as AbilityConfig)
@@ -553,7 +555,7 @@ export async function getTaskContext(commitId:string, type:TaskContextType) : Pr
           mergeModifierConfig(context, await getModifiers(commitId, path) as ModifierConfig)
         else
         {
-          const tree = await retrieveTree(path, commitId)
+          const tree = await retrieveTree(path, commitId, false)
           for (const treePath of tree.map(t => t.path))
             if (pathIsDataJson(treePath))
               mergeModifierConfig(context, await getModifiers(commitId, `${path}/${treePath}`) as ModifierConfig)
@@ -564,7 +566,7 @@ export async function getTaskContext(commitId:string, type:TaskContextType) : Pr
           mergeTaskListTemplateConfig(context, await getTaskListTemplates(commitId, path) as TaskListTemplateConfig)
         else
         {
-          const tree = await retrieveTree(path, commitId)
+          const tree = await retrieveTree(path, commitId, false)
           for (const treePath of tree.map(t => t.path))
             if (pathIsDataJson(treePath))
               mergeTaskListTemplateConfig(context, await getTaskListTemplates(commitId, `${path}/${treePath}`) as TaskListTemplateConfig)
@@ -579,7 +581,9 @@ export async function getTaskContext(commitId:string, type:TaskContextType) : Pr
 
 function pathIsDataJson(path:string) : boolean
 {
-  return !path.endsWith('.layout.json') && path.endsWith('.json')
+  return path.endsWith('.json')
+    && !path.endsWith('.layout.json') 
+    && !path.includes('/Camera/')
 }
 
 export function findTaskTemplate(templateName:string, expressionContext:ExpressionContext, taskContext:TaskContext) : TaskListTemplate | undefined

@@ -75,9 +75,11 @@ export interface DataSourceTreeItem
     url:string
 }
 
-export async function retrieveTree(path:string, commit:string, recursive?:boolean) : Promise<DataSourceTreeItem[]>
+export async function retrieveTree(path:string, commit:string, recursive:boolean) : Promise<DataSourceTreeItem[]>
 {
-    const request = `git/trees/${commit}:${path}?recursive=${recursive ?? false}`
+    let request = `git/trees/${commit}:${path}`
+    if (recursive) request += '?recursive=true'
+
     const response = await retrieveJson(request, commit, true)
     const tree = response?.tree as DataSourceTreeItem[]
     if (!tree)
