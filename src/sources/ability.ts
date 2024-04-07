@@ -571,7 +571,7 @@ export async function getTaskContext(commitId:string, type:TaskContextType) : Pr
         }
   
       result = container[type] = context
-      console.log(`cached ${type} ability context for ${commitId}`)
+      console.log(`cached ${type} ability context for ${commitId} (${Object.keys(context.Abilities).length}/${Object.keys(context.Modifiers).length}/${Object.keys(context.TaskListTemplates).length})`)
     }
     return result
   })
