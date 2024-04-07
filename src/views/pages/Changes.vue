@@ -2,6 +2,7 @@
   import { ref, provide, } from 'vue';
   import { TaskContextType } from '@/sources/ability';
   import NavTabs from '@/components/NavTabs.vue';
+  import Files from './changes/Files.vue';
   import Abilities from './changes/Abilities.vue';
   import Modifiers from './changes/Modifiers.vue';
   import Statuses from './changes/Statuses.vue';
@@ -9,9 +10,9 @@
 
   const props = defineProps<{fromCommitId:string, commitId:string}>()
 
-  const tabs:string[] = ['Abilities', 'Modifiers', 'Statuses', 'Battle Events']
+  const tabs:string[] = ['Files', 'Abilities', 'Modifiers', 'Statuses', 'Battle Events']
   const tabsWithContext = ['Abilities', 'Modifiers']
-  const selectedTab = ref('Abilities')
+  const selectedTab = ref('Files')
 
   const contextTypes:{[key:string]: TaskContextType} = 
   {
@@ -42,12 +43,16 @@
       <NavTabs :tabs="Object.keys(contextTypes)" v-model:selected="selectedContextType" v-if="tabsWithContext.includes(selectedTab)" />
     </div>
     <section>
+      <Files v-if="selectedTab == 'Files'" 
+        :fromCommitId="fromCommitId" :commitId="commitId" />
+        
       <Abilities v-if="selectedTab == 'Abilities'" 
         :fromCommitId="fromCommitId" :commitId="commitId"
         :contextType="contextTypes[selectedContextType]" />
       <Modifiers v-if="selectedTab == 'Modifiers'" 
         :fromCommitId="fromCommitId" :commitId="commitId"
         :contextType="contextTypes[selectedContextType]"  />
+
       <Statuses v-if="selectedTab == 'Statuses'" 
         :fromCommitId="fromCommitId" :commitId="commitId" />
       <BattleEvents v-if="selectedTab == 'Battle Events'" 

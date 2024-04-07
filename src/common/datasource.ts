@@ -65,15 +65,25 @@ export async function retrieveJson(request:string, commit:string, useApi:boolean
     })
 }
 
-export async function retrieveTree(path:string, commit:string) : Promise<any>
+export interface DataSourceTreeItem
 {
-    const request = `git/trees/${commit}:${path}`
+    path:string
+    mode:string
+    type:string
+    size:number
+    sha:string
+    url:string
+}
+
+export async function retrieveTree(path:string, commit:string, recursive?:boolean) : Promise<DataSourceTreeItem[]>
+{
+    const request = `git/trees/${commit}:${path}?recursive=${recursive ?? false}`
     const response = await retrieveJson(request, commit, true)
-    const tree = response?.tree
+    const tree = response?.tree as DataSourceTreeItem[]
     if (!tree)
     {
         console.log('no tree response for ' + request)
-        return
+        return []
     }
     return tree
 }
@@ -168,6 +178,49 @@ export async function getLatestCommitId()
 {
     const commits = await retrieveCommits()
     return commits[0]?.sha
+}
+
+export interface DataSourceCompareFile
+{
+    Path:string
+}
+
+export interface DataSourceCompare
+{
+    AddedFiles: DataSourceCompareFile[]
+    RemovedFiles: DataSourceCompareFile[]
+}
+
+export async function retrieveCompare(fromCommit:string, toCommit:string) : Promise<DataSourceCompare>
+{
+    const compare:DataSourceCompare = 
+    {
+        AddedFiles: [],
+        RemovedFiles: [],
+    }
+    await compareProcessTree(compare, fromCommit, toCommit, 'Config/ConfigAbility')
+    await compareProcessTree(compare, fromCommit, toCommit, 'Config/ConfigGlobalModifier')
+    await compareProcessTree(compare, fromCommit, toCommit, 'Config/ConfigGlobalTaskListTemplate')
+    await compareProcessTree(compare, fromCommit, toCommit, 'ExcelOutput')
+    return compare
+}
+
+async function compareProcessTree(compare:DataSourceCompare, fromCommit:string, toCommit:string, path:string) : Promise<undefined>
+{
+    const from = await retrieveTree(path, fromCommit, true) as DataSourceTreeItem[]
+    const to = await retrieveTree(path, toCommit, true) as DataSourceTreeItem[]
+
+    const fileFilter = (f:DataSourceTreeItem) => 
+        f.type == 'blob' && 
+        f.path.endsWith('.json') && 
+        !f.path.endsWith('.layout.json') && 
+        !f.path.includes('/Camera/')
+    const filesFrom = from.filter(fileFilter)
+    const filesTo = to.filter(fileFilter)
+    
+    const convert = (f:DataSourceTreeItem) => <DataSourceCompareFile>{ Path: `${path}/${f.path}` }
+    compare.AddedFiles = compare.AddedFiles.concat(filesTo.filter(f => !filesFrom.some(f2 => f.path == f2.path)).map(convert))
+    compare.RemovedFiles = compare.RemovedFiles.concat(filesFrom.filter(f => !filesTo.some(f2 => f.path == f2.path)).map(convert))
 }
 
 function getHeaders(accept?:string)

@@ -543,10 +543,9 @@ export async function getTaskContext(commitId:string, type:TaskContextType) : Pr
         else
         {
           const tree = await retrieveTree(path, commitId)
-          if (tree)
-            for (const treePath of tree.map((t:any) => t.path))
-              if (pathIsDataJson(treePath))
-                mergeAbilityConfig(context, await getAbilities(commitId, `${path}/${treePath}`) as AbilityConfig)
+          for (const treePath of tree.map(t => t.path))
+            if (pathIsDataJson(treePath))
+              mergeAbilityConfig(context, await getAbilities(commitId, `${path}/${treePath}`) as AbilityConfig)
         }
         
       for (const path of paths.Modifiers)
@@ -555,10 +554,9 @@ export async function getTaskContext(commitId:string, type:TaskContextType) : Pr
         else
         {
           const tree = await retrieveTree(path, commitId)
-          if (tree)
-            for (const treePath of tree.map((t:any) => t.path))
-              if (pathIsDataJson(treePath))
-                mergeModifierConfig(context, await getModifiers(commitId, `${path}/${treePath}`) as ModifierConfig)
+          for (const treePath of tree.map(t => t.path))
+            if (pathIsDataJson(treePath))
+              mergeModifierConfig(context, await getModifiers(commitId, `${path}/${treePath}`) as ModifierConfig)
         }
 
       for (const path of paths.TaskListTemplates)
@@ -567,10 +565,9 @@ export async function getTaskContext(commitId:string, type:TaskContextType) : Pr
         else
         {
           const tree = await retrieveTree(path, commitId)
-          if (tree)
-            for (const treePath of tree.map((t:any) => t.path))
-              if (pathIsDataJson(treePath))
-                mergeTaskListTemplateConfig(context, await getTaskListTemplates(commitId, `${path}/${treePath}`) as TaskListTemplateConfig)
+          for (const treePath of tree.map(t => t.path))
+            if (pathIsDataJson(treePath))
+              mergeTaskListTemplateConfig(context, await getTaskListTemplates(commitId, `${path}/${treePath}`) as TaskListTemplateConfig)
         }
   
       result = container[type] = context
