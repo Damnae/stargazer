@@ -36,6 +36,7 @@ export async function getStatuses(commitId:string) : Promise<StatusConfig>
             const statuses = {
                 ...await retrieveJson('ExcelOutput/StatusConfig.json', commitId, false) as StatusConfig,
                 ...await retrieveJson('ExcelOutput/AvatarStatusConfig.json', commitId, false) as StatusConfig,
+                ...await retrieveJson('ExcelOutput/MonsterStatusConfig.json', commitId, false) as StatusConfig,
             }
             for (const key in statuses)
             {
