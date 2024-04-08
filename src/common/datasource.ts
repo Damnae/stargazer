@@ -187,6 +187,14 @@ export async function getLatestCommitId()
     return commits[0]?.sha
 }
 
+export async function getCommitVersion(commitId:string) : Promise<string>
+{
+    const commits = await retrieveCommits()
+    const entry = commits.find(c => c.sha == commitId)
+    const message = entry?.commit.message ?? 'missing'
+    return message.replace(/\s+/, ' ').split(' ')[0] ?? message
+}
+
 export interface DataSourceCompareFile
 {
     Path:string

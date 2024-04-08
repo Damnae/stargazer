@@ -22,6 +22,25 @@ body
   min-height: 100vh;
 }
 
+header
+{
+  display:flex;
+  align-items:center;
+  justify-content:end;
+  gap:.5rem;
+}
+header .header-info
+{
+  text-align:end;
+  order:-1;
+  color:#484848;
+  margin-bottom:.5rem;
+}
+header .header-info em
+{
+  color:grey;
+}
+
 h1
 {
   font-weight: 100;

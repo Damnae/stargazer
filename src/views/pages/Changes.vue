@@ -1,5 +1,6 @@
 <script setup lang="ts">
   import { ref, provide, } from 'vue';
+  import { getCommitVersion } from '@/common/datasource';
   import { TaskContextType } from '@/sources/ability';
   import NavTabs from '@/components/NavTabs.vue';
   import Files from './changes/Files.vue';
@@ -9,6 +10,8 @@
   import BattleEvents from './changes/BattleEvents.vue';
 
   const props = defineProps<{fromCommitId:string, commitId:string}>()
+  const fromName = ref(await getCommitVersion(props.fromCommitId))
+  const toName = ref(await getCommitVersion(props.commitId))
 
   const tabs:string[] = ['Files', 'Abilities', 'Modifiers', 'Statuses', 'Battle Events']
   const tabsWithContext = ['Abilities', 'Modifiers']
@@ -37,6 +40,14 @@
   <main class="panel">
     <header>
       <h1>Changes</h1>
+      <div class="header-info">
+        <div>
+          Comparing <em>{{ toName }}</em>&nbsp;<span class="code" :title="commitId">{{ commitId.slice(0, 6) }}</span>
+        </div>
+        <div>
+          since <em>{{ fromName }}</em>&nbsp;<span class="code" :title="fromCommitId">{{ fromCommitId.slice(0, 6) }}</span>
+        </div>
+      </div>
     </header>
     <div class="filters">
       <NavTabs :tabs="tabs" v-model:selected="selectedTab" />
@@ -62,4 +73,9 @@
 </template>
 
 <style scoped>
+  .code 
+  {
+    font-family: monospace;
+    font-size: 1rem;
+  }
 </style>
