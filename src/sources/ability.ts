@@ -49,6 +49,9 @@ export interface TaskListTemplate
 {
   Name:string
   TaskList:GamecoreTask[]
+
+  SourceFile:string
+  SourceGroup:TaskContextSource
 }
 
 export interface Modifier
@@ -112,6 +115,9 @@ export interface Modifier
     UIPosition:string
     ModifierUIPriority:string
   }
+
+  SourceFile:string
+  SourceGroup:TaskContextSource
 }
 
 export interface Ability
@@ -132,6 +138,8 @@ export interface Ability
   }
   TaskListTemplate?:TaskListTemplate[]
   
+  SourceFile:string
+  SourceGroup:TaskContextSource
   SearchKeywords: string[]
 }
 
@@ -160,7 +168,6 @@ export interface TaskListTemplateConfig
 
 export interface TaskContext
 {
-  Type:TaskContextType
   Abilities: 
   {
     [key:string]: Ability
@@ -175,11 +182,21 @@ export interface TaskContext
   }
 }
 
+export enum TaskContextSource
+{
+  Common = 'Common',
+  TaskTemplate = 'TaskTemplate',
+  Avatar = 'Avatar',
+  Monster = 'Monster',
+  Equipment = 'Equipment',
+  RelicSet = 'RelicSet',
+  BattleEvent = 'BattleEvent',
+  Level = 'Level',
+}
+
 export enum TaskContextType
 {
   Empty = 'Empty',
-
-  // Minimal context to display data from these contexts
   Avatar = 'Avatar',
   Monster = 'Monster',
   Equipment = 'Equipment',
@@ -188,11 +205,8 @@ export enum TaskContextType
   Level = 'Level',
   Rogue = 'Rogue',
 
-  // All task templates ONLY
   TaskTemplate = 'TaskTemplate',
 
-  // Used for changes page and combined into All
-  // These should NOT overlap
   DiffCommon = 'DiffCommon',
   DiffAvatar = 'DiffAvatar',
   DiffMonster = 'DiffMonster',
@@ -204,6 +218,44 @@ export enum TaskContextType
   All = 'All', 
 }
 
+const contextTypeToSources:{[type in TaskContextType]:TaskContextSource[]} =
+{
+  Empty: [],
+
+  // Minimal context to display data from these contexts
+  Avatar: [ TaskContextSource.Common, TaskContextSource.TaskTemplate, TaskContextSource.Avatar, ],
+  Monster: [ TaskContextSource.Common, TaskContextSource.TaskTemplate, TaskContextSource.Monster, ],
+  Equipment: [ TaskContextSource.Common, TaskContextSource.TaskTemplate, TaskContextSource.Equipment, ],
+  RelicSet: [ TaskContextSource.Common, TaskContextSource.TaskTemplate, TaskContextSource.RelicSet, ],
+  BattleEvent: [ TaskContextSource.Common, TaskContextSource.TaskTemplate, TaskContextSource.BattleEvent, ],
+  Level: [ TaskContextSource.Common, TaskContextSource.TaskTemplate, TaskContextSource.Level, ],
+  Rogue: [ TaskContextSource.Common, TaskContextSource.TaskTemplate, TaskContextSource.Level, ],
+  
+  // All task templates ONLY
+  TaskTemplate: [ TaskContextSource.TaskTemplate, ],
+    
+  // Used for changes page
+  DiffCommon: [ TaskContextSource.Common, ],
+  DiffAvatar: [ TaskContextSource.Avatar, ],
+  DiffMonster: [ TaskContextSource.Monster, ],
+  DiffEquipment: [ TaskContextSource.Equipment, ],
+  DiffRelicSet: [ TaskContextSource.RelicSet, ],
+  DiffBattleEvent: [ TaskContextSource.BattleEvent, ],
+  DiffLevel: [ TaskContextSource.Level, ],
+  
+  // All the sources
+  All: 
+  [ 
+    TaskContextSource.Common, 
+    TaskContextSource.TaskTemplate, 
+    TaskContextSource.Avatar, 
+    TaskContextSource.Equipment, 
+    TaskContextSource.RelicSet, 
+    TaskContextSource.BattleEvent, 
+    TaskContextSource.Level, 
+  ],
+}
+
 interface ContextPathEntry
 {
   Abilities: string[]
@@ -211,172 +263,10 @@ interface ContextPathEntry
   TaskListTemplates: string[]
 }
 
-const contextTypeToPaths:{[key:string]:ContextPathEntry} =
+// These should NOT overlap
+const contextSourceToPaths:{[key in TaskContextSource]:ContextPathEntry} =
 {
-  Empty: 
-  {
-    Abilities: [],
-    Modifiers: [],
-    TaskListTemplates: [],
-  },
-  Avatar: 
-  {
-    Abilities:
-    [
-      'Config/ConfigAbility/Common_Additional_Ability.json',
-      'Config/ConfigAbility/Avatar',
-      //'Config/ConfigAbility/Avatar/Camera',
-      //'Config/ConfigAbility/Avatar/Assistant',
-      //'Config/ConfigAbility/Avatar/Assistant/Camera',
-    ],
-    Modifiers:
-    [
-      //'Config/ConfigGlobalModifier/GlobalModifier.json',
-      //'Config/ConfigGlobalModifier/GlobalModifier_System.json',
-      'Config/ConfigGlobalModifier/GlobalModifier_Common_Property.json',
-      'Config/ConfigGlobalModifier/GlobalModifier_Common_Specific.json',
-      'Config/ConfigGlobalModifier/GlobalModifier_Avatar.json',
-      //'Config/ConfigGlobalModifier/GlobalModifier_Avatar_AssistantTrigger.json',
-    ],
-    TaskListTemplates:
-    [
-      'Config/ConfigGlobalTaskListTemplate/GlobalTaskListTemplate.json',
-    ],
-  },
-  Monster: 
-  {
-    Abilities:
-    [
-      'Config/ConfigAbility/Common_Additional_Ability.json',
-      'Config/ConfigAbility/Monster',
-      //'Config/ConfigAbility/Monster/Camera',
-    ],
-    Modifiers:
-    [
-      //'Config/ConfigGlobalModifier/GlobalModifier.json',
-      //'Config/ConfigGlobalModifier/GlobalModifier_System.json',
-      'Config/ConfigGlobalModifier/GlobalModifier_Common_Property.json',
-      'Config/ConfigGlobalModifier/GlobalModifier_Common_Specific.json',
-      'Config/ConfigGlobalModifier/GlobalModifier_Monster.json',
-    ],
-    TaskListTemplates:
-    [
-      'Config/ConfigGlobalTaskListTemplate/GlobalTaskListTemplate.json',
-    ],
-  },
-  Equipment: 
-  {
-    Abilities:
-    [
-      'Config/ConfigAbility/Common_Additional_Ability.json',
-      'Config/ConfigAbility/EquipmemtAbility.json',
-    ],
-    Modifiers:
-    [
-      //'Config/ConfigGlobalModifier/GlobalModifier.json',
-      //'Config/ConfigGlobalModifier/GlobalModifier_System.json',
-      'Config/ConfigGlobalModifier/GlobalModifier_Common_Property.json',
-      'Config/ConfigGlobalModifier/GlobalModifier_Common_Specific.json',
-    ],
-    TaskListTemplates:
-    [
-      'Config/ConfigGlobalTaskListTemplate/GlobalTaskListTemplate.json',
-    ],
-  },
-  RelicSet: 
-  {
-    Abilities:
-    [
-      'Config/ConfigAbility/Common_Additional_Ability.json',
-      'Config/ConfigAbility/RelicAbility.json',
-    ],
-    Modifiers:
-    [
-      //'Config/ConfigGlobalModifier/GlobalModifier.json',
-      //'Config/ConfigGlobalModifier/GlobalModifier_System.json',
-      'Config/ConfigGlobalModifier/GlobalModifier_Common_Property.json',
-      'Config/ConfigGlobalModifier/GlobalModifier_Common_Specific.json',
-    ],
-    TaskListTemplates:
-    [
-      'Config/ConfigGlobalTaskListTemplate/GlobalTaskListTemplate.json',
-    ],
-  },
-  BattleEvent: 
-  {
-    Abilities:
-    [
-      'Config/ConfigAbility/Common_Additional_Ability.json',
-      'Config/ConfigAbility/BattleEventAbility.json',
-      'Config/ConfigAbility/BattleEventAbility_2.json',
-      'Config/ConfigAbility/BattleEventAbility_SilverWolfEvent.json',
-      'Config/ConfigAbility/StageBattleEventAbility.json',
-      'Config/ConfigAbility/BattleEvent',
-      //'Config/ConfigAbility/BattleEvent/Camera',
-      'Config/ConfigAbility/Avatar',
-      'Config/ConfigAbility/Monster',
-    ],
-    Modifiers:
-    [
-      //'Config/ConfigGlobalModifier/GlobalModifier.json',
-      //'Config/ConfigGlobalModifier/GlobalModifier_System.json',
-      'Config/ConfigGlobalModifier/GlobalModifier_Common_Property.json',
-      'Config/ConfigGlobalModifier/GlobalModifier_Common_Specific.json',
-    ],
-    TaskListTemplates:
-    [
-      'Config/ConfigGlobalTaskListTemplate/GlobalTaskListTemplate.json',
-    ],
-  },
-  Level: 
-  {
-    Abilities:
-    [
-      'Config/ConfigAbility/Common_Additional_Ability.json',
-      'Config/ConfigAbility/Level',
-    ],
-    Modifiers:
-    [
-      //'Config/ConfigGlobalModifier/GlobalModifier.json',
-      //'Config/ConfigGlobalModifier/GlobalModifier_System.json',
-      'Config/ConfigGlobalModifier/GlobalModifier_Common_Property.json',
-      'Config/ConfigGlobalModifier/GlobalModifier_Common_Specific.json',
-      'Config/ConfigGlobalModifier/GlobalModifier_Level.json',
-    ],
-    TaskListTemplates:
-    [
-      'Config/ConfigGlobalTaskListTemplate/GlobalTaskListTemplate.json',
-    ],
-  },
-  Rogue: 
-  {
-    Abilities:
-    [
-      'Config/ConfigAbility/Common_Additional_Ability.json',
-      'Config/ConfigAbility/Level',
-    ],
-    Modifiers:
-    [
-      //'Config/ConfigGlobalModifier/GlobalModifier.json',
-      //'Config/ConfigGlobalModifier/GlobalModifier_System.json',
-      'Config/ConfigGlobalModifier/GlobalModifier_Common_Property.json',
-      'Config/ConfigGlobalModifier/GlobalModifier_Common_Specific.json',
-    ],
-    TaskListTemplates:
-    [
-      'Config/ConfigGlobalTaskListTemplate/GlobalTaskListTemplate.json',
-    ],
-  },
-  TaskTemplate: 
-  {
-    Abilities: [],
-    Modifiers: [],
-    TaskListTemplates:
-    [
-      'Config/ConfigGlobalTaskListTemplate',
-    ],
-  },
-  DiffCommon:
+  Common:
   {
     Abilities: 
     [
@@ -399,7 +289,16 @@ const contextTypeToPaths:{[key:string]:ContextPathEntry} =
       'Config/ConfigGlobalTaskListTemplate/GlobalTaskListTemplate_WhiteBox.json',
     ],
   },
-  DiffAvatar:
+  TaskTemplate: 
+  {
+    Abilities: [],
+    Modifiers: [],
+    TaskListTemplates:
+    [
+      'Config/ConfigGlobalTaskListTemplate',
+    ],
+  },
+  Avatar:
   {
     Abilities:
     [
@@ -415,7 +314,7 @@ const contextTypeToPaths:{[key:string]:ContextPathEntry} =
     ],
     TaskListTemplates: [],
   },
-  DiffMonster:
+  Monster:
   {
     Abilities: 
     [
@@ -429,7 +328,7 @@ const contextTypeToPaths:{[key:string]:ContextPathEntry} =
     ],
     TaskListTemplates: [],
   },
-  DiffEquipment:
+  Equipment:
   {
     Abilities: 
     [
@@ -438,7 +337,7 @@ const contextTypeToPaths:{[key:string]:ContextPathEntry} =
     Modifiers: [],
     TaskListTemplates: [],
   },
-  DiffRelicSet:
+  RelicSet:
   {
     Abilities:
     [
@@ -447,7 +346,7 @@ const contextTypeToPaths:{[key:string]:ContextPathEntry} =
     Modifiers: [],
     TaskListTemplates: [],
   },
-  DiffBattleEvent:
+  BattleEvent:
   {
     Abilities: 
     [
@@ -466,7 +365,7 @@ const contextTypeToPaths:{[key:string]:ContextPathEntry} =
     Modifiers: [],
     TaskListTemplates: [],
   },
-  DiffLevel:
+  Level:
   {
     Abilities: 
     [
@@ -481,39 +380,80 @@ const contextTypeToPaths:{[key:string]:ContextPathEntry} =
     ],
     TaskListTemplates: [],
   },
-  All: 
-  {
-    Abilities:[],
-    Modifiers:[],
-    TaskListTemplates:[],
-  },
 }
 
 const [settings, _sessionSettings] = useSettings()
 if (!settings.includeWhiteBox)
 {
-  for (const contextPathKey in contextTypeToPaths)
+  for (const contextPathKey in contextSourceToPaths)
   {
-    const contextPaths = contextTypeToPaths[contextPathKey]
+    const contextPaths = contextSourceToPaths[contextPathKey as TaskContextSource]
     contextPaths.Abilities = contextPaths.Abilities.filter(p => !p.includes('WhiteBox'))
     contextPaths.Modifiers = contextPaths.Modifiers.filter(p => !p.includes('WhiteBox'))
     contextPaths.TaskListTemplates = contextPaths.TaskListTemplates.filter(p => !p.includes('WhiteBox'))
   }
 }
 
-// Include all Diff* in All
+const taskContextSourceCache:{[commitId: string]: {[type:string]: TaskContext}} = {}
+const taskContextSourceMutex = new MutexGroup()
+async function getTaskContextFromSource(commitId:string, source:TaskContextSource) : Promise<TaskContext>
 {
-  const allContextPath = contextTypeToPaths[TaskContextType.All]
-  for (const contextPathKey in contextTypeToPaths)
+  return taskContextSourceMutex.runExclusive(source, async () => 
   {
-    if (!contextPathKey.includes('Diff'))
-      continue
+    let result 
+    let container = taskContextSourceCache[commitId]
+    if (container === undefined)
+      container = taskContextSourceCache[commitId] = {}
+    else result = container[source]
+  
+    if (result == undefined)
+    {
+      const context:TaskContext = 
+      {
+        Abilities: {},
+        Modifiers: {},
+        TaskListTemplates: {},
+      }
+      const paths = contextSourceToPaths[source]
 
-    const contextPaths = contextTypeToPaths[contextPathKey]
-    allContextPath.Abilities = allContextPath.Abilities.concat(contextPaths.Abilities)
-    allContextPath.Modifiers = allContextPath.Modifiers.concat(contextPaths.Modifiers)
-    allContextPath.TaskListTemplates = allContextPath.TaskListTemplates.concat(contextPaths.TaskListTemplates)
-  }
+      for (const path of paths.Abilities)
+        if (path.endsWith('.json'))
+          mergeAbilityConfig(context, await getAbilities(commitId, path, source) as AbilityConfig)
+        else
+        {
+          const tree = await retrieveTree(path, commitId, false)
+          for (const treePath of tree.map(t => t.path))
+            if (pathIsDataJson(treePath))
+              mergeAbilityConfig(context, await getAbilities(commitId, `${path}/${treePath}`, source) as AbilityConfig)
+        }
+        
+      for (const path of paths.Modifiers)
+        if (path.endsWith('.json'))
+          mergeModifierConfig(context, await getModifiers(commitId, path, source) as ModifierConfig)
+        else
+        {
+          const tree = await retrieveTree(path, commitId, false)
+          for (const treePath of tree.map(t => t.path))
+            if (pathIsDataJson(treePath))
+              mergeModifierConfig(context, await getModifiers(commitId, `${path}/${treePath}`, source) as ModifierConfig)
+        }
+
+      for (const path of paths.TaskListTemplates)
+        if (path.endsWith('.json'))
+          mergeTaskListTemplateConfig(context, await getTaskListTemplates(commitId, path, source) as TaskListTemplateConfig)
+        else
+        {
+          const tree = await retrieveTree(path, commitId, false)
+          for (const treePath of tree.map(t => t.path))
+            if (pathIsDataJson(treePath))
+              mergeTaskListTemplateConfig(context, await getTaskListTemplates(commitId, `${path}/${treePath}`, source) as TaskListTemplateConfig)
+        }
+  
+      result = container[source] = context
+      console.log(`cached task context source ${source} for ${commitId} (${Object.keys(context.Abilities).length}/${Object.keys(context.Modifiers).length}/${Object.keys(context.TaskListTemplates).length})`)
+    }
+    return result
+  })
 }
 
 const taskContextCache:{[commitId: string]: {[type: string]: TaskContext}} = {}
@@ -532,48 +472,20 @@ export async function getTaskContext(commitId:string, type:TaskContextType) : Pr
     {
       const context:TaskContext = 
       {
-        Type:type,
         Abilities: {},
         Modifiers: {},
         TaskListTemplates: {},
       }
-      const paths = contextTypeToPaths[type]
 
-      for (const path of paths.Abilities)
-        if (path.endsWith('.json'))
-          mergeAbilityConfig(context, await getAbilities(commitId, path) as AbilityConfig)
-        else
-        {
-          const tree = await retrieveTree(path, commitId, false)
-          for (const treePath of tree.map(t => t.path))
-            if (pathIsDataJson(treePath))
-              mergeAbilityConfig(context, await getAbilities(commitId, `${path}/${treePath}`) as AbilityConfig)
-        }
-        
-      for (const path of paths.Modifiers)
-        if (path.endsWith('.json'))
-          mergeModifierConfig(context, await getModifiers(commitId, path) as ModifierConfig)
-        else
-        {
-          const tree = await retrieveTree(path, commitId, false)
-          for (const treePath of tree.map(t => t.path))
-            if (pathIsDataJson(treePath))
-              mergeModifierConfig(context, await getModifiers(commitId, `${path}/${treePath}`) as ModifierConfig)
-        }
-
-      for (const path of paths.TaskListTemplates)
-        if (path.endsWith('.json'))
-          mergeTaskListTemplateConfig(context, await getTaskListTemplates(commitId, path) as TaskListTemplateConfig)
-        else
-        {
-          const tree = await retrieveTree(path, commitId, false)
-          for (const treePath of tree.map(t => t.path))
-            if (pathIsDataJson(treePath))
-              mergeTaskListTemplateConfig(context, await getTaskListTemplates(commitId, `${path}/${treePath}`) as TaskListTemplateConfig)
-        }
+      const sources = contextTypeToSources[type]
+      for (const source of sources)
+      {
+        const sourceContext = await getTaskContextFromSource(commitId, source)
+        mergeTaskContext(context, sourceContext)
+      }
   
       result = container[type] = context
-      console.log(`cached ${type} ability context for ${commitId} (${Object.keys(context.Abilities).length}/${Object.keys(context.Modifiers).length}/${Object.keys(context.TaskListTemplates).length})`)
+      console.log(`cached task context ${type} for ${commitId} (${Object.keys(context.Abilities).length}/${Object.keys(context.Modifiers).length}/${Object.keys(context.TaskListTemplates).length})`)
     }
     return result
   })
@@ -607,12 +519,14 @@ export function findTaskTemplate(templateName:string, expressionContext:Expressi
   return template
 }
 
-async function getAbilities(commitId:string, path:string) : Promise<AbilityConfig>
+async function getAbilities(commitId:string, path:string, fromSource:TaskContextSource) : Promise<AbilityConfig>
 {
   const result = await retrieveJson(path, commitId, false) as AbilityConfig
   if (result?.AbilityList)
     for (const ability of result.AbilityList)
     {
+      ability.SourceFile = path
+      ability.SourceGroup = fromSource
       ability.SearchKeywords = []
       ability.SearchKeywords.push(ability.Name.toLowerCase())
 
@@ -620,98 +534,120 @@ async function getAbilities(commitId:string, path:string) : Promise<AbilityConfi
         for (const [name, modifier] of Object.entries(ability.Modifiers))
         {
           modifier.Name = name
+          modifier.SourceFile = path
+          modifier.SourceGroup = fromSource
           ability.SearchKeywords.push(name.toLowerCase())
         }
     }
   if (result?.GlobalModifiers)
     for (const [name, modifier] of Object.entries(result.GlobalModifiers))
+    {
       modifier.Name = name
+      modifier.SourceFile = path
+      modifier.SourceGroup = fromSource
+    }
 
   return result
 }
 
-async function getModifiers(commitId:string, path:string) : Promise<ModifierConfig>
+async function getModifiers(commitId:string, path:string, fromSource:TaskContextSource) : Promise<ModifierConfig>
 {
   const result = await retrieveJson(path, commitId, false) as ModifierConfig
   if (result?.ModifierMap)
     for (const [name, modifier] of Object.entries(result.ModifierMap))
+    {
       modifier.Name = name
+      modifier.SourceFile = path
+      modifier.SourceGroup = fromSource
+    }
   return result
 }
 
-async function getTaskListTemplates(commitId:string, path:string) : Promise<TaskListTemplateConfig>
+async function getTaskListTemplates(commitId:string, path:string, fromSource:TaskContextSource) : Promise<TaskListTemplateConfig>
 {
   const result = await retrieveJson(path, commitId, false) as TaskListTemplateConfig
+  for (const taskListTemplate of result.TaskListTemplate)
+  {
+    taskListTemplate.SourceFile = path
+    taskListTemplate.SourceGroup = fromSource
+  }
   return result
+}
+
+function mergeTaskContext(into:TaskContext, from:TaskContext)
+{
+  into.Abilities = { ...into.Abilities, ...from.Abilities }
+  into.Modifiers = { ...into.Modifiers, ...from.Modifiers }
+  into.TaskListTemplates = { ...into.TaskListTemplates, ...from.TaskListTemplates }
 }
 
 function mergeAbilityConfig(into:TaskContext, from:AbilityConfig)
 {
-    if (!from)
-      return;
+  if (!from)
+    return;
 
-    if (from.AbilityList !== undefined)
-      for (const ability of from.AbilityList)
-      {
-          let nameIndex = 2
-          const originalName = ability.Name
-          while (ability.Name in into.Abilities)
-              ability.Name = `${originalName}#${nameIndex++}`
+  if (from.AbilityList !== undefined)
+    for (const ability of from.AbilityList)
+    {
+      let nameIndex = 2
+      const originalName = ability.Name
+      while (ability.Name in into.Abilities)
+          ability.Name = `${originalName}#${nameIndex++}`
 
-          into.Abilities[ability.Name] = ability
-      }
+      into.Abilities[ability.Name] = ability
+    }
 
-    if (from.GlobalModifiers !== undefined)
-        for (const modifier of Object.values(from.GlobalModifiers))
-        {
-            let nameIndex = 2
-            const originalName = modifier.Name
-            while (modifier.Name in into.Abilities)
-                modifier.Name = `${originalName}#${nameIndex++}`
+  if (from.GlobalModifiers !== undefined)
+    for (const modifier of Object.values(from.GlobalModifiers))
+    {
+      let nameIndex = 2
+      const originalName = modifier.Name
+      while (modifier.Name in into.Abilities)
+          modifier.Name = `${originalName}#${nameIndex++}`
 
-            into.Modifiers[modifier.Name] = modifier
-        }
+      into.Modifiers[modifier.Name] = modifier
+    }
 
-    if (from.GlobalTemplates !== undefined)
-        for (const taskTemplate of Object.values(from.GlobalTemplates))
-        {
-            let nameIndex = 2
-            const originalName = taskTemplate.Name
-            while (taskTemplate.Name in into.TaskListTemplates)
-              taskTemplate.Name = `${originalName}#${nameIndex++}`
+  if (from.GlobalTemplates !== undefined)
+    for (const taskTemplate of Object.values(from.GlobalTemplates))
+    {
+      let nameIndex = 2
+      const originalName = taskTemplate.Name
+      while (taskTemplate.Name in into.TaskListTemplates)
+        taskTemplate.Name = `${originalName}#${nameIndex++}`
 
-            into.TaskListTemplates[taskTemplate.Name] = taskTemplate
-        }
+      into.TaskListTemplates[taskTemplate.Name] = taskTemplate
+    }
 }
 
 function mergeModifierConfig(into:TaskContext, from:ModifierConfig)
 {
-    if (!from?.ModifierMap)
-      return;
-    
-    for (const modifier of Object.values(from.ModifierMap))
-    {
-        let nameIndex = 2
-        const originalName = modifier.Name
-        while (modifier.Name in into.Abilities)
-            modifier.Name = `${originalName}#${nameIndex++}`
+  if (!from?.ModifierMap)
+    return;
+  
+  for (const modifier of Object.values(from.ModifierMap))
+  {
+    let nameIndex = 2
+    const originalName = modifier.Name
+    while (modifier.Name in into.Abilities)
+        modifier.Name = `${originalName}#${nameIndex++}`
 
-        into.Modifiers[modifier.Name] = modifier
-    }
+    into.Modifiers[modifier.Name] = modifier
+  }
 }
 
 function mergeTaskListTemplateConfig(into:TaskContext, from:TaskListTemplateConfig)
 {
-    if (!from?.TaskListTemplate)
-      return;
-    
-    for (const template of from.TaskListTemplate)
-    {
-        let nameIndex = 2
-        const originalName = template.Name
-        while (template.Name in into.Abilities)
-            template.Name = `${originalName}#${nameIndex++}`
+  if (!from?.TaskListTemplate)
+    return;
+  
+  for (const template of from.TaskListTemplate)
+  {
+    let nameIndex = 2
+    const originalName = template.Name
+    while (template.Name in into.Abilities)
+        template.Name = `${originalName}#${nameIndex++}`
 
-        into.TaskListTemplates[template.Name] = template
-    }
+    into.TaskListTemplates[template.Name] = template
+  }
 }
