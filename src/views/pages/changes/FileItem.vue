@@ -1,13 +1,16 @@
 <script setup lang="ts">
   import { DataSourceCompareFile } from '@/common/datasource';
+  import RepositoryFileLink from '@/components/RepositoryFileLink.vue';
 
-  defineProps<{file:DataSourceCompareFile}>()
+  defineProps<{commitId:string,file:DataSourceCompareFile}>()
 </script>
 
 <template>
 
   <div class="block">
-    <em>{{ file.Path }}</em>
+    <RepositoryFileLink :commitId="commitId" :path="file.Path">
+      <em>{{ file.Path }}</em>
+    </RepositoryFileLink>
   </div>
 
 </template>

@@ -9,6 +9,11 @@ const repository = settings.useCustomRepo ? settings.customRepo : 'Dimbreath/Sta
 const apiBase = 'https://api.github.com/repos/' + repository
 const jsonBase = 'https://raw.githubusercontent.com/' + repository
 
+export function getRepositoryFileUrl(commitId:string,path:string)
+{
+    return `https://github.com/${repository}blob/${commitId}/${path}`
+}
+
 const configDBVersion = 1
 interface ConfigDBv1 extends DBSchema 
 {

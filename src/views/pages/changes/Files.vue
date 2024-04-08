@@ -26,12 +26,12 @@
 
     <h3>{{ compare.AddedFiles.length }} Added</h3>
     <template v-for="file in compare.AddedFiles">
-      <FileItem :file="file" />
+      <FileItem :commitId="commitId" :file="file" />
     </template>
     
     <h3>{{ compare.RemovedFiles.length }} Removed</h3>
     <template v-for="file in compare.RemovedFiles">
-      <FileItem :file="file" />
+      <FileItem :commitId="fromCommitId" :file="file" />
     </template>
   </LoadingArea>
 
