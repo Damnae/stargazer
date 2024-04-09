@@ -253,6 +253,7 @@ const contextTypeToSources:{[type in TaskContextType]:TaskContextSource[]} =
     TaskContextSource.Common, 
     TaskContextSource.TaskTemplate, 
     TaskContextSource.Avatar, 
+    TaskContextSource.Monster,
     TaskContextSource.Equipment, 
     TaskContextSource.RelicSet, 
     TaskContextSource.BattleEvent, 
