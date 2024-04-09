@@ -1,5 +1,5 @@
 import { MutexGroup } from "./mutex"
-import { retrieveTree, DataSourceTreeItem,  } from "./datasource"
+import { filterInterestingFiles, retrieveTree, DataSourceTreeItem, } from "./datasource"
 
 export interface FileCompareEntry
 {
@@ -17,6 +17,11 @@ export interface FileCompare
 
 export enum FileCompareType
 {
+    CharacterAvatar = 'CharacterAvatar',
+    CharacterMonster = 'CharacterMonster',
+    CharacterBattleEvent = 'CharacterBattleEvent',
+    AI = 'AI',
+    Global = 'Global',
     Ability = 'Ability',
     Modifier = 'Modifier',
     TaskTemplate = 'TaskTemplate',
@@ -39,6 +44,11 @@ export async function retrieveFileCompare(fromCommitId:string, toCommitId:string
                 Removed: [],
                 Changed:[],
             }
+            await fileCompareProcessTree(compare, fromCommitId, toCommitId, 'Config/ConfigCharacter/Avatar', FileCompareType.CharacterAvatar)
+            await fileCompareProcessTree(compare, fromCommitId, toCommitId, 'Config/ConfigCharacter/Monster', FileCompareType.CharacterMonster)
+            //await fileCompareProcessTree(compare, fromCommitId, toCommitId, 'Config/ConfigCharacter/BattleEvent', FileCompareType.CharacterBattleEvent) missing
+            await fileCompareProcessTree(compare, fromCommitId, toCommitId, 'Config/ConfigAI', FileCompareType.AI)
+            await fileCompareProcessTree(compare, fromCommitId, toCommitId, 'Config/GlobalConfig', FileCompareType.Global)
             await fileCompareProcessTree(compare, fromCommitId, toCommitId, 'Config/ConfigAbility', FileCompareType.Ability)
             await fileCompareProcessTree(compare, fromCommitId, toCommitId, 'Config/ConfigGlobalModifier', FileCompareType.Modifier)
             await fileCompareProcessTree(compare, fromCommitId, toCommitId, 'Config/ConfigGlobalTaskListTemplate', FileCompareType.TaskTemplate)
@@ -53,19 +63,11 @@ export async function retrieveFileCompare(fromCommitId:string, toCommitId:string
 
 async function fileCompareProcessTree(compare:FileCompare, fromCommit:string, toCommit:string, path:string, type:FileCompareType) : Promise<undefined>
 {
-    const from = await retrieveTree(path, fromCommit, true) as DataSourceTreeItem[]
-    const to = await retrieveTree(path, toCommit, true) as DataSourceTreeItem[]
+    const from = (await retrieveTree(path, fromCommit, true)).filter(filterInterestingFiles)
+    const to = (await retrieveTree(path, toCommit, true)).filter(filterInterestingFiles)
 
-    const fileFilter = (f:DataSourceTreeItem) => 
-        f.type == 'blob' && 
-        f.path.endsWith('.json') && 
-        !f.path.endsWith('.layout.json') && 
-        !f.path.includes('/Camera/')
-    const filesFrom = from.filter(fileFilter)
-    const filesTo = to.filter(fileFilter)
-    
     const convert = (f:DataSourceTreeItem) => <FileCompareEntry>{ Sha: f.sha, Path: `${path}/${f.path}`, Type: type, }
-    compare.Added = compare.Added.concat(filesTo.filter(f => !filesFrom.some(f2 => f.path == f2.path)).map(convert))
-    compare.Removed = compare.Removed.concat(filesFrom.filter(f => !filesTo.some(f2 => f.path == f2.path)).map(convert))
-    compare.Changed = compare.Changed.concat(filesFrom.filter(f => filesTo.some(f2 => f.path == f2.path && f.sha != f2.sha)).map(convert))
+    compare.Added = compare.Added.concat(to.filter(f => !from.some(f2 => f.path == f2.path)).map(convert))
+    compare.Removed = compare.Removed.concat(from.filter(f => !to.some(f2 => f.path == f2.path)).map(convert))
+    compare.Changed = compare.Changed.concat(from.filter(f => to.some(f2 => f.path == f2.path && f.sha != f2.sha)).map(convert))
 }

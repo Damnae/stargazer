@@ -14,8 +14,8 @@ export function getRepositoryFileUrl(commitId:string, path:string)
     return `https://github.com/${repository}blob/${commitId}/${path}`
 }
 
-const configDBVersion = 1
-interface ConfigDBv1 extends DBSchema 
+const configDBVersion = 2
+interface ConfigDBv2 extends DBSchema 
 {
     files: 
     {
@@ -27,26 +27,38 @@ interface ConfigDBv1 extends DBSchema
             content: string
         }
     }
+    data: 
+    {
+        key: string
+        value: 
+        {
+            sha: string
+            content: string
+        }
+    }
 }
 
-const configDB = openDB<ConfigDBv1>('configDB', configDBVersion, 
+const configDB = openDB<ConfigDBv2>('configDB', configDBVersion, 
 {
     upgrade(db, oldVersion, newVersion, _transaction, _event) 
     {
-        console.log(`fileDB upgrading from ${oldVersion} to ${newVersion}`)
-        db.createObjectStore('files', { keyPath: ['hash', 'path'], })
+        console.log(`configDB upgrading from ${oldVersion} to ${newVersion}`)
+        if (oldVersion < 1)
+            db.createObjectStore('files', { keyPath: ['hash', 'path'], })
+        if (oldVersion < 2)
+            db.createObjectStore('data', { keyPath: ['sha'], })
     },
     blocked(currentVersion, blockedVersion, _event) 
     {
-        console.log(`fileDB blocked: currentVersion: ${currentVersion}, blockedVersion: ${blockedVersion}`)
+        console.log(`configDB blocked: currentVersion: ${currentVersion}, blockedVersion: ${blockedVersion}`)
     },
     blocking(currentVersion, blockedVersion, _event) 
     {
-        console.log(`fileDB blocking: currentVersion: ${currentVersion}, blockedVersion: ${blockedVersion}`)
+        console.log(`configDB blocking: currentVersion: ${currentVersion}, blockedVersion: ${blockedVersion}`)
     },
     terminated() 
     {
-        console.log(`fileDB terminated`)
+        console.log(`configDB terminated`)
     },
 })
 
@@ -56,6 +68,27 @@ export async function retrieveJson(request:string, commit:string, useApi:boolean
     const key = `${useApi}|${commit}|${request}`
     return await retrieveJsonMutex.runExclusive(key, async () =>
     {
+        if (!useApi)
+        {
+            const fileMap = await getFileMap(commit)
+            const sha = fileMap[request]
+            if (sha)
+            {
+                const existing = await (await configDB).get('data', IDBKeyRange.only([sha]));
+                if (existing?.content)
+                    return JSON.parse(existing.content)
+        
+                const result = await fetchJson(request, commit, useApi)
+                if (result)
+                {
+                    await (await configDB).put('data', { sha:sha, content:JSON.stringify(result) })
+                    console.log(`dataDB stored ${request} @${commit}`)
+                }
+                return result
+            }
+            else console.warn(`file map miss for ${request}@${commit}`)
+        }
+
         const existing = await (await configDB).get('files', IDBKeyRange.only([commit, request]));
         if (existing?.hash)
             return JSON.parse(existing.content)
@@ -68,6 +101,51 @@ export async function retrieveJson(request:string, commit:string, useApi:boolean
         }
         return result
     })
+}
+
+export interface DataSourceFileMap
+{
+    [Path:string]: string
+}
+export const fileMapPaths =
+[
+    'Config/ConfigCharacter/Avatar', 'Config/ConfigCharacter/Monster', //'Config/ConfigCharacter/BattleEvent', missing
+    'Config/ConfigAI', 'Config/GlobalConfig',
+    'Config/ConfigAbility', 'Config/ConfigGlobalModifier', 'Config/ConfigGlobalTaskListTemplate', 
+    'ExcelOutput', 'TextMap',
+]
+const fileMapCache:{[commitId: string]: DataSourceFileMap} = {}
+const fileMapMutex = new MutexGroup()
+async function getFileMap(commitId:string) : Promise<DataSourceFileMap>
+{
+    return fileMapMutex.runExclusive(commitId, async () => 
+    {
+        let fileMap = fileMapCache[commitId]
+        if (fileMap == undefined)
+        {
+            try 
+            {
+                fileMapCache[commitId] = fileMap = {}
+                for (const path of fileMapPaths)
+                    for (const file of (await retrieveTree(path, commitId, true)).filter(filterInterestingFiles))
+                        fileMap[path + '/' + file.path] = file.sha
+            }
+            catch (error)
+            {
+                console.error(error)
+            }
+            console.log(`cached file map for ${commitId} (${Object.keys(fileMap).length})`)
+        }
+        return fileMap
+    })
+}
+
+export function filterInterestingFiles(file:DataSourceTreeItem) : boolean
+{
+    return file.type == 'blob' && 
+        file.path.endsWith('.json') && 
+        !file.path.endsWith('.layout.json') && 
+        !file.path.includes('/Camera/')
 }
 
 export interface DataSourceTreeItem
