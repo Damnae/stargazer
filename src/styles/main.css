@@ -39,6 +39,11 @@ header .header-info
 header .header-info em
 {
   color:grey;
+  font-style:normal;
+}
+header .header-info a:hover em
+{
+  color:#C4C4C4;
 }
 
 h1

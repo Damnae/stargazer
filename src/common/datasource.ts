@@ -186,12 +186,24 @@ export async function getLatestCommitId()
     const commits = await retrieveCommits()
     return commits[0]?.sha
 }
+export async function getUpCommitId(commitId:string) : Promise<string|undefined>
+{
+    const commits = await retrieveCommits()
+    const index = commits.findIndex(c => c.sha == commitId)
+    return index >= 0 && index - 1 >= 0 ? commits[index - 1]?.sha : undefined
+}
+export async function getDownCommitId(commitId:string) : Promise<string|undefined>
+{
+    const commits = await retrieveCommits()
+    const index = commits.findIndex(c => c.sha == commitId)
+    return index >= 0 && commits.length > index + 1 ? commits[index + 1]?.sha : undefined
+}
 
 export async function getCommitVersion(commitId:string) : Promise<string>
 {
     const commits = await retrieveCommits()
     const entry = commits.find(c => c.sha == commitId)
-    const message = entry?.commit.message ?? 'missing'
+    const message = entry?.commit.message ?? 'Unknown'
     return message.replace(/\s+/, ' ').split(' ')[0] ?? message
 }
 

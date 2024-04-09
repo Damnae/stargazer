@@ -1,6 +1,7 @@
 <script setup lang="ts">
   import { ref, provide, } from 'vue';
-  import { getCommitVersion } from '@/common/datasource';
+  import { getCommitVersion, getUpCommitId, getDownCommitId } from '@/common/datasource';
+  import useNavigationState from '@/common/navstate';
   import { TaskContextType } from '@/sources/ability';
   import NavTabs from '@/components/NavTabs.vue';
   import Files from './changes/Files.vue';
@@ -12,11 +13,13 @@
   const props = defineProps<{fromCommitId:string, commitId:string}>()
   const fromName = ref(await getCommitVersion(props.fromCommitId))
   const toName = ref(await getCommitVersion(props.commitId))
+  const upCommitId = ref(await getUpCommitId(props.commitId))
+  const downCommitId = ref(await getDownCommitId(props.fromCommitId))
+
+  const navState = useNavigationState()
 
   const tabs:string[] = ['Files', 'Abilities', 'Modifiers', 'Statuses', 'Battle Events']
   const tabsWithContext = ['Abilities', 'Modifiers']
-  const selectedTab = ref('Files')
-
   const contextTypes:{[key:string]: TaskContextType} = 
   {
     'All': TaskContextType.All, 
@@ -28,7 +31,6 @@
     'Battle Events': TaskContextType.DiffBattleEvent, 
     'Level': TaskContextType.DiffLevel,
   }
-  const selectedContextType = ref('Avatars')
 
   provide('createAbilityRoute', (abilityId:string, isPrevious:boolean) : object => { return { name: 'ability', params:{ commitId: isPrevious ? props.fromCommitId : props.commitId, abilityId: abilityId, } }})
   provide('createModifierRoute', (modifierId:string, isPrevious:boolean) : object => { return { name: 'modifier', params:{ commitId: isPrevious ? props.fromCommitId : props.commitId, modifierId: modifierId, } }})
@@ -42,31 +44,39 @@
       <h1>Changes</h1>
       <div class="header-info">
         <div>
-          Comparing <em>{{ toName }}</em>&nbsp;<span class="code" :title="commitId">{{ commitId.slice(0, 6) }}</span>
+          Comparing 
+          <RouterLink v-if="upCommitId" :to="{ name:'changes', params:{ fromCommitId: commitId, commitId: upCommitId }}">
+            <em>{{ toName }}</em>
+          </RouterLink>
+          <em v-else>{{ toName }}</em>&nbsp;<span class="code" :title="commitId">{{ commitId.slice(0, 6) }}</span>
         </div>
         <div>
-          since <em>{{ fromName }}</em>&nbsp;<span class="code" :title="fromCommitId">{{ fromCommitId.slice(0, 6) }}</span>
+          since 
+          <RouterLink v-if="downCommitId" :to="{ name:'changes', params:{ fromCommitId: downCommitId, commitId: fromCommitId }}">
+            <em>{{ fromName }}</em>
+          </RouterLink>
+          <em v-else>{{ fromName }}</em>&nbsp;<span class="code" :title="fromCommitId">{{ fromCommitId.slice(0, 6) }}</span>
         </div>
       </div>
     </header>
     <div class="filters">
-      <NavTabs :tabs="tabs" v-model:selected="selectedTab" />
-      <NavTabs :tabs="Object.keys(contextTypes)" v-model:selected="selectedContextType" v-if="tabsWithContext.includes(selectedTab)" />
+      <NavTabs :tabs="tabs" v-model:selected="navState.changeTab" />
+      <NavTabs :tabs="Object.keys(contextTypes)" v-model:selected="navState.changeContext" v-if="tabsWithContext.includes(navState.changeTab)" />
     </div>
     <section>
-      <Files v-if="selectedTab == 'Files'" 
+      <Files v-if="navState.changeTab == 'Files'" 
         :fromCommitId="fromCommitId" :commitId="commitId" />
         
-      <Abilities v-if="selectedTab == 'Abilities'" 
+      <Abilities v-if="navState.changeTab == 'Abilities'" 
         :fromCommitId="fromCommitId" :commitId="commitId"
-        :contextType="contextTypes[selectedContextType]" />
-      <Modifiers v-if="selectedTab == 'Modifiers'" 
+        :contextType="contextTypes[navState.changeContext]" />
+      <Modifiers v-if="navState.changeTab == 'Modifiers'" 
         :fromCommitId="fromCommitId" :commitId="commitId"
-        :contextType="contextTypes[selectedContextType]"  />
+        :contextType="contextTypes[navState.changeContext]"  />
 
-      <Statuses v-if="selectedTab == 'Statuses'" 
+      <Statuses v-if="navState.changeTab == 'Statuses'" 
         :fromCommitId="fromCommitId" :commitId="commitId" />
-      <BattleEvents v-if="selectedTab == 'Battle Events'" 
+      <BattleEvents v-if="navState.changeTab == 'Battle Events'" 
         :fromCommitId="fromCommitId" :commitId="commitId" />
     </section>
   </main>
