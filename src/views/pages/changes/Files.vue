@@ -25,14 +25,19 @@
   </h2>
 
   <LoadingArea :loading="loading">
-    <h3>{{ compare.AddedFiles.length }} Added</h3>
-    <template v-for="file in compare.AddedFiles">
+    <h3>{{ compare.Added.length }} Added</h3>
+    <template v-for="file in compare.Added">
       <FileItem :commitId="commitId" :file="file" />
     </template>
     
-    <h3>{{ compare.RemovedFiles.length }} Removed</h3>
-    <template v-for="file in compare.RemovedFiles">
+    <h3>{{ compare.Removed.length }} Removed</h3>
+    <template v-for="file in compare.Removed">
       <FileItem :commitId="fromCommitId" :file="file" />
+    </template>
+
+    <h3>{{ compare.Changed.length }} Changed</h3>
+    <template v-for="file in compare.Changed">
+      <FileItem :commitId="commitId" :file="file" />
     </template>
   </LoadingArea>
 

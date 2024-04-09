@@ -214,16 +214,18 @@ export interface DataSourceCompareFile
 
 export interface DataSourceCompare
 {
-    AddedFiles: DataSourceCompareFile[]
-    RemovedFiles: DataSourceCompareFile[]
+    Added: DataSourceCompareFile[]
+    Removed: DataSourceCompareFile[]
+    Changed: DataSourceCompareFile[]
 }
 
 export async function retrieveCompare(fromCommit:string, toCommit:string) : Promise<DataSourceCompare>
 {
     const compare:DataSourceCompare = 
     {
-        AddedFiles: [],
-        RemovedFiles: [],
+        Added: [],
+        Removed: [],
+        Changed:[],
     }
     await compareProcessTree(compare, fromCommit, toCommit, 'Config/ConfigAbility')
     await compareProcessTree(compare, fromCommit, toCommit, 'Config/ConfigGlobalModifier')
@@ -246,8 +248,9 @@ async function compareProcessTree(compare:DataSourceCompare, fromCommit:string, 
     const filesTo = to.filter(fileFilter)
     
     const convert = (f:DataSourceTreeItem) => <DataSourceCompareFile>{ Path: `${path}/${f.path}` }
-    compare.AddedFiles = compare.AddedFiles.concat(filesTo.filter(f => !filesFrom.some(f2 => f.path == f2.path)).map(convert))
-    compare.RemovedFiles = compare.RemovedFiles.concat(filesFrom.filter(f => !filesTo.some(f2 => f.path == f2.path)).map(convert))
+    compare.Added = compare.Added.concat(filesTo.filter(f => !filesFrom.some(f2 => f.path == f2.path)).map(convert))
+    compare.Removed = compare.Removed.concat(filesFrom.filter(f => !filesTo.some(f2 => f.path == f2.path)).map(convert))
+    compare.Changed = compare.Changed.concat(filesFrom.filter(f => filesTo.some(f2 => f.path == f2.path && f.sha != f2.sha)).map(convert))
 }
 
 function getHeaders(accept?:string)
