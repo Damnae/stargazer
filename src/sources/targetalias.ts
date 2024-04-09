@@ -12,7 +12,6 @@ export interface TargetAliasConfig
 
 const targetAliasConfigCache:{[commitId: string]: TargetAliasConfig} = {}
 const targetAliasConfigMutex = new Mutex()
-
 export async function getTargetAliases(commitId:string) : Promise<TargetAliasConfig>
 {
     return targetAliasConfigMutex.runExclusive(async () => 

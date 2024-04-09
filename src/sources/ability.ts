@@ -403,7 +403,8 @@ const taskContextSourceCache:{[commitId: string]: {[type:string]: TaskContext}} 
 const taskContextSourceMutex = new MutexGroup()
 async function getTaskContextFromSource(commitId:string, source:TaskContextSource) : Promise<TaskContext>
 {
-  return taskContextSourceMutex.runExclusive(source, async () => 
+  const key = `${commitId}|${source}`
+  return taskContextSourceMutex.runExclusive(key, async () => 
   {
     let result 
     let container = taskContextSourceCache[commitId]
@@ -465,7 +466,8 @@ const taskContextCache:{[commitId: string]: {[type: string]: TaskContext}} = {}
 const taskContextMutex = new MutexGroup()
 export async function getTaskContext(commitId:string, type:TaskContextType) : Promise<TaskContext>
 {
-  return taskContextMutex.runExclusive(type, async () => 
+  const key = `${commitId}|${type}`
+  return taskContextMutex.runExclusive(key, async () => 
   {
     let result 
     let container = taskContextCache[commitId]

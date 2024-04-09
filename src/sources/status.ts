@@ -25,7 +25,6 @@ export interface StatusConfig
 
 const statusConfigCache:{[commitId: string]: StatusConfig} = {}
 const statusConfigMutex = new Mutex()
-
 export async function getStatuses(commitId:string) : Promise<StatusConfig>
 {
     return statusConfigMutex.runExclusive(async () => 
