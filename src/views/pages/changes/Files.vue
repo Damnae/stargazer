@@ -1,17 +1,17 @@
 <script setup lang="ts">
   import { ref, watch, } from 'vue';
-  import { retrieveCompare, DataSourceCompare, } from '@/common/datasource';
+  import { retrieveFileCompare, FileCompare, } from '@/common/changes';
   import FileItem from './FileItem.vue';
   import LoadingArea from '@/components/LoadingArea.vue';
 
   const props = defineProps<{fromCommitId:string, commitId:string}>()
 
   const loading = ref(true)
-  const compare = ref<DataSourceCompare>(await retrieveCompare(props.fromCommitId, props.commitId))
+  const compare = ref<FileCompare>(await retrieveFileCompare(props.fromCommitId, props.commitId))
   watch(props, async () => 
   {
     loading.value = true
-    compare.value = await retrieveCompare(props.fromCommitId, props.commitId)
+    compare.value = await retrieveFileCompare(props.fromCommitId, props.commitId)
     loading.value = false
   }, { immediate:true })
 

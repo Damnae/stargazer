@@ -1,8 +1,8 @@
 <script setup lang="ts">
-  import { DataSourceCompareFile } from '@/common/datasource';
+  import { FileCompareEntry } from '@/common/changes';
   import RepositoryFileLink from '@/components/RepositoryFileLink.vue';
 
-  defineProps<{commitId:string,file:DataSourceCompareFile}>()
+  defineProps<{commitId:string,file:FileCompareEntry}>()
 </script>
 
 <template>

@@ -9,7 +9,7 @@ const repository = settings.useCustomRepo ? settings.customRepo : 'Dimbreath/Sta
 const apiBase = 'https://api.github.com/repos/' + repository
 const jsonBase = 'https://raw.githubusercontent.com/' + repository
 
-export function getRepositoryFileUrl(commitId:string,path:string)
+export function getRepositoryFileUrl(commitId:string, path:string)
 {
     return `https://github.com/${repository}blob/${commitId}/${path}`
 }
@@ -205,52 +205,6 @@ export async function getCommitVersion(commitId:string) : Promise<string>
     const entry = commits.find(c => c.sha == commitId)
     const message = entry?.commit.message ?? 'Unknown'
     return message.replace(/\s+/, ' ').split(' ')[0] ?? message
-}
-
-export interface DataSourceCompareFile
-{
-    Path:string
-}
-
-export interface DataSourceCompare
-{
-    Added: DataSourceCompareFile[]
-    Removed: DataSourceCompareFile[]
-    Changed: DataSourceCompareFile[]
-}
-
-export async function retrieveCompare(fromCommit:string, toCommit:string) : Promise<DataSourceCompare>
-{
-    const compare:DataSourceCompare = 
-    {
-        Added: [],
-        Removed: [],
-        Changed:[],
-    }
-    await compareProcessTree(compare, fromCommit, toCommit, 'Config/ConfigAbility')
-    await compareProcessTree(compare, fromCommit, toCommit, 'Config/ConfigGlobalModifier')
-    await compareProcessTree(compare, fromCommit, toCommit, 'Config/ConfigGlobalTaskListTemplate')
-    await compareProcessTree(compare, fromCommit, toCommit, 'ExcelOutput')
-    return compare
-}
-
-async function compareProcessTree(compare:DataSourceCompare, fromCommit:string, toCommit:string, path:string) : Promise<undefined>
-{
-    const from = await retrieveTree(path, fromCommit, true) as DataSourceTreeItem[]
-    const to = await retrieveTree(path, toCommit, true) as DataSourceTreeItem[]
-
-    const fileFilter = (f:DataSourceTreeItem) => 
-        f.type == 'blob' && 
-        f.path.endsWith('.json') && 
-        !f.path.endsWith('.layout.json') && 
-        !f.path.includes('/Camera/')
-    const filesFrom = from.filter(fileFilter)
-    const filesTo = to.filter(fileFilter)
-    
-    const convert = (f:DataSourceTreeItem) => <DataSourceCompareFile>{ Path: `${path}/${f.path}` }
-    compare.Added = compare.Added.concat(filesTo.filter(f => !filesFrom.some(f2 => f.path == f2.path)).map(convert))
-    compare.Removed = compare.Removed.concat(filesFrom.filter(f => !filesTo.some(f2 => f.path == f2.path)).map(convert))
-    compare.Changed = compare.Changed.concat(filesFrom.filter(f => filesTo.some(f2 => f.path == f2.path && f.sha != f2.sha)).map(convert))
 }
 
 function getHeaders(accept?:string)
