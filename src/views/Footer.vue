@@ -1,13 +1,14 @@
 <script setup lang="ts">
   import { computed, ref, watch, } from 'vue';
   import { useRoute } from 'vue-router'
-  import { getLatestCommitId, apiRemaining, apiLimit, } from '@/common/datasource';
+  import { getLatestCommitId, getCommitVersion, apiRemaining, apiLimit, } from '@/common/datasource';
   import useSettings from '@/common/settings';
 
   const route = useRoute()
   const [settings, _sessionSettings] = useSettings()
 
   const commitId = ref(route.params.commitId);
+  const latestCommitName = ref('');
   const latestCommitId = ref('');
   const isLatest = computed(() => commitId.value == latestCommitId.value)
 
@@ -15,6 +16,7 @@
   {
     commitId.value = newId
     latestCommitId.value = await getLatestCommitId() ?? ''
+    latestCommitName.value = await getCommitVersion(latestCommitId.value)
   })
 </script>
 
@@ -25,7 +27,7 @@
     </span>
     <slot />
     <router-link v-if="commitId" :to="{ name:'home' }" class="commitId">
-      {{ commitId }}
+      {{ latestCommitName }} <span class="code">{{ commitId.slice(0, 6) }}</span>
     </router-link>
     <span v-if="isLatest" class="minor">
       (Latest)
@@ -52,6 +54,12 @@
   .commitId 
   {
     color:grey;
+  }
+  .code
+  {
+    color:#606060;
+    font-family: monospace;
+    font-size: 1rem;
   }
   .warning 
   {
