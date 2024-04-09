@@ -19,11 +19,12 @@
 
 <template>
 
-  <h2>Files</h2>
+  <h2>
+    Files 
+    <span class="minor" title="Only 'interesting' files are watched here">*</span>
+  </h2>
 
   <LoadingArea :loading="loading">
-    <span class="minor">Note: Only a specific list of files are watched here</span>
-
     <h3>{{ compare.AddedFiles.length }} Added</h3>
     <template v-for="file in compare.AddedFiles">
       <FileItem :commitId="commitId" :file="file" />
