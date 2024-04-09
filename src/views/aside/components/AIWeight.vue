@@ -15,8 +15,8 @@
 <template>
   <FoldableLayout>
     {{ weightGroup.GroupName }}
-    <em>{{ cleanupNumber(weightGroup.Weight?.Value ?? 1) }}</em>&nbsp;<span class="minor">{{ aiFactorGroup.CombineOperator ?? "Add" }}</span>
-    <template #content>
+    <em>{{ cleanupNumber(weightGroup.Weight?.Value ?? 1) }}</em>&nbsp;<span class="minor">{{ aiFactorGroup ? aiFactorGroup.CombineOperator ?? "Add" : "Missing" }}</span>
+    <template #content v-if="aiFactorGroup">
       <template v-for="factor in aiFactorGroup.Factors">
         <div class="minor">{{ factor.CombineOperator ?? "Add" }}</div>
         <AnyTask :node="factor.Source" />
