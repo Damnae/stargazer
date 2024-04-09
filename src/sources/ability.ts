@@ -14,7 +14,11 @@ export interface ModifierPreshowConfig
   SkillTypes: string[]
   TargetType: GamecoreTargetType
   Condition: GamecoreTask
-  ActionDelayPreshowConfig:
+  ActionDelayPreshowConfig?:
+  {
+    [property:string]: DynamicExpression
+  }
+  BreakActionDelayPreshowConfig?:
   {
     [property:string]: DynamicExpression
   }

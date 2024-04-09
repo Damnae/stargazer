@@ -291,6 +291,9 @@
                 <BlockLayout v-for="expression, key in modifier.ModifierAffectedPreshowConfig.ActionDelayPreshowConfig" :source="expression">
                   Preview <em>{{ key }}</em> with value <em><EvaluateExpression :expression="expression" /></em>
                 </BlockLayout>
+                <BlockLayout v-for="expression, key in modifier.ModifierAffectedPreshowConfig.BreakActionDelayPreshowConfig" :source="expression">
+                  Preview break <em>{{ key }}</em> with value <em><EvaluateExpression :expression="expression" /></em>
+                </BlockLayout>
               </div>
             
             </template>
@@ -298,6 +301,9 @@
               
               <BlockLayout v-for="expression, key in modifier.ModifierAffectedPreshowConfig.ActionDelayPreshowConfig" :source="expression">
                 Preview <em>{{ key }}</em> with value <em><EvaluateExpression :expression="expression" /></em>
+              </BlockLayout>
+              <BlockLayout v-for="expression, key in modifier.ModifierAffectedPreshowConfig.BreakActionDelayPreshowConfig" :source="expression">
+                Preview break <em>{{ key }}</em> with value <em><EvaluateExpression :expression="expression" /></em>
               </BlockLayout>
 
             </template>
