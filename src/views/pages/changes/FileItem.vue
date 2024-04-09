@@ -1,5 +1,5 @@
 <script setup lang="ts">
-  import { FileCompareEntry } from '@/common/changes';
+  import { FileCompareEntry } from '@/common/changes-file';
   import RepositoryFileLink from '@/components/RepositoryFileLink.vue';
 
   defineProps<{commitId:string,file:FileCompareEntry}>()
@@ -16,4 +16,4 @@
 </template>
 
 <style scoped>
-</style>
+</style>@/common/changes-file

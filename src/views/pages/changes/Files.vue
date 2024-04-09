@@ -1,6 +1,6 @@
 <script setup lang="ts">
   import { ref, watch, } from 'vue';
-  import { retrieveFileCompare, FileCompare, } from '@/common/changes';
+  import { retrieveFileCompare, FileCompare, } from '@/common/changes-file';
   import FileItem from './FileItem.vue';
   import LoadingArea from '@/components/LoadingArea.vue';
 
@@ -14,7 +14,6 @@
     compare.value = await retrieveFileCompare(props.fromCommitId, props.commitId)
     loading.value = false
   }, { immediate:true })
-
 </script>
 
 <template>
@@ -30,18 +29,18 @@
       <FileItem :commitId="commitId" :file="file" />
     </template>
     
-    <h3>{{ compare.Removed.length }} Removed</h3>
-    <template v-for="file in compare.Removed">
-      <FileItem :commitId="fromCommitId" :file="file" />
-    </template>
-
     <h3>{{ compare.Changed.length }} Changed</h3>
     <template v-for="file in compare.Changed">
       <FileItem :commitId="commitId" :file="file" />
+    </template>
+
+    <h3>{{ compare.Removed.length }} Removed</h3>
+    <template v-for="file in compare.Removed">
+      <FileItem :commitId="fromCommitId" :file="file" />
     </template>
   </LoadingArea>
 
 </template>
 
 <style scoped>
-</style>
+</style>@/common/changes-file

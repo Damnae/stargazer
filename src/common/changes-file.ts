@@ -1,5 +1,5 @@
-import { retrieveTree, DataSourceTreeItem,  } from "./datasource"
 import { MutexGroup } from "./mutex"
+import { retrieveTree, DataSourceTreeItem,  } from "./datasource"
 
 export interface FileCompareEntry
 {
@@ -25,9 +25,9 @@ export enum FileCompareType
 
 const fileCompareCache:{[commitIdPair: string]: FileCompare} = {}
 const fileCompareMutex = new MutexGroup()
-export async function retrieveFileCompare(fromCommit:string, toCommit:string) : Promise<FileCompare>
+export async function retrieveFileCompare(fromCommitId:string, toCommitId:string) : Promise<FileCompare>
 {
-    const commitIdPair = `${fromCommit}|${toCommit}`
+    const commitIdPair = `${fromCommitId}|${toCommitId}`
     return fileCompareMutex.runExclusive(commitIdPair, async () => 
     {
         let result = fileCompareCache[commitIdPair]
@@ -39,13 +39,13 @@ export async function retrieveFileCompare(fromCommit:string, toCommit:string) : 
                 Removed: [],
                 Changed:[],
             }
-            await fileCompareProcessTree(compare, fromCommit, toCommit, 'Config/ConfigAbility', FileCompareType.Ability)
-            await fileCompareProcessTree(compare, fromCommit, toCommit, 'Config/ConfigGlobalModifier', FileCompareType.Modifier)
-            await fileCompareProcessTree(compare, fromCommit, toCommit, 'Config/ConfigGlobalTaskListTemplate', FileCompareType.TaskTemplate)
-            await fileCompareProcessTree(compare, fromCommit, toCommit, 'ExcelOutput', FileCompareType.Data)
+            await fileCompareProcessTree(compare, fromCommitId, toCommitId, 'Config/ConfigAbility', FileCompareType.Ability)
+            await fileCompareProcessTree(compare, fromCommitId, toCommitId, 'Config/ConfigGlobalModifier', FileCompareType.Modifier)
+            await fileCompareProcessTree(compare, fromCommitId, toCommitId, 'Config/ConfigGlobalTaskListTemplate', FileCompareType.TaskTemplate)
+            await fileCompareProcessTree(compare, fromCommitId, toCommitId, 'ExcelOutput', FileCompareType.Data)
 
             result = fileCompareCache[commitIdPair] = compare
-            console.log('cached compare config for ' + fromCommit + ' -> ' + toCommit)
+            console.log('cached file compare for ' + commitIdPair)
         }
         return result
     })

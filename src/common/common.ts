@@ -83,3 +83,33 @@ export function delay(ms: number)
 {
     return new Promise(resolve => setTimeout(resolve, ms));
 }
+
+export function deepEquals(first:any, second:any) : boolean
+{
+    if (first === second) 
+        return true;
+
+    if (Array.isArray(first) && Array.isArray(second)) 
+      return first.length === second.length && first.every((e, i) => deepEquals(e, second[i]))
+  
+    if (typeof first === "object" && first !== null 
+        && typeof second === "object" && second !== null) 
+    {
+        if (Array.isArray(first) || Array.isArray(second)) 
+            return false;
+
+        const firstKeys = Object.keys(first)
+        const secondKeys = Object.keys(second)
+
+        if (firstKeys.length !== secondKeys.length || !firstKeys.every(k => secondKeys.includes(k))) 
+            return false;
+        
+        for (const key in first) 
+            if (!deepEquals(first[key], second[key])) 
+                return false;
+
+        return true;
+    }
+
+    return false
+}
