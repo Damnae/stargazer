@@ -17,9 +17,9 @@ export interface FileCompare
 
 export enum FileCompareType
 {
-    CharacterAvatar = 'CharacterAvatar',
-    CharacterMonster = 'CharacterMonster',
-    CharacterBattleEvent = 'CharacterBattleEvent',
+    Avatar = 'Avatar',
+    Monster = 'Monster',
+    BattleEvent = 'BattleEvent',
     AI = 'AI',
     Global = 'Global',
     Ability = 'Ability',
@@ -44,8 +44,8 @@ export async function retrieveFileCompare(fromCommitId:string, toCommitId:string
                 Removed: [],
                 Changed:[],
             }
-            await fileCompareProcessTree(compare, fromCommitId, toCommitId, 'Config/ConfigCharacter/Avatar', FileCompareType.CharacterAvatar)
-            await fileCompareProcessTree(compare, fromCommitId, toCommitId, 'Config/ConfigCharacter/Monster', FileCompareType.CharacterMonster)
+            await fileCompareProcessTree(compare, fromCommitId, toCommitId, 'Config/ConfigCharacter/Avatar', FileCompareType.Avatar)
+            await fileCompareProcessTree(compare, fromCommitId, toCommitId, 'Config/ConfigCharacter/Monster', FileCompareType.Monster)
             //await fileCompareProcessTree(compare, fromCommitId, toCommitId, 'Config/ConfigCharacter/BattleEvent', FileCompareType.CharacterBattleEvent) missing
             await fileCompareProcessTree(compare, fromCommitId, toCommitId, 'Config/ConfigAI', FileCompareType.AI)
             await fileCompareProcessTree(compare, fromCommitId, toCommitId, 'Config/GlobalConfig', FileCompareType.Global)
