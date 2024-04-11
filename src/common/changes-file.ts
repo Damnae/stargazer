@@ -46,7 +46,7 @@ export async function retrieveFileCompare(fromCommitId:string, toCommitId:string
             }
             await fileCompareProcessTree(compare, fromCommitId, toCommitId, 'Config/ConfigCharacter/Avatar', FileCompareType.Avatar)
             await fileCompareProcessTree(compare, fromCommitId, toCommitId, 'Config/ConfigCharacter/Monster', FileCompareType.Monster)
-            //await fileCompareProcessTree(compare, fromCommitId, toCommitId, 'Config/ConfigCharacter/BattleEvent', FileCompareType.CharacterBattleEvent) missing
+            //await fileCompareProcessTree(compare, fromCommitId, toCommitId, 'Config/ConfigCharacter/BattleEvent', FileCompareType.BattleEvent) missing
             await fileCompareProcessTree(compare, fromCommitId, toCommitId, 'Config/ConfigAI', FileCompareType.AI)
             await fileCompareProcessTree(compare, fromCommitId, toCommitId, 'Config/GlobalConfig', FileCompareType.Global)
             await fileCompareProcessTree(compare, fromCommitId, toCommitId, 'Config/ConfigAbility', FileCompareType.Ability)

@@ -145,7 +145,8 @@ export function filterInterestingFiles(file:DataSourceTreeItem) : boolean
     return file.type == 'blob' && 
         file.path.endsWith('.json') && 
         !file.path.endsWith('.layout.json') && 
-        !file.path.includes('/Camera/')
+        !file.path.includes('/Camera/') && 
+        !file.path.includes('/Adventure/')
 }
 
 export interface DataSourceTreeItem
