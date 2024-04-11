@@ -87,7 +87,7 @@ export function delay(ms: number)
 export function deepEquals(first:any, second:any) : boolean
 {
     if (first === second) 
-        return true;
+        return true
 
     if (Array.isArray(first) && Array.isArray(second)) 
       return first.length === second.length && first.every((e, i) => deepEquals(e, second[i]))
@@ -96,7 +96,7 @@ export function deepEquals(first:any, second:any) : boolean
         && typeof second === "object" && second !== null) 
     {
         if (Array.isArray(first) || Array.isArray(second)) 
-            return false;
+            return false
 
         const firstKeys = Object.keys(first)
         const secondKeys = Object.keys(second)
@@ -108,7 +108,7 @@ export function deepEquals(first:any, second:any) : boolean
             if (!deepEquals(first[key], second[key])) 
                 return false;
 
-        return true;
+        return true
     }
 
     return false

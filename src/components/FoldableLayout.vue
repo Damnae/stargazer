@@ -1,5 +1,6 @@
 <script setup lang="ts">
   import { ref } from 'vue';
+  defineProps<{lazy?:boolean}>()
   const open = ref(false)
 </script>
 
@@ -9,7 +10,7 @@
       <slot>
       </slot>
     </div>
-    <div v-show="open" v-if="$slots.content" class="block-content">
+    <div v-show="open" v-if="$slots.content && (!lazy || open)" class="block-content">
       <slot name="content">
       </slot>
     </div>

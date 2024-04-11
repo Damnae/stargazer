@@ -31,7 +31,7 @@
     
     <h3>{{ compare.Changed.length }} Changed</h3>
     <template v-for="file in compare.Changed">
-      <FileItem :commitId="commitId" :file="file" />
+      <FileItem :commitId="commitId" :diffFromCommitId="fromCommitId" :file="file" />
     </template>
 
     <h3>{{ compare.Removed.length }} Removed</h3>
