@@ -67,21 +67,21 @@ function diffAny(from:any, to:any) : DiffNode
 
     if (from === undefined && to !== undefined)
         return {
-            Type:DiffNodeType.Value, //findType(to),
+            Type:findType(to),
             Change:DiffNodeChange.Added,
             FromValue:from,
             ToValue:to,
         }
     if (from !== undefined && to === undefined)
         return {
-            Type:DiffNodeType.Value, //findType(to),
+            Type:findType(from),
             Change:DiffNodeChange.Removed,
             FromValue:from,
             ToValue:to,
         }
 
     return {
-        Type:DiffNodeType.Value, //findType(to),
+        Type:findType(to),
         Change:DiffNodeChange.Replaced,
         FromValue:from,
         ToValue:to,
