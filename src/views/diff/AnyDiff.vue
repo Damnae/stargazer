@@ -3,7 +3,8 @@
   import ObjectDiff from '@/views/diff/ObjectDiff.vue';
   import ArrayDiff from '@/views/diff/ArrayDiff.vue';
   import ValueDiff from '@/views/diff/ValueDiff.vue';
-  defineProps<{diffNode:DiffNode, prefix?:string|number}>()
+
+  defineProps<{diffNode:DiffNode, prefix?:string|number, isClutter?:boolean}>()
 </script>
 
 <template>
@@ -16,10 +17,16 @@
       <ValueDiff :diffNode="diffNode" />
     </template>
     <template v-else-if="diffNode.Type == DiffNodeType.Object">
-      <ObjectDiff :diffNode="diffNode" />
+      <template v-if="isClutter">{…}</template>
+      <template v-else>
+        <ObjectDiff :diffNode="diffNode" />
+      </template>
     </template>
     <template v-else-if="diffNode.Type == DiffNodeType.Array">
-      <ArrayDiff :diffNode="diffNode" />
+      <template v-if="isClutter">[…]</template>
+      <template v-else>
+        <ArrayDiff :diffNode="diffNode" />
+      </template>
     </template>
     <template v-else-if="diffNode.Type">
       <pre>??? {{ diffNode }}</pre>

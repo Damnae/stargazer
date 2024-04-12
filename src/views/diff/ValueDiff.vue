@@ -1,6 +1,7 @@
 <script setup lang="ts">
   import { DiffNode, DiffNodeChange } from './diff';
   import AnyPlain from '@/views/diff/AnyPlain.vue';
+
   defineProps<{diffNode:DiffNode}>()
 </script>
 

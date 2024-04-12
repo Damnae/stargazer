@@ -2,7 +2,6 @@
   import { ref, watch } from 'vue';
   import { retrieveJson } from '@/common/datasource';
   import { diff, DiffNode, DiffNodeChange, } from './diff';
-
   import AnyDiff from '@/views/diff/AnyDiff.vue';
 
   const props = defineProps<{fromCommitId:string, toCommitId:string, path:string}>()

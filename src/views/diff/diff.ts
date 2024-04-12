@@ -154,7 +154,7 @@ function diffArray(from:Array<any>, to:Array<any>) : DiffNode
     result.Change = Object.values(content).some(c => c.Change != DiffNodeChange.Same) ? 
         DiffNodeChange.Changed : DiffNodeChange.Same
 
-        // If it's a collection of *only* objects, strip entries that didn't change
+    // If it's a collection of *only* objects, strip entries that didn't change
     if (result.Change != DiffNodeChange.Same && !Object.values(content).some(c => c.Type != DiffNodeType.Object))
         result.Content = content = content.filter(c => c.Change != DiffNodeChange.Same)
 
