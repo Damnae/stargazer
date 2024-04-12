@@ -2,6 +2,7 @@
   import { ref } from 'vue';
   import { DiffNode, DiffNodeChange, KeyToDiffNode } from './diff';
   import AnyDiff from '@/views/diff/AnyDiff.vue';
+  import AnyPlain from '@/views/diff/AnyPlain.vue';
   const props = defineProps<{diffNode:DiffNode}>()
   const properties = ref(props.diffNode.Content as KeyToDiffNode)
 </script>
@@ -16,10 +17,10 @@
       }
     </template>
     <span class="object-item" v-else-if="diffNode.Change == DiffNodeChange.Removed">
-      {{ diffNode.FromValue }}
+      <AnyPlain :value="diffNode.FromValue" />
     </span>
     <span class="object-item" v-else>
-      {{ diffNode.ToValue }}
+      <AnyPlain :value="diffNode.ToValue" />
     </span>
   </span>
 </template>

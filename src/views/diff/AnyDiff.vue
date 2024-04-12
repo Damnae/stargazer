@@ -11,6 +11,7 @@
     <template v-if="prefix">
       {{ prefix }}
     </template>
+
     <template v-if="diffNode.Type == DiffNodeType.Value">
       <ValueDiff :diffNode="diffNode" />
     </template>

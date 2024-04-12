@@ -1,3 +1,4 @@
+import translate from "@/common/translate"
 
 export enum DiffNodeType
 {
@@ -98,8 +99,11 @@ function diffObject(from:KeyToAny, to:KeyToAny) : DiffNode
         ToValue:to,
         Content:content
     }
-    
-    for (const key of Object.keys(to))
+
+    const toKeys = Object.keys(to)
+    const fromKeys = Object.keys(from)
+
+    for (const key of toKeys)
     {
         if (from[key] === undefined)
             content[key] = {
@@ -111,7 +115,7 @@ function diffObject(from:KeyToAny, to:KeyToAny) : DiffNode
         else content[key] = diffAny(from[key], to[key])
     }
     
-    for (const key of Object.keys(from))
+    for (const key of fromKeys)
         if (to[key] === undefined)
             content[key] = {
                 Type:findType(from[key]),
@@ -120,7 +124,7 @@ function diffObject(from:KeyToAny, to:KeyToAny) : DiffNode
                 ToValue:to[key],
             }
 
-    result.Change = Object.values(content).some(c => c.Change != DiffNodeChange.Same) ? 
+    result.Change = toKeys.length != fromKeys.length || Object.values(content).some(c => c.Change != DiffNodeChange.Same) ? 
         DiffNodeChange.Changed : DiffNodeChange.Same
 
     // If it's a collection of *only* objects, strip entries that didn't change

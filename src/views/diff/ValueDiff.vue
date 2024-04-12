@@ -1,5 +1,6 @@
 <script setup lang="ts">
   import { DiffNode, DiffNodeChange } from './diff';
+  import AnyPlain from '@/views/diff/AnyPlain.vue';
   defineProps<{diffNode:DiffNode}>()
 </script>
 
@@ -9,10 +10,10 @@
       <span class="change-Removed">{{ diffNode.FromValue }}</span> <span class="change-Added">{{ diffNode.ToValue }}</span>
     </template>
     <template v-else-if="diffNode.Change == DiffNodeChange.Removed">
-      {{ diffNode.FromValue }}
+      <AnyPlain :value="diffNode.FromValue" />
     </template>
     <template v-else>
-      {{ diffNode.ToValue }}
+      <AnyPlain :value="diffNode.ToValue" />
     </template>
   </span>
 </template>
