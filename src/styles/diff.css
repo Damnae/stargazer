@@ -5,13 +5,11 @@
 
 .diff .change-Added
 {
-  background-color: rgb(13, 57, 32);
-  color: white;
+  color: lightgreen;
 }
 .diff .change-Removed
 {
-  background-color: rgb(94, 23, 23);
-  color: white;
+  color: lightcoral;
 }
 .diff .change-Changed,
 .diff .change-Same
