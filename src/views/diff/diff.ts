@@ -1,4 +1,3 @@
-import translate from "@/common/translate"
 
 export enum DiffNodeType
 {

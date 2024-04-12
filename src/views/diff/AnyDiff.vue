@@ -3,13 +3,13 @@
   import ObjectDiff from '@/views/diff/ObjectDiff.vue';
   import ArrayDiff from '@/views/diff/ArrayDiff.vue';
   import ValueDiff from '@/views/diff/ValueDiff.vue';
-  defineProps<{diffNode:DiffNode, prefix?:string}>()
+  defineProps<{diffNode:DiffNode, prefix?:string|number}>()
 </script>
 
 <template>
   <span :class="`diff-node change-${diffNode.Change}`" :title="`${diffNode.Change} ${diffNode.Type}`">
     <template v-if="prefix">
-      {{ prefix }}
+      {{ prefix }}: 
     </template>
 
     <template v-if="diffNode.Type == DiffNodeType.Value">

@@ -8,21 +8,19 @@
 </script>
 
 <template>
-  <span class="diff-object">
-    <template v-if="properties && Object.keys(properties).length > 0">
-      {
-        <span class="object-item block" v-for="node, key in properties">
-          <AnyDiff :diffNode="node" :prefix="`${key}: `" />
-        </span>
-      }
-    </template>
-    <span class="object-item" v-else-if="diffNode.Change == DiffNodeChange.Removed">
-      <AnyPlain :value="diffNode.FromValue" />
-    </span>
-    <span class="object-item" v-else>
-      <AnyPlain :value="diffNode.ToValue" />
-    </span>
+  <span class="diff-object" v-if="properties && Object.keys(properties).length > 0">
+    {
+      <span class="object-item block" v-for="node, key in properties">
+        <AnyDiff :diffNode="node" :prefix="key" />
+      </span>
+    }
   </span>
+  <template v-else-if="diffNode.Change == DiffNodeChange.Removed">
+    <AnyPlain :value="diffNode.FromValue" />
+  </template>
+  <template v-else>
+    <AnyPlain :value="diffNode.ToValue" />
+  </template>
 </template>
 
 <style scoped>

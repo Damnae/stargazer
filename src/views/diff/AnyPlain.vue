@@ -1,24 +1,24 @@
 <script setup lang="ts">
-  defineProps<{value:any, prefix?:string}>()
+  defineProps<{value:any, prefix?:string|number}>()
 </script>
 
 <template>
-  <span class="diff-node">
+  <span class="diff-node plain">
     <template v-if="prefix">
-      {{ prefix }}
+      {{ prefix }}: 
     </template>
     
     <span class="diff-array" v-if="Array.isArray(value)">
       [
         <span class="array-item block" v-for="entry, _key in value">
-          <AnyPlain :value="entry"  />
+          <AnyPlain :value="entry" />
         </span>
       ]
     </span>
     <span class="diff-object" v-else-if="typeof value === 'object'">
       {
         <span class="object-item block" v-for="entry, key in value">
-          <AnyPlain :value="entry" :prefix="`${key}: `" />
+          <AnyPlain :value="entry" :prefix="key" />
         </span>
       }
     </span>
