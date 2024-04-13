@@ -1,3 +1,5 @@
+import { deepEquals } from "@/common/common"
+import { diff as fastMeyrsDiff, diff_core as fastMeyrsDiffSlice } from "fast-myers-diff"
 
 export enum DiffNodeType
 {
@@ -38,7 +40,7 @@ export function diff(from:any, to:any) : DiffNode
     return diffAny(from, to)
 }
 
-function diffAny(from:any, to:any) : DiffNode
+function diffAny(from:any, to:any, parentKey?:string) : DiffNode
 {
     if (from === to) 
         return {
@@ -49,7 +51,7 @@ function diffAny(from:any, to:any) : DiffNode
         }
     
     if (Array.isArray(from) && Array.isArray(to)) 
-      return diffArray(from, to)
+      return diffArray(from, to, parentKey)
   
     if (typeof from === "object" && from !== null 
         && typeof to === "object" && to !== null) 
@@ -111,7 +113,7 @@ function diffObject(from:KeyToAny, to:KeyToAny) : DiffNode
                 FromValue:from[key],
                 ToValue:to[key],
             }
-        else content[key] = diffAny(from[key], to[key])
+        else content[key] = diffAny(from[key], to[key], key)
     }
     
     for (const key of fromKeys)
@@ -133,7 +135,7 @@ function diffObject(from:KeyToAny, to:KeyToAny) : DiffNode
     return result
 }
 
-function diffArray(from:Array<any>, to:Array<any>) : DiffNode
+function diffArray(from:Array<any>, to:Array<any>, parentKey?:string) : DiffNode
 {
     let content = <DiffNode[]>[]
     const result = <DiffNode>{
@@ -144,11 +146,147 @@ function diffArray(from:Array<any>, to:Array<any>) : DiffNode
         Content:content
     }
 
-    let top = 0
-    while (top < from.length || top < to.length)
+    const keyablesMap:{[key:string]: string} = {
+        'SkillList': 'Name',
+        'SkillAbilityList': 'Skill',
+        'AbilityList': 'Name',
+        'GlobalTemplates': 'Name',
+        'TaskListTemplate': 'Name',
+        'SubModifierList': 'Name',
+        '_CallbackList': 'Event',
+        'Groups': 'GroupName',
+        'UITextNodes': 'TextPath',
+        'TransitionList': 'Trigger',
+        'PhaseList': 'PhaseNum',
+        '_PriorityList': 'PriorityName',
+        'OnAbilityPropertyChange': 'Property',
+    }
+    const mapKey = parentKey ? keyablesMap[parentKey] : undefined
+    if (mapKey && allValuesAreObjectWithKey(from, mapKey) && allValuesAreObjectWithKey(to, mapKey))
     {
-        content.push(diffAny(from[top], to[top]))
-        top++
+        // Treat it like an object
+        const fromAsObject = Object.fromEntries(from.map((v, i) => [v[mapKey] as string, v]))
+        const toAsObject = Object.fromEntries(to.map((v, i) => [v[mapKey] as string, v]))
+        const objectDiff = diffObject(fromAsObject, toAsObject)
+        content.push(...Object.values(objectDiff.Content as KeyToDiffNode))
+    }
+    else
+    {
+        // Deep equality
+        const changes = [...fastMeyrsDiff(from, to, (i, j) => deepEquals(from[i], to[j]))]
+        if (changes.length)
+        {
+            let index = 0
+            for (const [startFrom, endFrom, startTo, endTo] of changes)
+            {
+                while (index < startFrom)
+                {
+                    content.push({
+                        Type:findType(from[index]),
+                        Change:DiffNodeChange.Same,
+                        FromValue:from[index],
+                        ToValue:from[index],
+                    })
+                    index++
+                }
+    
+                if (startFrom === endFrom)
+                {
+                    for (let i = startTo; i < endTo; i++)
+                        content.push({
+                            Type:findType(to[i]),
+                            Change:DiffNodeChange.Added,
+                            FromValue:undefined,
+                            ToValue:to[i],
+                        })
+                }
+                else if (startTo === endTo)
+                {
+                    for (let i = startFrom; i < endFrom; i++)
+                        content.push({
+                            Type:findType(from[i]),
+                            Change:DiffNodeChange.Removed,
+                            FromValue:from[i],
+                            ToValue:undefined,
+                        })
+                } 
+                else
+                {
+                    // Soft equality by $type key
+                    const replaceEqualityKey = '$type'
+                    if (allValuesAreObjectWithKey(from.slice(startFrom, endFrom), replaceEqualityKey) 
+                        && allValuesAreObjectWithKey(to.slice(startTo, endTo), replaceEqualityKey))
+                    {
+                        const softChanges = [...fastMeyrsDiffSlice(startFrom, endFrom - startFrom, startTo, endTo - startTo, 
+                            (i, j) => from[i][replaceEqualityKey] == to[j][replaceEqualityKey])]
+
+                        for (const [softStartFrom, softEndFrom, softStartTo, softEndTo] of softChanges)
+                        {
+                            while (index < softStartFrom)
+                            {
+                                content.push(diffAny(from[index], to[index + softStartTo - softStartFrom]))
+                                index++
+                            }
+    
+                            for (let i = softStartFrom; i < softEndFrom; i++)
+                                content.push({
+                                    Type:findType(from[i]),
+                                    Change:DiffNodeChange.Removed,
+                                    FromValue:from[i],
+                                    ToValue:undefined,
+                                })
+                            for (let i = softStartTo; i < softEndTo; i++)
+                                content.push({
+                                    Type:findType(to[i]),
+                                    Change:DiffNodeChange.Added,
+                                    FromValue:undefined,
+                                    ToValue:to[i],
+                                })
+    
+                            index = softEndFrom
+                        }
+                        while (index < endFrom)
+                        {
+                            const toIndex = index + endTo - endFrom
+                            content.push(diffAny(from[index], to[toIndex]))
+                            index++
+                        }
+                    }
+                    else
+                    {
+                        if (allValuesAreObjectWithKey(from.slice(startFrom, endFrom)) 
+                            && allValuesAreObjectWithKey(to.slice(startTo, endTo)))
+                            console.warn(`no $type key for soft diff in ${parentKey}`)
+
+                        for (let i = startFrom; i < endFrom; i++)
+                            content.push({
+                                Type:findType(from[i]),
+                                Change:DiffNodeChange.Removed,
+                                FromValue:from[i],
+                                ToValue:undefined,
+                            })
+                        for (let i = startTo; i < endTo; i++)
+                            content.push({
+                                Type:findType(to[i]),
+                                Change:DiffNodeChange.Added,
+                                FromValue:undefined,
+                                ToValue:to[i],
+                            })
+                    }
+                }
+                index = endFrom
+            }
+            while (index < from.length)
+            {
+                content.push({
+                    Type:findType(from[index]),
+                    Change:DiffNodeChange.Same,
+                    FromValue:from[index],
+                    ToValue:from[index],
+                })
+                index++
+            }
+        }
     }
 
     result.Change = Object.values(content).some(c => c.Change != DiffNodeChange.Same) ? 
@@ -159,6 +297,15 @@ function diffArray(from:Array<any>, to:Array<any>) : DiffNode
         result.Content = content = content.filter(c => c.Change != DiffNodeChange.Same)
 
     return result
+}
+
+function allValuesAreObjectWithKey(values:Array<any>, withKey?:string)
+{
+    return values.every(value => !Array.isArray(value) 
+        && typeof value === 'object'
+        && (!withKey || Object.keys(value).includes(withKey)))
+
+    // TODO if withKey is not undefined, check that each entry has a different value 
 }
 
 function findType(value:any) : DiffNodeType
