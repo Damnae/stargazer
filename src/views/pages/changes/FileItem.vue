@@ -11,8 +11,8 @@
 <template>
 
   <FoldableLayout :lazy="true">
-    <span class="minor">{{ file.Type }}</span>&nbsp;<RepositoryFileLink :commitId="commitId" :path="file.Path" :title="file.Path">
-      <em>{{ cleanupFilename(file.Path) }}</em> 
+    <span class="minor">{{ file.Type }}</span>&nbsp;<em>{{ cleanupFilename(file.Path) }}</em>&nbsp;<RepositoryFileLink :commitId="commitId" :path="file.Path" :title="file.Path">
+      <em>🖹</em> 
     </RepositoryFileLink>
     <template #content>
       <div class="block">
