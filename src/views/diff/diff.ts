@@ -165,8 +165,8 @@ function diffArray(from:Array<any>, to:Array<any>, parentKey?:string) : DiffNode
     if (mapKey && allValuesAreObjectWithKey(from, mapKey) && allValuesAreObjectWithKey(to, mapKey))
     {
         // Treat it like an object
-        const fromAsObject = Object.fromEntries(from.map((v, i) => [v[mapKey] as string, v]))
-        const toAsObject = Object.fromEntries(to.map((v, i) => [v[mapKey] as string, v]))
+        const fromAsObject = Object.fromEntries(from.map(v => [v[mapKey] as string, v]))
+        const toAsObject = Object.fromEntries(to.map(v => [v[mapKey] as string, v]))
         const objectDiff = diffObject(fromAsObject, toAsObject)
         content.push(...Object.values(objectDiff.Content as KeyToDiffNode))
     }
