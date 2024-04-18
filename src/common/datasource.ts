@@ -110,7 +110,7 @@ export interface DataSourceFileMap
 export const fileMapPaths =
 [
     'Config/ConfigCharacter/Avatar', 'Config/ConfigCharacter/Monster', //'Config/ConfigCharacter/BattleEvent', missing
-    'Config/ConfigAdventureAbility/LocalPlayer', 
+    'Config/ConfigAdventureAbility/LocalPlayer', 'Config/ConfigAdventureModifier', 
     'Config/ConfigAI', 'Config/GlobalConfig',
     'Config/ConfigAbility', 'Config/ConfigGlobalModifier', 'Config/ConfigGlobalTaskListTemplate', 
     'ExcelOutput', 'TextMap',
