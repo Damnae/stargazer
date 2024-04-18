@@ -1,8 +1,8 @@
 <script setup lang="ts">
   import { DiffNode, DiffNodeType } from './diff';
-  import ObjectDiff from '@/views/diff/ObjectDiff.vue';
-  import ArrayDiff from '@/views/diff/ArrayDiff.vue';
-  import ValueDiff from '@/views/diff/ValueDiff.vue';
+  import ObjectDiffNode from './ObjectDiffNode.vue';
+  import ArrayDiffNode from './ArrayDiffNode.vue';
+  import ValueDiffNode from './ValueDiffNode.vue';
 
   defineProps<{diffNode:DiffNode, prefix?:string|number, isClutter?:boolean}>()
 </script>
@@ -14,18 +14,18 @@
     </template>
 
     <template v-if="diffNode.Type == DiffNodeType.Value">
-      <ValueDiff :diffNode="diffNode" />
+      <ValueDiffNode :diffNode="diffNode" />
     </template>
     <template v-else-if="diffNode.Type == DiffNodeType.Object">
       <template v-if="isClutter">{…}</template>
       <template v-else>
-        <ObjectDiff :diffNode="diffNode" />
+        <ObjectDiffNode :diffNode="diffNode" />
       </template>
     </template>
     <template v-else-if="diffNode.Type == DiffNodeType.Array">
       <template v-if="isClutter">[…]</template>
       <template v-else>
-        <ArrayDiff :diffNode="diffNode" />
+        <ArrayDiffNode :diffNode="diffNode" />
       </template>
     </template>
     <template v-else-if="diffNode.Type">

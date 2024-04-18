@@ -3,7 +3,7 @@
   import { FileCompareEntry } from '@/common/changes-file';
   import FoldableLayout from '@/components/FoldableLayout.vue';
   import RepositoryFileLink from '@/components/RepositoryFileLink.vue';
-  import FileDiff from '@/views/diff/FileDiff.vue';
+  import FileDiff from '@/diff/FileDiff.vue';
 
   defineProps<{commitId:string, diffFromCommitId?:string, file:FileCompareEntry}>()
 </script>

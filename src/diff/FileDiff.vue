@@ -2,7 +2,7 @@
   import { ref, watch } from 'vue';
   import { retrieveJson } from '@/common/datasource';
   import { diff, DiffNode, DiffNodeChange, } from './diff';
-  import AnyDiff from '@/views/diff/AnyDiff.vue';
+  import AnyDiffNode from './AnyDiffNode.vue';
 
   const props = defineProps<{fromCommitId:string, toCommitId:string, path:string}>()
 
@@ -29,7 +29,7 @@
     <div v-if="fromCommitId != toCommitId && diffNode.Change == DiffNodeChange.Same">
       No Change Detected (string equality: {{ JSON.stringify(diffNode.FromValue) == JSON.stringify(diffNode.ToValue) }})
     </div>
-    <AnyDiff :diffNode="diffNode" />
+    <AnyDiffNode :diffNode="diffNode" />
   </div>
 
 </template>
