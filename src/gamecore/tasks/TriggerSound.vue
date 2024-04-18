@@ -5,14 +5,22 @@
   const props = defineProps<{node:GamecoreTask}>()
   const node = props.node as unknown as 
   {
-    SoundName:string
+    SoundName:string|{
+      Value:string
+    }
   }
 </script>
 
 <template>
   <BlockLayout :source="node" :cosmetic="true">
     
-    Play sound <em>{{ node.SoundName }}</em>
+    Play sound 
+    <template v-if="typeof(node.SoundName) == 'string'">
+      <em>{{ node.SoundName }}</em>
+    </template>
+    <template v-else>
+      <em>{{ node.SoundName.Value }}</em>
+    </template>
 
   </BlockLayout>
 </template>
