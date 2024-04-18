@@ -196,6 +196,7 @@ export enum TaskContextSource
   RelicSet = 'RelicSet',
   BattleEvent = 'BattleEvent',
   Level = 'Level',
+  Adventure = 'Adventure',
 }
 
 export enum TaskContextType
@@ -218,6 +219,7 @@ export enum TaskContextType
   DiffRelicSet = 'DiffRelicSet',
   DiffBattleEvent = 'DiffBattleEvent',
   DiffLevel = 'DiffLevel',
+  DiffAdventure = 'DiffAdventure',
   
   All = 'All', 
 }
@@ -246,6 +248,7 @@ const contextTypeToSources:{[type in TaskContextType]:TaskContextSource[]} =
   DiffRelicSet: [ TaskContextSource.RelicSet, ],
   DiffBattleEvent: [ TaskContextSource.BattleEvent, ],
   DiffLevel: [ TaskContextSource.Level, ],
+  DiffAdventure: [ TaskContextSource.Adventure, ],
   
   // All the sources
   All: 
@@ -258,6 +261,7 @@ const contextTypeToSources:{[type in TaskContextType]:TaskContextSource[]} =
     TaskContextSource.RelicSet, 
     TaskContextSource.BattleEvent, 
     TaskContextSource.Level, 
+    TaskContextSource.Adventure, 
   ],
 }
 
@@ -382,6 +386,19 @@ const contextSourceToPaths:{[key in TaskContextSource]:ContextPathEntry} =
       'Config/ConfigGlobalModifier/GlobalModifier_Level.json',
       'Config/ConfigGlobalModifier/GlobalModifier_WhiteBox_Level.json',
       'Config/ConfigGlobalModifier/GlobalModifier_WhiteBox_LevelRogueV2.json',
+    ],
+    TaskListTemplates: [],
+  },
+  Adventure:
+  {
+    Abilities: 
+    [
+      'Config/ConfigAdventureAbility/LocalPlayer',
+      'Config/ConfigAdventureAbility/WhiteBox/LocalPlayer',
+    ],
+    Modifiers: 
+    [
+      'Config/ConfigAdventureModifier',
     ],
     TaskListTemplates: [],
   },

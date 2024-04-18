@@ -30,6 +30,7 @@
     'Relic Sets': TaskContextType.DiffRelicSet, 
     'Battle Events': TaskContextType.DiffBattleEvent, 
     'Level': TaskContextType.DiffLevel,
+    'Adventure': TaskContextType.DiffAdventure,
   }
 
   provide('createAbilityRoute', (abilityId:string, isPrevious:boolean) : object => { return { name: 'ability', params:{ commitId: isPrevious ? props.fromCommitId : props.commitId, abilityId: abilityId, } }})

@@ -23,6 +23,7 @@ export enum FileCompareType
     AI = 'AI',
     Global = 'Global',
     Ability = 'Ability',
+    AdventureAbility = 'AdventureAbility',
     Modifier = 'Modifier',
     TaskTemplate = 'TaskTemplate',
     Data = 'Data',
@@ -50,6 +51,7 @@ export async function retrieveFileCompare(fromCommitId:string, toCommitId:string
             await fileCompareProcessTree(compare, fromCommitId, toCommitId, 'Config/ConfigAI', FileCompareType.AI)
             await fileCompareProcessTree(compare, fromCommitId, toCommitId, 'Config/GlobalConfig', FileCompareType.Global)
             await fileCompareProcessTree(compare, fromCommitId, toCommitId, 'Config/ConfigAbility', FileCompareType.Ability)
+            await fileCompareProcessTree(compare, fromCommitId, toCommitId, 'Config/ConfigAdventureAbility/LocalPlayer', FileCompareType.AdventureAbility)
             await fileCompareProcessTree(compare, fromCommitId, toCommitId, 'Config/ConfigGlobalModifier', FileCompareType.Modifier)
             await fileCompareProcessTree(compare, fromCommitId, toCommitId, 'Config/ConfigGlobalTaskListTemplate', FileCompareType.TaskTemplate)
             await fileCompareProcessTree(compare, fromCommitId, toCommitId, 'ExcelOutput', FileCompareType.Data)

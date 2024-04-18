@@ -110,6 +110,7 @@ export interface DataSourceFileMap
 export const fileMapPaths =
 [
     'Config/ConfigCharacter/Avatar', 'Config/ConfigCharacter/Monster', //'Config/ConfigCharacter/BattleEvent', missing
+    'Config/ConfigAdventureAbility/LocalPlayer', 
     'Config/ConfigAI', 'Config/GlobalConfig',
     'Config/ConfigAbility', 'Config/ConfigGlobalModifier', 'Config/ConfigGlobalTaskListTemplate', 
     'ExcelOutput', 'TextMap',
@@ -145,8 +146,7 @@ export function filterInterestingFiles(file:DataSourceTreeItem) : boolean
     return file.type == 'blob' && 
         file.path.endsWith('.json') && 
         !file.path.endsWith('.layout.json') && 
-        !file.path.includes('/Camera/') && 
-        !file.path.includes('/Adventure/')
+        !file.path.includes('/Camera/')
 }
 
 export interface DataSourceTreeItem
