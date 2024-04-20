@@ -28,8 +28,8 @@
     </template>
 
     <h3>{{ compare.Changed.length }} Changed</h3>
-    <template v-for="modifier in compare.Changed">
-      <ModifierItem :modifier="modifier" :isPrevious="true" />
+    <template v-for="modifierPair in compare.Changed">
+      <ModifierItem :modifier="modifierPair.To" :modifierFrom="modifierPair.From" :isPrevious="true" />
     </template>
 
     <h3>{{ compare.Removed.length }} Removed</h3>

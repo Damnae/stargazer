@@ -14,7 +14,7 @@
 <template>
 
   <div class="diff">
-    <div v-if="diffNode.Change == DiffNodeChange.Same">
+    <div v-if="diffNode.FromValue !== diffNode.ToValue && diffNode.Change == DiffNodeChange.Same">
       No Change Detected (string equality: {{ JSON.stringify(diffNode.FromValue) == JSON.stringify(diffNode.ToValue) }})
     </div>
     <AnyDiffNode :diffNode="diffNode" />

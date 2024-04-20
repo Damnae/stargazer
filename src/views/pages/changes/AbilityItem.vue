@@ -1,15 +1,17 @@
 <script setup lang="ts">
   import { inject, } from 'vue';
   import { Ability } from '@/sources/ability';
+  import FoldableLayout from '@/components/FoldableLayout.vue';
+  import AnyDiff from '@/diff/AnyDiff.vue';
 
-  defineProps<{ability:Ability, isPrevious:boolean}>()
+  defineProps<{ability:Ability, abilityFrom?:Ability, isPrevious:boolean}>()
   const createAbilityRoute = inject<(key:string, from:boolean) => object>('createAbilityRoute') as (key:string, from:boolean) => object
   const createModifierRoute = inject<(key:string, from:boolean) => object>('createModifierRoute') as (key:string, from:boolean) => object
 </script>
 
 <template>
 
-  <div class="block">
+  <FoldableLayout :lazy="true">
     <RouterLink v-if="ability.Name" :to="createAbilityRoute(ability.Name, isPrevious)">
       <em>{{ ability.Name }}</em>
     </RouterLink>
@@ -23,7 +25,12 @@
         </span>
       </template>
     </div>
-  </div>
+    <template #content>
+      <div class="block">
+        <AnyDiff :from="abilityFrom ?? ability" :to="ability" />
+      </div>
+    </template>
+  </FoldableLayout>
 
 </template>
 
