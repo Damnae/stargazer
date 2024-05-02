@@ -7,6 +7,7 @@
   import BlockLayout from '@/components/BlockLayout.vue';
   import EvaluateTargetType from '../EvaluateTargetType.vue';
   import EvaluateExpression from '../EvaluateExpression.vue';
+  import AnyTask from '../AnyTask.vue';
 
   const commitId = inject<string>('commitId') as string
   const props = defineProps<{node:GamecoreTask}>()
@@ -20,6 +21,7 @@
     }
     Team:string
     TotalDamageTeam:string
+    OnBattleEventCreate:GamecoreTask[]
   }
 
   const battleEventId = computed(() => 
@@ -61,6 +63,15 @@
       <BlockLayout v-if="node.DynamicValues" v-for="expression, key in node.DynamicValues" :source="expression">
         With <em :title="getHash(key.toString()).toString()">{{ key }}</em> set to <em><EvaluateExpression :expression="expression" /></em>
       </BlockLayout>
+
+      <template v-if="node.OnBattleEventCreate && node.OnBattleEventCreate.length > 0">
+        <div class="subblock">
+          <span class="flow">On BattleEvent Create</span>
+          <template v-for="n in node.OnBattleEventCreate">
+            <AnyTask :node="n" />
+          </template>
+        </div>
+      </template>
     </template>
 
   </BlockLayout>
