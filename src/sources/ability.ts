@@ -342,6 +342,7 @@ const contextSourceToPaths:{[key in TaskContextSource]:ContextPathEntry} =
     Abilities: 
     [
       'Config/ConfigAbility/EquipmemtAbility.json',
+      'Config/ConfigAbility/WhiteBox/W_EquipmemtAbility.json',
     ],
     Modifiers: [],
     TaskListTemplates: [],
@@ -351,6 +352,7 @@ const contextSourceToPaths:{[key in TaskContextSource]:ContextPathEntry} =
     Abilities:
     [
       'Config/ConfigAbility/RelicAbility.json',
+      'Config/ConfigAbility/WhiteBox/W_RelicAbility.json',
     ],
     Modifiers: [],
     TaskListTemplates: [],
@@ -365,6 +367,7 @@ const contextSourceToPaths:{[key in TaskContextSource]:ContextPathEntry} =
       'Config/ConfigAbility/BattleEventAbility_NewBoxingClub.json',
       'Config/ConfigAbility/BattleEventAbility_SilverWolfEvent.json',
       'Config/ConfigAbility/StageBattleEventAbility.json',
+      'Config/ConfigAbility/BattleEvent',
       'Config/ConfigAbility/WhiteBox/W_BattleEventAbility_SummonAndScoringTest.json',
       'Config/ConfigAbility/WhiteBox/W_BattleEventAbility_SummonAndScoringTest_2.json',
       'Config/ConfigAbility/WhiteBox/W_BattleEventAbility_SummonAndScoringTest_3.json',
