@@ -24,7 +24,7 @@
       StanceValue?:DynamicExpression
       SPHitRatio?:DynamicExpression
       AttackType?:string
-      DamageTag?:string
+      DamageTag?:string|string[]
       FinalFormulaType?:string
     }
     CanTriggerLastKill:boolean
@@ -73,7 +73,13 @@
       / <em>{{ node.AttackProperty?.AttackType }}</em>
     </template>
     <template v-if="node.AttackProperty?.DamageTag">
-      with tag <em>{{ node.AttackProperty?.DamageTag }}</em>
+      with tag 
+      <template v-if="Array.isArray(node.AttackProperty.DamageTag)">
+        <em>{{ node.AttackProperty.DamageTag.join(', ') }}</em>
+      </template>
+      <template v-else>
+        <em>{{ node.AttackProperty.DamageTag }}</em>
+      </template>
     </template>
     
 
