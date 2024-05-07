@@ -29,7 +29,7 @@
 
     <h3>{{ compare.Changed.length }} Changed</h3>
     <template v-for="abilityPair in compare.Changed">
-      <AbilityItem :ability="abilityPair.To" :abilityFrom="abilityPair.From" :isPrevious="true" />
+      <AbilityItem :ability="abilityPair.To" :abilityFrom="abilityPair.From" :isPrevious="false" />
     </template>
 
     <h3>{{ compare.Removed.length }} Removed</h3>
