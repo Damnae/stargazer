@@ -11,6 +11,12 @@
 {
   color: lightcoral;
 }
+
+.diff .change-Replaced
+{
+  color: rgb(105, 172, 155);
+}
+
 .diff .change-Changed,
 .diff .change-Same
 {
