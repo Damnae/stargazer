@@ -19,6 +19,10 @@
   <template v-else-if="diffNode.Change == DiffNodeChange.Removed">
     <AnyPlain :value="diffNode.FromValue" />
   </template>
+  <template v-else-if="diffNode.Change == DiffNodeChange.Replaced">
+    <span class="change-Removed"><AnyPlain :value="diffNode.FromValue" /></span>
+    <span class="change-Added"><AnyPlain :value="diffNode.ToValue" /></span>
+  </template>
   <template v-else>
     <AnyPlain :value="diffNode.ToValue" />
   </template>

@@ -12,9 +12,9 @@
   color: lightcoral;
 }
 
-.diff .change-Replaced
+.diff .change-Replaced:hover
 {
-  color: rgb(105, 172, 155);
+  color: rgb(255, 255, 255);
 }
 
 .diff .change-Changed,
