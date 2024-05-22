@@ -235,7 +235,7 @@ const contextTypeToSources:{[type in TaskContextType]:TaskContextSource[]} =
   RelicSet: [ TaskContextSource.Common, TaskContextSource.TaskTemplate, TaskContextSource.RelicSet, ],
   BattleEvent: [ TaskContextSource.Common, TaskContextSource.TaskTemplate, TaskContextSource.BattleEvent, ],
   Level: [ TaskContextSource.Common, TaskContextSource.TaskTemplate, TaskContextSource.Level, ],
-  Rogue: [ TaskContextSource.Common, TaskContextSource.TaskTemplate, TaskContextSource.Level, ],
+  Rogue: [ TaskContextSource.Common, TaskContextSource.TaskTemplate, TaskContextSource.Level, TaskContextSource.Adventure, ],
   
   // All task templates ONLY
   TaskTemplate: [ TaskContextSource.TaskTemplate, ],
