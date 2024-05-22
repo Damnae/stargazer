@@ -1,26 +1,24 @@
 <script setup lang="ts">
   import { inject } from 'vue';
-  import { cleanupMarkup } from '@/common/common';
+  import { GamecoreTask, GamecoreTargetType, } from '@/sources/gamecore';
   import translate, { Translatable } from '@/common/translate';
-  import { GamecoreTask, } from '@/sources/gamecore';
   import BlockLayout from '@/components/BlockLayout.vue';
+  import EvaluateTargetType from '../EvaluateTargetType.vue';
 
   const props = defineProps<{node:GamecoreTask}>()
   const node = props.node as unknown as 
   {
-    SkillName:string
-    OverrideSimpleDescTextID:Translatable
+    TargetType?:GamecoreTargetType
+    Key:Translatable
   }
 
   const commitId = inject('commitId') as string
-  translate(commitId, node.OverrideSimpleDescTextID)
+  translate(commitId, node.Key)
 </script>
 
 <template>
-  <BlockLayout :source="node" :cosmetic="true">
-   
-    Change <em>{{ node.SkillName }}</em>'s description to "{{ cleanupMarkup(node.OverrideSimpleDescTextID.Text) }}"
-
+  <BlockLayout :source="node">
+    <em><EvaluateTargetType :target="node.TargetType" /></em> has custom flag <em>{{ node.Key.Text ?? node.Key.Hash }}</em>
   </BlockLayout>
 </template>
 

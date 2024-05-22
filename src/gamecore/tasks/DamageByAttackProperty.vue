@@ -25,6 +25,7 @@
       SPHitRatio?:DynamicExpression
       AttackType?:string
       DamageTag?:string|string[]
+      CustomName?:string
       FinalFormulaType?:string
     }
     CanTriggerLastKill:boolean
@@ -81,7 +82,9 @@
         <em>{{ node.AttackProperty.DamageTag }}</em>
       </template>
     </template>
-    
+    <template v-if="node.AttackProperty?.CustomName">
+      with custom name <em>{{ node.AttackProperty.CustomName }}</em>
+    </template>
 
     <template v-if="node.TargetType">
       to <em><EvaluateTargetType :target="node.TargetType" /></em>

@@ -1,7 +1,6 @@
 <script setup lang="ts">
   import { inject } from 'vue';
-  import { GamecoreTask, 
-  } from '@/sources/gamecore';
+  import { GamecoreTask, } from '@/sources/gamecore';
   import BlockLayout from '@/components/BlockLayout.vue';
 
   const props = defineProps<{node:GamecoreTask}>()
