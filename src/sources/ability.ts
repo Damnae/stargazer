@@ -333,6 +333,7 @@ const contextSourceToPaths:{[key in TaskContextSource]:ContextPathEntry} =
     Modifiers: 
     [
       'Config/ConfigGlobalModifier/GlobalModifier_Monster.json',
+      'Config/ConfigGlobalModifier/GlobalModifier_Monster2.json',
       'Config/ConfigGlobalModifier/GlobalModifier_WhiteBox_Monster.json',
     ],
     TaskListTemplates: [],
