@@ -23,6 +23,15 @@ export interface ModifierPreshowConfig
     [property:string]: DynamicExpression
   }
 }
+export interface ModifierStanceConfig
+{
+  SkillType: string
+  Condition: GamecoreTask
+  MultiplyRatio?:DynamicExpression
+  StanceBreakAddRatio?:DynamicExpression
+  AddForceStanceDamageFlag?:boolean
+  AddWeakness?:string
+}
 
 export interface RangeWatcher
 {
@@ -73,6 +82,7 @@ export interface Modifier
   PerformTime?:DynamicExpression
   DynamicValues?: DynamicValues
   ModifierAffectedPreshowConfig?: ModifierPreshowConfig
+  ModifierStancePreshowConfig?: ModifierStanceConfig
   OnAbilityPropertyChange?:PropertyChangeWatcher[]
   OnDynamicValueChange?:ValueChangeWatcher[]
   TaskListTemplate?:TaskListTemplate[]

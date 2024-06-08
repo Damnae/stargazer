@@ -269,9 +269,9 @@
         </template>
       </template>
 
-      <template v-if="modifier.ModifierAffectedPreshowConfig">
+      <template v-if="modifier.ModifierAffectedPreshowConfig || modifier.ModifierStancePreshowConfig">
         <h2>Preview</h2>
-        <BlockLayout :source="modifier.ModifierAffectedPreshowConfig">
+        <BlockLayout v-if="modifier.ModifierAffectedPreshowConfig" :source="modifier.ModifierAffectedPreshowConfig">
           <span class="flow">
             <template v-if="modifier.ModifierAffectedPreshowConfig.SkillTypes">
               While preparing <em>{{ modifier.ModifierAffectedPreshowConfig.SkillTypes.join(', ') }}</em>, 
@@ -307,6 +307,55 @@
               </BlockLayout>
 
             </template>
+          </template>
+        </BlockLayout>
+
+        <BlockLayout v-if="modifier.ModifierStancePreshowConfig" :source="modifier.ModifierStancePreshowConfig">
+          <span class="flow">
+            <template v-if="modifier.ModifierStancePreshowConfig.SkillType">
+              While preparing <em>{{ modifier.ModifierStancePreshowConfig.SkillType }}</em>
+            </template>
+          </span>
+          <template #content>
+            <template v-if="modifier.ModifierStancePreshowConfig.Condition">
+              
+              <div class="subblock">
+                <span class="flow">If</span>
+                <AnyTask :node="modifier.ModifierStancePreshowConfig.Condition" />
+                <span class="flow">Do</span>
+
+                <BlockLayout v-if="modifier.ModifierStancePreshowConfig.AddWeakness" :source="modifier.ModifierStancePreshowConfig.AddWeakness">
+                  Preview added weakness to <em>{{ modifier.ModifierStancePreshowConfig.AddWeakness }}</em>
+                </BlockLayout>
+                <BlockLayout v-if="modifier.ModifierStancePreshowConfig.AddForceStanceDamageFlag" :source="modifier.ModifierStancePreshowConfig.AddForceStanceDamageFlag">
+                  Preview forced toughness damage
+                </BlockLayout>
+                <BlockLayout v-if="modifier.ModifierStancePreshowConfig.MultiplyRatio" :source="modifier.ModifierStancePreshowConfig.MultiplyRatio">
+                  Preview break multiplier with value <em><EvaluateExpression :expression="modifier.ModifierStancePreshowConfig.MultiplyRatio" /></em>
+                </BlockLayout>
+                <BlockLayout v-if="modifier.ModifierStancePreshowConfig.StanceBreakAddRatio" :source="modifier.ModifierStancePreshowConfig.StanceBreakAddRatio">
+                  Preview break with value <em><EvaluateExpression :expression="modifier.ModifierStancePreshowConfig.StanceBreakAddRatio" /></em>
+                </BlockLayout>
+              </div>
+            
+            </template>
+            <template v-else>
+              
+              <BlockLayout v-if="modifier.ModifierStancePreshowConfig.AddWeakness" :source="modifier.ModifierStancePreshowConfig.AddWeakness">
+                Preview added weakness to <em>{{ modifier.ModifierStancePreshowConfig.AddWeakness }}</em>
+              </BlockLayout>
+              <BlockLayout v-if="modifier.ModifierStancePreshowConfig.AddForceStanceDamageFlag" :source="modifier.ModifierStancePreshowConfig.AddForceStanceDamageFlag">
+                Preview forced toughness damage
+              </BlockLayout>
+              <BlockLayout v-if="modifier.ModifierStancePreshowConfig.MultiplyRatio" :source="modifier.ModifierStancePreshowConfig.MultiplyRatio">
+                Preview break multiplier with value <em><EvaluateExpression :expression="modifier.ModifierStancePreshowConfig.MultiplyRatio" /></em>
+              </BlockLayout>
+              <BlockLayout v-if="modifier.ModifierStancePreshowConfig.StanceBreakAddRatio" :source="modifier.ModifierStancePreshowConfig.StanceBreakAddRatio">
+                Preview break with value <em><EvaluateExpression :expression="modifier.ModifierStancePreshowConfig.StanceBreakAddRatio" /></em>
+              </BlockLayout>
+
+            </template>
+
           </template>
         </BlockLayout>
       </template>
