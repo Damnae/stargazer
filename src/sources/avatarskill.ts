@@ -80,10 +80,13 @@ export async function getAvatarSkills(commitId:string) : Promise<AvatarSkillConf
 export async function getAvatarSkill(commitId:string, avatarSkillId:number) : Promise<AvatarSkill>
 {
     const ranks = (await getAvatarSkills(commitId))[avatarSkillId]
-    let skill = ranks[Object.keys(ranks).length * 2 / 3] ?? ranks[1]
-    if (skill == null)
-        return missingAvatarSkill
-    return skill
+    if (ranks)
+    {
+        let skill = ranks[Object.keys(ranks).length * 2 / 3] ?? ranks[1]
+        if (skill)
+            return skill
+    }
+    return missingAvatarSkill
 }
 
 export async function getAvatarSkillsByIds(commitId:string, avatarSkillIds:number[]) : Promise<AvatarSkill[]>
