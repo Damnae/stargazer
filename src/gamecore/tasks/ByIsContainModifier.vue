@@ -8,6 +8,7 @@
   const node = props.node as unknown as 
   {
     TargetType?:GamecoreTargetType
+    CasterFilter?:GamecoreTargetType
     ModifierName:string
   }
   const createModifierRoute = inject<(key:string) => object>('createModifierRoute') as (key:string) => object
@@ -21,6 +22,9 @@
     <RouterLink v-if="node.ModifierName" :to="createModifierRoute(node.ModifierName)">
       <em>{{ node.ModifierName }}</em>
     </RouterLink>
+    <template v-if="node.CasterFilter">
+      applied by <em><EvaluateTargetType :target="node.CasterFilter" /></em>
+    </template>
 
   </BlockLayout>
 </template>

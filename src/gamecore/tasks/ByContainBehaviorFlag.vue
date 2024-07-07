@@ -7,6 +7,7 @@
   const node = props.node as unknown as 
   {
     TargetType?:GamecoreTargetType
+    CasterFilter?:GamecoreTargetType
     Flag:string
   }
 </script>
@@ -16,6 +17,9 @@
 
     <em><EvaluateTargetType :target="node.TargetType" /></em>
     has <em>{{ node.Flag }}</em> flag
+    <template v-if="node.CasterFilter">
+      applied by <em><EvaluateTargetType :target="node.CasterFilter" /></em>
+    </template>
 
   </BlockLayout>
 </template>

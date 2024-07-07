@@ -9,6 +9,7 @@
   const node = props.node as unknown as 
   {
     TargetType?:GamecoreTargetType
+    CasterFilter?:GamecoreTargetType
     EventType?:string
     DynamicKey?:string
     Value?:DynamicExpression
@@ -24,16 +25,19 @@
     
     Trigger
     <template v-if="node.MaxNumber">
-      up to <em><EvaluateExpression :expression="node.MaxNumber" /></em> of
+      up to <em><EvaluateExpression :expression="node.MaxNumber" /></em>
     </template>
-    <template v-if="node.TargetType">
-      <em><EvaluateTargetType :target="node.TargetType" /></em>'s
-    </template>
-    
     modifiers custom event 
     <template v-if="node.EventType">
       <em>{{ node.EventType }}</em>
     </template>
+    <template v-if="node.CasterFilter">
+      applied by <em><EvaluateTargetType :target="node.CasterFilter" /></em>
+    </template>
+    <template v-if="node.TargetType">
+      on <em><EvaluateTargetType :target="node.TargetType" /></em>
+    </template>
+    
     <template v-if="node.DynamicKey">
       with <em>{{ node.DynamicKey }}</em>
     </template>
