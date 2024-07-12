@@ -2,6 +2,7 @@ import { openDB, DBSchema } from 'idb'
 import { Mutex, MutexGroup } from './mutex'
 import useSettings from './settings'
 import { ref } from 'vue'
+import { mapByKeys } from './common'
 
 const [settings, _sessionSettings] = useSettings()
 
@@ -76,7 +77,7 @@ export async function retrieveJson(request:string, commit:string, useApi:boolean
             {
                 const existing = await (await configDB).get('data', IDBKeyRange.only([sha]));
                 if (existing?.content)
-                    return JSON.parse(existing.content)
+                    return postProcessJson(request, JSON.parse(existing.content))
         
                 const result = await fetchJson(request, commit, useApi)
                 if (result)
@@ -84,14 +85,14 @@ export async function retrieveJson(request:string, commit:string, useApi:boolean
                     await (await configDB).put('data', { sha:sha, content:JSON.stringify(result) })
                     console.log(`dataDB stored ${request} @${commit}`)
                 }
-                return result
+                return postProcessJson(request, result)
             }
             else console.warn(`file map miss for ${request}@${commit}`)
         }
 
         const existing = await (await configDB).get('files', IDBKeyRange.only([commit, request]));
         if (existing?.hash)
-            return JSON.parse(existing.content)
+            return postProcessJson(request, JSON.parse(existing.content))
 
         const result = await fetchJson(request, commit, useApi)
         if (result)
@@ -99,15 +100,66 @@ export async function retrieveJson(request:string, commit:string, useApi:boolean
             await (await configDB).put('files', { hash:commit, path:request, content:JSON.stringify(result) })
             console.log(`fileDB stored ${request} @${commit}`)
         }
-        return result
+        return postProcessJson(request, result)
     })
 }
 
-export interface DataSourceFileMap
+const excelDataIndexes:{[request: string]: string[]} =
+{
+    // Used by sources
+    'ExcelOutput/AvatarRankConfig.json': ['RankID'],
+    'ExcelOutput/AvatarConfig.json': ['AvatarID'],
+    'ExcelOutput/AvatarSkillTreeConfig.json': ['PointID', 'Level'],
+    'ExcelOutput/AvatarSkillConfig.json': ['SkillID', 'Level'],
+    'ExcelOutput/BattleEventData.json': ['BattleEventID'],
+    'ExcelOutput/BattleEventConfig.json': ['BattleEventID'],
+    'ExcelOutput/BattleEventSkillConfig.json': ['SkillID'],
+    'ExcelOutput/EquipmentSkillConfig.json': ['SkillID', 'Level'],
+    'ExcelOutput/EquipmentConfig.json': ['EquipmentID'],
+    'ExcelOutput/MazeSkill.json': ['MazeSkillId'],
+    'ExcelOutput/MonsterCamp.json': ['ID'],
+    'ExcelOutput/MonsterTemplateConfig.json': ['MonsterTemplateID'],
+    'ExcelOutput/MonsterConfig.json': ['MonsterID'],
+    'ExcelOutput/MonsterSkillConfig.json': ['SkillID'],
+    'ExcelOutput/AvatarRelicRecommend.json': ['AvatarID'],
+    'ExcelOutput/RelicSetSkillConfig.json': ['SetID', 'RequireNum'],
+    'ExcelOutput/RelicSetConfig.json': ['SetID'],
+    'ExcelOutput/RogueBuffType.json': ['RogueBuffType'],
+    'ExcelOutput/RogueMazeBuff.json': ['ID', 'Lv'],
+    'ExcelOutput/RogueBuff.json': ['MazeBuffID', 'MazeBuffLevel'],
+    'ExcelOutput/StatusConfig.json': ['StatusID'],
+    'ExcelOutput/AvatarStatusConfig.json': ['StatusID'],
+    'ExcelOutput/MonsterStatusConfig.json': ['StatusID'],
+    // Helps with diff
+    'ExcelOutput/AvatarAtlas.json': ['AvatarID'],
+    'ExcelOutput/AvatarBaseType.json': ['ID'],
+    'ExcelOutput/DamageType.json': ['ID'],
+    'ExcelOutput/EliteGroup.json': ['EliteGroup'],
+    'ExcelOutput/HardLevelGroup.json': ['HardLevelGroup'],
+    'ExcelOutput/ConstValueRogue.json': ['ConstRogueName'],
+    'ExcelOutput/MazeBuff.json': ['ID'],
+    'ExcelOutput/UIRedDot.json': ['RedDot'],
+}
+
+function postProcessJson(request:string, data:any) : any
+{
+    var result = data
+
+    var indexes = excelDataIndexes[request]
+    if (!indexes && request.startsWith('ExcelOutput/') && request.includes('Const'))
+        indexes = ['ConstValueName']
+
+    if (indexes)
+        result = mapByKeys(result, indexes)
+
+    return result
+}
+
+interface DataSourceFileMap
 {
     [Path:string]: string
 }
-export const fileMapPaths =
+const fileMapPaths =
 [
     'Config/ConfigCharacter/Avatar', 'Config/ConfigCharacter/Monster', //'Config/ConfigCharacter/BattleEvent', missing
     'Config/ConfigAdventureAbility/LocalPlayer', 'Config/ConfigAdventureAbility/WhiteBox/LocalPlayer', 'Config/ConfigAdventureModifier', 

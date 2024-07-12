@@ -113,3 +113,25 @@ export function deepEquals(first:any, second:any) : boolean
 
     return false
 }
+
+export function mapByKeys(data:any, keys:string[]) : any
+{
+    if (!Array.isArray(data))
+        return data
+
+    const result = {}
+    for (const element of data)
+    {
+        var container:any = result
+        for (const key of keys.slice(0, -1))
+        {
+            const elementKey = element[key]
+            if (!container.hasOwnProperty(elementKey))
+                container[elementKey] = {}
+            container = container[elementKey]
+        }
+        const lastElementKey = element[keys[keys.length - 1]]
+        container[lastElementKey] = element
+    }
+    return result
+}
