@@ -1,15 +1,15 @@
 <script setup lang="ts">
   import { cleanupNumber } from '@/common/common';
-  import { CharacterSkillAIWeightData } from '@/sources/character';
+  import { Character, CharacterSkillAIWeightData } from '@/sources/character';
   import AIWeight from './AIWeight.vue';
 
-  defineProps<{weightData:CharacterSkillAIWeightData}>()
+  defineProps<{character:Character, weightData:CharacterSkillAIWeightData}>()
 </script>
 
 <template>
   <ul>
     <li v-for="weightGroup in weightData?.Groups">
-      <AIWeight :weightGroup="weightGroup" />
+      <AIWeight :weightGroup="weightGroup" :character="character" />
     </li>
   </ul>
   <div class="minor" v-if="weightData?.SkillBasicPower">

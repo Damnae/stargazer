@@ -1,15 +1,15 @@
 <script setup lang="ts">
   import { ref, inject, } from 'vue';
   import { cleanupNumber } from '@/common/common';
-  import { CharacterSkillAIWeightGroup } from '@/sources/character';
+  import { Character, CharacterSkillAIWeightGroup } from '@/sources/character';
   import { AIFactorGroup, getAIFactorGroup } from '@/sources/autofactorgroup';
   import AnyTask from '@/gamecore/AnyTask.vue';
   import FoldableLayout from '@/components/FoldableLayout.vue';
 
-  const props = defineProps<{weightGroup:CharacterSkillAIWeightGroup}>()
+  const props = defineProps<{character:Character, weightGroup:CharacterSkillAIWeightGroup}>()
   const commitId = inject<string>('commitId') as string
 
-  const aiFactorGroup = ref<AIFactorGroup>(await getAIFactorGroup(commitId, props.weightGroup.GroupName))
+  const aiFactorGroup = ref<AIFactorGroup>(props.character?.GlobalAIFactorGroups?.[props.weightGroup.GroupName] ?? await getAIFactorGroup(commitId, props.weightGroup.GroupName))
 </script>
 
 <template>

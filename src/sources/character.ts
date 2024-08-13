@@ -3,6 +3,7 @@ import { Avatar } from './avatar';
 import { Monster } from './monster';
 import { DynamicValues } from './gamecore';
 import { BattleEvent } from './battleevent';
+import { AIFactorGroup } from './autofactorgroup';
 
 export interface CharacterSkillAIWeightGroup
 {
@@ -57,6 +58,10 @@ export interface Character
         {
             [hash: number]: {}
         }
+    }
+    GlobalAIFactorGroups:
+    {
+        [key:string]: AIFactorGroup
     }
 }
 

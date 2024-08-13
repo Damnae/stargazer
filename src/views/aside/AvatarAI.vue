@@ -52,12 +52,12 @@
 
               <template v-if="skill.ComplexSkillAIPreCheck">
                 <h3>Precheck Weights</h3>
-                <AIWeights :weightData="skill.ComplexSkillAIPreCheck" />
+                <AIWeights :weightData="skill.ComplexSkillAIPreCheck" :character="character" />
               </template>
 
               <template v-if="skill.ComplexSkillAI">
                 <h3>Weights</h3>
-                <AIWeights :weightData="skill.ComplexSkillAI" />
+                <AIWeights :weightData="skill.ComplexSkillAI" :character="character" />
               </template>
 
               <div class="minor" v-if="skill.AIUltraSkillPriority">
