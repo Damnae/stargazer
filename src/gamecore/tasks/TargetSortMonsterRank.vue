@@ -5,15 +5,19 @@
   const props = defineProps<{node:GamecoreTask}>()
   const node = props.node as unknown as 
   {
-    PropertyType:string
     HighestFirst?:boolean
+    MaxRank:string
   }
 </script>
 
 <template>
   <BlockLayout :source="node">
 
-    Sort by <em>{{ node.PropertyType }}</em>
+    Sort by monster rank 
+    <template v-if="node.MaxRank">
+      up to <em>{{ node.MaxRank }}</em>
+    </template>
+    
     <span class="minor">({{ node.HighestFirst ? 'Highest' : 'Lowest' }} first)</span>
 
   </BlockLayout>
