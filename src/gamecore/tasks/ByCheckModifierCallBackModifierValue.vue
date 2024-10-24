@@ -1,10 +1,8 @@
 <script setup lang="ts">
-  import { inject, } from 'vue';
-  import { GamecoreTask, 
-    DynamicExpression, 
-  } from '@/sources/gamecore';
+  import { GamecoreTask, DynamicExpression, } from '@/sources/gamecore';
   import BlockLayout from '@/components/BlockLayout.vue';
   import EvaluateExpression from '../EvaluateExpression.vue';
+  import ModifierLink from '@/gamecore/ModifierLink.vue';
 
   const props = defineProps<{node:GamecoreTask}>()
   const node = props.node as unknown as 
@@ -14,17 +12,15 @@
     CompareType?:string
     CompareValue?:DynamicExpression
   }
-
-  const createModifierRoute = inject<(key:string) => object>('createModifierRoute') as (key:string) => object
 </script>
 
 <template>
   <BlockLayout :source="node">
     
     Parameter modifier 
-    <RouterLink v-if="node.ModifierName" :to="createModifierRoute(node.ModifierName)">
-      <em>{{ node.ModifierName }}</em>'s
-    </RouterLink>
+    <template v-if="node.ModifierName">
+      <ModifierLink :modifierName="node.ModifierName" />'s
+    </template>
     
     <template v-if="node.ValueType">
       <em>{{ node.ValueType }}</em> is 

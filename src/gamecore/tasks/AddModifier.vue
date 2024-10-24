@@ -1,5 +1,4 @@
 <script setup lang="ts">
-  import { inject } from 'vue';
   import { getHash } from '@/common/translate';
   import useHashStore from '@/common/hashstore';
   import { GamecoreTask, GamecoreTargetType, DynamicExpression, } from '@/sources/gamecore';
@@ -7,6 +6,7 @@
   import EvaluateExpression from '../EvaluateExpression.vue';
   import EvaluateTargetType from '../EvaluateTargetType.vue';
   import AnyTask from '../AnyTask.vue';
+  import ModifierLink from '@/gamecore/ModifierLink.vue';
 
   const props = defineProps<{node:GamecoreTask}>()
   const node = props.node as unknown as 
@@ -37,8 +37,6 @@
       hashStore.register(key, false)
     hashStore.commit()
   }
-
-  const createModifierRoute = inject<(key:string) => object>('createModifierRoute') as (key:string) => object
 </script>
 
 <template>
@@ -52,10 +50,7 @@
       <em><EvaluateExpression :expression="node.Count" /></em> stacks of
     </template>
     modifier
-    <RouterLink v-if="node.ModifierName" :to="createModifierRoute(node.ModifierName)">
-      <em>{{ node.ModifierName }}</em>
-    </RouterLink>
-
+    <ModifierLink :modifierName="node.ModifierName" />
     <template v-if="node.InheritCaster">
       with <em>{{ node.InheritCaster }}</em> as the caster
     </template>

@@ -1,8 +1,8 @@
 <script setup lang="ts">
-  import { inject } from 'vue';
   import { GamecoreTask, GamecoreTargetType, } from '@/sources/gamecore';
   import BlockLayout from '@/components/BlockLayout.vue';
   import EvaluateTargetType from '../EvaluateTargetType.vue';
+  import ModifierLink from '@/gamecore/ModifierLink.vue';
 
   const props = defineProps<{node:GamecoreTask}>()
   const node = props.node as unknown as 
@@ -12,17 +12,13 @@
     ModifierName:string
     RemoveBehaviorFlags:string[]
   }
-
-  const createModifierRoute = inject<(key:string) => object>('createModifierRoute') as (key:string) => object
 </script>
 
 <template>
   <BlockLayout :source="node">
 
     Remove <em>{{ node.RemoveBehaviorFlags.join(", ") }}</em> flag from
-    <RouterLink v-if="node.ModifierName" :to="createModifierRoute(node.ModifierName)">
-      <em>{{ node.ModifierName }}</em>
-    </RouterLink>
+    <ModifierLink :modifierName="node.ModifierName" />
     <template v-if="node.CasterFilter">
       applied by <em><EvaluateTargetType :target="node.CasterFilter" /></em>
     </template>

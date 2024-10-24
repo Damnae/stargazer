@@ -1,9 +1,9 @@
 <script setup lang="ts">
-  import { inject } from 'vue';
   import { GamecoreTask, GamecoreTargetType, DynamicExpression } from '@/sources/gamecore';
   import BlockLayout from '@/components/BlockLayout.vue';
   import EvaluateTargetType from '../EvaluateTargetType.vue';
   import EvaluateExpression from '../EvaluateExpression.vue';
+  import ModifierLink from '@/gamecore/ModifierLink.vue';
 
   const props = defineProps<{node:GamecoreTask}>()
   const node = props.node as unknown as 
@@ -14,8 +14,6 @@
     ModifyOp:string
     FormulaValue?:DynamicExpression
   }
-
-  const createModifierRoute = inject<(key:string) => object>('createModifierRoute') as (key:string) => object
 </script>
 
 <template>
@@ -32,9 +30,7 @@
       </template>
       modifier 
       <template v-for="modifier in node.ShieldModifiers">
-        <RouterLink v-if="modifier" :to="createModifierRoute(modifier)">
-          <em>{{ modifier }}</em>
-        </RouterLink>
+        <ModifierLink :modifierName="modifier" />
       </template>
     </template>
     by {{ node.ModifyOp ?? 'Add(?)' }} <em><EvaluateExpression :expression="node.FormulaValue" /></em>

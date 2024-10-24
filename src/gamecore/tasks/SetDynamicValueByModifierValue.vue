@@ -1,10 +1,10 @@
 <script setup lang="ts">
-  import { inject } from 'vue';
   import { GamecoreTask, GamecoreTargetType, DynamicExpression, } from '@/sources/gamecore';
   import useHashStore from '@/common/hashstore';
   import BlockLayout from '@/components/BlockLayout.vue';
   import EvaluateTargetType from '../EvaluateTargetType.vue';
   import EvaluateExpression from '../EvaluateExpression.vue';
+  import ModifierLink from '@/gamecore/ModifierLink.vue';
 
   const props = defineProps<{node:GamecoreTask}>()
   const node = props.node as unknown as 
@@ -18,8 +18,6 @@
   
   if (node.DynamicKey)
     useHashStore().register(node.DynamicKey, true)
-
-  const createModifierRoute = inject<(key:string) => object>('createModifierRoute') as (key:string) => object
 </script>
 
 <template>
@@ -28,9 +26,9 @@
     Set <em>{{ node.DynamicKey }}</em>
 
     to <em><EvaluateExpression :expression="node.Multiplier" /></em>× of
-    <RouterLink v-if="node.ModifierName" :to="createModifierRoute(node.ModifierName)">
-      <em>{{ node.ModifierName }}</em>'s
-    </RouterLink>
+    <template v-if="node.ModifierName">
+      <ModifierLink :modifierName="node.ModifierName" />'s
+    </template>
     <template v-else>
       this modifier's
     </template>

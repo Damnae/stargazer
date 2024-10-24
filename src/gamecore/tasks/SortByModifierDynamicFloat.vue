@@ -1,8 +1,8 @@
 <script setup lang="ts">
-  import { inject } from 'vue';
   import { GamecoreTask, GamecoreTargetType, } from '@/sources/gamecore';
   import useHashStore from '@/common/hashstore';
   import BlockLayout from '@/components/BlockLayout.vue';
+  import ModifierLink from '@/gamecore/ModifierLink.vue';
 
   const props = defineProps<{node:GamecoreTask}>()
   const node = props.node as unknown as 
@@ -14,17 +14,15 @@
   
   if (node.DynamicFloatKey)
     useHashStore().register(node.DynamicFloatKey, true)
-
-  const createModifierRoute = inject<(key:string) => object>('createModifierRoute') as (key:string) => object
 </script>
 
 <template>
   <BlockLayout :source="node">
     
     Sorted by
-    <RouterLink v-if="node.ModifierName" :to="createModifierRoute(node.ModifierName)">
-      <em>{{ node.ModifierName }}</em>'s
-    </RouterLink>
+    <template v-if="node.ModifierName">
+      <ModifierLink :modifierName="node.ModifierName" />'s
+    </template>
     <template v-else>
       this modifier's
     </template>

@@ -1,23 +1,20 @@
 <script setup lang="ts">
-  import { inject } from 'vue';
   import { GamecoreTask, } from '@/sources/gamecore';
   import BlockLayout from '@/components/BlockLayout.vue';
+  import ModifierLink from '@/gamecore/ModifierLink.vue';
 
   const props = defineProps<{node:GamecoreTask}>()
   const node = props.node as unknown as 
   {
     ModifierName:string
   }
-  const createModifierRoute = inject<(key:string) => object>('createModifierRoute') as (key:string) => object
 </script>
 
 <template>
   <BlockLayout :source="node">
 
     Parameter modifier is
-    <RouterLink v-if="node.ModifierName" :to="createModifierRoute(node.ModifierName)">
-      <em>{{ node.ModifierName }}</em>
-    </RouterLink>
+    <ModifierLink :modifierName="node.ModifierName" />
 
   </BlockLayout>
 </template>

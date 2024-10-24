@@ -1,9 +1,9 @@
 <script setup lang="ts">
-  import { inject, } from 'vue';
   import { GamecoreTask, DynamicExpression, GamecoreTargetType, } from '@/sources/gamecore';
   import BlockLayout from '@/components/BlockLayout.vue';
   import EvaluateExpression from '../EvaluateExpression.vue';
-import EvaluateTargetType from '../EvaluateTargetType.vue';
+  import EvaluateTargetType from '../EvaluateTargetType.vue';
+  import ModifierLink from '@/gamecore/ModifierLink.vue';
 
   const props = defineProps<{node:GamecoreTask}>()
   const node = props.node as unknown as 
@@ -14,8 +14,6 @@ import EvaluateTargetType from '../EvaluateTargetType.vue';
     CompareType?:string
     CompareValue?:DynamicExpression
   }
-
-  const createModifierRoute = inject<(key:string) => object>('createModifierRoute') as (key:string) => object
 </script>
 
 <template>
@@ -25,9 +23,9 @@ import EvaluateTargetType from '../EvaluateTargetType.vue';
       <em><EvaluateTargetType :target="node.TargetType" /></em>'s
     </template>
     toughness ratio is 
-    <RouterLink v-if="node.ModifierName" :to="createModifierRoute(node.ModifierName)">
-      <em>{{ node.ModifierName }}</em>'s
-    </RouterLink>
+    <template v-if="node.ModifierName">
+      <ModifierLink :modifierName="node.ModifierName" />'s
+    </template>
     
     <template v-if="node.ValueType">
       <em>{{ node.ValueType }}</em> is 

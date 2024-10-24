@@ -12,6 +12,7 @@
   import DynamicValues from './components/DynamicValues.vue';
   import RangeChange from './components/RangeChange.vue';
   import ShowContext from './components/ShowContext.vue';
+  import ModifierLink from '@/gamecore/ModifierLink.vue';
 
   const props = defineProps<{modifierId:string}>()
   const taskContext = inject('taskContext') as Ref<TaskContext>
@@ -97,7 +98,6 @@
   }
 
   const hashStore = useHashStore()
-  const createModifierRoute = inject<(key:string) => object>('createModifierRoute') as (key:string) => object
 </script>
 
 <template>
@@ -192,18 +192,14 @@
 
         <BlockLayout v-if="modifier.AdditionConfig?.DependencyOnAdd" :source="modifier.AdditionConfig?.DependencyOnAdd">
           On Add 
-          <RouterLink v-if="modifier.AdditionConfig.DependencyOnAdd.DependentModifier" :to="createModifierRoute(modifier.AdditionConfig.DependencyOnAdd.DependentModifier)">
-            <em>{{ modifier.AdditionConfig.DependencyOnAdd.DependentModifier }}</em>
-          </RouterLink>
+          <ModifierLink v-if="modifier.AdditionConfig.DependencyOnAdd.DependentModifier" :modifierName="modifier.AdditionConfig.DependencyOnAdd.DependentModifier" />
           <template v-if="modifier.AdditionConfig.DependencyOnAdd.CasterFilter">
             on <em><EvaluateTargetType :target="modifier.AdditionConfig.DependencyOnAdd.CasterFilter" /></em>
           </template>
         </BlockLayout>
         <BlockLayout v-if="modifier.AdditionConfig?.DependencyOnRemove" :source="modifier.AdditionConfig?.DependencyOnRemove">
           On Remove 
-          <RouterLink v-if="modifier.AdditionConfig.DependencyOnRemove.DependentModifier" :to="createModifierRoute(modifier.AdditionConfig.DependencyOnRemove.DependentModifier)">
-            <em>{{ modifier.AdditionConfig.DependencyOnRemove.DependentModifier }}</em>
-          </RouterLink>
+          <ModifierLink v-if="modifier.AdditionConfig.DependencyOnRemove.DependentModifier" :modifierName="modifier.AdditionConfig.DependencyOnRemove.DependentModifier" />
           <template v-if="modifier.AdditionConfig.DependencyOnRemove.CasterFilter">
             on <em><EvaluateTargetType :target="modifier.AdditionConfig.DependencyOnRemove.CasterFilter" /></em>
           </template>
@@ -217,9 +213,7 @@
           <BlockLayout :source="subModifier">
             <span class="flow">
               Apply sub modifier
-              <RouterLink v-if="subModifier.Name" :to="createModifierRoute(subModifier.Name)">
-                <em>{{ subModifier.Name }}</em>
-              </RouterLink>
+              <ModifierLink v-if="subModifier.Name" :modifierName="subModifier.Name" />
               to <em><EvaluateTargetType :target="subModifier.TargetType" /></em>
               <template v-if="subModifier.IsHaloStatus">
                 &nbsp;<span class="minor">(Halo)</span>
