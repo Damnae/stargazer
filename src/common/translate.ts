@@ -29,11 +29,15 @@ export async function translateHash(commitId:string, hash:number) : Promise<stri
     if (commitId in translationMap)
     {
         const translation = translationMap[commitId]
-        return Promise.resolve(translation[hash])
+        if (translation != undefined)
+            return Promise.resolve(translation[hash])
     }
 
     const translation = translationMap[commitId] = await retrieveJson('TextMap/TextMapEN.json', commitId, false)
-    return translation[hash]
+    if (translation != undefined)
+        return translation[hash]
+
+    return undefined
 }
 
 export function getHash(key:string) : number
