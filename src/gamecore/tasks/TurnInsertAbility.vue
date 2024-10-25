@@ -1,9 +1,9 @@
 <script setup lang="ts">
-  import { inject } from 'vue';
   import { GamecoreTask, GamecoreTargetType, } from '@/sources/gamecore';
   import BlockLayout from '@/components/BlockLayout.vue';
   import EvaluateTargetType from '../EvaluateTargetType.vue';
   import AnyTask from '../AnyTask.vue';
+  import AbilityLink from '../AbilityLink.vue';
 
   const props = defineProps<{node:GamecoreTask}>()
   const node = props.node as unknown as 
@@ -16,17 +16,13 @@
     ShowInActionBar:boolean
     PreCheck?:GamecoreTask
   }
-
-  const createAbilityRoute = inject<(key:string) => object>('createAbilityRoute') as (key:string) => object
 </script>
 
 <template>
   <BlockLayout :source="node">
    
     Insert ability
-    <RouterLink :to="createAbilityRoute(node.AbilityName)">
-      <em>{{ node.AbilityName }}</em>
-    </RouterLink>
+    <AbilityLink :abilityName="node.AbilityName" />
     <template v-if="node.TargetType">
       for <em><EvaluateTargetType :target="node.TargetType" /></em>
     </template>

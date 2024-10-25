@@ -1,24 +1,20 @@
 <script setup lang="ts">
-  import { inject } from 'vue';
   import { GamecoreTask, } from '@/sources/gamecore';
   import BlockLayout from '@/components/BlockLayout.vue';
+  import AbilityLink from '../AbilityLink.vue';
 
   const props = defineProps<{node:GamecoreTask}>()
   const node = props.node as unknown as 
   {
     StageAbilityName:string
   }
-
-  const createAbilityRoute = inject<(key:string) => object>('createAbilityRoute') as (key:string) => object
 </script>
 
 <template>
   <BlockLayout :source="node">
    
     Add ability
-    <RouterLink :to="createAbilityRoute(node.StageAbilityName)">
-      <em>{{ node.StageAbilityName }}</em>
-    </RouterLink>
+    <AbilityLink :abilityName="node.StageAbilityName" />
     to the stage
 
   </BlockLayout>
