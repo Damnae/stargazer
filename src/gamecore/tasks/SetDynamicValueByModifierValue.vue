@@ -1,29 +1,27 @@
 <script setup lang="ts">
   import { GamecoreTask, GamecoreTargetType, DynamicExpression, } from '@/sources/gamecore';
-  import useHashStore from '@/common/hashstore';
   import BlockLayout from '@/components/BlockLayout.vue';
   import EvaluateTargetType from '../EvaluateTargetType.vue';
   import EvaluateExpression from '../EvaluateExpression.vue';
   import ModifierLink from '@/gamecore/ModifierLink.vue';
+  import DynamicKey from '@/gamecore/DynamicKey.vue';
 
   const props = defineProps<{node:GamecoreTask}>()
   const node = props.node as unknown as 
   {
     ReadTargetType?:GamecoreTargetType
     ModifierName:string
+    ContextScope:string
     DynamicKey:string
     ValueType?:string
     Multiplier?:DynamicExpression
   }
-  
-  if (node.DynamicKey)
-    useHashStore().register(node.DynamicKey, true)
 </script>
 
 <template>
   <BlockLayout :source="node">
     
-    Set <em>{{ node.DynamicKey }}</em>
+    Set <DynamicKey :dynamicKey="node.DynamicKey" :contextScope="node.ContextScope" />
 
     to <em><EvaluateExpression :expression="node.Multiplier" /></em>× of
     <template v-if="node.ModifierName">

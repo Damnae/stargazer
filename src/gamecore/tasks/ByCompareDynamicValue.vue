@@ -1,9 +1,9 @@
 <script setup lang="ts">
   import { GamecoreTask, GamecoreTargetType, DynamicExpression, } from '@/sources/gamecore';
-  import useHashStore from '@/common/hashstore';
   import BlockLayout from '@/components/BlockLayout.vue';
   import EvaluateTargetType from '../EvaluateTargetType.vue';
   import EvaluateExpression from '../EvaluateExpression.vue';
+  import DynamicKey from '@/gamecore/DynamicKey.vue';
 
   const props = defineProps<{node:GamecoreTask}>()
   const node = props.node as unknown as 
@@ -14,9 +14,6 @@
     CompareType:string
     CompareValue:DynamicExpression
   }
-
-  if (node.DynamicKey)
-    useHashStore().register(node.DynamicKey, true)
 </script>
 
 <template>
@@ -25,7 +22,7 @@
     <template v-if="node.TargetType">
       <em><EvaluateTargetType :target="node.TargetType" /></em>'s
     </template>
-    <em v-if="node.ContextScope">{{ node.ContextScope }}.</em><em>{{ node.DynamicKey }}</em> is
+    <DynamicKey :dynamicKey="node.DynamicKey" :contextScope="node.ContextScope" /> is
     <em>{{ node.CompareType }}</em> to
     <em><EvaluateExpression :expression="node.CompareValue" /></em>
 

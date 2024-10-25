@@ -1,23 +1,20 @@
 <script setup lang="ts">
-  import { GamecoreTask, 
-  } from '@/sources/gamecore';
-  import useHashStore from '@/common/hashstore';
+  import { GamecoreTask, } from '@/sources/gamecore';
   import BlockLayout from '@/components/BlockLayout.vue';
+  import DynamicKey from '@/gamecore/DynamicKey.vue';
 
   const props = defineProps<{node:GamecoreTask}>()
   const node = props.node as unknown as 
   {
     DynamicKey:string
+    ContextScope:string
   }
-
-  if (node.DynamicKey)
-    useHashStore().register(node.DynamicKey, true)
 </script>
 
 <template>
   <BlockLayout :source="node">
 
-    Set <em>{{ node.DynamicKey }}</em> to the max skill point count
+    Set <DynamicKey :dynamicKey="node.DynamicKey" :contextScope="node.ContextScope" /> to the max skill point count
 
   </BlockLayout>
 </template>

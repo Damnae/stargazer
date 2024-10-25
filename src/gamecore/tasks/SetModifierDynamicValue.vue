@@ -1,10 +1,10 @@
 <script setup lang="ts">
   import { GamecoreTask, DynamicExpression, GamecoreTargetType, } from '@/sources/gamecore';
-  import useHashStore from '@/common/hashstore';
   import BlockLayout from '@/components/BlockLayout.vue';
   import EvaluateExpression from '../EvaluateExpression.vue';
   import EvaluateTargetType from '../EvaluateTargetType.vue';
   import ModifierLink from '@/gamecore/ModifierLink.vue';
+  import DynamicKey from '@/gamecore/DynamicKey.vue';
 
   const props = defineProps<{node:GamecoreTask}>()
   const node = props.node as unknown as 
@@ -12,12 +12,10 @@
     TargetType:GamecoreTargetType
     ModifierName:string
     DynamicKey:string
+    ContextScope:string
     NewValue?:DynamicExpression
     ModifyFunction:string
   }
-
-  if (node.DynamicKey)
-    useHashStore().register(node.DynamicKey, true)
 </script>
 
 <template>
@@ -38,7 +36,7 @@
       <template v-else>
         this modifier's
       </template>
-      <em>{{ node.DynamicKey }}</em>
+      <DynamicKey :dynamicKey="node.DynamicKey" :contextScope="node.ContextScope" />
       <template v-if="node.TargetType">
         on <em><EvaluateTargetType :target="node.TargetType" /></em>
       </template>
@@ -56,7 +54,7 @@
       <template v-else>
         this modifier's
       </template>
-      <em>{{ node.DynamicKey }}</em>
+      <DynamicKey :dynamicKey="node.DynamicKey" :contextScope="node.ContextScope" />
       to <em><EvaluateExpression :expression="node.NewValue" /></em>
 
     </template>

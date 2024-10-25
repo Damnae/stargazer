@@ -1,9 +1,9 @@
 <script setup lang="ts">
   import { GamecoreTask, GamecoreTargetType, DynamicExpression, } from '@/sources/gamecore';
-  import useHashStore from '@/common/hashstore';
   import BlockLayout from '@/components/BlockLayout.vue';
   import EvaluateTargetType from '../EvaluateTargetType.vue';
   import EvaluateExpression from '../EvaluateExpression.vue';
+  import DynamicKey from '@/gamecore/DynamicKey.vue';
 
   const props = defineProps<{node:GamecoreTask}>()
   const node = props.node as unknown as 
@@ -15,9 +15,6 @@
     Min:DynamicExpression
     Max:DynamicExpression
   }
-
-  if (node.Key)
-    useHashStore().register(node.Key, true)
 </script>
 
 <template>
@@ -29,7 +26,7 @@
     <template v-if="node.TargetType">
       <em><EvaluateTargetType :target="node.TargetType" /></em>'s
     </template>
-    <em v-if="node.ContextScope">{{ node.ContextScope }}.</em><em>{{ node.Key }}</em>,
+    <DynamicKey :dynamicKey="node.Key" :contextScope="node.ContextScope" />,
     clamp between <em><EvaluateExpression :expression="node.Min" /></em>
     and <em><EvaluateExpression :expression="node.Max" /></em>
 

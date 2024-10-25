@@ -1,26 +1,22 @@
 <script setup lang="ts">
-  import { GamecoreTask, 
-    GamecoreTargetType,
-  } from '@/sources/gamecore';
-  import useHashStore from '@/common/hashstore';
+  import { GamecoreTask, GamecoreTargetType, } from '@/sources/gamecore';
   import BlockLayout from '@/components/BlockLayout.vue';
+  import DynamicKey from '@/gamecore/DynamicKey.vue';
 
   const props = defineProps<{node:GamecoreTask}>()
   const node = props.node as unknown as 
   {
     TargetType?:GamecoreTargetType
     DynamicKey:string
+    ContextScope:string
     VariateType?:string
   }
-
-  if (node.DynamicKey)
-    useHashStore().register(node.DynamicKey, true)
 </script>
 
 <template>
   <BlockLayout :source="node">
 
-    Set <em>{{ node.DynamicKey }}</em>
+    Set <DynamicKey :dynamicKey="node.DynamicKey" :contextScope="node.ContextScope" />
     to <em>{{ node.VariateType }}</em>
 
   </BlockLayout>

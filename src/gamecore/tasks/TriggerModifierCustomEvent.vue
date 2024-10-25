@@ -1,9 +1,9 @@
 <script setup lang="ts">
   import { GamecoreTask, GamecoreTargetType, DynamicExpression, } from '@/sources/gamecore';
-  import useHashStore from '@/common/hashstore';
   import BlockLayout from '@/components/BlockLayout.vue';
   import EvaluateTargetType from '../EvaluateTargetType.vue';
   import EvaluateExpression from '../EvaluateExpression.vue';
+  import DynamicKey from '@/gamecore/DynamicKey.vue';
 
   const props = defineProps<{node:GamecoreTask}>()
   const node = props.node as unknown as 
@@ -12,12 +12,10 @@
     CasterFilter?:GamecoreTargetType
     EventType?:string
     DynamicKey?:string
+    ContextScope:string
     Value?:DynamicExpression
     MaxNumber?:DynamicExpression
   }
-  
-  if (node.DynamicKey)
-    useHashStore().register(node.DynamicKey, true)
 </script>
 
 <template>
@@ -39,7 +37,7 @@
     </template>
     
     <template v-if="node.DynamicKey">
-      with <em>{{ node.DynamicKey }}</em>
+      with <DynamicKey :dynamicKey="node.DynamicKey" :contextScope="node.ContextScope" />
     </template>
     <template v-if="node.Value">
       set to <em><EvaluateExpression :expression="node.Value" /></em>

@@ -1,27 +1,23 @@
 <script setup lang="ts">
-  import { GamecoreTask, 
-    DynamicExpression, 
-  } from '@/sources/gamecore';
-  import useHashStore from '@/common/hashstore';
+  import { GamecoreTask, DynamicExpression, } from '@/sources/gamecore';
   import BlockLayout from '@/components/BlockLayout.vue';
   import EvaluateExpression from '../EvaluateExpression.vue';
+  import DynamicKey from '@/gamecore/DynamicKey.vue';
 
   const props = defineProps<{node:GamecoreTask}>()
   const node = props.node as unknown as 
   {
     DynamicKey:string
+    ContextScope:string
     Min?:DynamicExpression
     Max?:DynamicExpression
   }
-
-  if (node.DynamicKey)
-    useHashStore().register(node.DynamicKey, true)
 </script>
 
 <template>
   <BlockLayout :source="node">
 
-    Set <em>{{ node.DynamicKey }}</em>
+    Set <DynamicKey :dynamicKey="node.DynamicKey" :contextScope="node.ContextScope" />
     to a random value between <em><EvaluateExpression :expression="node.Min" /></em> 
     and <em><EvaluateExpression :expression="node.Max" /></em> 
 

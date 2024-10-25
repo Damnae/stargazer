@@ -1,24 +1,22 @@
 <script setup lang="ts">
   import { GamecoreTask, DynamicExpression, } from '@/sources/gamecore';
-  import useHashStore from '@/common/hashstore';
   import BlockLayout from '@/components/BlockLayout.vue';
   import EvaluateExpression from '../EvaluateExpression.vue';
+  import DynamicKey from '@/gamecore/DynamicKey.vue';
 
   const props = defineProps<{node:GamecoreTask}>()
   const node = props.node as unknown as 
   {
     CustomKey:string
+    ContextScope:string
     CustomValue?:DynamicExpression
   }
-
-  if (node.CustomKey)
-    useHashStore().register(node.CustomKey, true)
 </script>
 
 <template>
   <BlockLayout :source="node">
 
-    Set statistic <em>{{ node.CustomKey }}</em>
+    Set statistic <DynamicKey :dynamicKey="node.CustomKey" :contextScope="node.ContextScope" />
     to <em><EvaluateExpression :expression="node.CustomValue" /></em>
 
   </BlockLayout>

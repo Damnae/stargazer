@@ -1,7 +1,7 @@
 <script setup lang="ts">
   import { inject } from 'vue';
 
-  defineProps<{modifierName?:string|{Value:string}}>()
+  defineProps<{modifierName:string|{Value:string}}>()
   
   const createModifierRoute = inject<(key:string) => object>('createModifierRoute') as (key:string) => object
 </script>
