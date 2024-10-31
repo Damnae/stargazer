@@ -294,6 +294,7 @@ const contextSourceToPaths:{[key in TaskContextSource]:ContextPathEntry} =
     Modifiers: 
     [
       'Config/ConfigGlobalModifier/GlobalModifier.json',
+      'Config/ConfigGlobalModifier/GlobalModifier_Reference.json',
       'Config/ConfigGlobalModifier/GlobalModifier_Common_Property.json',
       'Config/ConfigGlobalModifier/GlobalModifier_Common_Specific.json',
       'Config/ConfigGlobalModifier/GlobalModifier_System.json',
@@ -353,6 +354,7 @@ const contextSourceToPaths:{[key in TaskContextSource]:ContextPathEntry} =
     Abilities: 
     [
       'Config/ConfigAbility/EquipmemtAbility.json',
+      'Config/ConfigAbility/Equip/EquipmemtAbility.json',
       'Config/ConfigAbility/WhiteBox/W_EquipmemtAbility.json',
     ],
     Modifiers: [],
@@ -363,6 +365,7 @@ const contextSourceToPaths:{[key in TaskContextSource]:ContextPathEntry} =
     Abilities:
     [
       'Config/ConfigAbility/RelicAbility.json',
+      'Config/ConfigAbility/Equip/RelicAbility.json ',
       'Config/ConfigAbility/WhiteBox/W_RelicAbility.json',
     ],
     Modifiers: [],
