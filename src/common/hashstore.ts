@@ -28,6 +28,7 @@ const defaultHashes:{[key:number]:string} =
   "1692650493": "DamageNeedHP",
   "-2136914891": "DamageIncreaseTypeBP", 
   "-731068780": "AggroNeed",
+  "-325110748": "HadServant",
   //
   "2612209": "DebuffNumber",
   "2621308": "Hana",
