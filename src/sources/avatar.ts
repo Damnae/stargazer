@@ -56,7 +56,7 @@ export interface AvatarSkillTree
         }
     ]
     LevelUpSkillID: number[]
-    PointTriggerKey: 
+    PointTriggerKey:string | 
     {
         // No idea what this is, doesn't look like Translatable
         Hash: number 

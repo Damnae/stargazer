@@ -1,7 +1,6 @@
 <script setup lang="ts">
-  import { GamecoreTask, GamecoreTargetType, DynamicExpression, } from '@/sources/gamecore';
+  import { GamecoreTask, DynamicExpression, } from '@/sources/gamecore';
   import BlockLayout from '@/components/BlockLayout.vue';
-  import EvaluateTargetType from '../EvaluateTargetType.vue';
   import EvaluateExpression from '../EvaluateExpression.vue';
 
   const props = defineProps<{node:GamecoreTask}>()
