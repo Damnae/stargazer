@@ -12,14 +12,14 @@
   <div class="block">
     <template v-if="status.ModifierName">
       <RouterLink :to="createModifierRoute(status.ModifierName, isPrevious)">
-        <em>{{ status.StatusName.Text }}</em>
+        <em>{{ status.StatusName?.Text ?? status.ModifierName }}</em>
       </RouterLink>
       &nbsp;<span class="minor">
         {{ status.ModifierName }}
       </span>
     </template>
     <template v-else>
-      <em>{{ status.StatusName.Text }}</em>
+      <em>{{ status.StatusName?.Text ?? status.ModifierName }}</em>
     </template>
   </div>
 

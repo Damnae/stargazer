@@ -8,9 +8,9 @@ import translate, { Translatable, } from '@/common/translate';
 export interface Status
 {
     StatusID: number
-    StatusName: Translatable
-    StatusDesc: Translatable
-    StatusEffect: Translatable
+    StatusName?: Translatable
+    StatusDesc?: Translatable
+    StatusEffect?: Translatable
     ModifierName: string
     StatusType: string
     CanDispel: boolean
@@ -45,10 +45,9 @@ export async function getStatuses(commitId:string) : Promise<StatusConfig>
                 await translate(commitId, status.StatusEffect)
     
                 status.SearchKeywords = []
-                status.SearchKeywords.push(status.StatusName.Text.toLowerCase())
-                if (status.StatusName.Text != status.ModifierName)
-                    status.SearchKeywords.push(status.ModifierName.toLowerCase())
-                if (status.StatusEffect.Text != status.StatusName.Text && status.StatusEffect.Text != status.StatusEffect.Hash.toString())
+                if (status.StatusName)
+                    status.SearchKeywords.push(status.StatusName.Text.toLowerCase())
+                if (status.StatusEffect)
                     status.SearchKeywords.push(status.StatusEffect.Text.toLowerCase())
             }
     

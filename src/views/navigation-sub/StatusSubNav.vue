@@ -23,7 +23,7 @@
     <LoadingNav />
   </div>
   <div v-else-if="status" :key="objectId">
-    <h1>{{ status.StatusName.Text }}</h1>
+    <h1>{{ status.StatusName?.Text ?? status.ModifierName }}</h1>
     <NavTree>
       <NavItem v-if="status.ModifierName">
         <NavTree :startsOpen="true">

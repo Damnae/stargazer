@@ -19,11 +19,11 @@
 
   const addedStatuses = computed(() => Object.values(statuses.value)
     .filter(v => statusesFrom.value[v.StatusID] == undefined)
-    .sort((a, b) => a.StatusName.Text > b.StatusName.Text ? 1 : -1))
+    .sort((a, b) => (a.StatusName?.Text ?? a.ModifierName) > (b.StatusName?.Text ?? b.ModifierName) ? 1 : -1))
 
   const removedStatuses = computed(() => Object.values(statusesFrom.value)
     .filter(v => statuses.value[v.StatusID] == undefined)
-    .sort((a, b) => a.StatusName.Text > b.StatusName.Text ? 1 : -1))
+    .sort((a, b) => (a.StatusName?.Text ?? a.ModifierName) > (b.StatusName?.Text ?? b.ModifierName) ? 1 : -1))
 
 </script>
 

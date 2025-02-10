@@ -54,7 +54,7 @@ export interface Character
     DynamicValues?: DynamicValues
     AITagList?:
     {
-        Values: 
+        Floats: 
         {
             [hash: number]: {}
         }
@@ -84,5 +84,6 @@ export async function getCharacterByBattleEvent(commitId:string, battleEvent:Bat
 async function getCharacter(commitId:string, path:string) : Promise<Character>
 {
     const result = await retrieveJson(path, commitId, false) as Character
+    // TODO for each character, if AITagList.Values exists, rename to AITagList.Floats
     return result
 }

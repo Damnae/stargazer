@@ -125,7 +125,7 @@ export function evaluateDescription(description:string, params:GamecoreParam[]) 
   }
   return cleanupMarkup(description)
 }
-export function evaluateDescriptionString(description:string, params:string[]) : string
+export function evaluateDescriptionString(description:string|undefined, params:string[]) : string
 {
   if (!description)
     return ''

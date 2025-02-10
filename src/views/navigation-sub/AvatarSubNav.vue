@@ -54,7 +54,7 @@
                 </RouterLink>
               </template>
               <template #footer>
-                {{ evaluateDescription(skill.SimpleSkillDesc.Text, skill.SimpleParamList) }}
+                {{ evaluateDescription(skill.SimpleSkillDesc?.Text, skill.SimpleParamList) }}
                 <span v-if="skill.SPBase?.Value" class="oneline">
                   (+{{ skill.SPBase.Value }} Energy)
                 </span>

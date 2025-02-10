@@ -14,14 +14,14 @@
   {
     return Object.values(statuses.value)
       .filter(v => v.SearchKeywords.some(k => k.includes(search.value.toLowerCase())))
-      .sort((a, b) => a.StatusName.Text > b.StatusName.Text ? 1 : -1)
+      .sort((a, b) => (a.StatusName?.Text ?? a.ModifierName) > (b.StatusName?.Text ?? b.ModifierName) ? 1 : -1)
   }
 </script>
 
 <template>
   <NavItem v-for="status in statusesSearchResults" :key="status.StatusID">
     <RouterLink :to="{ name:'status', params:{ commitId: commitId, objectId: status.StatusID }}">
-      <span :title="status.StatusName.Text">{{ status.StatusName.Text }}</span>
+      <span :title="status.StatusName?.Text ?? status.ModifierName">{{ status.StatusName?.Text ?? status.ModifierName }}</span>
     </RouterLink>
   </NavItem>
 </template>

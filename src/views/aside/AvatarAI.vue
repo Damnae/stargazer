@@ -40,9 +40,9 @@
       </header>
       <section>
         
-        <template v-if="character?.AITagList">
+        <template v-if="character?.AITagList?.Floats">
           <h2>AI Tags</h2>
-          {{ Object.keys(character.AITagList.Values).map(hash => hashStore.translate(parseInt(hash)) ?? hash).join(', ') }}
+          {{ Object.keys(character.AITagList.Floats).map(hash => hashStore.translate(parseInt(hash)) ?? hash).join(', ') }}
         </template>
 
         <ProvideAvatarContext :commitId="commitId" :objectId="objectId">

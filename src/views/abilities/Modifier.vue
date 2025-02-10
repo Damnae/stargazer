@@ -112,8 +112,8 @@
         <h2>Status</h2>
         <BlockLayout :source="status">
           <span>
-            {{ status.StatusName.Text }}
-            <template v-if="status.StatusName.Text != status.StatusEffect.Text && status.StatusEffect.Text != status.StatusEffect.Hash.toString()">
+            {{ status.StatusName?.Text ?? status.ModifierName }}
+            <template v-if="status.StatusEffect?.Text">
               - {{ status.StatusEffect.Text }}
             </template>
             <em>
@@ -123,7 +123,7 @@
             </em>
           </span>
           <template #content>
-            <span class="minor">{{ evaluateDescriptionString(status.StatusDesc.Text, status.ReadParamList) }}</span>
+            <span class="minor">{{ evaluateDescriptionString(status.StatusDesc?.Text, status.ReadParamList) }}</span>
           </template>
         </BlockLayout>
       </template>
