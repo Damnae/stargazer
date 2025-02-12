@@ -12,7 +12,11 @@ export interface DynamicValue
 
 export interface DynamicValues
 {
-  Values: 
+  Floats: // used to be Values
+  {
+    [key:number | string]: DynamicValue
+  }
+  Values?:
   {
     [key:number | string]: DynamicValue
   }
@@ -149,6 +153,9 @@ enum ExpressionOpCode
   Not,
   Call,
   Return,
+  
+  UnknownUnary,
+  UnknownBinary,
 }
 
 const opCodeMaps:{[version:number]:{[opCodeValue:number]:ExpressionOpCode}} = 
@@ -179,6 +186,27 @@ const opCodeMaps:{[version:number]:{[opCodeValue:number]:ExpressionOpCode}} =
     8: ExpressionOpCode.Not,
     9: ExpressionOpCode.Call,
     10: ExpressionOpCode.Return,
+  },
+  17:
+  {
+    0: ExpressionOpCode.Constant,
+    1: ExpressionOpCode.Variable,
+    2: ExpressionOpCode.Add,
+    3: ExpressionOpCode.Subtract,
+    4: ExpressionOpCode.Multiply,
+    5: ExpressionOpCode.Divide,
+    6: ExpressionOpCode.Modulo,
+    // 7: ???????
+    // 8: ???????
+    // 9: ???????
+    // 10 ???????
+    // 11 ???????
+    // 12 ???????
+    // 13 ???????
+    14: ExpressionOpCode.Negative,
+    15: ExpressionOpCode.Not,
+    16: ExpressionOpCode.Call,
+    17: ExpressionOpCode.Return,
   },
 }
 
@@ -242,36 +270,36 @@ export function evaluateDynamicExpression(expression?:DynamicExpression|number, 
           stack.push(variable);
           break
         case ExpressionOpCode.Add:
-          var right = stack.pop()
-          var left = stack.pop()
+          var right = stack.pop() ?? 'missing'
+          var left = stack.pop() ?? 'missing'
           stack.push(`(${left}) + (${right})`)
           break
         case ExpressionOpCode.Subtract:
-          var right = stack.pop()
-          var left = stack.pop()
+          var right = stack.pop() ?? 'missing'
+          var left = stack.pop() ?? 'missing'
           stack.push(`(${left}) - (${right})`)
           break
         case ExpressionOpCode.Multiply:
-          var right = stack.pop()
-          var left = stack.pop()
+          var right = stack.pop() ?? 'missing'
+          var left = stack.pop() ?? 'missing'
           stack.push(`(${left}) * (${right})`)
           break
         case ExpressionOpCode.Divide:
-          var right = stack.pop()
-          var left = stack.pop()
+          var right = stack.pop() ?? 'missing'
+          var left = stack.pop() ?? 'missing'
           stack.push(`(${left}) / (${right})`)
           break
         case ExpressionOpCode.Modulo:
-          var right = stack.pop()
-          var left = stack.pop()
+          var right = stack.pop() ?? 'missing'
+          var left = stack.pop() ?? 'missing'
           stack.push(`(${left}) % (${right})`)
           break
         case ExpressionOpCode.Negative:
-          var right = stack.pop()
+          var right = stack.pop() ?? 'missing'
           stack.push(`-(${right})`)
           break
         case ExpressionOpCode.Not:
-          var right = stack.pop()
+          var right = stack.pop() ?? 'missing'
           stack.push(`!(${right})`)
           break
         case ExpressionOpCode.Call:
@@ -282,9 +310,19 @@ export function evaluateDynamicExpression(expression?:DynamicExpression|number, 
           const callName = stack.pop();
           stack.push(`${callName}(${params.reverse().join(', ')})`)
           break
+        case ExpressionOpCode.UnknownUnary:
+          var right = stack.pop() ?? 'missing'
+          stack.push(`⚠${opCodeValue}⚠(${right})`)
+          break
+        case ExpressionOpCode.UnknownBinary:
+          var right = stack.pop() ?? 'missing'
+          var left = stack.pop() ?? 'missing'
+          stack.push(`(${left}) ⚠${opCodeValue}⚠ (${right})`)
+          break
         case ExpressionOpCode.Return:
           var result = stack.pop()
           formula = result ?? 'empty'
+          //formula += ` (v${version})`
           if (stack.length > 0)
           {
             formula = '⚠ ' + formula + ' ⚠'
@@ -295,7 +333,7 @@ export function evaluateDynamicExpression(expression?:DynamicExpression|number, 
           }
           break
         default:
-          console.log('expression opcode not implemented: ' + opCode)
+          console.log('expression opcode not implemented: ' + opCodeValue + ' in ' + [...bytes].map((_, i) => bytes.charCodeAt(i)))
       }
     }
     return formula
@@ -311,14 +349,14 @@ function findDynamicValue(hash:number, context?:ExpressionContext) : DynamicValu
 
   if (context.DynamicValues)
   {
-    const dynamicValue = context.DynamicValues.Values[hash]
+    const dynamicValue = context.DynamicValues.Floats[hash]
     if (dynamicValue)
       return dynamicValue
   }
 
   for (var dynamicValues of Object.values(context.AbilityDynamicValues))
   {
-    const dynamicValue = dynamicValues.Values[hash]
+    const dynamicValue = dynamicValues.Floats[hash]
     if (dynamicValue)
       return dynamicValue
   }
@@ -337,11 +375,11 @@ function explainDynamicValue(value:DynamicValue, params:{[key:string]:GamecorePa
     const paramIndex = getIndexFromDynamicValueType(value.ReadInfo.Type)
 
     if (!paramList)
-      console.log(`params not found: ${value.ReadInfo.Str}[${paramIndex}]`)
+      console.log(`dynamic value params not found: ${value.ReadInfo.Str}[${paramIndex}]`)
     
     const paramValue = paramList?.[paramIndex]?.Value
     if (!paramValue)
-      console.log(`param value not found: ${value.ReadInfo.Str}[${paramIndex}]`)
+      console.log(`dynamic value param value not found: ${value.ReadInfo.Str}[${paramIndex}]`)
 
     var paramName = value.ReadInfo.Str
     if (!paramName)

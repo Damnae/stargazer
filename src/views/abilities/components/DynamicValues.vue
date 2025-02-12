@@ -14,7 +14,7 @@
   <BlockLayout v-if="dynamicValues" :source="dynamicValues">
     <span class="flow">Dynamic Values</span>
     <template #content>
-      <BlockLayout v-for="value, key in dynamicValues.Values" :source="value" :title="key">
+      <BlockLayout v-for="value, key in dynamicValues.Floats" :source="value" :title="key">
         {{ hashStore.translate(key as number) ?? key }}
         <template v-if="value.ReadInfo">
           = <em>{{ explainDynamicValueFromContext(value, expressionContext) }}</em>
